@@ -1,0 +1,52 @@
+
+# visual studio junk
+.vs
+
+#unused stuff
+_junk
+
+#compiled stuff
+[Dd]ebug
+[Rr]elease
+
+# not sure if needed
+*.sdf
+
+# archives, just in case
+*.zip
+*.rar
+*.7z
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+*.suo
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app

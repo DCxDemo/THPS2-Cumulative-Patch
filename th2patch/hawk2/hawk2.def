@@ -1,0 +1,4 @@
+LIBRARY "hawk2"
+
+EXPORTS
+    DirectInputCreateA @1
