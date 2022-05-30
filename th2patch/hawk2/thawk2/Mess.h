@@ -17,7 +17,7 @@ typedef void	(*Mess_DeleteMessage_t)(void* message);
 typedef void	(*Mess_DeleteAll_t)();
 	//unknown unused Mess func	0x473620
 typedef void	(*Mess_Remove_t)(void* message);
-typedef void	(*Mess_Message_t)(char* text, int param_2, int param_3, int param_4, int param_5);
+typedef void	(*Mess_Message_t)(char* text, void* param_2, int param_3, int param_4, int param_5);
 typedef void	(*CreateMessage_t)();
 typedef void	(*Mess_Update_t)();
 typedef void	(*Mess_Display_t)();

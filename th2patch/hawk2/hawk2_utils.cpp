@@ -75,5 +75,5 @@ void LoadMessageProg()
 
 void DrawMessage(char* msgText)
 {
-	Mess_Message(msgText, (int)&ms, 1, 0, -24);
+	Mess_Message(msgText, &ms, 1, 0, -24);
 }

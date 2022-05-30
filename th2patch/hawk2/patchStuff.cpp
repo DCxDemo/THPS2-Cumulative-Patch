@@ -20,7 +20,8 @@
 #include "thawk2/Career.h"
 #include "thawk2/Redbook.h"
 #include "thawk2/Sfx.h"
-
+#include "thawk2/globals.h"
+#include "thawk2/PCInput.h"
 
 //the old bigass all-in-one file, that should be cut into pizzas. this is my plastic fork!
 
@@ -30,8 +31,6 @@ using namespace std;
 GameOptions options;
 
 //ofstream fout1("log_redbook.txt");
-
-int* GLevel = (int*)0x5674F8;
 
 typedef struct HookFunc {
 	int address;
@@ -757,26 +756,51 @@ void VibrationTest(CXBOXController* Player1)
 {
 	if (Player1)
 	{
-		for (int i = 0; i < 20; i++)
+
+		Player1->Vibrate(2000, 0, true);
+
+		double timer = 0;
+		do
 		{
-			Player1->Vibrate(i * 3000, 0, true);
-			Sleep(250);
-		}
+			Sleep(16);
+			WinYield();
+			timer += 16.666 * 2;
+			//printf("timer: %f\r\n", timer / 1000);
+		} while (timer < 16.66666 * 120 * 5);
+
+		Player1->Vibrate(0, 2000, true);
+
+		timer = 0;
+		do
+		{
+			Sleep(16);
+			WinYield();
+			timer += 16.666 * 2;
+			//printf("timer: %f\r\n", timer / 1000);
+		} while (timer < 16.66666 * 120 * 5);
+
 
 		Player1->Vibrate(65535, 0, true);
 
-		Sleep(1000);
-
-		for (int i = 0; i < 20; i++)
+		timer = 0;
+		do
 		{
-			Player1->Vibrate(0, i * 3000, true);
-			Sleep(250);
-		}
+			Sleep(16);
+			WinYield();
+			timer += 16.666 * 2;
+			//printf("timer: %f\r\n", timer / 1000);
+		} while (timer < 16.66666 * 120 * 5);
 
 		Player1->Vibrate(0, 65535, true);
 
-		Sleep(1000);
-
+		timer = 0;
+		do
+		{
+			Sleep(16);
+			WinYield();
+			timer += 16.666 * 2;
+			//printf("timer: %f\r\n", timer / 1000);
+		} while (timer < 16.66666 * 120 * 5);
 	}
 }
 
@@ -791,10 +815,31 @@ void Game_Display_Hook()
 	Game_Display();
 }
 
+bool skipframe = false;
+
+int playsshatter = 0;
+
+int* ViewportMode = (int*)0x567588;
+
 void Game_Logic_Hook()
 {
+	skipframe = !skipframe;
+
+	*ViewportMode = -1;
+
+	if (skipframe)
+		return;
+
 	Game_Logic();
+
+	if (playsshatter > 0)
+	{
+		Player1->Vibrate(18000, 18000, 1);
+		playsshatter--;
+	}
 }
+
+
 
 void Utils_SetVisibilityInBox_Hook(void* p1, void* p2, bool p3, bool vis)
 {
@@ -803,6 +848,25 @@ void Utils_SetVisibilityInBox_Hook(void* p1, void* p2, bool p3, bool vis)
 		Utils_SetVisibilityInBox(p1, p2, p3, vis);
 }
 
+int* ShatterSound = (int*)0x5691a4;
+#define GLASS_SHATTER 0x2A
+#define DEFAULT_VOLUME 0x2000
+
+void Shatter_MaybeMakeGlassShatterSound()
+{
+	if (*ShatterSound)
+	{
+		SFX_PlayX(GLASS_SHATTER, DEFAULT_VOLUME);
+		playsshatter = 15;
+		*ShatterSound = 0;
+	}
+}
+
+void Panel_Bail_Hook()
+{
+	playsshatter = 30;
+	Panel_Bail();
+}
 
 #define HOOK_LIST_SIZE 128
 
@@ -852,6 +916,13 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 
 	{ 0x004c3608, Utils_SetVisibilityInBox_Hook },
 	{ 0x004c3632, Utils_SetVisibilityInBox_Hook },
+
+	{ 0x469f4c, Shatter_MaybeMakeGlassShatterSound },
+
+	{ 0x48d4a5, Panel_Bail_Hook },
+
+	{ 0x00414d2d, Career_AwardGoalGap }, //from Career_AwardGap
+	{ 0x0048c12d, Career_AwardGoalGap }, //from Panel_Land
 };
 
 

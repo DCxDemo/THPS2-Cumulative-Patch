@@ -72,6 +72,12 @@
     <ClInclude Include="thawk2\Soundlib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="thawk2\Globals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thawk2\PCInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -116,6 +122,12 @@
     <ClCompile Include="Checksum.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="thawk2\Career.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thawk2\Globals.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="hawk2.def">
@@ -126,7 +138,6 @@
     <None Include="lib\sqlite\readme.md" />
     <None Include="lib\readme.md" />
     <None Include="info\hooking_tutorial.md" />
-    <None Include="readme.md" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="lib\SQLite\sqlite3.lib" />

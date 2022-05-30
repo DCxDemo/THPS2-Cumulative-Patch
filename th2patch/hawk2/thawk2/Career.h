@@ -1,6 +1,10 @@
-#include "stdafx.h"
+#pragma once
 
 //lower half is unckecked for params
+
+enum class eGoalType : int {
+	GoalGap = 2
+};
 
 typedef void(*Career_Init_t)();
 typedef void(*Options_SetPreferences_t)();
@@ -15,8 +19,8 @@ typedef int(*Career_NumLevelGoals_t)();
 typedef int(*Career_CountMoney_t)();
 typedef void(*Career_CheckScore_t)();
 typedef void(*Career_GiveGoal_t)(int param_1);
-typedef int(*Career_GoalIndex_t)(int param_1);
-typedef void(*Career_GiveGoalType_t)(int param_1);
+typedef int(*Career_GoalIndex_t)(eGoalType goalType);
+typedef void(*Career_GiveGoalType_t)(eGoalType goalType);
 typedef void(*Career_CheckClear_t)();
 typedef bool(*Career_GotGoalType_t)(int param_1);
 typedef void(*Career_GiveMedal_t)(int param_1, char medalType); //param_2 = EMedalType
@@ -33,9 +37,9 @@ typedef void(*Career_GiveTrickGap_t)(void* param_1); //param_1 = SGapTrick
 typedef bool(*Career_AnyoneGotGap_t)(void* param_1); //param_1 = SGapTrick
 typedef void(*Career_GiveGap_t)(void* param_1); //param_1 = SGapTrick
 typedef int(*Career_CountBits_t)(int param_1);
-typedef int(*Career_NumGoalGapsGot_t)(int param_1);
+typedef int(*Career_NumGoalGapsGot_t)();
 typedef int(*Career_NumTrickGapsGot_t)(int param_1);
-typedef void(*Career_AwardGoalGap_t)(void* param_1); //param_1 = SGapTrick
+//typedef void(*Career_AwardGoalGap_t)(void* param_1); //param_1 = SGapTrick
 typedef void(*Career_AwardGap_t)(void* param_1); //param_1 = SGapTrick
 typedef void(*Career_AwardTrickGap_t)(void* param_1); //param_1 = SGapTrick
 typedef short(*Career_MoneyNumber_t)(int param_1);
@@ -119,7 +123,8 @@ static const Career_GiveGap_t Career_GiveGap = (Career_GiveGap_t)0x00414b50;
 static const Career_CountBits_t Career_CountBits = (Career_CountBits_t)0x00414b90;
 static const Career_NumGoalGapsGot_t Career_NumGoalGapsGot = (Career_NumGoalGapsGot_t)0x00414bb0;
 static const Career_NumTrickGapsGot_t Career_NumTrickGapsGot = (Career_NumTrickGapsGot_t)0x00414bc0;
-static const Career_AwardGoalGap_t Career_AwardGoalGap = (Career_AwardGoalGap_t)0x00414bd0;
+//static const Career_AwardGoalGap_t Career_AwardGoalGap = (Career_AwardGoalGap_t)0x00414bd0;
+void Career_AwardGoalGap(void* param); //ptr goal gap i assume
 static const Career_AwardGap_t Career_AwardGap = (Career_AwardGap_t)0x00414c50;
 static const Career_AwardTrickGap_t Career_AwardTrickGap = (Career_AwardTrickGap_t)0x00414d90;
 static const Career_MoneyNumber_t Career_MoneyNumber = (Career_MoneyNumber_t)0x00414fa0;

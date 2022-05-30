@@ -69,6 +69,11 @@ static const WinMain2_t WinMain2 = (WinMain2_t)0x4F4EC0;
 typedef LRESULT(__stdcall* WindowProc_t)(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 static const WindowProc_t WindowProc = (WindowProc_t)0x4F4BA0;
 
+typedef void(*WinYield_t)();
+//use this to avoid freezing
+static const WinYield_t WinYield = (WinYield_t)0x004f4d70;
+
+
 //VIDMENU stuff
 
 typedef int(*VIDMENU_Load_t)();
@@ -81,18 +86,6 @@ static const VIDMENU_Save_t VIDMENU_Save = (VIDMENU_Save_t)0x4CC510;
 typedef int (*ExecuteCommandList_t)(unsigned __int16 *a1, int a2, int a3);
 static const ExecuteCommandList_t ExecuteCommandList = (ExecuteCommandList_t)0x4C3020;
 
-
-typedef void (*GenPsxPadData_t)();
-static const GenPsxPadData_t GenPsxPadData = (GenPsxPadData_t)0x4E1490;
-
-
-
-typedef int(*Panel_Display_t)();
-static const Panel_Display_t Panel_Display = (Panel_Display_t)0x48a980;
-
-
-typedef char (*InitDirectInput_t)(int a1, HINSTANCE hinst, int a3);
-static const InitDirectInput_t InitDirectInput = (InitDirectInput_t)0x4E9080;
 
 
 typedef int (__thiscall *Vibrate2_t)(int a1, int a2, int a3, int a4);
@@ -155,3 +148,13 @@ static const Panel_Line_t Panel_Line = (Panel_Line_t)0x00488410;
 typedef void(*Utils_SetVisibilityInBox_t)(void*, void*, char, char);
 //takes bbox, objects list and state bool, loops through all objects and toggles visibility for those 
 static const Utils_SetVisibilityInBox_t Utils_SetVisibilityInBox = (Utils_SetVisibilityInBox_t)0x004c7530;
+
+
+
+typedef int(*Panel_Display_t)();
+//draws user interface
+static const Panel_Display_t Panel_Display = (Panel_Display_t)0x48a980;
+
+typedef void(*Panel_Bail_t)();
+//called once, triggers when player bails
+static const Panel_Bail_t Panel_Bail = (Panel_Bail_t)0x0048b0a0;
