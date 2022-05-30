@@ -15,13 +15,13 @@
 #include "lib/xinput/CXBOXController.h"
 
 #include "thawk2/_old.h"
+#include "thawk2/Career.h"
 #include "thawk2/FileIO.h"
 #include "thawk2/Mess.h"
-#include "thawk2/Career.h"
 #include "thawk2/Redbook.h"
 #include "thawk2/Sfx.h"
-#include "thawk2/globals.h"
 #include "thawk2/PCInput.h"
+#include "thawk2/globals.h"
 
 //the old bigass all-in-one file, that should be cut into pizzas. this is my plastic fork!
 
@@ -50,40 +50,17 @@ void Proxify(int offs[], int count, void* func)
 
 
 
-
-
-int* SFXLEVEL = (int*)0x528CA4;
-int* XALEVEL = (int*)0x528CA8;
-
 //int totalTracks = 0;
 int playingTrack = -1;
 
 string playingName;
 string playingFile;
 
-int* Redbook_XAFadeScale			= (int*)0x53458C;
-int* gMusicPlaying					= (int*)0x5674E0;
-int* Redbook_XAFading				= (int*)0x5684F8;
-int* Redbook_XACurrentChannel		= (int*)0x5684E8;
-int* Redbook_XACurrentGroup			= (int*)0x5684EC;
-int* Redbook_XACurrentSector		= (int*)0x5684C8;
-int* Redbook_XACheckSectorOnVSync	= (int*)0x5684DC;
-int* Redbook_XAModeSet				= (int*)0x5684DD;
-int* Redbook_XACompleteTimer		= (int*)0x5684D8;
-int* Redbook_XAPaused				= (int*)0x5684E0;
-
 
 int* _Cheat_Light = (int*)0x005674c8;
 
-
-
-
 int* spriteX = (int*)0x69D184;
 int* spriteY = (int*)0x69D188;
-
-
-
-void PatchSkaters();
 
 //string playlistPath = "patch\\tracklist.ini";
 string playlistPath; // = (string)(char*)0x521168;
@@ -521,10 +498,9 @@ int* _PixelAspectY = (int*)0x5606d0;
 
 
 
-bool* GamePaused = (bool*)0x55e864;
 
-int* ScreenWidth = (int*)0x29D6FE4;
-int* ScreenHeight = (int*)0x29D6FE8;
+
+
 
 
 void WINMAIN_ScreenDimensions(int* width, int* height)
@@ -588,8 +564,6 @@ enum class PadButton : unsigned short
 };
 
 ushort* p1pad = (ushort*)0x6A0B6C;
-int* gJoyEnabled = (int*)0x547a78;
-int* gAnalogsEnabled = (int*)0x6a1024; //??
 
 int angleAllowance = 22.5;
 
@@ -704,12 +678,6 @@ void RenderSuperItemShadow_Hook(void* superItem) //CSuper
 }
 
 
-int* GGame = (int*)0x530d38;
-int* prevTicks = (int*)0x29d4fbc;
-int* Vblanks = (int*)0x56af7c;
-int* Xblanks = (int*)0x56af80;
-int* GameFrozen = (int*)0x567540;
-
 
 void SimVblank(void)
 {
@@ -752,58 +720,6 @@ void _fastcall CBruce_HandleJump_Hook(void* _this, void* _edx)
 	//DrawMessage("Jumping!");
 }
 
-void VibrationTest(CXBOXController* Player1)
-{
-	if (Player1)
-	{
-
-		Player1->Vibrate(2000, 0, true);
-
-		double timer = 0;
-		do
-		{
-			Sleep(16);
-			WinYield();
-			timer += 16.666 * 2;
-			//printf("timer: %f\r\n", timer / 1000);
-		} while (timer < 16.66666 * 120 * 5);
-
-		Player1->Vibrate(0, 2000, true);
-
-		timer = 0;
-		do
-		{
-			Sleep(16);
-			WinYield();
-			timer += 16.666 * 2;
-			//printf("timer: %f\r\n", timer / 1000);
-		} while (timer < 16.66666 * 120 * 5);
-
-
-		Player1->Vibrate(65535, 0, true);
-
-		timer = 0;
-		do
-		{
-			Sleep(16);
-			WinYield();
-			timer += 16.666 * 2;
-			//printf("timer: %f\r\n", timer / 1000);
-		} while (timer < 16.66666 * 120 * 5);
-
-		Player1->Vibrate(0, 65535, true);
-
-		timer = 0;
-		do
-		{
-			Sleep(16);
-			WinYield();
-			timer += 16.666 * 2;
-			//printf("timer: %f\r\n", timer / 1000);
-		} while (timer < 16.66666 * 120 * 5);
-	}
-}
-
 void Game_Init_Hook()
 {
 	Game_Init();
@@ -819,16 +735,12 @@ bool skipframe = false;
 
 int playsshatter = 0;
 
-int* ViewportMode = (int*)0x567588;
-
 void Game_Logic_Hook()
 {
-	skipframe = !skipframe;
+	//skipframe = !skipframe;
 
-	*ViewportMode = -1;
-
-	if (skipframe)
-		return;
+	//if (skipframe)
+	//	return;
 
 	Game_Logic();
 
@@ -837,6 +749,9 @@ void Game_Logic_Hook()
 		Player1->Vibrate(18000, 18000, 1);
 		playsshatter--;
 	}
+
+	if (options.DisableSky)
+		Backgrnd_Off(0);
 }
 
 
@@ -872,8 +787,8 @@ void Panel_Bail_Hook()
 
 //list of all hooks
 HookFunc hookList[HOOK_LIST_SIZE] = {
-	{ 0x458564, SFX_SpoolOutLevelSFX },
-	{ 0x452570, SFX_SpoolInLevelSFX },
+	//{ 0x458564, SFX_SpoolOutLevelSFX },
+	//{ 0x452570, SFX_SpoolInLevelSFX },
 
 	{ 0x451F79, Redbook_XARestore2 },
 	{ 0x44F41F, Redbook_XARemember2 },
@@ -887,8 +802,7 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	{ 0x4CC4C3, VIDMENU_Save_Hook },
 	{ 0x4F3D3E, VIDMENU_Save_Hook },
 
-	//hook input func
-	{ 0x4E1CC6, GenPsxPadData_Hook },
+	{ 0x4E1CC6, GenPsxPadData_Hook }, //in ReadDirectInput
 
 	//{ 0x46DFEC, Land_Sound },
 	//{ 0x497DC8, Land_Sound },
@@ -898,31 +812,35 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	{ 0x46A8E7, WINMAIN_SwitchResolution_Hook },
 	{ 0x46AE23, WINMAIN_SwitchResolution_Hook },
 
-	{ 0x4645b8, M3dInit_SetResolution },
-	{ 0x430466, M3dInit_SetResolution },
+	{ 0x430466, M3dInit_SetResolution }, //in Db_Init
+	{ 0x4645b8, M3dInit_SetResolution }, //in M3dInit_InitAtStart
 
-	{ 0x468823, Panel_Display_Hook },
 	{ 0x460bf7, RenderSuperItemShadow_Hook },
-	{ 0x4b4a24, Career_GetPointCost_Hook },
-	{ 0x4707b0, Career_GetPointCost_Hook },
-	{ 0x41580c, Career_GetPointCost_Hook },
-	{ 0x48ef74, CBruce_StartGrind_Hook },
-	{ 0x49c288, CBruce_HandleJump_Hook },
 
-	//all calls from PlayAway
+	{ 0x41580c, Career_GetPointCost_Hook },
+	{ 0x4707b0, Career_GetPointCost_Hook },
+	{ 0x4b4a24, Career_GetPointCost_Hook },
+
+	{ 0x48ef74, CBruce_StartGrind_Hook }, //in CBruce::HandeStickToRail
+	{ 0x49c288, CBruce_HandleJump_Hook }, //in CBruce::DoPhysics
+
+	//all calls in PlayAway
 	{ 0x46a331, Game_Init_Hook },
 	{ 0x46a3ef, Game_Logic_Hook },
 	{ 0x46a407, Game_Display_Hook },
 
+	//both in ExecuteCommandList
 	{ 0x004c3608, Utils_SetVisibilityInBox_Hook },
 	{ 0x004c3632, Utils_SetVisibilityInBox_Hook },
 
-	{ 0x469f4c, Shatter_MaybeMakeGlassShatterSound },
+	{ 0x469f4c, Shatter_MaybeMakeGlassShatterSound }, //in Game_Logic
 
-	{ 0x48d4a5, Panel_Bail_Hook },
+	{ 0x48d4a5, Panel_Bail_Hook },	//in CBruce::Trick_Bail
+	
+	{ 0x468823, Panel_Display_Hook }, // in Display
 
-	{ 0x00414d2d, Career_AwardGoalGap }, //from Career_AwardGap
-	{ 0x0048c12d, Career_AwardGoalGap }, //from Panel_Land
+	{ 0x414d2d, Career_AwardGoalGap }, //in Career_AwardGap
+	{ 0x48c12d, Career_AwardGoalGap }, //in Panel_Land
 };
 
 
@@ -937,15 +855,13 @@ void SetHooks()
 
 
 
-int __cdecl ExecuteCommandListProxy(unsigned __int16 *a1, int a2, int a3)
+void ExecuteCommandList_Hook(short *node, int p2, int p3)
 {
-	//fout1 << *a1 << ", " << a2 << ", " << a3 << endl;
-
 	//turn teleport into killing zone
-	if (*a1 == 300) *a1 = 152;
+	if (*node == 300)
+		*node = 152;
 
-	//DrawMessage(f, true);
-	return ExecuteCommandList(a1, a2, a3);
+	ExecuteCommandList(node, p2, p3);
 }
 
 
@@ -959,7 +875,7 @@ void Redirect_ExecuteCommandList()
 		0x4C5337
 	};
 
-	Proxify(offs, sizeof(offs) / 4, ExecuteCommandListProxy);
+	Proxify(offs, sizeof(offs) / 4, ExecuteCommandList_Hook);
 }
 
 

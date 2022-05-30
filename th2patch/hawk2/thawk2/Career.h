@@ -37,7 +37,7 @@ typedef void(*Career_GiveTrickGap_t)(void* param_1); //param_1 = SGapTrick
 typedef bool(*Career_AnyoneGotGap_t)(void* param_1); //param_1 = SGapTrick
 typedef void(*Career_GiveGap_t)(void* param_1); //param_1 = SGapTrick
 typedef int(*Career_CountBits_t)(int param_1);
-typedef int(*Career_NumGoalGapsGot_t)();
+//typedef int(*Career_NumGoalGapsGot_t)();
 typedef int(*Career_NumTrickGapsGot_t)(int param_1);
 //typedef void(*Career_AwardGoalGap_t)(void* param_1); //param_1 = SGapTrick
 typedef void(*Career_AwardGap_t)(void* param_1); //param_1 = SGapTrick
@@ -54,8 +54,8 @@ typedef bool(*Career_SellPoint_t)(int statIndex);
 typedef int(*Career_GetPointCost_t)();
 typedef void(*Career_NumLevelsWithMedals_t)();
 typedef void(*Career_LevelOpenCareerMode_t)();
-typedef void(*Career_LevelOpen_t)();
-typedef void(*Career_HighestOpenLevel_t)();
+typedef bool(*Career_LevelOpen_t)(int param_1, bool param_2);
+//typedef int(*Career_HighestOpenLevel_t)(int param_1);
 typedef void(*Career_LevelNeeds_t)();
 typedef void(*Career_LoadingScreen_t)();
 typedef void(*Career_GetCharacterProgress_t)();
@@ -80,7 +80,7 @@ typedef void(*Career_ToggleCheat_t)();
 typedef void(*Career_NewCheat_t)();
 typedef void(*Career_CountUnlockedCheats_t)();
 typedef void(*Career_CheatName_t)();
-typedef void(*Career_CheatType_t)();
+//typedef void(*Career_CheatType_t)();
 typedef void(*Career_UnlockCharacter_t)();
 typedef void(*Career_CharacterIsUnlocked_t)();
 typedef void(*Career_ApplyCheats_t)();
@@ -121,7 +121,8 @@ static const Career_GiveTrickGap_t Career_GiveTrickGap = (Career_GiveTrickGap_t)
 static const Career_AnyoneGotGap_t Career_AnyoneGotGap = (Career_AnyoneGotGap_t)0x00414b10;
 static const Career_GiveGap_t Career_GiveGap = (Career_GiveGap_t)0x00414b50;
 static const Career_CountBits_t Career_CountBits = (Career_CountBits_t)0x00414b90;
-static const Career_NumGoalGapsGot_t Career_NumGoalGapsGot = (Career_NumGoalGapsGot_t)0x00414bb0;
+//static const Career_NumGoalGapsGot_t Career_NumGoalGapsGot = (Career_NumGoalGapsGot_t)0x00414bb0;
+int Career_NumGoalGapsGot();
 static const Career_NumTrickGapsGot_t Career_NumTrickGapsGot = (Career_NumTrickGapsGot_t)0x00414bc0;
 //static const Career_AwardGoalGap_t Career_AwardGoalGap = (Career_AwardGoalGap_t)0x00414bd0;
 void Career_AwardGoalGap(void* param); //ptr goal gap i assume
@@ -140,7 +141,8 @@ static const Career_GetPointCost_t Career_GetPointCost = (Career_GetPointCost_t)
 static const Career_NumLevelsWithMedals_t Career_NumLevelsWithMedals = (Career_NumLevelsWithMedals_t)0x004158d0;
 static const Career_LevelOpenCareerMode_t Career_LevelOpenCareerMode = (Career_LevelOpenCareerMode_t)0x00415910;
 static const Career_LevelOpen_t Career_LevelOpen = (Career_LevelOpen_t)0x004159d0;
-static const Career_HighestOpenLevel_t Career_HighestOpenLevel = (Career_HighestOpenLevel_t)0x00415a90;
+//static const Career_HighestOpenLevel_t Career_HighestOpenLevel = (Career_HighestOpenLevel_t)0x00415a90;
+int Career_HighestOpenLevel(int param_1);
 static const Career_LevelNeeds_t Career_LevelNeeds = (Career_LevelNeeds_t)0x00415ad0;
 static const Career_LoadingScreen_t Career_LoadingScreen = (Career_LoadingScreen_t)0x00415b20;
 static const Career_GetCharacterProgress_t Career_GetCharacterProgress = (Career_GetCharacterProgress_t)0x00416040;
@@ -165,7 +167,8 @@ static const Career_ToggleCheat_t Career_ToggleCheat = (Career_ToggleCheat_t)0x0
 static const Career_NewCheat_t Career_NewCheat = (Career_NewCheat_t)0x00416cc0;
 static const Career_CountUnlockedCheats_t Career_CountUnlockedCheats = (Career_CountUnlockedCheats_t)0x00416dd0;
 static const Career_CheatName_t Career_CheatName = (Career_CheatName_t)0x00416e20;
-static const Career_CheatType_t Career_CheatType = (Career_CheatType_t)0x00416f40;
+//static const Career_CheatType_t Career_CheatType = (Career_CheatType_t)0x00416f40;
+int Career_CheatType(int cheat);
 static const Career_UnlockCharacter_t Career_UnlockCharacter = (Career_UnlockCharacter_t)0x00416f70;
 static const Career_CharacterIsUnlocked_t Career_CharacterIsUnlocked = (Career_CharacterIsUnlocked_t)0x00416fa0;
 static const Career_ApplyCheats_t Career_ApplyCheats = (Career_ApplyCheats_t)0x00417050;

@@ -1,8 +1,13 @@
 #include "stdafx.h"
 
+#include "lib/xinput/CXBOXController.h"
+
 #include "thawk2/_old.h"
 #include "thawk2/Mess.h"
+#include "thawk2/globals.h"
+
 #include "patchStuff.h"
+
 
 char debugText[256];
 
@@ -42,5 +47,58 @@ void PrintDebugStuff()
 
 		//Panel_LineX(-1.0, -1.0, 1.0, 1.0, 255, 0, 0);
 		//Panel_LineX(1.0, -1.0, -1.0, 1.0, 255, 0, 0);
+	}
+}
+
+
+void VibrationTest(CXBOXController* Player1)
+{
+	if (Player1)
+	{
+
+		Player1->Vibrate(2000, 0, true);
+
+		double timer = 0;
+		do
+		{
+			Sleep(16);
+			WinYield();
+			timer += 16.666 * 2;
+			//printf("timer: %f\r\n", timer / 1000);
+		} while (timer < 16.66666 * 120 * 5);
+
+		Player1->Vibrate(0, 2000, true);
+
+		timer = 0;
+		do
+		{
+			Sleep(16);
+			WinYield();
+			timer += 16.666 * 2;
+			//printf("timer: %f\r\n", timer / 1000);
+		} while (timer < 16.66666 * 120 * 5);
+
+
+		Player1->Vibrate(65535, 0, true);
+
+		timer = 0;
+		do
+		{
+			Sleep(16);
+			WinYield();
+			timer += 16.666 * 2;
+			//printf("timer: %f\r\n", timer / 1000);
+		} while (timer < 16.66666 * 120 * 5);
+
+		Player1->Vibrate(0, 65535, true);
+
+		timer = 0;
+		do
+		{
+			Sleep(16);
+			WinYield();
+			timer += 16.666 * 2;
+			//printf("timer: %f\r\n", timer / 1000);
+		} while (timer < 16.66666 * 120 * 5);
 	}
 }

@@ -3,10 +3,6 @@
 
 extern GameOptions options;
 
-extern int* ScreenWidth;
-extern int* ScreenHeight;
-extern int* GGame;
-extern bool* GamePaused;
-
 void Patch();
+void PatchSkaters();
 int CountSongs();

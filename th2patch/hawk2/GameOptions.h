@@ -20,6 +20,7 @@ public:
 	string DickSwap = "";
 	bool FreeStats = false;
 	bool DisableVisToggle = false;
+	bool DisableSky = false;
 
 	//video
 	bool ShowHUD = true;

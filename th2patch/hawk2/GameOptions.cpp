@@ -27,6 +27,7 @@ void GameOptions::Load()
 	DickSwap = ini->ReadString("PATCH", "DickSwap", "");
 	FreeStats = ini->ReadBool("PATCH", "FreeStats", false);
 	DisableVisToggle = ini->ReadBool("PATCH", "DisableVisToggle", false);
+	DisableSky = ini->ReadBool("PATCH", "DisableSky", false);
 
 	//video section
 	ShowHUD = ini->ReadBool("VIDEO", "ShowHUD", true);
@@ -72,6 +73,7 @@ void GameOptions::Save()
 	ini->WriteString("PATCH", "DickSwap", &DickSwap[0]);
 	ini->WriteInt("PATCH", "FreeStats", FreeStats);
 	ini->WriteInt("PATCH", "DisableVisToggle", DisableVisToggle);
+	ini->WriteInt("PATCH", "DisableSky", DisableSky);
 
 	//video section
 	ini->WriteInt("VIDEO", "ShowHUD", ShowHUD);

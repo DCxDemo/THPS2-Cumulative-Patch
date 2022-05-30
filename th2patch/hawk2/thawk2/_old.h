@@ -83,7 +83,7 @@ typedef int(*VIDMENU_Save_t)();
 static const VIDMENU_Save_t VIDMENU_Save = (VIDMENU_Save_t)0x4CC510;
 
 
-typedef int (*ExecuteCommandList_t)(unsigned __int16 *a1, int a2, int a3);
+typedef void (*ExecuteCommandList_t)(short* node, int p2, int p3);
 static const ExecuteCommandList_t ExecuteCommandList = (ExecuteCommandList_t)0x4C3020;
 
 
@@ -158,3 +158,10 @@ static const Panel_Display_t Panel_Display = (Panel_Display_t)0x48a980;
 typedef void(*Panel_Bail_t)();
 //called once, triggers when player bails
 static const Panel_Bail_t Panel_Bail = (Panel_Bail_t)0x0048b0a0;
+
+
+typedef void(*Backgrnd_On_t)(short param);
+static const Backgrnd_On_t Backgrnd_On = (Backgrnd_On_t)0x401000;
+
+typedef void(*Backgrnd_Off_t)(short param);
+static const Backgrnd_Off_t Backgrnd_Off = (Backgrnd_Off_t)0x401030;
