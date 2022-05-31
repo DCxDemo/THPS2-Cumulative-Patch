@@ -1,16 +1,25 @@
-This is a list of known source filenames through the debug assert leftovers
+This is a list of known source filenames through the debug assert leftovers.
+Partially code is written in pure C, but there are some classes used.
 
-backgrnd.cpp
+# Observed Neversoft naming conventions:
+* classes start with C (CBit, CCar, CBody, CCamera)
+* structs start with S (SPart, SGroup)
+* enums start with E (E)
+* globals may start with G (GLEVEL, gSmthEnabled)
+* pointers start with p (pData, pPSX)
+
+# names from PC version
+backgrnd.cpp - must be handling skybox
 baddy.cpp - baddy class traces back to Apocalypse engine, it was used for enemies. baddy as in "bad guy.
-bit.cpp
-bit2.cpp
-blood.cpp
-camera.cpp
+bit.cpp - CBit base class for glass shatter pieces, blood splats, water ripples, rotating billboard sprites etc
+bit2.cpp - more classes derived from CBit
+blood.cpp - handles bloodstain logic
+camera.cpp - CCamera class, handles camera
 campt.cpp - camera point probably used in replays
-car.cpp - obviously class used for vehicles like taxi in NY
+car.cpp - CCar class, obviously a class used for vehicles like taxi in NY
 career.cpp - all career related functions
-carsel.cpp
-commonfe.cpp
+carsel.cpp - sel refers to select screen: career select, probably choose a skater screen for career mode
+commonfe.cpp - shared frontend stuff?
 competition.cpp - competition related funcs
 cre_tex.cpp
 cre_texset.cpp
@@ -27,8 +36,8 @@ cresave.cpp
 cresel.cpp
 custmgr.cpp
 db.cpp
-decomp.cpp
-dust.cpp
+decomp.cpp - related to anim decompression
+dust.cpp - dust particles, on bail, on terrain
 DynamicLogo.cpp - in th2 levels skater sponsor logos are placed all over the levels.
 EditorGlobal.cpp
 LevelEditor.cpp
@@ -37,7 +46,7 @@ GenObjs.cpp
 FaceRemoval.cpp - huh
 EditorPieces2.cpp
 EditorPieces.cpp
-EquipSel.cpp
+EquipSel.cpp - sel refers to select screen: equipment select, probably choose a deck screen
 exp.cpp
 fileio.cpp - generic file input/putpu system. basically loads content from disc.
 FontTools.cpp
@@ -51,8 +60,8 @@ hcull.cpp
 Image.cpp
 init.cpp
 LevelSel.cpp - level selection screen
-videowin.cpp
-goalwin.cpp
+videowin.cpp - video preview thumbnail on level select screen
+goalwin.cpp - level selection block on level select screen
 m3d.cpp - 3d math
 m3dcolij.cpp - collision math
 m3dinit.cpp
@@ -61,26 +70,26 @@ m3dzone.cpp
 main.cpp
 MainMenu.cpp - main menu screem
 autoload.cpp
-mech.cpp
+mech.cpp - not sure what is it exactly, but the game uses global list of "mech"s
 medals.cpp - handles competition medals
 mem.cpp - memory manager
-Menu.cpp
-Mess.cpp - messaging system, stores a queue of messages and shows them on the screen using "message programs"
+Menu.cpp - assumed to be base CMenu class, maybe CBasicMenu as well
+Mess.cpp - C style messaging system, stores a queue of messages and shows them on the screen using "message programs"
 mmu.cpp
 multisel.cpp
 NetMenu.cpp
 ob.cpp
 options.cpp
 pad.cpp - psx controller functions, probably psyq stuff
-pal.cpp
+pal.cpp - probably palette
 panel.cpp - functions to output game HUD such as balance meter, timer, trick string, etc.
 physics.cpp
-platform.cpp
+platform.cpp - assumed to be CPlatform class 
 player_ui.cpp
 playsel.cpp
 player_spool.cpp
 post.cpp
-powerup.cpp - probably traces back to apocalypse as well, used for stuff like heath pickups. in THPS transformed in bonus points and cash pickups
+powerup.cpp - CPowerUp class, probably traces back to apocalypse as well, used for stuff like heath pickups. in THPS transformed in bonus points and cash pickups, skate letters and tapes.
 PRE.cpp - PRE file management, PRE files store packed content of the specific menu screen. probably used to speedup menus loading on psx (which was rather long)
 rail.cpp - handles rail logic (stick to rail, orient to rail, etc)
 redbook.cpp - handles PSX CDXA audio, atrociously mapped to bik files on PC, keeping the redundant PSX specific parameters
@@ -91,32 +100,50 @@ Shatter.cpp - shatters object in pieces, most notably used for glass
 skatmgr.cpp - skater manager keeps track of selected skaters
 spool.cpp
 Spooler.cpp
-statwin.cpp
-statedit.cpp
-tag.cpp
-tapes.cpp
+statwin.cpp - probably some widget on statedit screen
+statedit.cpp - stat editor screen (possibly psx?)
+tag.cpp - probably related to graffiti mode
+tapes.cpp - could be th1 leftover to show tapes at the end screen, or could be some secret tape logic?
 texteffects.cpp - various font effects, most notably signature bloody falling text
 textwin.cpp
 trickdb.cpp - manages trick database loaded from tricks.bin file
-trickob.cpp
+trickob.cpp - "trickable objects", refers to any static object in the level i suppose
 trickscript.cpp - probably parses tricks.db file
-tricksel.cpp
-trickwin.cpp
+tricksel.cpp - trick selection screen
+trickwin.cpp - some widget on tricksel screen
 tricktips.cpp - handles the tips on the left side of the screen in the career mode
 trig.cpp - handles the trg file
 TrigGen.cpp
 video.cpp - rather misleading name, it handles the replays and highlights mode at the end of the run. they probably meant like "skate video"
-vidmenu.cpp
+vidmenu.cpp - probably video options menu
 CDPlayer.cpp
 d3dfunc.cpp
 d3dpoly.cpp
 d3dsprite.cpp
 d3dtex.cpp
-D3dTimer.cpp
-DxPlay.cpp
-NetGame.cpp
-PcInput.cpp
+D3dTimer.cpp - new game timer, on top of the old one
+DxPlay.cpp - low level netplay logic, wraps DirectPlay
+NetGame.cpp - high level netplay logic
+PcInput.cpp - input system, wraps directinput via lower level classes SDXEffect, SDXMouse, SDXKeyboard, SDXJoystick
 PCMovie.cpp
 soundlib.cpp - sound system, creates directsound object and handles sound routines
 thstub.cpp
 WinMain.cpp
+
+# additional names from PC demo, could be outdated, could be missing
+m3dgte.cpp - gte funcs for m3d?
+m3dasm.cpp - manual asm version of m3d
+card.cpp - probably renamed to MMU?
+conmenu.cpp
+font.cpp
+rfront.cpp
+d3dmodel.cpp
+sndfile.cpp
+softrend.cpp
+dbgdel.cpp
+sdxinput.cpp
+
+# additional names from iOS version
+shell.cpp
+thmain.cpp - probably new file
+TouchInput.cpp - as name suggest, touch input functionality

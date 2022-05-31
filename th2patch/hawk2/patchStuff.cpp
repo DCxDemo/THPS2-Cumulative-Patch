@@ -1330,7 +1330,8 @@ void Patch()
 	CPatch::SetInt(0x4CC49C, 750);
 
 	//removes "shutting down thps2" delay
-	CPatch::SetInt(0x4F5145, 0);
+	//CPatch::SetInt(0x4F5145, 0);
+	CPatch::Nop(0x4f5149, 6);
 
 	//should remove polylimit error
 	int* polyLimit = (int*)0x4301EF;
