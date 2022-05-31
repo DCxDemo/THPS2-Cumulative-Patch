@@ -21,15 +21,15 @@ static const SOUNDLIB_Init_t SOUNDLIB_Init = (SOUNDLIB_Init_t)0x4ef8b0;
 ```
 
 First line is used to declare the function signature:
-* typedef - declares the type you will use to map the pointer to.
-* void - denotes the return type of the function. if it returns an integer, here will be int instead.
-* _cdecl - denotes the calling convention used. _cdecl can be omitted in MSVC, since it's the default one for standard C style functions. classes use _thiscall, which will be described later.
-* <typename> - just a name for the function pointer type. for convenience i go with <funcname>_t.
-* (params) - whatever goes after that is gathered through the decompiled code analysis and function usage. Most of the times it will coincide with Ghidra declarations, but sometimes it may fail. In this case we know that the result of window creation (which is of HWND type) is passed as the only param, so this is what we write. It is enough to declare param types only, but for convenience i give it a name as well.
+* ```typedef``` - declares the type you will use to map the pointer to.
+* ```void``` - denotes the return type of the function. if it returns an integer, here will be int instead.
+* ```_cdecl``` - denotes the calling convention used. _cdecl can be omitted in MSVC, since it's the default one for standard C style functions. classes use _thiscall, which will be described later.
+* ```<typename>``` - just a name for the function pointer type. for convenience i go with ```<funcname>_t```.
+* ```(params)``` - whatever goes after that is gathered through the decompiled code analysis and function usage. Most of the times it will coincide with Ghidra declarations, but sometimes it may fail. In this case we know that the result of window creation (which is of HWND type) is passed as the only param, so this is what we write. It is enough to declare param types only, but for convenience i give it a name as well.
 
 Second line is used to declare the pointer itself of previously created type:
-* static const - this means our pointer never changes and always points to this memory area. We can do that because we are working with the static code that never relocates.
-* <functype> <funcname> =(<functype>)0x<address> - rather standard var declaration, similar to how we work with vars. we say that this address must be treated as function pointer, casted to our previously declared type.
+* ```static const``` - this means our pointer never changes and always points to this memory area. We can do that because we are working with the static code that never relocates.
+* ```<functype> <funcname> =(<functype>)0x<address>``` - rather standard var declaration, similar to how we work with vars. we say that this address must be treated as function pointer, casted to our previously declared type.
 
 In case we are trying to hook a C++ class method, there is a slight change we need to introduce.
 * first of all, the calling convention of the function pointer type must be changed to _thiscall
