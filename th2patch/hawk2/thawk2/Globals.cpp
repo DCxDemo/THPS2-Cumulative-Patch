@@ -1,5 +1,8 @@
 #include "stdafx.h"
 
+void* GSkater = (int*)0x5674b8;
+void* GSkater2 = (bool*)0x5674bc;
+
 int* GGame = (int*)0x530d38;
 bool* GamePaused = (bool*)0x55e864;
 int* ScreenWidth = (int*)0x29D6FE4;
@@ -9,6 +12,7 @@ int* prevTicks = (int*)0x29d4fbc;
 int* Vblanks = (int*)0x56af7c;
 int* Xblanks = (int*)0x56af80;
 int* GameFrozen = (int*)0x567540;
+int* TTime = (int*)0x567534;
 
 int* gJoyEnabled = (int*)0x547a78;
 int* gAnalogsEnabled = (int*)0x6a1024; //??

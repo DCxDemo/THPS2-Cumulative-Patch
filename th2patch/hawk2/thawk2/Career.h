@@ -2,8 +2,14 @@
 
 //lower half is unckecked for params
 
-enum class eGoalType : int {
-	GoalGap = 2
+enum class EGoalType : int {
+	Letters = 1,	//got letters
+	GoalGap = 2,	//hangtime gaps
+	Collect1 = 3,	//wings
+	Collect2 = 4,	//barrels
+	TrickGap = 5,	//noserind the pipe
+	SecretTape = 6,	//got tape
+	ClearedAll = 7	//cleared the level
 };
 
 typedef void(*Career_Init_t)();
@@ -19,8 +25,8 @@ typedef int(*Career_NumLevelGoals_t)();
 typedef int(*Career_CountMoney_t)();
 typedef void(*Career_CheckScore_t)();
 typedef void(*Career_GiveGoal_t)(int param_1);
-typedef int(*Career_GoalIndex_t)(eGoalType goalType);
-typedef void(*Career_GiveGoalType_t)(eGoalType goalType);
+typedef int(*Career_GoalIndex_t)(EGoalType goalType);
+//typedef void(*Career_GiveGoalType_t)(eGoalType goalType);
 typedef void(*Career_CheckClear_t)();
 typedef bool(*Career_GotGoalType_t)(int param_1);
 typedef void(*Career_GiveMedal_t)(int param_1, char medalType); //param_2 = EMedalType
@@ -104,7 +110,8 @@ static const Career_CountMoney_t Career_CountMoney = (Career_CountMoney_t)0x0041
 static const Career_CheckScore_t Career_CheckScore = (Career_CheckScore_t)0x00414280;
 static const Career_GiveGoal_t Career_GiveGoal = (Career_GiveGoal_t)0x004142e0;
 static const Career_GoalIndex_t Career_GoalIndex = (Career_GoalIndex_t)0x00414540;
-static const Career_GiveGoalType_t Career_GiveGoalType = (Career_GiveGoalType_t)0x00414570;
+//static const Career_GiveGoalType_t Career_GiveGoalType = (Career_GiveGoalType_t)0x00414570;
+void Career_GiveGoalType(EGoalType goalType);
 static const Career_CheckClear_t Career_CheckClear = (Career_CheckClear_t)0x004145e0;
 static const Career_GotGoalType_t Career_GotGoalType = (Career_GotGoalType_t)0x00414650;
 static const Career_GiveMedal_t Career_GiveMedal = (Career_GiveMedal_t)0x00414670;

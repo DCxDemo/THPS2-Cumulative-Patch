@@ -7,7 +7,7 @@ typedef void(*SFX_Init_t)(char* filename); //takes vab filename as param
 typedef void(*SFX_SpoolInLevelSFX_t)(char* param_1);
 typedef void(*SFX_SpoolOutLevelSFX_t)();
 typedef void(*SFX_SpoolInMIDI_t)(); //unused
-typedef void(*SFX_PlayX_t)(int sound_id, int volume); // <-- verify params number
+typedef void(*SFX_PlayX_t)(int sound_id, int volume, int param); // <-- verify params number
 typedef void(*SFX_PlayLR_t)(); //<--
 typedef void(*SFX_PlayPos_t)(); //<--
 typedef int(*SFX_GetVoicePitch_t)(int voice);

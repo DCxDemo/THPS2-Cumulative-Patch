@@ -147,3 +147,20 @@ sdxinput.cpp
 shell.cpp
 thmain.cpp - probably new file
 TouchInput.cpp - as name suggest, touch input functionality
+
+# additional names from PC unused funcs report
+ShellUtils.cpp
+quat.cpp - CQuat - quaternion class
+vector.cpp - CVector - vector class, maybe both int an short
+utils.cpp
+screen.cpp
+light.cpp
+debug.cpp
+pack.cpp
+MiscTools.cpp
+hires.cpp
+mips.cpp - probably mips namespace
+vlc_bit.cpp - related to psx str video decoding
+m3dmaths.cpp
+icon3d.cpp
+CreditsMain.cpp

@@ -391,14 +391,14 @@ signed int Ollie_Sound(Terrain terrain)
 {
 	switch (terrain)
 	{
-		case Terrain::Concrete: SFX_PlayX(OllieConcrete, 0x2000);
+		case Terrain::Concrete: SFX_PlayX(OllieConcrete, 0x2000, 0);
 		case Terrain::Tile:
-		case Terrain::Wood: SFX_PlayX(OllieWood, 0x2000);		//ollieWoodA
+		case Terrain::Wood: SFX_PlayX(OllieWood, 0x2000, 0);		//ollieWoodA
 		case Terrain::Dirt:
-		case Terrain::Grass: SFX_PlayX(LandDirt, 0x2000);
-		case Terrain::Metal: SFX_PlayX(OllieMetal, 0x2000);	//C7 00
-		case Terrain::Water: SFX_PlayX(OllieWater, 0x2000);	//water --
-		default: SFX_PlayX(OllieConcrete, 0x2000);	//CollieD
+		case Terrain::Grass: SFX_PlayX(LandDirt, 0x2000, 0);
+		case Terrain::Metal: SFX_PlayX(OllieMetal, 0x2000, 0);	//C7 00
+		case Terrain::Water: SFX_PlayX(OllieWater, 0x2000, 0);	//water --
+		default: SFX_PlayX(OllieConcrete, 0x2000, 0);	//CollieD
 	}
 }
 
@@ -407,12 +407,12 @@ void Land_Sound(Terrain terrain)
 	switch (terrain)
 	{
 		case Terrain::Wood:
-		case Terrain::Gravel: SFX_PlayX(LandWood, 0x2000); break;
-		case Terrain::Metal: SFX_PlayX(LandMetal, 0x2000); break;
+		case Terrain::Gravel: SFX_PlayX(LandWood, 0x2000, 0); break;
+		case Terrain::Metal: SFX_PlayX(LandMetal, 0x2000, 0); break;
 		case Terrain::Dirt:
-		case Terrain::Grass: SFX_PlayX(LandDirt, 0x2000); break;
-		case Terrain::Water: SFX_PlayX(LandWater, 0x2000); break;
-		default: SFX_PlayX(LandConc, 0x2000);
+		case Terrain::Grass: SFX_PlayX(LandDirt, 0x2000, 0); break;
+		case Terrain::Water: SFX_PlayX(LandWater, 0x2000, 0); break;
+		default: SFX_PlayX(LandConc, 0x2000, 0);
 	}
 }
 
@@ -737,10 +737,7 @@ int playsshatter = 0;
 
 void Game_Logic_Hook()
 {
-	//skipframe = !skipframe;
-
-	//if (skipframe)
-	//	return;
+	skipframe = !skipframe;
 
 	Game_Logic();
 
@@ -752,6 +749,9 @@ void Game_Logic_Hook()
 
 	if (options.DisableSky)
 		Backgrnd_Off(0);
+
+
+	CBruce_BoardOn(GSkater);
 }
 
 
@@ -771,7 +771,7 @@ void Shatter_MaybeMakeGlassShatterSound()
 {
 	if (*ShatterSound)
 	{
-		SFX_PlayX(GLASS_SHATTER, DEFAULT_VOLUME);
+		SFX_PlayX(GLASS_SHATTER, DEFAULT_VOLUME, 0);
 		playsshatter = 15;
 		*ShatterSound = 0;
 	}
@@ -841,6 +841,14 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 
 	{ 0x414d2d, Career_AwardGoalGap }, //in Career_AwardGap
 	{ 0x48c12d, Career_AwardGoalGap }, //in Panel_Land
+
+	{ 0x414643, Career_GiveGoalType },
+	{ 0x414bf0, Career_GiveGoalType },
+	{ 0x414e72, Career_GiveGoalType },
+	{ 0x48b108, Career_GiveGoalType },
+	{ 0x48b207, Career_GiveGoalType },
+	{ 0x4a614c, Career_GiveGoalType },
+
 };
 
 

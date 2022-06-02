@@ -3,23 +3,20 @@
 //these are the old random messy unsorted mappings
 //remove once sorted and available via other files
 
-typedef void(*ASSERTER_t)(char arg0, char *arg4, ...);
+typedef void(*ASSERTER_t)(bool condition, char *text, ...);
 static const ASSERTER_t ASSERTER = (ASSERTER_t)0x4011E0;
 
 typedef int(__thiscall *RunAnim_t)(void* pSkater, __int16 animIndex, int a3, int a4, char a5);
-static const RunAnim_t RunAnim = (RunAnim_t)0x47E020;
+static const RunAnim_t CSuper_RunAnim = (RunAnim_t)0x47E020;
 
 typedef int(__thiscall *CycleAnim_t)(void* pSkater, __int16 animIndex, char a3);
-static const CycleAnim_t CycleAnim = (CycleAnim_t)0x47E180;
+static const CycleAnim_t CSuper_CycleAnim = (CycleAnim_t)0x47E180;
 
 typedef void(__thiscall *SkaterPhysicsUpdate_t)(void* pSkater);
 static const SkaterPhysicsUpdate_t SkaterPhysicsUpdate = (SkaterPhysicsUpdate_t)0x49B460;
 
 typedef void(*CreateSkatersAndCameras_t)();
 static const CreateSkatersAndCameras_t CreateSkatersAndCameras = (CreateSkatersAndCameras_t)0x469170;
-
-typedef int (*InitSkaterFlags_t)();
-static const InitSkaterFlags_t InitSkaterFlags = (InitSkaterFlags_t)0x417320;
 
 
 typedef int(*CalcTime_t)();
@@ -46,8 +43,8 @@ static const WheelElementList_t WheelElementList = (WheelElementList_t)0x46B800;
 
 
 
-typedef void(*BakeMenuStrings_t)();
-static const BakeMenuStrings_t BakeMenuStrings = (BakeMenuStrings_t)0x44CA00;
+typedef void(*Front_Display_t)();
+static const Front_Display_t Front_Display = (Front_Display_t)0x44CA00;
 
 typedef int(*TempDecl_t)(int a1, int a2);
 static const TempDecl_t TempDecl = (TempDecl_t)0x4E5650;
@@ -120,6 +117,7 @@ typedef void(*D3DPOLY_DrawOTag_t)(void* ot);
 /// Call from Db_Vblank draws level polygons.
 static const D3DPOLY_DrawOTag_t D3DPOLY_DrawOTag = (D3DPOLY_DrawOTag_t)0x004d0370;
 
+
 /// CBruce: snaps to rail and begins a grind trick
 typedef void(__thiscall *CBruce_StartGrind_t)(void* _this, int param);
 static const CBruce_StartGrind_t CBruce_StartGrind = (CBruce_StartGrind_t)0x0048e7e0;
@@ -127,6 +125,20 @@ static const CBruce_StartGrind_t CBruce_StartGrind = (CBruce_StartGrind_t)0x0048
 typedef void(__thiscall *CBruce_HandleJump_t)(void* _this);
 /// CBruce: jump/ollie, called every frame, but only trigger proper scenario if pressed jump/no comply/boneless
 static const CBruce_HandleJump_t CBruce_HandleJump = (CBruce_HandleJump_t)0x00497b70;
+
+typedef void(__thiscall* CBruce_BoardOn_t)(void* _this);
+/// CBruce: switches board on
+static const CBruce_BoardOn_t CBruce_BoardOn = (CBruce_BoardOn_t)0x0046c5c0;
+
+typedef void(__thiscall* CBruce_BoardOff_t)(void* _this);
+/// CBruce: switches board off
+static const CBruce_BoardOff_t CBruce_BoardOff = (CBruce_BoardOff_t)0x0046c580;
+
+typedef void(__thiscall* CBruce_Trick_Land_t)(void* _this);
+/// CBruce: lands trick
+static const CBruce_Trick_Land_t CBruce_Trick_Land = (CBruce_Trick_Land_t)0x0048d1e0;
+
+
 
 
 typedef void(*Game_Init_t)();
@@ -161,7 +173,9 @@ static const Panel_Bail_t Panel_Bail = (Panel_Bail_t)0x0048b0a0;
 
 
 typedef void(*Backgrnd_On_t)(short param);
+//Turns skybox on
 static const Backgrnd_On_t Backgrnd_On = (Backgrnd_On_t)0x401000;
 
 typedef void(*Backgrnd_Off_t)(short param);
+//Turns skybox off
 static const Backgrnd_Off_t Backgrnd_Off = (Backgrnd_Off_t)0x401030;

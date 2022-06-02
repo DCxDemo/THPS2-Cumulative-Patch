@@ -1,5 +1,8 @@
 #pragma once
 
+extern void* GSkater;
+extern void* GSkater2;
+
 extern int* ScreenWidth;
 extern int* ScreenHeight;
 extern int* GGame;
@@ -9,6 +12,7 @@ extern int* prevTicks;
 extern int* Vblanks;
 extern int* Xblanks;
 extern int* GameFrozen;
+extern int* TTime;
 
 extern int* gJoyEnabled;
 extern int* gAnalogsEnabled; //??

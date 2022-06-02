@@ -98,6 +98,7 @@
     <ClInclude Include="THawk2\Mess.h" />
     <ClInclude Include="mydebug.h" />
     <ClInclude Include="thawk2\PCInput.h" />
+    <ClInclude Include="thawk2\Physics.h" />
     <ClInclude Include="THawk2\Redbook.h" />
     <ClInclude Include="lib\XInput\CXBOXController.h" />
     <ClInclude Include="hawk2.h" />
