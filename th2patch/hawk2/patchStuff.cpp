@@ -849,6 +849,20 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	{ 0x48b207, Career_GiveGoalType },
 	{ 0x4a614c, Career_GiveGoalType },
 
+	{ 0x402578, Career_GotGoalType },
+	{ 0x41462b, Career_GotGoalType },
+	{ 0x414d10, Career_GotGoalType },
+	{ 0x414d6d, Career_GotGoalType },
+	{ 0x414e4c, Career_GotGoalType },
+	{ 0x414f3a, Career_GotGoalType },
+	{ 0x4152ba, Career_GotGoalType },
+	{ 0x469557, Career_GotGoalType },
+	{ 0x46956a, Career_GotGoalType },
+	{ 0x46957f, Career_GotGoalType },
+	{ 0x4b6b6f, Career_GotGoalType },
+	{ 0x4b6b7f, Career_GotGoalType },
+
+	{ 0x4a626b, Career_GetLevelPickup }, //in TakeEffect
 };
 
 

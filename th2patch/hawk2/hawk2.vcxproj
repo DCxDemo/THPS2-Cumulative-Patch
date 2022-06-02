@@ -104,6 +104,7 @@
     <ClInclude Include="hawk2.h" />
     <ClInclude Include="thawk2\Sfx.h" />
     <ClInclude Include="thawk2\Soundlib.h" />
+    <ClInclude Include="thawk2\types.h" />
     <ClInclude Include="THawk2\_old.h" />
     <ClInclude Include="hawk2_utils.h" />
     <ClInclude Include="lib\INI\IniReader.h" />
