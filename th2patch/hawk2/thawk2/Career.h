@@ -1,21 +1,56 @@
 #pragma once
 
-#include "types.h"
+/*
+	Carrer.h
+	======
+	- Career namespace handles everything related to the career mode
+*/
 
-//lower half is unckecked for params
+#include "types.h"
+#include "mess.h"
+
+//TODO: map params for the lower half of funcs
+
+extern uint* Career_UnlockFlags;
+
+#define NUMGOALS_TH2 10
+#define NUMGOALS_TH1 5
+
+#define NUMCAREERLEVELS_TH2 12
+
+enum class ECheat : int {
+	McSqueeb = 0,
+	Spiderman = 1,
+	OfficerDick = 2,
+	SkipToRestart = 3,
+	KidMode = 4,
+	PerfectBalance = 5,
+	AlwaysSpecial = 6,
+	Stud = 7,
+	Weight = 8,
+	Wireframe = 9,
+	SlowNic = 10,
+	BigHead = 11,
+	SimMode = 12,
+	Smooth = 13,
+	MoonPhysics = 14,
+	DiscoMode = 15,
+	LevelFlip = 16
+};
 
 enum class EGoalType : int {
-	Letters = 1,	//got letters
-	GoalGap = 2,	//hangtime gaps
-	Collect1 = 3,	//wings
-	Collect2 = 4,	//barrels
-	TrickGap = 5,	//noserind the pipe
-	SecretTape = 6,	//got tape
-	ClearedAll = 7	//cleared the level
+	Score = 0,			//get target score
+	SkateLetters = 1,	//get letters
+	GoalGaps = 2,		//get multiple gaps (hangtime gaps, roll call rails)
+	LevelPickups = 3,	//collect level specific pickups (wings, hall passes)
+	Collect2 = 4,		//barrels
+	TrickGap = 5,		//get a single gap with a specific trick (noserind the pipe, kickflip TC's roof)
+	SecretTape = 6,		//get secret tape
+	ClearedAll = 7		//all goals and cash
 };
 
 typedef struct SGoal {
-	EGoalType goalType;
+	EGoalType goalType;	//goal type
 	int goalParam;		//score value, num items or gap checksum
 	char* itemText;		//pointer to item text, like "pilot wings"
 	int cashAward;		//amount of cash to award
@@ -47,9 +82,9 @@ typedef bool(*Career_GapIsTrick_t)(void* param_1); //param_1 = SGapTrick
 typedef int(*Career_GapGoalNumber_t)(void* param_1); //param_1 = SGapTrick
 typedef int(*Career_GapTrickNumber_t)(void* param_1); //param_1 = SGapTrick
 typedef int(*Career_GapNumber_t)(void* param_1); //param_1 = SGapTrick
-typedef bool(*Career_GotGoalGap_t)(void* param_1); //param_1 = SGapTrick
+//typedef bool(*Career_GotGoalGap_t)(void* param_1); //param_1 = SGapTrick
 typedef bool(*Career_GotTrickGap_t)(void* param_1); //param_1 = SGapTrick
-typedef void(*Career_GiveGoalGap_t)(void* param_1); //param_1 = SGapTrick
+//typedef void(*Career_GiveGoalGap_t)(void* param_1); //param_1 = SGapTrick
 typedef void(*Career_GiveTrickGap_t)(void* param_1); //param_1 = SGapTrick
 typedef bool(*Career_AnyoneGotGap_t)(void* param_1); //param_1 = SGapTrick
 typedef void(*Career_GiveGap_t)(void* param_1); //param_1 = SGapTrick
@@ -89,18 +124,18 @@ typedef void(*Career_GameCleared_t)();
 typedef void(*Career_ClearGame_t)();
 typedef void(*Career_ClearGameWithEveryone_t)();
 typedef void(*Career_UnlockCheat_t)();
-typedef void(*Career_CheatUnlocked_t)();
+typedef bool(*Career_CheatUnlocked_t)(ECheat cheat);
 typedef void(*Career_CheatState_t)();
 typedef void(*Career_GetCheat_t)();
 typedef void(*Career_SetCheat_t)();
-typedef void(*Career_ToggleCheat_t)();
+typedef void(*Career_ToggleCheat_t)(ECheat cheat, bool state);
 typedef void(*Career_NewCheat_t)();
 typedef void(*Career_CountUnlockedCheats_t)();
-typedef void(*Career_CheatName_t)();
+//typedef char*(*Career_CheatName_t)(int cheat);
 //typedef void(*Career_CheatType_t)();
-typedef void(*Career_UnlockCharacter_t)();
+typedef void(*Career_UnlockCharacter_t)(int character); //?
 typedef void(*Career_CharacterIsUnlocked_t)();
-typedef void(*Career_ApplyCheats_t)();
+//typedef void(*Career_ApplyCheats_t)();
 typedef void(*Career_InitProgress_t)();
 typedef void(*Career_TakeSnapShot_t)();
 typedef void(*Career_RestoreSnapShot_t)();
@@ -134,9 +169,11 @@ static const Career_GapIsTrick_t Career_GapIsTrick = (Career_GapIsTrick_t)0x0041
 static const Career_GapGoalNumber_t Career_GapGoalNumber = (Career_GapGoalNumber_t)0x00414810;
 static const Career_GapTrickNumber_t Career_GapTrickNumber = (Career_GapTrickNumber_t)0x004148f0;
 static const Career_GapNumber_t Career_GapNumber = (Career_GapNumber_t)0x004149d0;
-static const Career_GotGoalGap_t Career_GotGoalGap = (Career_GotGoalGap_t)0x00414a50;
+//static const Career_GotGoalGap_t Career_GotGoalGap = (Career_GotGoalGap_t)0x00414a50;
+bool Career_GotGoalGap(void* gapTrick); //SGapTrick
 static const Career_GotTrickGap_t Career_GotTrickGap = (Career_GotTrickGap_t)0x00414a80;
-static const Career_GiveGoalGap_t Career_GiveGoalGap = (Career_GiveGoalGap_t)0x00414ab0;
+//static const Career_GiveGoalGap_t Career_GiveGoalGap = (Career_GiveGoalGap_t)0x00414ab0;
+void Career_GiveGoalGap(void* gapTrick); // SGapTrick*
 static const Career_GiveTrickGap_t Career_GiveTrickGap = (Career_GiveTrickGap_t)0x00414ae0;
 static const Career_AnyoneGotGap_t Career_AnyoneGotGap = (Career_AnyoneGotGap_t)0x00414b10;
 static const Career_GiveGap_t Career_GiveGap = (Career_GiveGap_t)0x00414b50;
@@ -189,12 +226,14 @@ static const Career_SetCheat_t Career_SetCheat = (Career_SetCheat_t)0x004169f0;
 static const Career_ToggleCheat_t Career_ToggleCheat = (Career_ToggleCheat_t)0x00416c80;
 static const Career_NewCheat_t Career_NewCheat = (Career_NewCheat_t)0x00416cc0;
 static const Career_CountUnlockedCheats_t Career_CountUnlockedCheats = (Career_CountUnlockedCheats_t)0x00416dd0;
-static const Career_CheatName_t Career_CheatName = (Career_CheatName_t)0x00416e20;
+//static const Career_CheatName_t Career_CheatName = (Career_CheatName_t)0x00416e20;
+char* Career_CheatName(ECheat cheat);
 //static const Career_CheatType_t Career_CheatType = (Career_CheatType_t)0x00416f40;
-int Career_CheatType(int cheat);
+int Career_CheatType(ECheat cheat);
 static const Career_UnlockCharacter_t Career_UnlockCharacter = (Career_UnlockCharacter_t)0x00416f70;
 static const Career_CharacterIsUnlocked_t Career_CharacterIsUnlocked = (Career_CharacterIsUnlocked_t)0x00416fa0;
-static const Career_ApplyCheats_t Career_ApplyCheats = (Career_ApplyCheats_t)0x00417050;
+//static const Career_ApplyCheats_t Career_ApplyCheats = (Career_ApplyCheats_t)0x00417050;
+void Career_ApplyCheats();
 static const Career_InitProgress_t Career_InitProgress = (Career_InitProgress_t)0x004170c0;
 static const Career_TakeSnapShot_t Career_TakeSnapShot = (Career_TakeSnapShot_t)0x004171d0;
 static const Career_RestoreSnapShot_t Career_RestoreSnapShot = (Career_RestoreSnapShot_t)0x00417250;

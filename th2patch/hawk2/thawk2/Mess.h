@@ -1,11 +1,31 @@
 #pragma once
 
+/*
+	Mess.h
+	======
+	- Mess namespace handles message queue
+	- message queue is a linked list of SMessage instances
+	- messages are drawn on the screen using "message programs", which is a set of states (color, position, scale, etc).
+*/
+
 enum class eTextJustify : int {
 	Left = 0,
 	Center = 1,
 	Middle = 1,
 	Right = 2
 };
+
+typedef struct SMessage {
+	char* text;
+	short unk1;
+	short unk2;
+	short x;
+	short y;
+	int unk5;
+	void* messProg;
+	SMessage* next;
+	SMessage* prev;
+} SMessage;
 
 	//typedef void	(*Mess_SetTextJustify_t)(eTextJustify justify);
 	//typedef void(*Mess_SetScale_t)(int scale);
@@ -17,7 +37,7 @@ typedef void	(*Mess_DeleteMessage_t)(void* message);
 typedef void	(*Mess_DeleteAll_t)();
 	//unknown unused Mess func	0x473620
 typedef void	(*Mess_Remove_t)(void* message);
-typedef void	(*Mess_Message_t)(char* text, void* param_2, int param_3, int param_4, int param_5);
+typedef void	(*Mess_Message_t)(char* text, void* messProg, int param_3, int x, int y);
 typedef void	(*CreateMessage_t)();
 typedef void	(*Mess_Update_t)();
 typedef void	(*Mess_Display_t)();

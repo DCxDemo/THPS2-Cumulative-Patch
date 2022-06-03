@@ -32,10 +32,6 @@ GameOptions options;
 
 //ofstream fout1("log_redbook.txt");
 
-typedef struct HookFunc {
-	int address;
-	void* func;
-} HookFunc;
 
 void ParseLevels();
 void GetSong(int num);
@@ -783,96 +779,9 @@ void Panel_Bail_Hook()
 	Panel_Bail();
 }
 
-#define HOOK_LIST_SIZE 128
-
-//list of all hooks
-HookFunc hookList[HOOK_LIST_SIZE] = {
-	//{ 0x458564, SFX_SpoolOutLevelSFX },
-	//{ 0x452570, SFX_SpoolInLevelSFX },
-
-	{ 0x451F79, Redbook_XARestore2 },
-	{ 0x44F41F, Redbook_XARemember2 },
-	{ 0x4A94D5, Redbook_XARemember2 },
-
-	{ 0x4CB27E, VIDMENU_Load_Hook },
-	{ 0x4CB455, VIDMENU_Load_Hook },
-	{ 0x4F3CFA, VIDMENU_Load_Hook },
-
-	{ 0x4CB3E3, VIDMENU_Save_Hook },
-	{ 0x4CC4C3, VIDMENU_Save_Hook },
-	{ 0x4F3D3E, VIDMENU_Save_Hook },
-
-	{ 0x4E1CC6, GenPsxPadData_Hook }, //in ReadDirectInput
-
-	//{ 0x46DFEC, Land_Sound },
-	//{ 0x497DC8, Land_Sound },
-
-	{ 0x453903,	WINMAIN_SwitchResolution_Hook },
-	{ 0x45391B, WINMAIN_SwitchResolution_Hook },
-	{ 0x46A8E7, WINMAIN_SwitchResolution_Hook },
-	{ 0x46AE23, WINMAIN_SwitchResolution_Hook },
-
-	{ 0x430466, M3dInit_SetResolution }, //in Db_Init
-	{ 0x4645b8, M3dInit_SetResolution }, //in M3dInit_InitAtStart
-
-	{ 0x460bf7, RenderSuperItemShadow_Hook },
-
-	{ 0x41580c, Career_GetPointCost_Hook },
-	{ 0x4707b0, Career_GetPointCost_Hook },
-	{ 0x4b4a24, Career_GetPointCost_Hook },
-
-	{ 0x48ef74, CBruce_StartGrind_Hook }, //in CBruce::HandeStickToRail
-	{ 0x49c288, CBruce_HandleJump_Hook }, //in CBruce::DoPhysics
-
-	//all calls in PlayAway
-	{ 0x46a331, Game_Init_Hook },
-	{ 0x46a3ef, Game_Logic_Hook },
-	{ 0x46a407, Game_Display_Hook },
-
-	//both in ExecuteCommandList
-	{ 0x004c3608, Utils_SetVisibilityInBox_Hook },
-	{ 0x004c3632, Utils_SetVisibilityInBox_Hook },
-
-	{ 0x469f4c, Shatter_MaybeMakeGlassShatterSound }, //in Game_Logic
-
-	{ 0x48d4a5, Panel_Bail_Hook },	//in CBruce::Trick_Bail
-	
-	{ 0x468823, Panel_Display_Hook }, // in Display
-
-	{ 0x414d2d, Career_AwardGoalGap }, //in Career_AwardGap
-	{ 0x48c12d, Career_AwardGoalGap }, //in Panel_Land
-
-	{ 0x414643, Career_GiveGoalType },
-	{ 0x414bf0, Career_GiveGoalType },
-	{ 0x414e72, Career_GiveGoalType },
-	{ 0x48b108, Career_GiveGoalType },
-	{ 0x48b207, Career_GiveGoalType },
-	{ 0x4a614c, Career_GiveGoalType },
-
-	{ 0x402578, Career_GotGoalType },
-	{ 0x41462b, Career_GotGoalType },
-	{ 0x414d10, Career_GotGoalType },
-	{ 0x414d6d, Career_GotGoalType },
-	{ 0x414e4c, Career_GotGoalType },
-	{ 0x414f3a, Career_GotGoalType },
-	{ 0x4152ba, Career_GotGoalType },
-	{ 0x469557, Career_GotGoalType },
-	{ 0x46956a, Career_GotGoalType },
-	{ 0x46957f, Career_GotGoalType },
-	{ 0x4b6b6f, Career_GotGoalType },
-	{ 0x4b6b7f, Career_GotGoalType },
-
-	{ 0x4a626b, Career_GetLevelPickup }, //in TakeEffect
-};
 
 
-//loops through the list of hooks and redirects the call
-void SetHooks()
-{
-	for (int i = 0; i < HOOK_LIST_SIZE; i++)
-		if (hookList[i].address != NULL)
-			CPatch::RedirectCall(hookList[i].address, hookList[i].func);
-}
+
 
 
 
@@ -1311,126 +1220,6 @@ void Redirect_AppendExt()
 }
 
 
-//main patch func
-
-void Patch()
-{
-	if (!options.BigDrop)
-		CPatch::Nop(0x48F419, 0x48F430 - 0x48F419); //nops whole bail/award big drop path
-
-	if (options.UnlockFPS)
-	{
-		CPatch::SetChar(0x004cddd7, 0); //sets vblank difference to 0 in D3D_BeginScene
-		//CPatch::SetChar(0x004CDDE0, (char)0xEB); //0x73 original, jumps over Sleep()
-
-		//main menu patch, changes 2 frames to 1, gotta find a better way to make it for all menus
-		CPatch::SetChar(0x46af9c + 2, 1);
-		CPatch::SetChar(0x46afb4 + 2, 1);
-	}
-
-	if (options.SkipIntro)
-		CPatch::Nop(0x46A732, 5); //nops IntroMovies func
-
-	if (options.AddSkins)
-		PatchSkaters();  // adds skater styles
-
-	if (options.SeparateSaves)
-	{
-		char* savename = (char*)0x52fa30;
-		memcpy(savename, &options.CurrentGame[0], options.CurrentGame.length()); //replaces THPS2 in saves with currentgame
-	}
-
-	ParseLevels(); //changes levels
-
-
-	Player1 = new CXBOXController(1);
-
-	//CPatch::SetChar(0x498707, 0x92);
-
-	//enlarges available Fog range
-	CPatch::SetChar(0x4CC4A4, 10);
-	CPatch::SetInt(0x4CC49C, 750);
-
-	//removes "shutting down thps2" delay
-	//CPatch::SetInt(0x4F5145, 0);
-	CPatch::Nop(0x4f5149, 6);
-
-	//should remove polylimit error
-	int* polyLimit = (int*)0x4301EF;
-	int polyLimitVal = *polyLimit;
-	CPatch::SetInt(0x4301EF, polyLimitVal + 0x10000);
-
-
-	//DirectDrawCreateEx(NULL, (VOID *)&lpDD, 0x29D6FD0, NULL);
-	//lpDD->SetDisplayMode(640, 480, 16);
-
-
-	if (options.Force32bpp)
-	{
-		//changes hardcoded 16bpp ddraw values to 32
-		CPatch::SetChar(0x004F4004, 32); //in WINMAIN_SwitchResolution
-		CPatch::SetChar(0x004F4026, 32); //in WINMAIN_SwitchResolution
-		//CPatch::SetChar(0x004F4AC1, 32); //in ??
-		CPatch::SetChar(0x004F54B0, 32); //in InitDirectDraw7
-		CPatch::SetChar(0x004F54D2, 32); //in InitDirectDraw7
-	}
-
-	//silly sets random initial seed. probably better replace rnd func
-	//CPatch::SetInt(0x4524BE, rand());
-	//CPatch::SetInt(0x458586, rand());
-	//CPatch::SetInt(0x468DE4, rand());
-
-	if (options.DisableNewTex)
-	{
-		//change newbmp pointers null
-		CPatch::SetInt(0x4d60b5, 0);
-
-		//change newtex pointers null
-		CPatch::SetInt(0x4d6051, 0);
-		CPatch::SetInt(0x4d607b, 0);
-	}
-
-
-	//this patches resolution, probably not needed anymore
-	//CPatch::SetInt(0x0046A891, 2);
-
-	int* hW2 = (int*)0x4f5496;
-	int* hH2 = (int*)0x4f54a0;
-
-	CPatch::SetInt((int)hW2, options.ResX);
-	CPatch::SetInt((int)hH2, options.ResY);
-
-	CPatch::SetInt((int)hW, options.ResX);
-	CPatch::SetInt((int)hH, options.ResY);
-
-	CPatch::SetInt((int)ScreenWidth, options.ResX);
-	CPatch::SetInt((int)ScreenHeight, options.ResY);
-
-	*ScreenWidth = options.ResX;
-	*ScreenHeight = options.ResY;
-
-
-	//hooks related to soundtrack, revisit
-	Redirect_Redbook_XAUpdateVolume();
-	Redirect_Redbook_XABeginFade();
-	Redirect_Redbook_XANextTrack();
-	Redirect_PCMOVIE_XAPlay();
-
-	SetHooks();
-
-	//Redirect_Ollie_Sound();
-	//Redirect_Land_Sound();
-
-	Redirect_ExecuteCommandList();
-
-
-	Redirect_ActuatorOn1();
-	Redirect_ActuatorOff1();
-	//Redirect_Vibrate();
-	//Redirect_SwitchResolution();
-}
-
-
 int levelsPtr = 0x538FF8;
 int numLevels = 15;
 
@@ -1635,4 +1424,225 @@ int CountSongs()
 	printf("count songs : %i", nums);
 
 	return nums;
+}
+
+
+
+//main patch func
+
+void Patch()
+{
+	if (!options.BigDrop)
+		CPatch::Nop(0x48F419, 0x48F430 - 0x48F419); //nops whole bail/award big drop path
+
+	if (options.UnlockFPS)
+	{
+		CPatch::SetChar(0x004cddd7, 0); //sets vblank difference to 0 in D3D_BeginScene
+		//CPatch::SetChar(0x004CDDE0, (char)0xEB); //0x73 original, jumps over Sleep()
+
+		//main menu patch, changes 2 frames to 1, gotta find a better way to make it for all menus
+		CPatch::SetChar(0x46af9c + 2, 1);
+		CPatch::SetChar(0x46afb4 + 2, 1);
+	}
+
+	if (options.SkipIntro)
+		CPatch::Nop(0x46A732, 5); //nops IntroMovies func
+
+	if (options.AddSkins)
+		PatchSkaters();  // adds skater styles
+
+	if (options.SeparateSaves)
+	{
+		char* savename = (char*)0x52fa30;
+		memcpy(savename, &options.CurrentGame[0], options.CurrentGame.length()); //replaces THPS2 in saves with currentgame
+	}
+
+	ParseLevels(); //changes levels
+
+
+	Player1 = new CXBOXController(1);
+
+	//CPatch::SetChar(0x498707, 0x92);
+
+	//enlarges available Fog range
+	CPatch::SetChar(0x4CC4A4, 10);
+	CPatch::SetInt(0x4CC49C, 750);
+
+	//removes "shutting down thps2" delay
+	//CPatch::SetInt(0x4F5145, 0);
+	CPatch::Nop(0x4f5149, 6);
+
+	//should remove polylimit error
+	int* polyLimit = (int*)0x4301EF;
+	int polyLimitVal = *polyLimit;
+	CPatch::SetInt(0x4301EF, polyLimitVal + 0x10000);
+
+
+	//DirectDrawCreateEx(NULL, (VOID *)&lpDD, 0x29D6FD0, NULL);
+	//lpDD->SetDisplayMode(640, 480, 16);
+
+
+	if (options.Force32bpp)
+	{
+		//changes hardcoded 16bpp ddraw values to 32
+		CPatch::SetChar(0x004F4004, 32); //in WINMAIN_SwitchResolution
+		CPatch::SetChar(0x004F4026, 32); //in WINMAIN_SwitchResolution
+		//CPatch::SetChar(0x004F4AC1, 32); //in ??
+		CPatch::SetChar(0x004F54B0, 32); //in InitDirectDraw7
+		CPatch::SetChar(0x004F54D2, 32); //in InitDirectDraw7
+	}
+
+	//silly sets random initial seed. probably better replace rnd func
+	//CPatch::SetInt(0x4524BE, rand());
+	//CPatch::SetInt(0x458586, rand());
+	//CPatch::SetInt(0x468DE4, rand());
+
+	if (options.DisableNewTex)
+	{
+		//change newbmp pointers null
+		CPatch::SetInt(0x4d60b5, 0);
+
+		//change newtex pointers null
+		CPatch::SetInt(0x4d6051, 0);
+		CPatch::SetInt(0x4d607b, 0);
+	}
+
+
+	//this patches resolution, probably not needed anymore
+	//CPatch::SetInt(0x0046A891, 2);
+
+	int* hW2 = (int*)0x4f5496;
+	int* hH2 = (int*)0x4f54a0;
+
+	CPatch::SetInt((int)hW2, options.ResX);
+	CPatch::SetInt((int)hH2, options.ResY);
+
+	CPatch::SetInt((int)hW, options.ResX);
+	CPatch::SetInt((int)hH, options.ResY);
+
+	CPatch::SetInt((int)ScreenWidth, options.ResX);
+	CPatch::SetInt((int)ScreenHeight, options.ResY);
+
+	*ScreenWidth = options.ResX;
+	*ScreenHeight = options.ResY;
+
+
+	//hooks related to soundtrack, revisit
+	Redirect_Redbook_XAUpdateVolume();
+	Redirect_Redbook_XABeginFade();
+	Redirect_Redbook_XANextTrack();
+	Redirect_PCMOVIE_XAPlay();
+
+	SetHooks();
+
+	//Redirect_Ollie_Sound();
+	//Redirect_Land_Sound();
+
+	Redirect_ExecuteCommandList();
+
+
+	Redirect_ActuatorOn1();
+	Redirect_ActuatorOff1();
+	//Redirect_Vibrate();
+	//Redirect_SwitchResolution();
+}
+
+#define HOOK_LIST_SIZE 128
+
+// list of all hooks
+HookFunc hookList[HOOK_LIST_SIZE] = {
+	//{ 0x458564, SFX_SpoolOutLevelSFX },
+	//{ 0x452570, SFX_SpoolInLevelSFX },
+
+	{ 0x451F79, Redbook_XARestore2 },
+	{ 0x44F41F, Redbook_XARemember2 },
+	{ 0x4A94D5, Redbook_XARemember2 },
+
+	{ 0x4CB27E, VIDMENU_Load_Hook },
+	{ 0x4CB455, VIDMENU_Load_Hook },
+	{ 0x4F3CFA, VIDMENU_Load_Hook },
+
+	{ 0x4CB3E3, VIDMENU_Save_Hook },
+	{ 0x4CC4C3, VIDMENU_Save_Hook },
+	{ 0x4F3D3E, VIDMENU_Save_Hook },
+
+	{ 0x4E1CC6, GenPsxPadData_Hook }, //in ReadDirectInput
+
+	//{ 0x46DFEC, Land_Sound },
+	//{ 0x497DC8, Land_Sound },
+
+	{ 0x453903,	WINMAIN_SwitchResolution_Hook },
+	{ 0x45391B, WINMAIN_SwitchResolution_Hook },
+	{ 0x46A8E7, WINMAIN_SwitchResolution_Hook },
+	{ 0x46AE23, WINMAIN_SwitchResolution_Hook },
+
+	{ 0x430466, M3dInit_SetResolution }, //in Db_Init
+	{ 0x4645b8, M3dInit_SetResolution }, //in M3dInit_InitAtStart
+
+	{ 0x460bf7, RenderSuperItemShadow_Hook },
+
+	{ 0x41580c, Career_GetPointCost_Hook },
+	{ 0x4707b0, Career_GetPointCost_Hook },
+	{ 0x4b4a24, Career_GetPointCost_Hook },
+
+	{ 0x48ef74, CBruce_StartGrind_Hook }, //in CBruce::HandeStickToRail
+	{ 0x49c288, CBruce_HandleJump_Hook }, //in CBruce::DoPhysics
+
+	//all calls in PlayAway
+	{ 0x46a331, Game_Init_Hook },
+	{ 0x46a3ef, Game_Logic_Hook },
+	{ 0x46a407, Game_Display_Hook },
+
+	//both in ExecuteCommandList
+	{ 0x004c3608, Utils_SetVisibilityInBox_Hook },
+	{ 0x004c3632, Utils_SetVisibilityInBox_Hook },
+
+	{ 0x469f4c, Shatter_MaybeMakeGlassShatterSound }, //in Game_Logic
+
+	{ 0x48d4a5, Panel_Bail_Hook },	//in CBruce::Trick_Bail
+
+	{ 0x468823, Panel_Display_Hook }, // in Display
+
+	{ 0x414d2d, Career_AwardGoalGap }, //in Career_AwardGap
+	{ 0x48c12d, Career_AwardGoalGap }, //in Panel_Land
+
+	{ 0x414643, Career_GiveGoalType },
+	{ 0x414bf0, Career_GiveGoalType },
+	{ 0x414e72, Career_GiveGoalType },
+	{ 0x48b108, Career_GiveGoalType },
+	{ 0x48b207, Career_GiveGoalType },
+	{ 0x4a614c, Career_GiveGoalType },
+
+	{ 0x402578, Career_GotGoalType },
+	{ 0x41462b, Career_GotGoalType },
+	{ 0x414d10, Career_GotGoalType },
+	{ 0x414d6d, Career_GotGoalType },
+	{ 0x414e4c, Career_GotGoalType },
+	{ 0x414f3a, Career_GotGoalType },
+	{ 0x4152ba, Career_GotGoalType },
+	{ 0x469557, Career_GotGoalType },
+	{ 0x46956a, Career_GotGoalType },
+	{ 0x46957f, Career_GotGoalType },
+	{ 0x4b6b6f, Career_GotGoalType },
+	{ 0x4b6b7f, Career_GotGoalType },
+
+	{ 0x4a626b, Career_GetLevelPickup }, //in TakeEffect
+
+	{ 0x4166d1, Career_ApplyCheats }, // in Career_PostLoad
+	{ 0x4531c7, Career_ApplyCheats }, // in FrontEnd2_Main
+
+	{ 0x450c82, Career_CheatName }, 
+	{ 0x486324,	Career_CheatName },
+	{ 0x486387,	Career_CheatName },
+	{ 0x48640c,	Career_CheatName },
+};
+
+//loops through the list of hooks and redirects the call
+void SetHooks()
+{
+	for (int i = 0; i < HOOK_LIST_SIZE; i++)
+	{
+		if (hookList[i].address == NULL) break;
+		CPatch::RedirectCall(hookList[i].address, hookList[i].func);
+	}
 }

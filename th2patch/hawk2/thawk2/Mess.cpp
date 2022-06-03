@@ -10,6 +10,7 @@ typedef struct {
 SMessColor* Mess_Color = (SMessColor*)0x567614;
 int* Mess_Scale = (int*)0x567630;
 eTextJustify* Mess_Justify = (eTextJustify*)0x567604;
+SMessage* pMessages = (SMessage*)0x567770;
 
 /// <summary>
 /// Sets default Mess text color.

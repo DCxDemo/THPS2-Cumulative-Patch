@@ -5,6 +5,8 @@
 #include "mess.h"
 #include "types.h"
 
+uint* Career_UnlockFlags = (uint*)0x5672ec;
+
 uint* Career_GapGoalGotMask = (uint*)0x55c990;
 uint* Career_GapTrickGotMask = (uint*)0x55ca40;
 
@@ -18,20 +20,20 @@ char* AwardLevelPickupMessage = (char*)0x55c994;
 
 void* Messprog_Goal = (void*)0x531d68;
 
-
-void Career_AwardGoalGap(void* goalGap)
+// goal gap logic
+void Career_AwardGoalGap(void* gapTrick)
 {
-    Career_GiveGoalGap(goalGap);
+    Career_GiveGoalGap(gapTrick);
 
     //if got enough goal gaps
     if (Career_NumGoalGapsGot() == *Career_GoalGaps)
     {
         //award goal
-        Career_GiveGoalType(EGoalType::GoalGap);
+        Career_GiveGoalType(EGoalType::GoalGaps);
     }
     else
     {
-        char** itemName = (char**)(0x5390b8 + *GLevel * 0x1ac /*sizeof level struct*/ + Career_GoalIndex(EGoalType::GoalGap) * 0x18 /*sizeof level goal struct*/);
+        char** itemName = (char**)(0x5390b8 + *GLevel * 0x1ac /*sizeof level struct*/ + Career_GoalIndex(EGoalType::GoalGaps) * sizeof(SGoal));
 
         //print "X out of X items" message
         sprintf(
@@ -42,28 +44,28 @@ void Career_AwardGoalGap(void* goalGap)
             &(*itemName)[0]         //level specific gap name
         );
 
-        Mess_Remove(AwardGoalGapMessage);
+        printf("%s\r\n", AwardGoalGapMessage);
+
         Mess_Message(AwardGoalGapMessage, Messprog_Goal, 1, 0, 0);
     }
 }
 
-
+// level specific item pickup logic
 void Career_GetLevelPickup()
 {
     (*Career_LevelPickupsGot)++;
 
-    int goalIndex = Career_GoalIndex(EGoalType::Collect1);
+    int goalIndex = Career_GoalIndex(EGoalType::LevelPickups);
 
     if (goalIndex == NS_NULL)
         return;
 
     if (*Career_LevelPickupsGot == *Career_LevelPickups) {
-        //Career_GiveGoal(goalIndex);
-        Career_GiveGoalType(EGoalType::Collect1);
+        Career_GiveGoal(goalIndex);
     }
     else
     {
-        char** itemName = (char**)(0x5390b8 + *GLevel * 0x1ac /*sizeof level struct*/ + goalIndex * 0x18 /*sizeof level goal struct*/);
+        char** itemName = (char**)(0x5390b8 + *GLevel * 0x1ac /*sizeof level struct*/ + goalIndex * sizeof(SGoal));
 
         sprintf(
             AwardLevelPickupMessage,//text buffer
@@ -73,40 +75,35 @@ void Career_GetLevelPickup()
             &(*itemName)[0]         //level specific item name
         );
 
-        Mess_Remove(AwardLevelPickupMessage);
+        printf("%s\r\n", AwardLevelPickupMessage);
+
         Mess_Message(AwardLevelPickupMessage, Messprog_Goal, 1, 0, 0);
     }
 }
 
-
-
-#define NUM_LEVELS 12
-
+// returns the number of unlocked levels
 int Career_HighestOpenLevel(int param_1)
 {
-    if (*Cheat_LevelSelect) {
-        return NUM_LEVELS;
-    }
+    if (*Cheat_LevelSelect)
+        return NUMCAREERLEVELS_TH2;
 
-    int open = 0;
-
-    for (; open <= NUM_LEVELS; open++)
+    for (int open = 0; open <= NUMCAREERLEVELS_TH2; open++)
     {
         if (!Career_LevelOpen(open, param_1))
-            break;
+            return open;
     }
 
-    return open;
+    return 0;
 }
 
-//enum ECheat
+// enum ECheat
 
-int Career_CheatType(int cheat)
+int Career_CheatType(ECheat cheat)
 {
-    if (0 <= cheat && cheat < 3)
+    if (0 <= (uint)cheat && (uint)cheat < 3)
         return 0;
 
-    if (cheat == 8)
+    if ((uint)cheat == 8)
         return 2;
 
     return 1;
@@ -115,11 +112,15 @@ int Career_CheatType(int cheat)
 // looks up goal index by type and awards goal by index
 void Career_GiveGoalType(EGoalType goalType)
 {
-    printf("giving goal type... %i\r\n", goalType);
-
     uint goalIndex = Career_GoalIndex(goalType);
 
-    if (goalIndex == NS_NULL) return;
+    if (goalIndex == NS_NULL)
+    {
+        printf("no goal of type %i in this level", goalType);
+        return;
+    }
+
+    printf("give goal type: %i\r\n", goalType);
 
     Career_GiveGoal(goalIndex);
 }
@@ -143,7 +144,7 @@ int Career_CountBits(uint value)
             value >>= 1;
         } while (value != 0);
 
-    return numBits;
+        return numBits;
 }
 
 // Calculates amount of obtained goal gaps
@@ -158,22 +159,83 @@ int Career_NumTrickGapsGot(void)
     return Career_CountBits(*Career_GapTrickGotMask);
 }
 
-// Gets career goal index by goal type
+// add goal gap to mask
+void Career_GiveGoalGap(void* gapTrick)
+{
+    *Career_GapGoalGotMask |= 1 << Career_GapGoalNumber(gapTrick);
+}
+
+// check goal gap mask
+bool Career_GotGoalGap(void* gapTrick)
+{
+    return (*Career_GapGoalGotMask & (1 << Career_GapGoalNumber(gapTrick))) > 0;
+}
+
+// get career goal index by goal type
 uint Career_GoalIndex(EGoalType goalType)
 {
-    uint goalIndex = 0;
-
     //this points to the goal array in the level array
     //smth like Levels[GLevel].Goals[goalIndex]->goalType
-    SGoal *pGoal = (SGoal*)(0x5390b0 + *GLevel * 0x6b /*sizeof level struct*/);
-    
-    do {
+    SGoal* pGoal = (SGoal*)(0x5390b0 + *GLevel * 0x1ac /*sizeof level struct*/);
+
+    for (int goalIndex = 0; goalIndex < NUMGOALS_TH2; goalIndex++)
+    {
         if (pGoal->goalType == goalType)
             return goalIndex;
 
-        goalIndex++;
         pGoal++;
-    } while (goalIndex < 10);
+    }
 
     return NS_NULL;
+}
+
+// this is basically "give chars if unlocked" function
+void Career_ApplyCheats()
+{
+    //is mcsqueeb unlocked?
+    if (Career_CheatUnlocked(ECheat::McSqueeb))
+        Career_UnlockCharacter(0x200);
+
+    //is spidey unlocked?
+    if (Career_CheatUnlocked(ECheat::Spiderman))
+        Career_UnlockCharacter(0x100);
+
+    //is officer unlocked?
+    if (Career_CheatUnlocked(ECheat::OfficerDick))
+        Career_UnlockCharacter(0x40);
+
+    //if got all gaps, give carrera
+    if (*Career_UnlockFlags & 4)
+        Career_UnlockCharacter(0x80);
+}
+
+#define NUM_CHEATS 17
+
+char* cheatNames[] = {
+    "McSqueeb",
+    "Spider-Man",
+    "Officer Dick",
+    "Skip to restart",
+    "Kid mode",
+    "Perfect balance",
+    "Always special",
+    "STUD",
+    "Weight",
+    "Wireframe",
+    "Slow-Nic",
+    "Big head",
+    "Sim mode",
+    "Smooth",
+    "Moon physics",
+    "Disco mode",
+    "Level flip"
+};
+
+// returns proper cheat name based on ECheat enum, used on cheat screen in options menu
+char* Career_CheatName(ECheat cheat)
+{
+    if ((uint)cheat < 0 || NUM_CHEATS <= (uint)cheat)
+        return "?";
+
+    return cheatNames[(uint)cheat];
 }

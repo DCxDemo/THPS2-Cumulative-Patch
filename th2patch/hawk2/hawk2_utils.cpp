@@ -12,6 +12,7 @@ void PlaySpecialSound()
 	//SFX_PlayX(0xA2, 0x500);
 }
 
+//this should be moved to mess.h
 struct MsgType
 {
 	short duration;
@@ -34,7 +35,7 @@ struct MsgType
 	short shouldFadeout;
 };
 
-
+//this should be moved to mess.h
 struct SMessageProg
 {
 	MsgType m1;
@@ -44,6 +45,8 @@ struct SMessageProg
 	MsgType m5;
 };
 
+SMessage mess;
+SMessageProg ms;
 
 void SetupMessage(MsgType &message, int d, int ss, int es, ColorRGB sc, ColorRGB ec)
 {
@@ -59,8 +62,6 @@ SMessageProg DefaultMessage()
 	return *(SMessageProg*)0x531CC8;
 }
 
-SMessageProg ms; 
-
 void LoadMessageProg()
 {
 	ms = DefaultMessage();
@@ -71,7 +72,6 @@ void LoadMessageProg()
 	SetupMessage(ms.m4, 20, 100, 0, Color_White(), Color_Black());
 	SetupMessage(ms.m5, 1, 0, 0, Color_Black(), Color_Black());
 }
-
 
 void DrawMessage(char* msgText)
 {
