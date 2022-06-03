@@ -12,12 +12,7 @@ int* Mess_Scale = (int*)0x567630;
 eTextJustify* Mess_Justify = (eTextJustify*)0x567604;
 SMessage* pMessages = (SMessage*)0x567770;
 
-/// <summary>
-/// Sets default Mess text color.
-/// </summary>
-/// <param name="r">Red</param>
-/// <param name="g">Green</param>
-/// <param name="b">Blue</param>
+// Sets default Mess text color.
 void Mess_SetRGB(int r, int g, int b)
 {
 	Mess_Color->R = (char)r;

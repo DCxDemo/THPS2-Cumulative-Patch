@@ -1635,6 +1635,8 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	{ 0x486324,	Career_CheatName },
 	{ 0x486387,	Career_CheatName },
 	{ 0x48640c,	Career_CheatName },
+
+	{ 0x48975b, Career_CheckScore } // in DisplayScore
 };
 
 //loops through the list of hooks and redirects the call

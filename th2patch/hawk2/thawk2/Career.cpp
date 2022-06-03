@@ -96,19 +96,6 @@ int Career_HighestOpenLevel(int param_1)
     return 0;
 }
 
-// enum ECheat
-
-int Career_CheatType(ECheat cheat)
-{
-    if (0 <= (uint)cheat && (uint)cheat < 3)
-        return 0;
-
-    if ((uint)cheat == 8)
-        return 2;
-
-    return 1;
-}
-
 // looks up goal index by type and awards goal by index
 void Career_GiveGoalType(EGoalType goalType)
 {
@@ -238,4 +225,46 @@ char* Career_CheatName(ECheat cheat)
         return "?";
 
     return cheatNames[(uint)cheat];
+}
+
+// returns cheat type
+int Career_CheatType(ECheat cheat)
+{
+    if (0 <= (uint)cheat && (uint)cheat < 3)
+        return 0;
+
+    if ((uint)cheat == 8)
+        return 2;
+
+    return 1;
+}
+
+// checks current player score
+void Career_CheckScore()
+{
+    //what a mess
+    int* score = (int*)(*((int*)GSkater) + 0x16c);
+
+    SGoal* pGoal = (SGoal*)(0x5390b0 + *GLevel * 0x1ac /*sizeof level struct*/);
+
+    //loop through all goals
+    for (int goalIndex = 0; goalIndex < NUMGOALS_TH2; goalIndex++)
+    {
+        //if it is a score taget goal
+        if (pGoal->goalType == EGoalType::Score)
+        {
+            //did we beat the target?
+            if (*score >= pGoal->goalParam)
+                //maybe we beat it already?
+                if (!Career_Got(goalIndex))
+                {
+                    //award new goal
+                    Career_GiveGoal(goalIndex);
+                    printf("got %s - %i\r\n", pGoal->goalText, pGoal->goalParam);
+                }
+        }
+
+        //next goal
+        pGoal++;
+    }
 }

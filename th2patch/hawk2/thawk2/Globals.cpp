@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
-void* GSkater = (int*)0x5674b8;
-void* GSkater2 = (bool*)0x5674bc;
+void* GSkater = (void*)0x5674b8;
+void* GSkater2 = (void*)0x5674bc;
 
 int* GGame = (int*)0x530d38;
 bool* GamePaused = (bool*)0x55e864;
