@@ -34,3 +34,4 @@ extern int* Redbook_XACompleteTimer;
 extern int* Redbook_XAPaused;
 
 extern int* Cheat_LevelSelect;
+extern int* Cheat_Light;

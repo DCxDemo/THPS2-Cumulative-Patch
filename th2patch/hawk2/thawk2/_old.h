@@ -66,9 +66,9 @@ static const WinMain2_t WinMain2 = (WinMain2_t)0x4F4EC0;
 typedef LRESULT(__stdcall* WindowProc_t)(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 static const WindowProc_t WindowProc = (WindowProc_t)0x4F4BA0;
 
-typedef void(*WinYield_t)();
+//typedef void(*WinYield_t)();
 //use this to avoid freezing
-static const WinYield_t WinYield = (WinYield_t)0x004f4d70;
+//static const WinYield_t WinYield = (WinYield_t)0x004f4d70;
 
 
 //VIDMENU stuff

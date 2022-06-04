@@ -45,10 +45,10 @@ bool CXBOXController::IsConnected()
     return false;
 }
 
-void CXBOXController::Vibrate(int leftVal, int rightVal, bool enable)
+void CXBOXController::Vibrate(int leftVal, int rightVal, bool enabled)
 {
-	if (enable)
-	{
+    if (!enabled) return;
+
     // Create a Vibraton State
     XINPUT_VIBRATION Vibration;
 
@@ -61,7 +61,6 @@ void CXBOXController::Vibrate(int leftVal, int rightVal, bool enable)
 
     // Vibrate the controller
     XInputSetState(_controllerNum, &Vibration);
-	}
 }
 
 bool CXBOXController::Pressed(int x) { return _controllerState.Gamepad.wButtons & x; }

@@ -5,6 +5,8 @@
 #include "mess.h"
 #include "types.h"
 
+SGapTrick* pGapTrickTable = (SGapTrick*)0x53E718;
+
 uint* Career_UnlockFlags = (uint*)0x5672ec;
 
 uint* Career_GapGoalGotMask = (uint*)0x55c990;
@@ -207,8 +209,6 @@ void Career_ApplyCheats()
         Career_UnlockCharacter(0x80);
 }
 
-#define NUM_CHEATS 17
-
 char* cheatNames[] = {
     "McSqueeb",
     "Spider-Man",
@@ -232,10 +232,14 @@ char* cheatNames[] = {
 // returns proper cheat name based on ECheat enum, used on cheat screen in options menu
 char* Career_CheatName(ECheat cheat)
 {
-    if ((uint)cheat < 0 || NUM_CHEATS <= (uint)cheat)
+    //is cheat out of bounds?
+    if (cheat < ECheat::First || ECheat::Last < cheat)
+    {
+        printf("Invalid cheat: %i", cheat);
         return "?";
+    }
 
-    return cheatNames[(uint)cheat];
+    return cheatNames[(int)cheat];
 }
 
 // returns cheat type
@@ -281,6 +285,7 @@ void Career_CheckScore()
 }
 
 #define NUM_SKATERS 20
+
 
 void Career_ClearGameWithEveryone(void)
 {

@@ -18,7 +18,6 @@ extern uint* Career_UnlockFlags;
 
 #define NUMCAREERLEVELS_TH2 12
 
-
 enum class ECheat : int {
 	McSqueeb = 0,
 	Spiderman = 1,
@@ -36,7 +35,9 @@ enum class ECheat : int {
 	Smooth = 13,
 	MoonPhysics = 14,
 	DiscoMode = 15,
-	LevelFlip = 16
+	LevelFlip = 16,
+	First = 0,
+	Last = 16
 };
 
 
@@ -48,7 +49,9 @@ enum class EGoalType : int {
 	Collect2 = 4,		//barrels
 	TrickGap = 5,		//get a single gap with a specific trick (noserind the pipe, kickflip TC's roof)
 	SecretTape = 6,		//get secret tape
-	ClearedAll = 7		//all goals and cash
+	ClearedAll = 7,		//all goals and cash
+	First = 0,
+	Last = 7
 };
 
 

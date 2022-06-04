@@ -20,6 +20,7 @@ private:
 	XINPUT_STATE _controllerStateOld;
     int _controllerNum;
 	bool Pressed(int x);
+
 public:
     CXBOXController(int playerNumber);
     bool UpdateState();

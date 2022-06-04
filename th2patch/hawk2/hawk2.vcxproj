@@ -103,8 +103,10 @@
     <ClInclude Include="lib\XInput\CXBOXController.h" />
     <ClInclude Include="hawk2.h" />
     <ClInclude Include="thawk2\Sfx.h" />
+    <ClInclude Include="thawk2\Shatter.h" />
     <ClInclude Include="thawk2\Soundlib.h" />
     <ClInclude Include="thawk2\types.h" />
+    <ClInclude Include="thawk2\WinMain.h" />
     <ClInclude Include="THawk2\_old.h" />
     <ClInclude Include="hawk2_utils.h" />
     <ClInclude Include="lib\INI\IniReader.h" />
@@ -140,6 +142,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="thawk2\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="hawk2.def" />

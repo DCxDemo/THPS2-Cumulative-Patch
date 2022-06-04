@@ -34,3 +34,4 @@ int* Redbook_XACompleteTimer = (int*)0x5684D8;
 int* Redbook_XAPaused = (int*)0x5684E0;
 
 int* Cheat_LevelSelect = (int*)0x567544;
+int* Cheat_Light = (int*)0x005674c8;

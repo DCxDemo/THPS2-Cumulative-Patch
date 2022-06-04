@@ -1,19 +1,12 @@
 #include "stdafx.h"
-
+//system includes
 #include <iostream>
 #include <fstream>
 #include "string.h"
-
-
-#include "hawk2_utils.h"
-#include "cpatch.h"
-#include "GameOptions.h"
-#include "mydebug.h"
-#include "patchStuff.h"
-
+//lib includes
 #include "lib/sqlite/sqlite3.h"
 #include "lib/xinput/CXBOXController.h"
-
+//thawk2 includes
 #include "thawk2/_old.h"
 #include "thawk2/Career.h"
 #include "thawk2/FileIO.h"
@@ -22,16 +15,21 @@
 #include "thawk2/Sfx.h"
 #include "thawk2/PCInput.h"
 #include "thawk2/globals.h"
+#include "thawk2/Shatter.h"
+#include "thawk2/WinMain.h"
+//patch includes
+#include "hawk2_utils.h"
+#include "cpatch.h"
+#include "GameOptions.h"
+#include "mydebug.h"
+#include "patchStuff.h"
+
 
 //the old bigass all-in-one file, that should be cut into pizzas. this is my plastic fork!
-
 
 using namespace std;
 
 GameOptions options;
-
-//ofstream fout1("log_redbook.txt");
-
 
 void ParseLevels();
 void GetSong(int num);
@@ -45,18 +43,13 @@ void Proxify(int offs[], int count, void* func)
 }
 
 
+#pragma region patched redbook stuff, move to redbook.cpp
 
 //int totalTracks = 0;
 int playingTrack = -1;
 
 string playingName;
 string playingFile;
-
-
-int* _Cheat_Light = (int*)0x005674c8;
-
-int* spriteX = (int*)0x69D184;
-int* spriteY = (int*)0x69D188;
 
 //string playlistPath = "patch\\tracklist.ini";
 string playlistPath; // = (string)(char*)0x521168;
@@ -337,10 +330,11 @@ void Redirect_Redbook_XANextTrack()
 	Proxify(offs, sizeof(offs) / 4, Redbook_XANextTrack2);
 }
 
+#pragma endregion 
 
 
-
-
+//this is from physics.h
+#pragma region terrain sound handlers
 
 short OllieConcrete = 0x400;
 short OllieWood = 0x401;
@@ -357,7 +351,6 @@ short SND_LANDWOOD = 200;
 short SND_LANDDIRT = 202;
 short SND_LANDMETAL = 203;
 short SND_LAND = 5;
-
 
 enum class Terrain : int
 {
@@ -381,7 +374,6 @@ enum class Terrain : int
 
 
 string kek = "Tile";
-
 
 signed int Ollie_Sound(Terrain terrain)
 {
@@ -422,8 +414,7 @@ void Redirect_Ollie_Sound()
 	Proxify(offs, sizeof(offs) / 4, Ollie_Sound);
 }
 
-
-
+#pragma endregion
 
 
 /*
@@ -464,7 +455,6 @@ int SFX_SpoolOutLevelSFX()
 */
 
 
-
 void VIDMENU_Save_Hook()
 {
 	VIDMENU_Save();
@@ -479,6 +469,8 @@ void VIDMENU_Load_Hook()
 }
 
 
+//move to globals?
+
 int* hW = (int*)0x4f3f30;
 int* hH = (int*)0x4f3f37;
 
@@ -490,20 +482,6 @@ short* _Yres = (short*)0x55ed18;
 
 int* _PixelAspectX = (int*)0x5606cc;
 int* _PixelAspectY = (int*)0x5606d0;
-
-
-
-
-
-
-
-
-
-void WINMAIN_ScreenDimensions(int* width, int* height)
-{
-	*width = *ScreenWidth;
-	*height = *ScreenHeight;
-}
 
 
 void M3dInit_SetResolution(int width, int height)
@@ -532,9 +510,7 @@ void WINMAIN_SwitchResolution_Hook(int a1)
 	//WINMAIN_SwitchResolution(a1);
 }
 
-
-//typedef unsigned short ushort;
-
+#pragma region xinput processing
 //this stuff should be moved to pad entirely
 
 enum class PadButton : unsigned short
@@ -662,166 +638,6 @@ void GenPsxPadData_Hook()
 	}
 }
 
-//silly cheat, sets point cost to 0
-int Career_GetPointCost_Hook()
-{
-	return options.FreeStats ? 0 : Career_GetPointCost();
-}
-
-
-void Panel_Display_Hook()
-{
-	if (options.ShowHUD)
-		Panel_Display();
-
-	PrintDebugStuff();
-}
-
-void RenderSuperItemShadow_Hook(void* superItem) //CSuper
-{
-	if (options.DrawShadow)
-		RenderSuperItemShadow(superItem);
-}
-
-
-
-void SimVblank(void)
-{
-	int iVar1;
-	char cVar2;
-	LONGLONG iVar3;
-
-	//Sleep(100);
-
-	//cVar2 = _D3DTIMER_IsActive();
-
-	/*
-	iVar3 = systemclock();
-
-	if (*prevTicks == 0) {
-		*prevTicks = (int)iVar3;
-	}
-
-	iVar1 = ((iVar3 - *prevTicks) * 60) / 1000;
-
-	*prevTicks = iVar3;
-
-	if (((0 < iVar1) && (*Vblanks = *Vblanks + iVar1, *GamePaused == 0)) && (*GameFrozen == 0)) {
-		*Xblanks = *Xblanks + iVar1;
-	}
-	*/
-}
-
-
-void _fastcall CBruce_StartGrind_Hook(void* _this, void* _edx, int param)
-{
-	CBruce_StartGrind(_this, param);
-	//DrawMessage("Grinding!");
-}
-
-
-void _fastcall CBruce_HandleJump_Hook(void* _this, void* _edx)
-{
-	CBruce_HandleJump(_this);
-	//DrawMessage("Jumping!");
-}
-
-void Game_Init_Hook()
-{
-	Game_Init();
-	//VibrationTest(Player1);
-}
-
-void Game_Display_Hook()
-{
-	Game_Display();
-}
-
-bool skipframe = false;
-
-int playsshatter = 0;
-
-void Game_Logic_Hook()
-{
-	skipframe = !skipframe;
-
-	Game_Logic();
-
-	if (playsshatter > 0)
-	{
-		Player1->Vibrate(18000, 18000, 1);
-		playsshatter--;
-	}
-
-	if (options.DisableSky)
-		Backgrnd_Off(0);
-
-
-	CBruce_BoardOn(GSkater);
-}
-
-
-
-void Utils_SetVisibilityInBox_Hook(void* p1, void* p2, bool p3, bool vis)
-{
-	//maybe skip visibility in box entirely
-	if (!options.DisableVisToggle)
-		Utils_SetVisibilityInBox(p1, p2, p3, vis);
-}
-
-int* ShatterSound = (int*)0x5691a4;
-#define GLASS_SHATTER 0x2A
-#define DEFAULT_VOLUME 0x2000
-
-void Shatter_MaybeMakeGlassShatterSound()
-{
-	if (*ShatterSound)
-	{
-		SFX_PlayX(GLASS_SHATTER, DEFAULT_VOLUME, 0);
-		playsshatter = 15;
-		*ShatterSound = 0;
-	}
-}
-
-void Panel_Bail_Hook()
-{
-	playsshatter = 30;
-	Panel_Bail();
-}
-
-
-
-
-
-
-
-
-void ExecuteCommandList_Hook(short *node, int p2, int p3)
-{
-	//turn teleport into killing zone
-	if (*node == 300)
-		*node = 152;
-
-	ExecuteCommandList(node, p2, p3);
-}
-
-
-void Redirect_ExecuteCommandList()
-{
-	int offs[] = { 
-		0x4C1E8C,
-		0x4C2240,
-		0x4C2C13,
-		0x4C52FC,
-		0x4C5337
-	};
-
-	Proxify(offs, sizeof(offs) / 4, ExecuteCommandList_Hook);
-}
-
-
-
-
 
 /*
 int __fastcall Vibrate_New(int a1, int a2, int a3, int a4, int a5)
@@ -841,7 +657,7 @@ int __fastcall Vibrate_New(int a1, int a2, int a3, int a4, int a5)
 
 void Redirect_Vibrate()
 {
-	int offs[] = { 
+	int offs[] = {
 0x413000+0x2B7,
 0x413000+0x5C3,
 0x48D410+0xB4 ,
@@ -867,7 +683,7 @@ char _cdecl Pad_ActuatorOn1(int index, int a2, int motor, int a4)
 	//printf("motor - %i, power - %i\t", a4, a5);
 	//printf("values %i - %i\n", (a4 == 0)*a5*255, (a4 == 1)*a5*255);
 
-	Player1->Vibrate(255*100, 255*100, options.Vibration);
+	Player1->Vibrate(255 * 100, 255 * 100, options.Vibration);
 	//Vibrate2(index, a2, motor, a4);
 
 	return 0;
@@ -876,7 +692,7 @@ char _cdecl Pad_ActuatorOn1(int index, int a2, int motor, int a4)
 
 void Redirect_ActuatorOn1()
 {
-	int offs[] = { 
+	int offs[] = {
 		0x48D8EB
 	};
 
@@ -896,43 +712,122 @@ char _cdecl Pad_ActuatorOff1(int a1, int a2)
 
 void Redirect_ActuatorOff1()
 {
-	int offs[] = { 
-0x41A020+0x53,
-0x41A020+0x5C,
-0x41A5F0+0x70,
-0x41A5F0+0x79,
-0x44DF30+0x11F,
-0x44DF30+0x128,
-0x44E3B0+0x8F,
-0x44E3B0+0x98,
-0x44EA50+0x33A,
-0x44EA50+0x342,
-0x487300+0x16,
-0x487300+0x1F,
-0x487300+0x38,
-0x487300+0x41
+	int offs[] = {
+0x41A020 + 0x53,
+0x41A020 + 0x5C,
+0x41A5F0 + 0x70,
+0x41A5F0 + 0x79,
+0x44DF30 + 0x11F,
+0x44DF30 + 0x128,
+0x44E3B0 + 0x8F,
+0x44E3B0 + 0x98,
+0x44EA50 + 0x33A,
+0x44EA50 + 0x342,
+0x487300 + 0x16,
+0x487300 + 0x1F,
+0x487300 + 0x38,
+0x487300 + 0x41
 	};
 
 	Proxify(offs, sizeof(offs) / 4, Pad_ActuatorOff1);
 }
 
 
+#pragma endregion
 
+#pragma region various hooks
 
-
-
-
-
-/*
-char *__cdecl Spool_LoadPSH(const char *a1, int a2, int a3, int a4, int a5)
+//silly cheat, sets point cost to 0
+int Career_GetPointCost_Hook()
 {
-	char v7[256];
-	char path[] = "skaters\\";
-	sprintf(v7, "%s%s.psh", path, a1);
-	int v5 = FileIO_OpenLoad(v7, 1);
-	return Spool_LoadPSHBuffer(v5, a1, a2, a3, a4, a5);
+	return options.FreeStats ? 0 : Career_GetPointCost();
 }
-*/
+
+
+void Panel_Display_Hook()
+{
+	if (options.ShowHUD)
+		Panel_Display();
+
+	PrintDebugStuff();
+}
+
+void RenderSuperItemShadow_Hook(void* superItem) //CSuper
+{
+	if (options.DrawShadow)
+		RenderSuperItemShadow(superItem);
+}
+
+
+void _fastcall CBruce_StartGrind_Hook(void* _this, void* _edx, int param)
+{
+	CBruce_StartGrind(_this, param);
+	//DrawMessage("Grinding!");
+}
+
+
+void _fastcall CBruce_HandleJump_Hook(void* _this, void* _edx)
+{
+	CBruce_HandleJump(_this);
+	//DrawMessage("Jumping!");
+}
+
+
+void Game_Init_Hook()
+{
+	Game_Init();
+	//VibrationTest(Player1);
+}
+
+void Game_Display_Hook()
+{
+	Game_Display();
+}
+
+bool skipframe = false;
+
+
+void Game_Logic_Hook()
+{
+	skipframe = !skipframe;
+
+	Game_Logic();
+
+	CP_ShatterUpdate(Player1);
+
+	if (options.DisableSky)
+		Backgrnd_Off(0);
+
+	//CBruce_BoardOff(&GSkater);
+}
+
+
+
+void Utils_SetVisibilityInBox_Hook(void* p1, void* p2, bool p3, bool vis)
+{
+	//maybe skip visibility in box entirely
+	if (!options.DisableVisToggle)
+		Utils_SetVisibilityInBox(p1, p2, p3, vis);
+}
+
+
+void Panel_Bail_Hook()
+{
+	//gotta add continuous vibration queue to xinput
+	//playsshatter = 30;
+	Panel_Bail();
+}
+
+
+void ExecuteCommandList_Hook(short *node, int p2, int p3)
+{
+	//turn teleport into killing zone
+	if (*node == 300)
+		*node = 152;
+
+	ExecuteCommandList(node, p2, p3);
+}
+
 
 
 LRESULT __stdcall ProxyWinProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
@@ -962,42 +857,7 @@ LRESULT __stdcall ProxyWinProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
 	//return WindowProc(hWnd, Msg, wParam, lParam);
 }
 
-
-/*
-WPARAM WinYield_Messages()
-{
-  WPARAM result; // eax@7
-  struct tagMSG Msg; // [sp+10h] [bp-1Ch]@1
-
-  if ( PeekMessageA(&Msg, hWND, 0, 0, 0) )
-  {
-    while ( GetMessageA(&Msg, hWND, 0, 0) )
-    {
-      if ( Msg.message != 260 && Msg.message != 261 )
-      {
-        TranslateMessage(&Msg);
-        DispatchMessageA(&Msg);
-      }
-      if ( !PeekMessageA(&Msg, hWND, 0, 0, 0) )
-        goto LABEL_7;
-    }
-    result = Msg.wParam;
-  }
-  else
-  {
-LABEL_7:
-    result = 117;
-  }
-  return result;
-}
-*/
-/*
-void PatchWinMessages()
-{
-	CPatch::RedirectCall(0x4F4D70, WinYield_Messages);
-}
-*/
-
+#pragma endregion
 
 const string skaters[] = {
 	"hawk3", "hawk4",
@@ -1070,27 +930,7 @@ void OldPatchSkaters()
 }
 */
 
-
-/*
-
-
-typedef struct
-{
-	short gapType;
-	short careerFlag;
-	short index;
-	short score;
-	char name[64];
-
-} GapEntry;
-
-int gapsPtr = 0x53E718;
-
-GapEntry * gapPtr = (GapEntry*)gapsPtr;
-
-
-
-*/
+#pragma region patch skaters
 
 	string bam1 = "ba3";
 	string bam2 = "ba4";
@@ -1208,27 +1048,9 @@ void PatchSkaters()
 
 }
 
-int __cdecl AppendExt(char *a1, char* a2)
-{
-	char lol[256];
-	sprintf(lol, "%s%s%s", "parks\\", a1, a2);
-	a1 = lol;
-	//fout1 << a1 << endl;
-	return 0;
-}
+#pragma endregion
 
-void Redirect_AppendExt()
-{
-	int offs[] = { 
-		0x4F31F7,
-		0x4F3335,
-		0x4F344E,
-		0x4F35C9
-	};
-
-	Proxify(offs, sizeof(offs) / 4, AppendExt);
-}
-
+#pragma region patch levels
 
 int levelsPtr = 0x538FF8;
 int numLevels = 15;
@@ -1331,6 +1153,10 @@ void ParseLevels()
 	
 	sqlite3_close(db);	
 }
+
+#pragma endregion
+
+#pragma region patch music 
 
 char query[256];
 
@@ -1436,12 +1262,14 @@ int CountSongs()
 	return nums;
 }
 
+#pragma endregion
 
-
-//main patch func
+#pragma region main patch stuff 
 
 void Patch()
 {
+	Career_ClearGameWithEveryone();
+
 	if (!options.BigDrop)
 		CPatch::Nop(0x48F419, 0x48F430 - 0x48F419); //nops whole bail/award big drop path
 
@@ -1551,7 +1379,7 @@ void Patch()
 	//Redirect_Ollie_Sound();
 	//Redirect_Land_Sound();
 
-	Redirect_ExecuteCommandList();
+	//Redirect_ExecuteCommandList();
 
 
 	Redirect_ActuatorOn1();
@@ -1649,7 +1477,13 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	{ 0x486387,	Career_CheatName },
 	{ 0x48640c,	Career_CheatName },
 
-	{ 0x48975b, Career_CheckScore } // in DisplayScore
+	{ 0x48975b, Career_CheckScore }, // in DisplayScore
+
+	{ 0x4C1E8C, ExecuteCommandList_Hook },
+	{ 0x4C2240, ExecuteCommandList_Hook },
+	{ 0x4C2C13, ExecuteCommandList_Hook },
+	{ 0x4C52FC, ExecuteCommandList_Hook },
+	{ 0x4C5337, ExecuteCommandList_Hook },
 };
 
 //loops through the list of hooks and redirects the call
@@ -1661,3 +1495,5 @@ void SetHooks()
 		CPatch::RedirectCall(hookList[i].address, hookList[i].func);
 	}
 }
+
+#pragma endregion
