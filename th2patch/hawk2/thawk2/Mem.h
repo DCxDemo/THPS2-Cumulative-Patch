@@ -14,8 +14,8 @@ typedef void	(*Mem_Swap_t)(void* src, void* dst, int size);	//assumed, check if 
 typedef void	(*Mem_SuperDebugUsage_t)(); //unused leftover
 typedef void	(*Mem_NoCheck_t)(void* param_1); //unused leftover
 typedef void	(*SuperMem_CheckForLeaks_t)(); //unused leftover
-typedef int		(*Mem_New_t)(int param_1, int param_2, int param_3, int param_4);
-typedef void	(*Mem_Delete_t)(int param_1);
+typedef void*	(*Mem_New_t)(int size, int param_2, int param_3, int param_4);
+typedef void	(*Mem_Delete_t)(void* param_1);
 typedef void	(*Mem_Shrink_t)(void* param_1, int param_2);
 typedef void	(*Mem_GetBlockSize_t)(int param_1);
 

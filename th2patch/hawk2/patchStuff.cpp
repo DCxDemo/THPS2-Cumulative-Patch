@@ -471,9 +471,6 @@ void VIDMENU_Load_Hook()
 
 //move to globals?
 
-int* hW = (int*)0x4f3f30;
-int* hH = (int*)0x4f3f37;
-
 int* hW2 = (int*)0x4f5496;
 int* hH2 = (int*)0x4f54a0;
 
@@ -1055,33 +1052,8 @@ void PatchSkaters()
 int levelsPtr = 0x538FF8;
 int numLevels = 15;
 
-typedef struct
-{
-	char name[64];
-	char * subname;
-	char * shortname;
-	int isCompetition; //bool
-    char* trgfile;
-	int compScore[3];
-	int compAward[3];
-	char* renderthumb;
-    int u2;
-    int u3;
-    int u4;
-    char* thumb;
-    int cashtounlock;
-    int medalstounlock;
-    int isCompetition2; //bool
-    int somedata[4];
-    int index;
-    int somedata2[5];
-    int u5;
-    int u6;
-    char goal[10*0x18];
-    int killers;
-} LevelProfile;
 
-LevelProfile * levPtr = (LevelProfile*)levelsPtr;
+SLevel * levPtr = (SLevel*)levelsPtr;
 
 string SQLite_GetString(sqlite3_stmt* stmt, int col, string def)
 {
@@ -1266,6 +1238,15 @@ int CountSongs()
 
 #pragma region main patch stuff 
 
+
+SGoal* GetGoal(int level, int goal)
+{
+	SLevel* pLevel = &levPtr[level];
+	SGoal* pGoal = &(pLevel->Goals[goal]);
+
+	return pGoal;
+}
+
 void Patch()
 {
 	Career_ClearGameWithEveryone();
@@ -1295,8 +1276,27 @@ void Patch()
 		memcpy(savename, &options.CurrentGame[0], options.CurrentGame.length()); //replaces THPS2 in saves with currentgame
 	}
 
-	ParseLevels(); //changes levels
+	//ParseLevels(); //changes levels
 
+
+	SLevel* level = &levPtr[0];
+	level->trgfile = "skware_t";
+	level->shortname = "ware";
+	level->subname = "Woodland Hills";
+	level->gapStart = 0;
+	level->gapEnd = 10000;
+
+	SGoal* goal = GetGoal(0, 4);
+	goal->goalText = "Smash the boxes";
+	goal->stringParam = "boxes";
+
+	goal = GetGoal(0, 6);
+	goal->goalText = "50-50 the big rail";
+	goal->stringParam = "50-50";
+
+	goal = GetGoal(0, 7);
+	goal->goalText = "Hit 3 transfers";
+	goal->stringParam = "transfers";
 
 	Player1 = new CXBOXController(1);
 
@@ -1358,14 +1358,15 @@ void Patch()
 	CPatch::SetInt((int)hW2, options.ResX);
 	CPatch::SetInt((int)hH2, options.ResY);
 
-	CPatch::SetInt((int)hW, options.ResX);
-	CPatch::SetInt((int)hH, options.ResY);
+	CPatch::SetInt((int)hardcodedWidth, options.ResX);
+	CPatch::SetInt((int)hardcodedHeight, options.ResY);
 
 	CPatch::SetInt((int)ScreenWidth, options.ResX);
 	CPatch::SetInt((int)ScreenHeight, options.ResY);
 
 	*ScreenWidth = options.ResX;
 	*ScreenHeight = options.ResY;
+
 
 
 	//hooks related to soundtrack, revisit
@@ -1386,6 +1387,7 @@ void Patch()
 	Redirect_ActuatorOff1();
 	//Redirect_Vibrate();
 	//Redirect_SwitchResolution();
+
 }
 
 #define HOOK_LIST_SIZE 128
@@ -1472,7 +1474,7 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	{ 0x4166d1, Career_ApplyCheats }, // in Career_PostLoad
 	{ 0x4531c7, Career_ApplyCheats }, // in FrontEnd2_Main
 
-	{ 0x450c82, Career_CheatName }, 
+	{ 0x450c82, Career_CheatName },
 	{ 0x486324,	Career_CheatName },
 	{ 0x486387,	Career_CheatName },
 	{ 0x48640c,	Career_CheatName },
@@ -1484,6 +1486,9 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	{ 0x4C2C13, ExecuteCommandList_Hook },
 	{ 0x4C52FC, ExecuteCommandList_Hook },
 	{ 0x4C5337, ExecuteCommandList_Hook },
+
+	{ 0x414b16, Career_GapNumber },
+	{ 0x414b55, Career_GapNumber },
 };
 
 //loops through the list of hooks and redirects the call

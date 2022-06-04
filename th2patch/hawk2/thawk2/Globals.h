@@ -3,10 +3,14 @@
 extern void* GSkater;
 extern void* GSkater2;
 
-extern int* ScreenWidth;
-extern int* ScreenHeight;
 extern int* GGame;
 extern bool* GamePaused;
+
+extern int* ScreenWidth;
+extern int* ScreenHeight;
+
+extern int* hardcodedWidth;
+extern int* hardcodedHeight;
 
 extern int* prevTicks;
 extern int* Vblanks;

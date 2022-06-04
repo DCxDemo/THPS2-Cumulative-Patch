@@ -93,6 +93,9 @@
     <ClInclude Include="thawk2\Shatter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="thawk2\CClass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -144,6 +147,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="thawk2\WinMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thawk2\CClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

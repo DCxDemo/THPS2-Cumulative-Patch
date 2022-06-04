@@ -14,12 +14,11 @@ int playsshatter = 0;
 
 void Shatter_MaybeMakeGlassShatterSound()
 {
-	if (*ShatterSound)
-	{
-		SFX_PlayX(GLASS_SHATTER, DEFAULT_VOLUME, 0);
-		playsshatter = 15;
-		*ShatterSound = 0;
-	}
+	if (!*ShatterSound) return;
+
+	SFX_PlayX(GLASS_SHATTER, DEFAULT_VOLUME, 0);
+	playsshatter = 15;
+	*ShatterSound = 0;
 }
 
 void CP_ShatterUpdate(CXBOXController *input)

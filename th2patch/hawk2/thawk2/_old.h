@@ -57,7 +57,7 @@ static const WINMAIN_SaveSetting_t WINMAIN_SaveSetting = (WINMAIN_SaveSetting_t)
 typedef int(*WINMAIN_LoadSetting_t)(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR lpDefault, LPSTR lpReturnedString);
 static const WINMAIN_LoadSetting_t WINMAIN_LoadSetting = (WINMAIN_LoadSetting_t)0x4F3D50;
 
-typedef void(*WINMAIN_SwitchResolution_t)(int a1);
+typedef void(*WINMAIN_SwitchResolution_t)(int mode);
 static const WINMAIN_SwitchResolution_t WINMAIN_SwitchResolution = (WINMAIN_SwitchResolution_t)0x4F3F10;
 
 typedef int(__stdcall* WinMain2_t)(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd);

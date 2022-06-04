@@ -5,8 +5,12 @@ void* GSkater2 = (void*)0x5674bc;
 
 int* GGame = (int*)0x530d38;
 bool* GamePaused = (bool*)0x55e864;
+
 int* ScreenWidth = (int*)0x29D6FE4;
 int* ScreenHeight = (int*)0x29D6FE8;
+
+int* hardcodedWidth = (int*)0x4f3f30;
+int* hardcodedHeight = (int*)0x4f3f37;
 
 int* prevTicks = (int*)0x29d4fbc;
 int* Vblanks = (int*)0x56af7c;

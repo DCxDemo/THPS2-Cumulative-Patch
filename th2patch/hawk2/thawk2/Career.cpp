@@ -269,13 +269,13 @@ void Career_CheckScore()
         if (pGoal->goalType == EGoalType::Score)
         {
             //did we beat the target?
-            if (*score >= pGoal->goalParam)
+            if (*score >= pGoal->intParam)
                 //maybe we beat it already?
                 if (!Career_Got(goalIndex))
                 {
                     //award new goal
                     Career_GiveGoal(goalIndex);
-                    printf("got %s - %i\r\n", pGoal->goalText, pGoal->goalParam);
+                    printf("got %s - %i\r\n", pGoal->goalText, pGoal->intParam);
                 }
         }
 
@@ -295,10 +295,45 @@ void Career_ClearGameWithEveryone(void)
 
 bool Career_GapIsTrick(SGapTrick* gapTrick)
 {
-    return gapTrick->goalType == 2 ? Career_GapActive(gapTrick) : false;
+    return gapTrick->careerFlag == 2 ? Career_GapActive(gapTrick) : false;
 }
 
 bool Career_GapIsGoal(SGapTrick* gapTrick)
 {
-    return gapTrick->goalType == 1 ? Career_GapActive(gapTrick) : false;
+    return gapTrick->careerFlag == 1 ? Career_GapActive(gapTrick) : false;
+}
+
+
+SGapTrick* gapTable = (SGapTrick*)0x53E718;
+
+//finds gap index in gap table
+int Career_GapNumber(SGapTrick* gapTrick)
+{
+    int myresult = ((int)gapTrick - (int)gapTable) / sizeof(SGapTrick);
+
+    SGapTrick* cursor = gapTable;
+    int gapIndex = 0;
+
+    while (cursor->index != -1) {
+
+        //this isolates gap groups somehow, maybe used to split by levels
+        //if (Career_GapActive(cursor)) {
+        if (true) {
+
+            if (cursor == gapTrick) 
+            {
+                printf("Gap found: %s %i %i\r\n", gapTrick->name, gapIndex, myresult);
+                return gapIndex;
+            }
+
+            gapIndex++;
+        }
+
+        cursor++;
+    }
+
+    printf("!!! GapTrick not found: %s\r\n", gapTrick->name);
+    
+    return 0;
+
 }

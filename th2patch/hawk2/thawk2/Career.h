@@ -56,18 +56,18 @@ enum class EGoalType : int {
 
 
 typedef struct SGapTrick {
-	ushort gapType;		//goal type
-	ushort goalType;	//score value, num items or gap checksum
-	ushort index;		//pointer to item text, like "pilot wings"
-	ushort score;		//amount of cash to award
-	char* name;			//pointer to goal text for level goals screen
+	short gapType;		//goal type
+	short careerFlag;	//score value, num items or gap checksum
+	short index;		//pointer to item text, like "pilot wings"
+	short score;		//amount of cash to award
+	char name[0x24];	//pointer to goal text for level goals screen
 } SGapTrick;
 
 
 typedef struct SGoal {
 	EGoalType goalType;	//goal type
-	int goalParam;		//score value, num items or gap checksum
-	char* itemText;		//pointer to item text, like "pilot wings"
+	int intParam;		//score value, num items or gap checksum
+	char* stringParam;	//pointer to item text, like "pilot wings" or trick match
 	int cashAward;		//amount of cash to award
 	char* goalText;		//pointer to goal text for level goals screen
 	int unk;
@@ -92,12 +92,12 @@ typedef void(*Career_GiveGoal_t)(int param_1);
 typedef void(*Career_CheckClear_t)();
 //typedef bool(*Career_GotGoalType_t)(EGoalType goalType);
 typedef void(*Career_GiveMedal_t)(int param_1, char medalType); //param_2 = EMedalType
-typedef bool(*Career_GapActive_t)(void* param_1); //param_1 = SGapTrick
+typedef bool(*Career_GapActive_t)(SGapTrick* gapTrick); //param_1 = SGapTrick
 //typedef bool(*Career_GapIsGoal_t)(void* param_1); //param_1 = SGapTrick
 //typedef bool(*Career_GapIsTrick_t)(void* param_1); //param_1 = SGapTrick
 typedef int(*Career_GapGoalNumber_t)(void* param_1); //param_1 = SGapTrick
 typedef int(*Career_GapTrickNumber_t)(void* param_1); //param_1 = SGapTrick
-typedef int(*Career_GapNumber_t)(void* param_1); //param_1 = SGapTrick
+//typedef int(*Career_GapNumber_t)(void* param_1); //param_1 = SGapTrick
 //typedef bool(*Career_GotGoalGap_t)(void* param_1); //param_1 = SGapTrick
 //typedef bool(*Career_GotTrickGap_t)(void* param_1); //param_1 = SGapTrick
 //typedef void(*Career_GiveGoalGap_t)(void* param_1); //param_1 = SGapTrick
@@ -187,7 +187,8 @@ bool Career_GapIsGoal(SGapTrick* gapTrick);
 bool Career_GapIsTrick(SGapTrick* gapTrick);
 static const Career_GapGoalNumber_t Career_GapGoalNumber = (Career_GapGoalNumber_t)0x00414810;
 static const Career_GapTrickNumber_t Career_GapTrickNumber = (Career_GapTrickNumber_t)0x004148f0;
-static const Career_GapNumber_t Career_GapNumber = (Career_GapNumber_t)0x004149d0;
+//static const Career_GapNumber_t Career_GapNumber = (Career_GapNumber_t)0x004149d0;
+int Career_GapNumber(SGapTrick* gapTrick);
 //static const Career_GotGoalGap_t Career_GotGoalGap = (Career_GotGoalGap_t)0x00414a50;
 bool Career_GotGoalGap(void* gapTrick);
 //static const Career_GotTrickGap_t Career_GotTrickGap = (Career_GotTrickGap_t)0x00414a80;

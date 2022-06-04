@@ -143,6 +143,57 @@ softrend.cpp
 dbgdel.cpp
 sdxinput.cpp
 
+bmr.cpp - BMR image processing
+localtxt.cpp - localized text for international releases?
+m3delips.cpp
+proctex.cpp - procedural texture?
+profile.cpp
+screen.cpp
+SMOKE.CPP
+stats.cpp
+taskman.cpp
+TESTVAR.CPP
+uncompr.cpp
+vram.cpp - probably psx vram stuff
+
+#only header files
+camtweak.h
+bits.h
+cheat.h
+checksum.h
+controls.h
+Equipment.h
+frontrgb.h
+gaptrickh.h
+gaptricks.h
+globals.h
+globdefs.h
+icons.h
+//this is probably inflate lib?
+infblock.h
+infcodes.h
+inffast.h
+inftrees.h
+infutil.h
+
+LevelSelect.h
+LoadingScreen.h
+m3ddefs.h
+m3dface.h
+m3dgte.h
+m3dlight.h
+m3dshado.h
+path.h
+qdefs.h
+rgb.h
+symbols.h
+tweak.h
+types.h
+vlc_bit.h - related to psx str video decoding
+zconf.h
+zlib.h
+zutil.h
+
 # additional names from iOS version
 shell.cpp
 thmain.cpp - probably new file
@@ -158,9 +209,8 @@ light.cpp
 debug.cpp
 pack.cpp
 MiscTools.cpp
-hires.cpp
+hires.cpp - presumably, "hires" psx mode
 mips.cpp - probably mips namespace
-vlc_bit.cpp - related to psx str video decoding
 m3dmaths.cpp
 icon3d.cpp
 CreditsMain.cpp
