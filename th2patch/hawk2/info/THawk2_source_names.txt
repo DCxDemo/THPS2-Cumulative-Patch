@@ -39,16 +39,16 @@ db.cpp
 decomp.cpp - related to anim decompression
 dust.cpp - dust particles, on bail, on terrain
 DynamicLogo.cpp - in th2 levels skater sponsor logos are placed all over the levels.
-EditorGlobal.cpp
-LevelEditor.cpp
-LevelGen.cpp
+EditorGlobal.cpp - global stuff for level editor
+LevelEditor.cpp - level editor code
+LevelGen.cpp - level generator, converts editor data to PSX file
 GenObjs.cpp
-FaceRemoval.cpp - huh
+FaceRemoval.cpp - assumed algo to remove hidden face when editor objects overlap
 EditorPieces2.cpp
 EditorPieces.cpp
 EquipSel.cpp - sel refers to select screen: equipment select, probably choose a deck screen
 exp.cpp
-fileio.cpp - generic file input/putpu system. basically loads content from disc.
+fileio.cpp - generic file input/output system. basically loads content from disc.
 FontTools.cpp
 front.cpp
 displaygoals.cpp
@@ -83,7 +83,7 @@ options.cpp
 pad.cpp - psx controller functions, probably psyq stuff
 pal.cpp - probably palette
 panel.cpp - functions to output game HUD such as balance meter, timer, trick string, etc.
-physics.cpp
+physics.cpp - handles most skater related stuff
 platform.cpp - assumed to be CPlatform class 
 player_ui.cpp
 playsel.cpp

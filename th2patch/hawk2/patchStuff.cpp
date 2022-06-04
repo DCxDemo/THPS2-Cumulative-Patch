@@ -506,7 +506,7 @@ void WINMAIN_ScreenDimensions(int* width, int* height)
 }
 
 
-void _cdecl M3dInit_SetResolution(int width, int height)
+void M3dInit_SetResolution(int width, int height)
 {
 	WINMAIN_ScreenDimensions(&width, &height);
 
@@ -533,7 +533,7 @@ void WINMAIN_SwitchResolution_Hook(int a1)
 }
 
 
-typedef unsigned short ushort;
+//typedef unsigned short ushort;
 
 //this stuff should be moved to pad entirely
 
@@ -548,6 +548,8 @@ enum class PadButton : unsigned short
 	Cross		= 0x0040,
 	Square		= 0x0080,
 	Select		= 0x0100,
+	L3			= 0x0200, //?
+	R3			= 0x0400, //?
 	Start		= 0x0800,
 	PovUp		= 0x1000,
 	PovRight	= 0x2000,
@@ -561,14 +563,20 @@ enum class PadButton : unsigned short
 
 ushort* p1pad = (ushort*)0x6A0B6C;
 
-int angleAllowance = 22.5;
-
 CXBOXController* Player1;
 
 void XInput_Press(PadButton button)
 {
 	*p1pad |= (ushort)button;
 }
+
+#define ANGLE_ALLOWANCE 22.5
+
+bool StickInRange(int stick, int degree)
+{
+	return degree - ANGLE_ALLOWANCE < stick && stick <= degree + ANGLE_ALLOWANCE;
+}
+
 
 void GenPsxPadData_Hook()
 {
@@ -616,17 +624,16 @@ void GenPsxPadData_Hook()
 
 		if (magnitude > options.StickDeadzone)
 		{
-			if (  0 - angleAllowance < stickAngle && stickAngle <=   0 + angleAllowance) { *p1pad |= (unsigned short)PadButton::PovUp;		}
-			if (-45 - angleAllowance < stickAngle && stickAngle <= -45 + angleAllowance) { *p1pad |= (unsigned short)PadButton::PovUpLeft;	}
-			if (-90 - angleAllowance < stickAngle && stickAngle <= -90 + angleAllowance) { *p1pad |= (unsigned short)PadButton::PovLeft;		}
-			if (-135 - angleAllowance < stickAngle && stickAngle <= -135 + angleAllowance) { *p1pad |= (unsigned short)PadButton::PovDownLeft; }
-			if ( 45 - angleAllowance < stickAngle && stickAngle <=  45 + angleAllowance) { *p1pad |= (unsigned short)PadButton::PovUpRight;	}
-			if ( 90 - angleAllowance < stickAngle && stickAngle <=  90 + angleAllowance) { *p1pad |= (unsigned short)PadButton::PovRight;	}
-			if (135 - angleAllowance < stickAngle && stickAngle <= 135 + angleAllowance) { *p1pad |= (unsigned short)PadButton::PovDownRight; }
-			if (180 - angleAllowance < stickAngle && stickAngle <= 180) { *p1pad |= (unsigned short)PadButton::PovDown; }
-			if (-180 < stickAngle && stickAngle <= -180 + angleAllowance) { *p1pad |= (unsigned short)PadButton::PovDown; }
+			if (StickInRange(stickAngle, 0))	XInput_Press(PadButton::PovUp);
+			if (StickInRange(stickAngle, -45))	XInput_Press(PadButton::PovUpLeft);
+			if (StickInRange(stickAngle, -90))	XInput_Press(PadButton::PovLeft);
+			if (StickInRange(stickAngle, -135)) XInput_Press(PadButton::PovDownLeft);
+			if (StickInRange(stickAngle, 45))	XInput_Press(PadButton::PovUpRight);
+			if (StickInRange(stickAngle, 90))	XInput_Press(PadButton::PovRight);
+			if (StickInRange(stickAngle, 135))	XInput_Press(PadButton::PovDownRight);
+			if (180 - ANGLE_ALLOWANCE < stickAngle && stickAngle <= 180) XInput_Press(PadButton::PovDown);
+			if (-180 < stickAngle && stickAngle <= -180 + ANGLE_ALLOWANCE) XInput_Press(PadButton::PovDown);
 		}
-		
 
 		//process start and select
 		if (Player1->PressedBack()) XInput_Press(PadButton::Select);
@@ -641,13 +648,16 @@ void GenPsxPadData_Hook()
 
 		//R3 - skip track
 		if (state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB)
+		{
+			XInput_Press(PadButton::R3);
 			if (!(Player1->GetOldState().Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB))
 				Redbook_XANextTrack2(1);
+		}
 
 		//L3
 		if (state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_THUMB)
 		{
-
+			XInput_Press(PadButton::L3);
 		}
 	}
 }
@@ -1471,6 +1481,9 @@ void Patch()
 	//removes "shutting down thps2" delay
 	//CPatch::SetInt(0x4F5145, 0);
 	CPatch::Nop(0x4f5149, 6);
+
+	//editor limit test
+	CPatch::SetInt(0x4371f1, 0);
 
 	//should remove polylimit error
 	int* polyLimit = (int*)0x4301EF;

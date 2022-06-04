@@ -152,10 +152,21 @@ void Career_GiveGoalGap(void* gapTrick)
     *Career_GapGoalGotMask |= 1 << Career_GapGoalNumber(gapTrick);
 }
 
+// add trick gap to mask
+void Career_GiveTrickGap(void* gapTrick)
+{
+    *Career_GapTrickGotMask |= 1 << Career_GapTrickNumber(gapTrick);
+}
+
 // check goal gap mask
 bool Career_GotGoalGap(void* gapTrick)
 {
     return (*Career_GapGoalGotMask & (1 << Career_GapGoalNumber(gapTrick))) > 0;
+}
+
+bool Career_GotTrickGap(void* gapTrick)
+{
+    return (*Career_GapTrickGotMask & (1 << Career_GapTrickNumber(gapTrick))) > 0;
 }
 
 // get career goal index by goal type
@@ -267,4 +278,22 @@ void Career_CheckScore()
         //next goal
         pGoal++;
     }
+}
+
+#define NUM_SKATERS 20
+
+void Career_ClearGameWithEveryone(void)
+{
+    for (int i = 0; i < NUM_SKATERS; i++)
+        Career_ClearGame(i);
+}
+
+bool Career_GapIsTrick(SGapTrick* gapTrick)
+{
+    return gapTrick->goalType == 2 ? Career_GapActive(gapTrick) : false;
+}
+
+bool Career_GapIsGoal(SGapTrick* gapTrick)
+{
+    return gapTrick->goalType == 1 ? Career_GapActive(gapTrick) : false;
 }
