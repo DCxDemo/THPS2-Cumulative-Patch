@@ -5,9 +5,9 @@
 #include "thawk2/Sfx.h"
 #include "patchStuff.h"
 
-int* ShatterSound = (int*)0x5691a4;
+bool* ShatterSound = (bool*)0x5691a4;
 
-#define GLASS_SHATTER 0x2A
+#define SND_GLASS_SHATTER 0x2A
 #define DEFAULT_VOLUME 0x2000
 
 int playsshatter = 0;
@@ -16,9 +16,9 @@ void Shatter_MaybeMakeGlassShatterSound()
 {
 	if (!*ShatterSound) return;
 
-	SFX_PlayX(GLASS_SHATTER, DEFAULT_VOLUME, 0);
+	SFX_PlayX(SND_GLASS_SHATTER, DEFAULT_VOLUME, 0);
 	playsshatter = 15;
-	*ShatterSound = 0;
+	*ShatterSound = false;
 }
 
 void CP_ShatterUpdate(CXBOXController *input)

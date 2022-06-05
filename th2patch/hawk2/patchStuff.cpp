@@ -1049,11 +1049,9 @@ void PatchSkaters()
 
 #pragma region patch levels
 
-int levelsPtr = 0x538FF8;
 int numLevels = 15;
 
 
-SLevel * levPtr = (SLevel*)levelsPtr;
 
 string SQLite_GetString(sqlite3_stmt* stmt, int col, string def)
 {
@@ -1096,22 +1094,22 @@ void ParseLevels()
 
     while((ret_code = sqlite3_step(stmt)) == SQLITE_ROW) {
 
-		sprintf(levPtr[cnt].name, (char*)sqlite3_column_text(stmt, 3));
+		sprintf(Levels[cnt].name, (char*)sqlite3_column_text(stmt, 3));
 
 		//short name actually used for VAB loading, workaround needed
 		//levPtr[cnt].shortname = (char *)&(new string((char*)sqlite3_column_text(stmt, 1)))[0];
 
-		levPtr[cnt].subname = (char *)(new string(SQLite_GetString(stmt, 4, "")));
-		levPtr[cnt].trgfile = (char *)(new string(SQLite_GetString(stmt, 5, "skhan_t")));
+		Levels[cnt].subname = (char *)(new string(SQLite_GetString(stmt, 4, "")));
+		Levels[cnt].trgfile = (char *)(new string(SQLite_GetString(stmt, 5, "skhan_t")));
 
-		levPtr[cnt].thumb = (char *)&(new string((char*)sqlite3_column_text(stmt, 6)))[0];
-		levPtr[cnt].renderthumb = (char *)&(new string((char*)sqlite3_column_text(stmt, 7)))[0];
-		levPtr[cnt].isCompetition = sqlite3_column_int(stmt, 8);
-		levPtr[cnt].isCompetition2 = levPtr[cnt].isCompetition;
+		Levels[cnt].thumb = (char *)&(new string((char*)sqlite3_column_text(stmt, 6)))[0];
+		Levels[cnt].renderthumb = (char *)&(new string((char*)sqlite3_column_text(stmt, 7)))[0];
+		Levels[cnt].isCompetition = sqlite3_column_int(stmt, 8);
+		Levels[cnt].isCompetition2 = Levels[cnt].isCompetition;
 		//levPtr[cnt].isCompetition = 1;
 		//levPtr[cnt].isCompetition2 = 1;
 
-		printf("Level %i is %s %s\n", cnt, levPtr[cnt].name, levPtr[cnt].subname);
+		printf("Level %i is %s %s\n", cnt, Levels[cnt].name, Levels[cnt].subname);
 
 		//fout1 << (char*)sqlite3_column_text(stmt, 4) << "|" << levPtr[cnt].subname << endl;
 		cnt++;
@@ -1241,7 +1239,7 @@ int CountSongs()
 
 SGoal* GetGoal(int level, int goal)
 {
-	SLevel* pLevel = &levPtr[level];
+	SLevel* pLevel = &Levels[level];
 	SGoal* pGoal = &(pLevel->Goals[goal]);
 
 	return pGoal;
@@ -1276,10 +1274,10 @@ void Patch()
 		memcpy(savename, &options.CurrentGame[0], options.CurrentGame.length()); //replaces THPS2 in saves with currentgame
 	}
 
-	//ParseLevels(); //changes levels
+	ParseLevels(); //changes levels
 
-
-	SLevel* level = &levPtr[0];
+	/*
+	SLevel* level = &Levels[0];
 	level->trgfile = "skware_t";
 	level->shortname = "ware";
 	level->subname = "Woodland Hills";
@@ -1297,6 +1295,7 @@ void Patch()
 	goal = GetGoal(0, 7);
 	goal->goalText = "Hit 3 transfers";
 	goal->stringParam = "transfers";
+	*/
 
 	Player1 = new CXBOXController(1);
 
@@ -1489,6 +1488,13 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 
 	{ 0x414b16, Career_GapNumber },
 	{ 0x414b55, Career_GapNumber },
+
+	{ 0x48e6ee, Career_AwardGap }, // in CheckForLipGaps
+	{ 0x49b53e, Career_AwardGap }, // in HandlehysicsState 
+	{ 0x49b5a4, Career_AwardGap }, // in HandlehysicsState 
+	{ 0x4c3955, Career_AwardGap }, // in ExecuteCommandList
+
+	{ 0x48c10c, Career_AwardTrickGap } // in Panel_Land
 };
 
 //loops through the list of hooks and redirects the call

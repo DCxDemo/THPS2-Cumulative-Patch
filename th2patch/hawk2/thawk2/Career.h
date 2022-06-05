@@ -55,12 +55,18 @@ enum class EGoalType : int {
 };
 
 
+enum class EGapFlag : short {
+	RegularGap = 0,
+	GoalGap = 1,
+	TrickGap = 2
+};
+
 typedef struct SGapTrick {
-	short gapType;		//goal type
-	short careerFlag;	//score value, num items or gap checksum
-	short index;		//pointer to item text, like "pilot wings"
-	short score;		//amount of cash to award
-	char name[0x24];	//pointer to goal text for level goals screen
+	short gapTypeFlags;		//gap type flags (stuff like CANCEL_GRIND CANCEL_WALL, etc)
+	EGapFlag careerFlag;	//defines whether the gap is used in goals
+	short index;			//gap index, 2 values - index / 10000 and index % 10000
+	short score;			//score points to award
+	char name[0x24];		//gap name
 } SGapTrick;
 
 
@@ -92,24 +98,24 @@ typedef void(*Career_GiveGoal_t)(int param_1);
 typedef void(*Career_CheckClear_t)();
 //typedef bool(*Career_GotGoalType_t)(EGoalType goalType);
 typedef void(*Career_GiveMedal_t)(int param_1, char medalType); //param_2 = EMedalType
-typedef bool(*Career_GapActive_t)(SGapTrick* gapTrick); //param_1 = SGapTrick
+//typedef bool(*Career_GapActive_t)(SGapTrick* gapTrick); //param_1 = SGapTrick
 //typedef bool(*Career_GapIsGoal_t)(void* param_1); //param_1 = SGapTrick
 //typedef bool(*Career_GapIsTrick_t)(void* param_1); //param_1 = SGapTrick
-typedef int(*Career_GapGoalNumber_t)(void* param_1); //param_1 = SGapTrick
-typedef int(*Career_GapTrickNumber_t)(void* param_1); //param_1 = SGapTrick
+//typedef int(*Career_GapGoalNumber_t)(void* param_1); //param_1 = SGapTrick
+//typedef int(*Career_GapTrickNumber_t)(void* param_1); //param_1 = SGapTrick
 //typedef int(*Career_GapNumber_t)(void* param_1); //param_1 = SGapTrick
 //typedef bool(*Career_GotGoalGap_t)(void* param_1); //param_1 = SGapTrick
 //typedef bool(*Career_GotTrickGap_t)(void* param_1); //param_1 = SGapTrick
 //typedef void(*Career_GiveGoalGap_t)(void* param_1); //param_1 = SGapTrick
 //typedef void(*Career_GiveTrickGap_t)(void* param_1); //param_1 = SGapTrick
-typedef bool(*Career_AnyoneGotGap_t)(void* param_1); //param_1 = SGapTrick
-typedef void(*Career_GiveGap_t)(void* param_1); //param_1 = SGapTrick
+typedef bool(*Career_AnyoneGotGap_t)(SGapTrick* pGap);
+typedef void(*Career_GiveGap_t)(SGapTrick* pGap);
 //typedef int(*Career_CountBits_t)(int param_1);
 //typedef int(*Career_NumGoalGapsGot_t)();
 //typedef int(*Career_NumTrickGapsGot_t)(int param_1);
-//typedef void(*Career_AwardGoalGap_t)(void* param_1); //param_1 = SGapTrick
-typedef void(*Career_AwardGap_t)(void* param_1); //param_1 = SGapTrick
-typedef void(*Career_AwardTrickGap_t)(void* param_1); //param_1 = SGapTrick
+//typedef void(*Career_AwardGoalGap_t)(SGapTrick* pGap);
+//typedef void(*Career_AwardGap_t)(SGapTrick* pGap);
+//typedef void(*Career_AwardTrickGap_t)(SGapTrick* pGap);
 typedef short(*Career_MoneyNumber_t)(int param_1);
 typedef void(*Career_GotMoney_t)(int param_1);
 typedef void(*Career_GiveMoney_t)(int param_1, int amount);
@@ -180,23 +186,26 @@ static const Career_CheckClear_t Career_CheckClear = (Career_CheckClear_t)0x0041
 //static const Career_GotGoalType_t Career_GotGoalType = (Career_GotGoalType_t)0x00414650;
 bool Career_GotGoalType(EGoalType goalType);
 static const Career_GiveMedal_t Career_GiveMedal = (Career_GiveMedal_t)0x00414670;
-static const Career_GapActive_t Career_GapActive = (Career_GapActive_t)0x00414770;
+//static const Career_GapActive_t Career_GapActive = (Career_GapActive_t)0x00414770;
+bool Career_GapActive(SGapTrick* pGap);
 //static const Career_GapIsGoal_t Career_GapIsGoal = (Career_GapIsGoal_t)0x004147b0;
-bool Career_GapIsGoal(SGapTrick* gapTrick);
+bool Career_GapIsGoal(SGapTrick* pGap);
 //static const Career_GapIsTrick_t Career_GapIsTrick = (Career_GapIsTrick_t)0x004147e0;
-bool Career_GapIsTrick(SGapTrick* gapTrick);
-static const Career_GapGoalNumber_t Career_GapGoalNumber = (Career_GapGoalNumber_t)0x00414810;
-static const Career_GapTrickNumber_t Career_GapTrickNumber = (Career_GapTrickNumber_t)0x004148f0;
+bool Career_GapIsTrick(SGapTrick* pGap);
+//static const Career_GapGoalNumber_t Career_GapGoalNumber = (Career_GapGoalNumber_t)0x00414810;
+int Career_GapGoalNumber(SGapTrick* pGap);
+//static const Career_GapTrickNumber_t Career_GapTrickNumber = (Career_GapTrickNumber_t)0x004148f0;
+int Career_GapTrickNumber(SGapTrick* pGap);
 //static const Career_GapNumber_t Career_GapNumber = (Career_GapNumber_t)0x004149d0;
-int Career_GapNumber(SGapTrick* gapTrick);
+int Career_GapNumber(SGapTrick* pGap);
 //static const Career_GotGoalGap_t Career_GotGoalGap = (Career_GotGoalGap_t)0x00414a50;
-bool Career_GotGoalGap(void* gapTrick);
+bool Career_GotGoalGap(SGapTrick* pGap);
 //static const Career_GotTrickGap_t Career_GotTrickGap = (Career_GotTrickGap_t)0x00414a80;
-bool Career_GotTrickGap(void* gapTrick);
+bool Career_GotTrickGap(SGapTrick* pGap);
 //static const Career_GiveGoalGap_t Career_GiveGoalGap = (Career_GiveGoalGap_t)0x00414ab0;
-void Career_GiveGoalGap(void* gapTrick);
+void Career_GiveGoalGap(SGapTrick* pGap);
 //static const Career_GiveTrickGap_t Career_GiveTrickGap = (Career_GiveTrickGap_t)0x00414ae0;
-void Career_GiveTrickGap(void* gapTrick); // SGapTrick*
+void Career_GiveTrickGap(SGapTrick* pGap); // SGapTrick*
 static const Career_AnyoneGotGap_t Career_AnyoneGotGap = (Career_AnyoneGotGap_t)0x00414b10;
 static const Career_GiveGap_t Career_GiveGap = (Career_GiveGap_t)0x00414b50;
 //static const Career_CountBits_t Career_CountBits = (Career_CountBits_t)0x00414b90;
@@ -206,9 +215,11 @@ int Career_NumGoalGapsGot();
 //static const Career_NumTrickGapsGot_t Career_NumTrickGapsGot = (Career_NumTrickGapsGot_t)0x00414bc0;
 int Career_NumTrickGapsGot();
 //static const Career_AwardGoalGap_t Career_AwardGoalGap = (Career_AwardGoalGap_t)0x00414bd0;
-void Career_AwardGoalGap(void* param); //ptr goal gap i assume
-static const Career_AwardGap_t Career_AwardGap = (Career_AwardGap_t)0x00414c50;
-static const Career_AwardTrickGap_t Career_AwardTrickGap = (Career_AwardTrickGap_t)0x00414d90;
+void Career_AwardGoalGap(SGapTrick* pGap); //ptr goal gap i assume
+//static const Career_AwardGap_t Career_AwardGap = (Career_AwardGap_t)0x00414c50;
+void Career_AwardGap(SGapTrick* pGap);
+//static const Career_AwardTrickGap_t Career_AwardTrickGap = (Career_AwardTrickGap_t)0x00414d90;
+void Career_AwardTrickGap(SGapTrick* pGap);
 static const Career_MoneyNumber_t Career_MoneyNumber = (Career_MoneyNumber_t)0x00414fa0;
 static const Career_GotMoney_t Career_GotMoney = (Career_GotMoney_t)0x00415060;
 static const Career_GiveMoney_t Career_GiveMoney = (Career_GiveMoney_t)0x00415180;

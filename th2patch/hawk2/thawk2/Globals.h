@@ -1,10 +1,15 @@
 #pragma once
+#include "patchStuff.h"
+
+extern SLevel* Levels;
 
 extern void* GSkater;
 extern void* GSkater2;
 
 extern int* GGame;
 extern bool* GamePaused;
+
+extern bool* GenerateLevel;
 
 extern int* ScreenWidth;
 extern int* ScreenHeight;
