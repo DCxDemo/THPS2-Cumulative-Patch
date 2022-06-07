@@ -99,6 +99,9 @@
     <ClInclude Include="thawk2\SkatMgr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="thawk2\Crowd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

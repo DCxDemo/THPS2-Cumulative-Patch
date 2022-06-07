@@ -93,6 +93,7 @@
     <ClInclude Include="lib\INI\IniWriter.h" />
     <ClInclude Include="THawk2\Career.h" />
     <ClInclude Include="thawk2\CClass.h" />
+    <ClInclude Include="thawk2\Crowd.h" />
     <ClInclude Include="thawk2\Flash.h" />
     <ClInclude Include="thawk2\Globals.h" />
     <ClInclude Include="THawk2\LoadingScreen.h" />
