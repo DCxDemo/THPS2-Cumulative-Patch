@@ -126,15 +126,15 @@ typedef void(__thiscall *CBruce_HandleJump_t)(void* _this);
 /// CBruce: jump/ollie, called every frame, but only trigger proper scenario if pressed jump/no comply/boneless
 static const CBruce_HandleJump_t CBruce_HandleJump = (CBruce_HandleJump_t)0x00497b70;
 
-typedef void(__thiscall* CBruce_BoardOn_t)(void* _this);
+typedef void(__thiscall *CBruce_BoardOn_t)(void* _this);
 /// CBruce: switches board on
 static const CBruce_BoardOn_t CBruce_BoardOn = (CBruce_BoardOn_t)0x0046c5c0;
 
-typedef void(__thiscall* CBruce_BoardOff_t)(void* _this);
+typedef void(__thiscall*CBruce_BoardOff_t)(void* _this);
 /// CBruce: switches board off
 static const CBruce_BoardOff_t CBruce_BoardOff = (CBruce_BoardOff_t)0x0046c580;
 
-typedef void(__thiscall* CBruce_Trick_Land_t)(void* _this);
+typedef void(__thiscall *CBruce_Trick_Land_t)(void* _this);
 /// CBruce: lands trick
 static const CBruce_Trick_Land_t CBruce_Trick_Land = (CBruce_Trick_Land_t)0x0048d1e0;
 

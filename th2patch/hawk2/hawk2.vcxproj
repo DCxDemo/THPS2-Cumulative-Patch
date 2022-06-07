@@ -105,6 +105,7 @@
     <ClInclude Include="hawk2.h" />
     <ClInclude Include="thawk2\Sfx.h" />
     <ClInclude Include="thawk2\Shatter.h" />
+    <ClInclude Include="thawk2\SkatMgr.h" />
     <ClInclude Include="thawk2\Soundlib.h" />
     <ClInclude Include="thawk2\types.h" />
     <ClInclude Include="thawk2\WinMain.h" />

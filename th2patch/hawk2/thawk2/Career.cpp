@@ -4,12 +4,14 @@
 #include "career.h"
 #include "mess.h"
 #include "types.h"
+#include "thawk2/SkatMgr.h"
+
+void* GSkaterManager = (void*)0x5691e0;
 
 // this is direct pointer to th2 level gaps
 // but there are 3 gap tables: th2, th1, editor
 // 0056a9b8 points to currently selected gaptable
 SGapTrick* pGaps = (SGapTrick*)0x53E718;
-
 
 uint* Career_UnlockFlags = (uint*)0x5672ec;
 
@@ -88,6 +90,47 @@ void Career_AwardTrickGap(SGapTrick* pGap)
         printf("%s\r\n", AwardGoalGapMessage);
 
         Mess_Message(AwardTrickGapMessage, Messprog_Goal, 1, 0, 0);
+    }
+}
+
+// career gap logic 
+void Career_AwardGap(SGapTrick* pGap)
+{
+    if (!Career_GapActive(pGap)) return;
+
+    //get last hit gaps
+    SGapTrick** lastTrickGap = (SGapTrick**)((int)GSkater + 0x3024);
+    SGapTrick** lastGoalGap = (SGapTrick**)((int)GSkater + 0x3028);
+
+    //if th2 level and not level generator?
+    if ((*GLevel < 10 || *GLevel == 0xd) && !*GenerateLevel) {
+        //if not a single player game mode, leave
+        if ((*GGame < 1 || *GGame > 3)) return;
+
+        //contribute to unlocked gaps list
+        Career_GiveGap(pGap);
+
+        //if not career mode, leave
+        if (*GGame != 1) return;
+
+        //process goal gap
+        if (Career_GapIsGoal(pGap))
+            if (!Career_GotGoalGap(pGap))
+                if (!Career_GotGoalType(EGoalType::GoalGaps)) {
+                    if (!*lastGoalGap)
+                        Career_AwardGoalGap(pGap);
+
+                    *lastGoalGap = pGap;
+                    return;
+                }
+
+        //something's off here, doesnt reward
+
+        //process trick gap
+        if (Career_GapIsTrick(pGap))
+            if (!Career_GotTrickGap(pGap))
+                if (!Career_GotGoalType(EGoalType::TrickGap))
+                    *lastTrickGap = pGap;
     }
 }
 
@@ -440,41 +483,30 @@ int Career_GapGoalNumber(SGapTrick* pGap)
     return 0;
 }
 
-// career gap logic 
-void Career_AwardGap(SGapTrick* pGap)
+/*
+void Career_ToggleCheat(ECheat cheat, bool state)
 {
-    //get last hit gaps
-    SGapTrick** lastTrickGap = (SGapTrick**)((int)GSkater + 0x3024);
-    SGapTrick** lastGoalGap = (SGapTrick**)((int)GSkater + 0x3028);
+    Career_SetCheat(cheat, state & 0xffffff00 | (uint)(!Career_CheatState(cheat, bool)));
+}
+*/
 
-    //if th2 level and not level generator?
-    if ((*GLevel < 10 || *GLevel == 0xd) && !*GenerateLevel) {
-        //if not a single player game mode, leave
-        if ((*GGame < 1 || *GGame > 3)) return;
+// returns the amount needed to unlock the level for message in main menu
+int Career_LevelNeeds(int levelIndex)
+{
+    //get chatacter
+    int skaterID = GetSkaterID(GSkaterManager);
 
-        //contribute to unlocked gaps list
-        Career_GiveGap(pGap);
+    //get character progress
+    void* charProg = Career_GetCharacterProgress(skaterID);
 
-        //if not career mode, leave
-        if (*GGame != 1) return;
-        
-        //process goal gap
-        if (Career_GapIsGoal(pGap))
-            if (!Career_GotGoalGap(pGap))
-                if (!Career_GotGoalType(EGoalType::GoalGaps)) {
-                    if (!*lastGoalGap)
-                        Career_AwardGoalGap(pGap);
+    //if level is closed
+    if (Career_LevelOpenCareerMode(levelIndex, charProg))
+        return 0;
 
-                    *lastGoalGap = pGap;
-                    return;
-                }
-
-        //something's off here, doesnt reward
-
-        //process trick gap
-        if (Career_GapIsTrick(pGap))
-            if (!Career_GotTrickGap(pGap))
-                if (!Career_GotGoalType(EGoalType::TrickGap))
-                    *lastTrickGap = pGap;
-    }
+    //if competition, minus sign encodes medal requirement
+    if (Levels[levelIndex].medalstounlock != 0)
+        return -Levels[levelIndex].medalstounlock;
+    
+    //if regular level
+    return Levels[levelIndex].cashtounlock;
 }

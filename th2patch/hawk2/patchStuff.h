@@ -4,13 +4,13 @@
 
 extern GameOptions options;
 
-//should be moved to a separate file
+// should be moved to a separate file
 typedef struct HookFunc {
 	int address;
 	void* func;
 } HookFunc;
 
-
+// defines basic level data like name, career unlock stuff, etc.
 typedef struct SLevel
 {
     char name[64];
@@ -22,8 +22,8 @@ typedef struct SLevel
     int compAward[3];
     char* renderthumb;
     int u2;
-    int u3;
-    int u4;
+    int globeX;
+    int globeY;
     char* thumb;
     int cashtounlock;
     int medalstounlock;

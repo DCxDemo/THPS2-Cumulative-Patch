@@ -127,12 +127,12 @@ typedef bool(*Career_BuyPoint_t)(int statIndex, int param_2);
 typedef bool(*Career_SellPoint_t)(int statIndex);
 typedef int(*Career_GetPointCost_t)();
 typedef void(*Career_NumLevelsWithMedals_t)();
-typedef void(*Career_LevelOpenCareerMode_t)();
+typedef bool(*Career_LevelOpenCareerMode_t)(int levelIndex, void* charProg); //is it? it is
 typedef bool(*Career_LevelOpen_t)(int param_1, bool param_2);
 //typedef int(*Career_HighestOpenLevel_t)(int param_1);
-typedef void(*Career_LevelNeeds_t)();
+//typedef void(*Career_LevelNeeds_t)();
 typedef void(*Career_LoadingScreen_t)();
-typedef void(*Career_GetCharacterProgress_t)();
+typedef void*(*Career_GetCharacterProgress_t)(int skaterID);
 typedef void(*Career_IsTrickPurchased_t)();
 typedef void(*Career_PurchaseTrick_t)();
 typedef void(*Career_AssignTrick_t)();
@@ -236,7 +236,8 @@ static const Career_LevelOpenCareerMode_t Career_LevelOpenCareerMode = (Career_L
 static const Career_LevelOpen_t Career_LevelOpen = (Career_LevelOpen_t)0x004159d0;
 //static const Career_HighestOpenLevel_t Career_HighestOpenLevel = (Career_HighestOpenLevel_t)0x00415a90;
 int Career_HighestOpenLevel(int param_1);
-static const Career_LevelNeeds_t Career_LevelNeeds = (Career_LevelNeeds_t)0x00415ad0;
+//static const Career_LevelNeeds_t Career_LevelNeeds = (Career_LevelNeeds_t)0x00415ad0;
+int Career_LevelNeeds(int levelIndex);
 static const Career_LoadingScreen_t Career_LoadingScreen = (Career_LoadingScreen_t)0x00415b20;
 static const Career_GetCharacterProgress_t Career_GetCharacterProgress = (Career_GetCharacterProgress_t)0x00416040;
 static const Career_IsTrickPurchased_t Career_IsTrickPurchased = (Career_IsTrickPurchased_t)0x00416060;

@@ -1494,7 +1494,9 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	{ 0x49b5a4, Career_AwardGap }, // in HandlehysicsState 
 	{ 0x4c3955, Career_AwardGap }, // in ExecuteCommandList
 
-	{ 0x48c10c, Career_AwardTrickGap } // in Panel_Land
+	{ 0x48c10c, Career_AwardTrickGap }, // in Panel_Land
+
+	{ 0x45c01b, Career_LevelNeeds }, // in GoalScreenElement::setupMessage
 };
 
 //loops through the list of hooks and redirects the call
