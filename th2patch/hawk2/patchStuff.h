@@ -10,6 +10,38 @@ typedef struct HookFunc {
 	void* func;
 } HookFunc;
 
+
+enum class EGeneratorTheme : int {
+    Powerplant = 0,
+    Industrial = 1,
+    Outdoor = 2,
+    School = 3,
+    First = Powerplant,
+    Last = School
+};
+
+enum class EInitCleanupType : int {
+    Hard = 0,
+    Soft = 1,
+    LevelEditor = 2
+};
+
+enum class EGameMode : int {
+    None = 0,
+    Career = 1,
+    Practice = 2,
+    Single = 3,
+    Unknown4 = 4,
+    Trick = 5,
+    Unknown6 = 6,
+    Horse = 7,
+    Graffiti = 8,
+    Tag = 9,
+    Contest = 10,
+    First = None,
+    Last = Contest
+};
+
 // defines basic level data like name, career unlock stuff, etc.
 typedef struct SLevel
 {

@@ -105,13 +105,13 @@ void Career_AwardGap(SGapTrick* pGap)
     //if th2 level and not level generator?
     if ((*GLevel < 10 || *GLevel == 0xd) && !*GenerateLevel) {
         //if not a single player game mode, leave
-        if ((*GGame < 1 || *GGame > 3)) return;
+        if ((*GGame < EGameMode::Career || *GGame > EGameMode::Single)) return;
 
         //contribute to unlocked gaps list
         Career_GiveGap(pGap);
 
         //if not career mode, leave
-        if (*GGame != 1) return;
+        if (*GGame != EGameMode::Career) return;
 
         //process goal gap
         if (Career_GapIsGoal(pGap))

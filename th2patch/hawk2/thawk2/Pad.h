@@ -2,13 +2,13 @@
 
 typedef void	(*Pad_InitAtStart_t)();
 typedef void	(*Pad_ClearAllOne_t)(int param_1);
-typedef void	(*Pad_ClearAll_t)();
+//typedef void	(*Pad_ClearAll_t)();
 typedef void	(*Pad_Clear_t)(int param_1);
 typedef void	(*Pad_ClearTriggers_t)(int param_1);
 //unknown name of pad func, dummied out		00486f80
 typedef void	(*Pad_ActuatorOn_t)(int param_1, int param_2, int param_3, int param_4);
 typedef void	(*Pad_ActuatorOff_t)(int padIndex, int motorIndex);
-typedef void	(*Pad_Button_t)(char* param_1, int param_2);
+typedef void	(*Pad_Button_t)(void* pButton, int state);	//SButton*p_but,int state
 typedef int		(*Pad_Analog_t)(int param_1, int param_2, int param_3, int param_4);
 typedef void	(*Pad_Update_t)();
 typedef void	(*ReadControllers_t)();
@@ -18,7 +18,8 @@ typedef void	(*Pad_Remap_t)();
 
 static const Pad_InitAtStart_t		Pad_InitAtStart = (Pad_InitAtStart_t)0x486d90;
 static const Pad_ClearAllOne_t		Pad_ClearAllOne = (Pad_ClearAllOne_t)0x00486eb0;
-static const Pad_ClearAll_t			Pad_ClearAll = (Pad_ClearAll_t)0x00486f00;
+//static const Pad_ClearAll_t			Pad_ClearAll = (Pad_ClearAll_t)0x00486f00;
+void Pad_ClearAll();
 static const Pad_Clear_t			Pad_Clear = (Pad_Clear_t)0x00486f20;
 static const Pad_ClearTriggers_t	Pad_ClearTriggers = (Pad_ClearTriggers_t)0x00486f60;
 //unknown name of pad func, dummied out		00486f80

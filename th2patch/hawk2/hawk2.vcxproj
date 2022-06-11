@@ -97,6 +97,7 @@
     <ClInclude Include="thawk2\Flash.h" />
     <ClInclude Include="thawk2\Globals.h" />
     <ClInclude Include="THawk2\LoadingScreen.h" />
+    <ClInclude Include="thawk2\m3d.h" />
     <ClInclude Include="THawk2\Mess.h" />
     <ClInclude Include="mydebug.h" />
     <ClInclude Include="thawk2\PCInput.h" />
@@ -120,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Checksum.cpp" />
+    <ClCompile Include="thawk2\Pad.cpp" />
     <ClCompile Include="thawk2\Career.cpp" />
     <ClCompile Include="thawk2\CClass.cpp" />
     <ClCompile Include="THawk2\FileIO.h" />

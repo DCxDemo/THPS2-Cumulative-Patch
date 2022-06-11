@@ -6,7 +6,7 @@ SLevel* Levels = (SLevel*)0x538FF8;
 void* GSkater = (void*)0x5674b8;
 void* GSkater2 = (void*)0x5674bc;
 
-int* GGame = (int*)0x530d38;
+EGameMode* GGame = (EGameMode*)0x530d38;
 bool* GamePaused = (bool*)0x55e864;
 
 bool* GenerateLevel = (bool*)0x55e124;

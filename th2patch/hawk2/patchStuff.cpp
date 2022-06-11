@@ -673,7 +673,7 @@ void Redirect_Vibrate()
 
 
 //move to pad.cpp
-
+/*
 char _cdecl Pad_ActuatorOn1(int index, int a2, int motor, int a4)
 {
 	//printf("Pad_ActuatorOn: index=%i\ta2=%i\tmotor=%i\ta4=%i\t\n", index, a2, motor, a4);
@@ -684,9 +684,15 @@ char _cdecl Pad_ActuatorOn1(int index, int a2, int motor, int a4)
 	//Vibrate2(index, a2, motor, a4);
 
 	return 0;
+}*/
+
+void PCINPUT_ActuatorOn_Hook(int index, int time, int motor, int value)
+{
+	PCINPUT_ActuatorOn(index, time, motor, value);
+	Player1->Vibrate(255 * 100, 255 * 100, options.Vibration);
 }
 
-
+/*
 void Redirect_ActuatorOn1()
 {
 	int offs[] = {
@@ -695,7 +701,7 @@ void Redirect_ActuatorOn1()
 
 	Proxify(offs, sizeof(offs) / 4, Pad_ActuatorOn1);
 }
-
+*/
 
 char _cdecl Pad_ActuatorOff1(int a1, int a2)
 {
@@ -1376,13 +1382,6 @@ void Patch()
 
 	SetHooks();
 
-	//Redirect_Ollie_Sound();
-	//Redirect_Land_Sound();
-
-	//Redirect_ExecuteCommandList();
-
-
-	Redirect_ActuatorOn1();
 	Redirect_ActuatorOff1();
 	//Redirect_Vibrate();
 	//Redirect_SwitchResolution();
@@ -1497,6 +1496,8 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	{ 0x48c10c, Career_AwardTrickGap }, // in Panel_Land
 
 	{ 0x45c01b, Career_LevelNeeds }, // in GoalScreenElement::setupMessage
+
+	{ 0x48703b,	PCINPUT_ActuatorOn_Hook }, // in Pad_ActuatorOn
 };
 
 //loops through the list of hooks and redirects the call

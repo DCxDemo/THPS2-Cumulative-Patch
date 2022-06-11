@@ -6,7 +6,7 @@ extern SLevel* Levels;
 extern void* GSkater;
 extern void* GSkater2;
 
-extern int* GGame;
+extern EGameMode* GGame;
 extern bool* GamePaused;
 
 extern bool* GenerateLevel;
