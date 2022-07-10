@@ -74,3 +74,4 @@ void Patch();
 void PatchSkaters();
 void SetHooks();
 int CountSongs();
+void PCINPUT_ActuatorOn_Hook(int index, int time, int motor, int value);

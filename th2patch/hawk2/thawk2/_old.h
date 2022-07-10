@@ -179,3 +179,15 @@ static const Backgrnd_On_t Backgrnd_On = (Backgrnd_On_t)0x401000;
 typedef void(*Backgrnd_Off_t)(short param);
 //Turns skybox off
 static const Backgrnd_Off_t Backgrnd_Off = (Backgrnd_Off_t)0x401030;
+
+
+
+typedef void(__thiscall* SlicedImage2_screenWidth_t)(void* _this);
+static const SlicedImage2_screenWidth_t SlicedImage2_screenWidth = (SlicedImage2_screenWidth_t)0x00457790;
+
+typedef void(__thiscall* SlicedImage2_screenHeight_t)(void* _this);
+static const SlicedImage2_screenHeight_t SlicedImage2_screenHeight = (SlicedImage2_screenHeight_t)0x004577a0;
+
+
+typedef void*(*FontManger_LoadFont2_t)(void* stuff, char* name);
+static const FontManger_LoadFont2_t FontManger_LoadFont2 = (FontManger_LoadFont2_t)0x0044ae40;

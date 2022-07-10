@@ -11,6 +11,7 @@
 #include "thawk2/Career.h"
 #include "thawk2/FileIO.h"
 #include "thawk2/Mess.h"
+#include "thawk2/Mem.h"
 #include "thawk2/Redbook.h"
 #include "thawk2/Sfx.h"
 #include "thawk2/PCInput.h"
@@ -34,6 +35,8 @@ GameOptions options;
 void ParseLevels();
 void GetSong(int num);
 int CountSongs();
+
+int framesToVibrate = 0;
 
 
 void Proxify(int offs[], int count, void* func)
@@ -190,6 +193,19 @@ void GetTotalTracks()
 }
 */
 
+
+void* FontManager_LoadFont(char* filename)
+{
+	void* pData = Mem_New(FileIO_Open(filename), 0, 1, 0);
+	FileIO_Load(pData);
+	FileIO_Sync();
+
+	void* pFont = FontManger_LoadFont2(pData, filename);
+	Mem_Delete(pData);
+
+	return pFont;
+}
+
 void Redbook_XANextTrack2(int inc)
 {
 	if (options.totalTracks <= 0) 
@@ -209,7 +225,7 @@ void Redbook_XANextTrack2(int inc)
 		else
 		{
 			int newTrack;
-			do newTrack = rand()%options.totalTracks;
+			do newTrack = rand() % options.totalTracks;
 			while (newTrack == playingTrack);
 
 			playingTrack = newTrack;
@@ -588,7 +604,7 @@ void GenPsxPadData_Hook()
 		if (Player1->PressedPOVDown()) XInput_Press(PadButton::PovDown);
 		if (Player1->PressedPOVLeft()) XInput_Press(PadButton::PovLeft);
 
-		//process stick a bit smarter than linear
+		//process sticks a bit smarter than linear
 		int x = state.Gamepad.sThumbLX;
 		int y = state.Gamepad.sThumbLY;
 
@@ -636,107 +652,37 @@ void GenPsxPadData_Hook()
 }
 
 
-/*
-int __fastcall Vibrate_New(int a1, int a2, int a3, int a4, int a5)
-{
-	printf("%i\t%i\t%i\t%i\t%i\t\n", a1, a2, a3, a4, a5);
-	//printf("motor - %i, power - %i\t", a4, a5);
-	//printf("values %i - %i\n", (a4 == 0)*a5*255, (a4 == 1)*a5*255);
-	Player1->Vibrate(255*100, 255*100);
-	return Vibrate2(a1, a2, a3, a4);
-}
-
-
-
-
-
-
-
-void Redirect_Vibrate()
-{
-	int offs[] = {
-0x413000+0x2B7,
-0x413000+0x5C3,
-0x48D410+0xB4 ,
-0x491B00+0x5A ,
-0x4933E0+0x1B2,
-0x497B70+0x26A,
-0x49CDA0+0xFF ,
-0x49CDA0+0x1BC,
-0x4BB6B0+0xB00
-	};
-
-	Proxify(offs, sizeof(offs) / 4, Vibrate_New);
-}
-
-*/
-
 
 //move to pad.cpp
-/*
-char _cdecl Pad_ActuatorOn1(int index, int a2, int motor, int a4)
-{
-	//printf("Pad_ActuatorOn: index=%i\ta2=%i\tmotor=%i\ta4=%i\t\n", index, a2, motor, a4);
-	//printf("motor - %i, power - %i\t", a4, a5);
-	//printf("values %i - %i\n", (a4 == 0)*a5*255, (a4 == 1)*a5*255);
-
-	Player1->Vibrate(255 * 100, 255 * 100, options.Vibration);
-	//Vibrate2(index, a2, motor, a4);
-
-	return 0;
-}*/
 
 void PCINPUT_ActuatorOn_Hook(int index, int time, int motor, int value)
 {
+	printf("index: %i time: %i motor: %i value: %i\r\n", index, time, motor, value);
+
 	PCINPUT_ActuatorOn(index, time, motor, value);
-	Player1->Vibrate(255 * 100, 255 * 100, options.Vibration);
+	
+	if (time > framesToVibrate)
+		framesToVibrate = time * (options.UnlockFPS ? 2 : 1);
+
+	//this is weird, fix for rails
+	if (value == 1)
+		value = 128;
+
+	Player1->Vibrate(motor == 0 ? value / 255.0 * 65535.0 : 0, motor == 1 ? value / 255.0 * 65535.0 : 0, options.Vibration);
 }
 
-/*
-void Redirect_ActuatorOn1()
+
+void PCINPUT_ActuatorOff_Hook(int index, int motor)
 {
-	int offs[] = {
-		0x48D8EB
-	};
-
-	Proxify(offs, sizeof(offs) / 4, Pad_ActuatorOn1);
+	if (framesToVibrate == 0)
+	{
+		//printf("PCINPUT_ActuatorOff %i %i\r\n", index, motor);
+		Player1->Vibrate(0, 0, options.Vibration);
+	}
 }
-*/
-
-char _cdecl Pad_ActuatorOff1(int a1, int a2)
-{
-	//printf("Pad_ActuatorOff: %i\t%i\n", a1, a2);
-	//printf("motor - %i, power - %i\t", a4, a5);
-	//printf("values %i - %i\n", (a4 == 0)*a5*255, (a4 == 1)*a5*255);
-	Player1->Vibrate(0, 0, options.Vibration);
-	return 0;//Vibrate2(a1, a2, a3, a4);
-}
-
-
-void Redirect_ActuatorOff1()
-{
-	int offs[] = {
-0x41A020 + 0x53,
-0x41A020 + 0x5C,
-0x41A5F0 + 0x70,
-0x41A5F0 + 0x79,
-0x44DF30 + 0x11F,
-0x44DF30 + 0x128,
-0x44E3B0 + 0x8F,
-0x44E3B0 + 0x98,
-0x44EA50 + 0x33A,
-0x44EA50 + 0x342,
-0x487300 + 0x16,
-0x487300 + 0x1F,
-0x487300 + 0x38,
-0x487300 + 0x41
-	};
-
-	Proxify(offs, sizeof(offs) / 4, Pad_ActuatorOff1);
-}
-
 
 #pragma endregion
+
 
 #pragma region various hooks
 
@@ -796,10 +742,11 @@ void Game_Logic_Hook()
 
 	Game_Logic();
 
-	CP_ShatterUpdate(Player1);
-
 	if (options.DisableSky)
 		Backgrnd_Off(0);
+
+	if (framesToVibrate > 0)
+		framesToVibrate--;
 
 	//CBruce_BoardOff(&GSkater);
 }
@@ -833,7 +780,7 @@ void ExecuteCommandList_Hook(short *node, int p2, int p3)
 
 
 
-LRESULT __stdcall ProxyWinProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+LRESULT ProxyWinProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 {
 
 	//fout1 << Msg << " " << wParam << " " << lParam << endl;
@@ -1246,7 +1193,7 @@ int CountSongs()
 SGoal* GetGoal(int level, int goal)
 {
 	SLevel* pLevel = &Levels[level];
-	SGoal* pGoal = &(pLevel->Goals[goal]);
+	SGoal* pGoal = &pLevel->Goals[goal];
 
 	return pGoal;
 }
@@ -1282,7 +1229,7 @@ void Patch()
 
 	ParseLevels(); //changes levels
 
-	/*
+	
 	SLevel* level = &Levels[0];
 	level->trgfile = "skware_t";
 	level->shortname = "ware";
@@ -1301,7 +1248,7 @@ void Patch()
 	goal = GetGoal(0, 7);
 	goal->goalText = "Hit 3 transfers";
 	goal->stringParam = "transfers";
-	*/
+	
 
 	Player1 = new CXBOXController(1);
 
@@ -1381,11 +1328,6 @@ void Patch()
 	Redirect_PCMOVIE_XAPlay();
 
 	SetHooks();
-
-	Redirect_ActuatorOff1();
-	//Redirect_Vibrate();
-	//Redirect_SwitchResolution();
-
 }
 
 #define HOOK_LIST_SIZE 128
@@ -1498,6 +1440,27 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	{ 0x45c01b, Career_LevelNeeds }, // in GoalScreenElement::setupMessage
 
 	{ 0x48703b,	PCINPUT_ActuatorOn_Hook }, // in Pad_ActuatorOn
+	{ 0x4871d0, PCINPUT_ActuatorOff_Hook }, // in Pad_ActuatorOff
+
+	{ 0x46a746, FontManager_LoadFont },
+
+	{ 0x0041a084	,	Mess_DeleteAll },
+	{ 0x0041a258	,	Mess_DeleteAll },
+	{ 0x0041a671	,	Mess_DeleteAll },
+	{ 0x0041a76c	,	Mess_DeleteAll },
+	{ 0x0041af29	,	Mess_DeleteAll },
+	{ 0x0041b578	,	Mess_DeleteAll },
+	{ 0x0044e046	,	Mess_DeleteAll },
+	{ 0x0044e436	,	Mess_DeleteAll },
+	{ 0x0044ed58	,	Mess_DeleteAll },
+	{ 0x00458430	,	Mess_DeleteAll },
+	{ 0x004a603e	,	Mess_DeleteAll },
+	{ 0x004c3247	,	Mess_DeleteAll },
+
+	{ 0x0047366a	,	Mess_DeleteMessage }, //Mess_Remove
+	{ 0x00473711	,	Mess_DeleteMessage }, //Mess_Update
+
+	//{ 0x473680, CreateMessage }
 };
 
 //loops through the list of hooks and redirects the call

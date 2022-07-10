@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 typedef int		(*Mem_Init_t)();
-typedef int*	(*Mem_NewX_t)(int param_1, int param_2, int param_3, void* param_4);
+typedef int*	(*Mem_NewX_t)(size_t size, int Heap, int AssertOnFailure, void* Location);
 typedef void	(*Bang_t)(int param_1, int param_2, int param_3); //psx leftover, originally draws red rectangle in the top right
 typedef int*	(*Mem_NewTop_t)(int param_1);
 typedef void	(*Mem_DeleteX_t)(int param_1);
@@ -11,10 +11,10 @@ typedef int		(*Mem_GetFree_t)(int param_1);
 typedef void	(*Mem_Copy_t)(void* src, void* dst, int size);	//assumed, check if matches
 typedef void	(*Mem_CopyBytes_t)(int src, int dst, int size);	//assumed, check if matches
 typedef void	(*Mem_Swap_t)(void* src, void* dst, int size);	//assumed, check if matches
-typedef void	(*Mem_SuperDebugUsage_t)(); //unused leftover
-typedef void	(*Mem_NoCheck_t)(void* param_1); //unused leftover
-typedef void	(*SuperMem_CheckForLeaks_t)(); //unused leftover
-typedef void*	(*Mem_New_t)(int size, int param_2, int param_3, int param_4);
+typedef void	(*Mem_SuperDebugUsage_t)();			//unused leftover
+typedef void	(*Mem_NoCheck_t)(void* param_1);	//unused leftover
+typedef void	(*SuperMem_CheckForLeaks_t)();		//unused leftover
+typedef void*	(*Mem_New_t)(size_t size, int Heap, int AssertOnFailure, void* Location);
 typedef void	(*Mem_Delete_t)(void* param_1);
 typedef void	(*Mem_Shrink_t)(void* param_1, int param_2);
 typedef void	(*Mem_GetBlockSize_t)(int param_1);

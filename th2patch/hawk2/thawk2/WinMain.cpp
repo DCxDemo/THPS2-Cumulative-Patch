@@ -34,3 +34,11 @@ void WINMAIN_ScreenDimensions(int* width, int* height)
     *width = *ScreenWidth;
     *height = *ScreenHeight;
 }
+
+
+char* lpFileName = (char*)0x29d4fc8;
+
+void WINMAIN_LoadSetting(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR lpDefault, LPSTR lpReturnedString)
+{
+    GetPrivateProfileStringA(lpAppName, lpKeyName, lpDefault, lpReturnedString, 256, lpFileName);
+}
