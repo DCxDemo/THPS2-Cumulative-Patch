@@ -1229,7 +1229,7 @@ void Patch()
 
 	ParseLevels(); //changes levels
 
-	
+	/*
 	SLevel* level = &Levels[0];
 	level->trgfile = "skware_t";
 	level->shortname = "ware";
@@ -1248,7 +1248,7 @@ void Patch()
 	goal = GetGoal(0, 7);
 	goal->goalText = "Hit 3 transfers";
 	goal->stringParam = "transfers";
-	
+	*/
 
 	Player1 = new CXBOXController(1);
 
@@ -1459,6 +1459,11 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 
 	{ 0x0047366a	,	Mess_DeleteMessage }, //Mess_Remove
 	{ 0x00473711	,	Mess_DeleteMessage }, //Mess_Update
+
+	{ 0x0041535f	, Mess_Remove },
+	{ 0x0048b228	, Mess_Remove },
+	{ 0x004b5da6	, Mess_Remove },
+	{ 0x004b5db2	, Mess_Remove },
 
 	//{ 0x473680, CreateMessage }
 };

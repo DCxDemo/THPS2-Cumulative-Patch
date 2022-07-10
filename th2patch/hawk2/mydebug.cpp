@@ -15,9 +15,9 @@ char debugText[256];
 void DebugMessage(char* text, int x, int y)
 {
 	Mess_SetScale(95);
-	Mess_SetRGB(255, 255, 32);
+	Mess_SetRGB(255, 255, 32, false);
 	Mess_SetTextJustify(eTextJustify::Left);
-	Mess_DrawText(x, y, text);
+	Mess_DrawText(x, y, text, 0);
 }
 
 #define BUFFER_WIDTH 512

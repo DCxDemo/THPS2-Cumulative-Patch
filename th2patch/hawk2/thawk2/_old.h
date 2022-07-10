@@ -191,3 +191,6 @@ static const SlicedImage2_screenHeight_t SlicedImage2_screenHeight = (SlicedImag
 
 typedef void*(*FontManger_LoadFont2_t)(void* stuff, char* name);
 static const FontManger_LoadFont2_t FontManger_LoadFont2 = (FontManger_LoadFont2_t)0x0044ae40;
+
+typedef void(__thiscall* Font_Draw_t)(void* _this, int x, int y, char* pMessage, int Angle);
+static const Font_Draw_t Font_Draw = (Font_Draw_t)0x44a010;
