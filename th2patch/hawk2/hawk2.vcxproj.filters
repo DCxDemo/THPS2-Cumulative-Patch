@@ -164,6 +164,9 @@
     <ClCompile Include="thawk2\Pad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="color.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="hawk2.def">

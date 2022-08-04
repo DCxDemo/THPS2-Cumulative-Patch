@@ -1465,6 +1465,8 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	{ 0x004b5da6	, Mess_Remove },
 	{ 0x004b5db2	, Mess_Remove },
 
+	{ 0x00469fd7 ,	Mess_Update },  //in Game_Logic
+
 	//{ 0x473680, CreateMessage }
 };
 

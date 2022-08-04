@@ -13,48 +13,25 @@ void PlaySpecialSound()
 }
 
 //this should be moved to mess.h
-struct MsgType
-{
-	short duration;
-	short unknown;
-	short startSize;
-	short endSize;
-	ColorRGB startColor;
-	ColorRGB endColor;
-
-	short unk1;
-	short unk2; 
-
-	short size1;
-	short size2;
-	short size3;
-	short size4;
-
-	short shouldGoEpileptic;
-	short shouldDisco;
-	short shouldFadeout;
-};
-
-//this should be moved to mess.h
 struct SMessageProg
 {
-	MsgType m1;
-	MsgType m2;
-	MsgType m3;
-	MsgType m4;
-	MsgType m5;
+	SMessageProg m1;
+	SMessageProg m2;
+	SMessageProg m3;
+	SMessageProg m4;
+	SMessageProg m5;
 };
 
 SMessage mess;
 SMessageProg ms;
 
-void SetupMessage(MsgType &message, int d, int ss, int es, ColorRGB sc, ColorRGB ec)
+void SetupMessage(SMessageProg &message, int d, int ss, int es, ColorRGB sc, ColorRGB ec)
 {
-	message.duration = d;
-	message.startSize = ss;
-	message.endSize = es;
-	message.startColor = sc;
-	message.endColor = ec;
+	message.Duration = d;
+	message.StartScale = ss;
+	message.EndScale = es;
+	message.StartColor = sc;
+	message.EndColor = ec;
 }
 
 SMessageProg DefaultMessage()
@@ -75,5 +52,5 @@ void LoadMessageProg()
 
 void DrawMessage(char* msgText)
 {
-	Mess_Message(msgText, &ms, 1, 0, -24);
+	Mess_Message(msgText, &ms.m1, 1, 0, -24);
 }

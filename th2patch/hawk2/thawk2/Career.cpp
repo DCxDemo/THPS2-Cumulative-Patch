@@ -28,7 +28,7 @@ char* AwardGoalGapMessage = (char*)0x55ca44;
 char* AwardLevelPickupMessage = (char*)0x55c994;
 char* AwardTrickGapMessage = (char*)0x55c9b4;
 
-void* Messprog_Goal = (void*)0x531d68;
+SMessageProg* Messprog_Goal = (SMessageProg*)0x531d68;
 
 
 // goal gap logic

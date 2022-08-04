@@ -121,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Checksum.cpp" />
+    <ClCompile Include="color.cpp" />
     <ClCompile Include="thawk2\Pad.cpp" />
     <ClCompile Include="thawk2\Career.cpp" />
     <ClCompile Include="thawk2\CClass.cpp" />
