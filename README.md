@@ -1,3 +1,5 @@
+![THPS2 Cumulative Patch](th2-patch-banner.png)
+
 # Cumulative Patch for Tony Hawk's Pro Skater 2 PC
 This cumulative patch allows you to run THPS2 at a modern widescreen resolution in 32 bits color depth without FPS limit.
 
