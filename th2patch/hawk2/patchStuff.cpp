@@ -1386,6 +1386,8 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 
 	{ 0x468823, Panel_Display_Hook }, // in Display
 
+	/*
+
 	{ 0x414d2d, Career_AwardGoalGap }, //in Career_AwardGap
 	{ 0x48c12d, Career_AwardGoalGap }, //in Panel_Land
 
@@ -1421,12 +1423,15 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 
 	{ 0x48975b, Career_CheckScore }, // in DisplayScore
 
+	*/
+
 	{ 0x4C1E8C, ExecuteCommandList_Hook },
 	{ 0x4C2240, ExecuteCommandList_Hook },
 	{ 0x4C2C13, ExecuteCommandList_Hook },
 	{ 0x4C52FC, ExecuteCommandList_Hook },
 	{ 0x4C5337, ExecuteCommandList_Hook },
 
+	/*
 	{ 0x414b16, Career_GapNumber },
 	{ 0x414b55, Career_GapNumber },
 
@@ -1439,8 +1444,12 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 
 	{ 0x45c01b, Career_LevelNeeds }, // in GoalScreenElement::setupMessage
 
+	*/
+
 	{ 0x48703b,	PCINPUT_ActuatorOn_Hook }, // in Pad_ActuatorOn
 	{ 0x4871d0, PCINPUT_ActuatorOff_Hook }, // in Pad_ActuatorOff
+
+		/*
 
 	{ 0x46a746, FontManager_LoadFont },
 
@@ -1466,6 +1475,8 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	{ 0x004b5db2	, Mess_Remove },
 
 	{ 0x00469fd7 ,	Mess_Update },  //in Game_Logic
+
+	*/
 
 	//{ 0x473680, CreateMessage }
 };

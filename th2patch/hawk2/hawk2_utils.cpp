@@ -13,7 +13,7 @@ void PlaySpecialSound()
 }
 
 //this should be moved to mess.h
-struct SMessageProg
+struct SMessageProgArray
 {
 	SMessageProg m1;
 	SMessageProg m2;
@@ -23,7 +23,7 @@ struct SMessageProg
 };
 
 SMessage mess;
-SMessageProg ms;
+SMessageProgArray ms;
 
 void SetupMessage(SMessageProg &message, int d, int ss, int es, ColorRGB sc, ColorRGB ec)
 {
@@ -34,9 +34,9 @@ void SetupMessage(SMessageProg &message, int d, int ss, int es, ColorRGB sc, Col
 	message.EndColor = ec;
 }
 
-SMessageProg DefaultMessage()
+SMessageProgArray DefaultMessage()
 {
-	return *(SMessageProg*)0x531CC8;
+	return *(SMessageProgArray*)0x531CC8;
 }
 
 void LoadMessageProg()
