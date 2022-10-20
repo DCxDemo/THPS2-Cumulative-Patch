@@ -566,7 +566,6 @@ bool StickInRange(int stick, int degree)
 	return degree - ANGLE_ALLOWANCE < stick && stick <= degree + ANGLE_ALLOWANCE;
 }
 
-
 void GenPsxPadData_Hook()
 {
 	if (options.XInput)
@@ -609,7 +608,7 @@ void GenPsxPadData_Hook()
 		int y = state.Gamepad.sThumbLY;
 
 		int magnitude = sqrt(x * x + y * y);
-		int stickAngle = atan2(x, y) * 180 / 3.1415f;
+		int stickAngle = atan2(x, y) * 180.f / 3.1415f;
 
 		if (magnitude > options.StickDeadzone)
 		{
@@ -1024,7 +1023,7 @@ void ParseLevels()
 	sqlite3 *db;
     sqlite3_stmt* stmt;
 	
-    if(sqlite3_open("patch/thps.db", &db) != SQLITE_OK) {
+    if(sqlite3_open(".\\patch\\thps.db", &db) != SQLITE_OK) {
 		printf("ERROR: can't open database: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
 		return;
@@ -1253,6 +1252,11 @@ void Patch()
 	Player1 = new CXBOXController(1);
 
 	//CPatch::SetChar(0x498707, 0x92);
+	
+	//https://sherief.fyi/post/tony-hawks-pro-cleanup/
+	//https://learn.microsoft.com/en-us/windows/win32/winmsg/window-styles
+	//removes title bar on win10
+	CPatch::SetInt(0x4f500A, WS_VISIBLE | WS_POPUP);
 
 	//enlarges available Fog range
 	CPatch::SetChar(0x4CC4A4, 10);
