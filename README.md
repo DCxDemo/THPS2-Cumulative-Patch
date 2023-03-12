@@ -3,8 +3,9 @@
 # Cumulative Patch for Tony Hawk's Pro Skater 2 PC
 This cumulative patch allows you to run THPS2 at a modern widescreen resolution in 32 bits color depth without FPS limit.
 
-Download latest release here: https://github.com/DCxDemo/THPS2-Cumulative-Patch/releases/latest
-
+## Installation
+Download latest patch DLL here: https://github.com/DCxDemo/THPS2-Cumulative-Patch/releases/latest \
+For thorough patch installation instructions please refer to the user guide: https://github.com/DCxDemo/THPS2-Cumulative-Patch/wiki \
 For additional support join LegacyTHPS Discord: https://discord.gg/vTWucHS
 
 ## Key features:
@@ -15,9 +16,6 @@ For additional support join LegacyTHPS Discord: https://discord.gg/vTWucHS
 * additional skater styles support
 * unlimited custom soundtrack support, R3 skips track
 * bonus: start+select on the controller quits the game instantly
-
-## Installation
-For thorough patch installation instructions please refer to the user guide: https://github.com/DCxDemo/THPS2-Cumulative-Patch/wiki
 
 ## Compilation notes
 C++ DLL project is compiled using Visual Studio 2022, toolset v143. \
