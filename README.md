@@ -16,6 +16,9 @@ For additional support join LegacyTHPS Discord: https://discord.gg/vTWucHS
 * unlimited custom soundtrack support, R3 skips track
 * bonus: start+select on the controller quits the game instantly
 
+## Installation
+For thorough patch installation instructions please refer to the user guide: https://github.com/DCxDemo/THPS2-Cumulative-Patch/wiki
+
 ## Compilation notes
 C++ DLL project is compiled using Visual Studio 2022, toolset v143. \
 Make sure $(ProjectDir) is added to Additional include directories. \
