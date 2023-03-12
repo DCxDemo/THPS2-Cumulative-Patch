@@ -4,8 +4,8 @@
 This cumulative patch allows you to run THPS2 at a modern widescreen resolution in 32 bits color depth without FPS limit.
 
 ## Installation
-Download latest patch DLL here: https://github.com/DCxDemo/THPS2-Cumulative-Patch/releases/latest \
-For thorough patch installation instructions please refer to the user guide: https://github.com/DCxDemo/THPS2-Cumulative-Patch/wiki \
+[__Download latest patch release here__](https://github.com/DCxDemo/THPS2-Cumulative-Patch/releases/latest) \
+For thorough patch installation instructions please refer to the [__user guide__](https://github.com/DCxDemo/THPS2-Cumulative-Patch/wiki). \
 For additional support join LegacyTHPS Discord: https://discord.gg/vTWucHS
 
 ## Key features:
