@@ -4,7 +4,7 @@
 #include "career.h"
 #include "mess.h"
 #include "types.h"
-#include "thawk2/SkatMgr.h"
+#include "SkatMgr.h"
 
 void* GSkaterManager = (void*)0x5691e0;
 

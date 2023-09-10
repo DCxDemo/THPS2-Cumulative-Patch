@@ -45,6 +45,7 @@
     <OutDir>$(SolutionDir)$(Configuration)\\..\\..\\</OutDir>
     <IntDir>$(Configuration)\\</IntDir>
     <TargetName>dinput</TargetName>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>

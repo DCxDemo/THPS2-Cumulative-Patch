@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "patchStuff.h"
+#include "../patchStuff.h"
 
 SLevel* Levels = (SLevel*)0x538FF8;
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "color.h"
+#include "../color.h"
 
 /*
 	Mess.h

@@ -391,7 +391,7 @@ enum class Terrain : int
 
 string kek = "Tile";
 
-signed int Ollie_Sound(Terrain terrain)
+void Ollie_Sound(Terrain terrain)
 {
 	switch (terrain)
 	{

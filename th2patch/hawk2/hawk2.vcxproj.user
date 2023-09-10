@@ -9,8 +9,8 @@
     <LocalDebuggerWorkingDirectory>$(ProjectDir)\\</LocalDebuggerWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LocalDebuggerCommand>C:\\Games\\THPS2\\thawk2.exe</LocalDebuggerCommand>
-    <LocalDebuggerWorkingDirectory>C:\\Games\\THPS2\\</LocalDebuggerWorkingDirectory>
+    <LocalDebuggerCommand>D:\Games\THPS2\Launch-F.bat</LocalDebuggerCommand>
+    <LocalDebuggerWorkingDirectory>D:\Games\THPS2\</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

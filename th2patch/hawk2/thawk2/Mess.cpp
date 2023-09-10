@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "mess.h"
 #include "mem.h"
-#include "thawk2/_old.h"
+#include "_old.h"
 
 typedef struct {
 	int R;

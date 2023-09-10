@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "types.h"
-#include "thawk2/Globals.h"
+#include "Globals.h"
 
 HWND hWnd = (HWND)0x029d4fc4;
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "thawk2/Mem.h"
+#include "Mem.h"
 
 extern int* TotalCClassUsage;
 extern int* Used;
