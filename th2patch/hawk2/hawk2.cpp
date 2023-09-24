@@ -5,6 +5,7 @@
 #include "hawk2.h"
 #include "hawk2_utils.h"
 #include "patchStuff.h"
+#include "thawk2/PKR.H"
 
 //LPDIRECTDRAW lpDD = *((LPDIRECTDRAW*)0x29D6FF8);
 
@@ -96,12 +97,15 @@ void Exit()
 	}
 }
 
+Pkr2* pkr;
+
 bool InitPatches()
 {
 	_trace("InitPatches!!\n");
 
 	srand(time(0));
 
+	
 	if (true)
 	{
 		AllocConsole();
@@ -111,10 +115,27 @@ bool InitPatches()
 		freopen("CONOUT$", "w", stderr);
 	}
 
+	/*
+	//pxr extraction example
+	pkr = new Pkr2();
+
+	if (pkr->Load(".\\all9.pkr") == PkrError::Success)
+	{
+		//create folder first
+		pkr->ExportAll(".\\test\\");
+	}
+	else
+	{
+		printf("Failed to load PKR...\n");
+		delete pkr;
+	}
+	*/
+
 	options.Load();
 
 	Patch();
 	LoadMessageProg();
+
 
 	return true;
 }

@@ -4,9 +4,9 @@
     <ShowAllFiles>true</ShowAllFiles>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LocalDebuggerCommand>$(TargetName)</LocalDebuggerCommand>
+    <LocalDebuggerCommand>D:\Games\THPS2\Launch-F.bat</LocalDebuggerCommand>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerWorkingDirectory>$(ProjectDir)\\</LocalDebuggerWorkingDirectory>
+    <LocalDebuggerWorkingDirectory>D:\Games\THPS2\</LocalDebuggerWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LocalDebuggerCommand>D:\Games\THPS2\Launch-F.bat</LocalDebuggerCommand>

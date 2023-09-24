@@ -1,3 +1,4 @@
+[Tt]emp/
 
 # visual studio junk
 .vs
@@ -26,6 +27,7 @@ _junk
 *.o
 *.obj
 *.suo
+*.exp
 
 # Precompiled Headers
 *.gch

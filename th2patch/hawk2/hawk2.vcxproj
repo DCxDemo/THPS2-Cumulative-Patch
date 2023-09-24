@@ -42,16 +42,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)$(Configuration)\\..\\..\\</OutDir>
-    <IntDir>$(Configuration)\\</IntDir>
+    <OutDir>$(SolutionDir)</OutDir>
+    <IntDir>$(SolutionDir)\temp</IntDir>
     <TargetName>dinput</TargetName>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <TargetName>dinput</TargetName>
-    <IntDir>$(SolutionDir)$(Configuration)\\temp\\</IntDir>
-    <OutDir>$(SolutionDir)$(Configuration)\\</OutDir>
+    <IntDir>$(SolutionDir)\temp</IntDir>
+    <OutDir>$(SolutionDir)</OutDir>
     <AllProjectBMIsArePublic>true</AllProjectBMIsArePublic>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -97,12 +97,14 @@
     <ClInclude Include="thawk2\Crowd.h" />
     <ClInclude Include="thawk2\Flash.h" />
     <ClInclude Include="thawk2\Globals.h" />
+    <ClInclude Include="thawk2\IO\PCIO.h" />
     <ClInclude Include="THawk2\LoadingScreen.h" />
     <ClInclude Include="thawk2\m3d.h" />
     <ClInclude Include="THawk2\Mess.h" />
     <ClInclude Include="mydebug.h" />
     <ClInclude Include="thawk2\PCInput.h" />
     <ClInclude Include="thawk2\Physics.h" />
+    <ClInclude Include="thawk2\PKR.h" />
     <ClInclude Include="THawk2\Redbook.h" />
     <ClInclude Include="lib\XInput\CXBOXController.h" />
     <ClInclude Include="hawk2.h" />
@@ -126,7 +128,7 @@
     <ClCompile Include="thawk2\Pad.cpp" />
     <ClCompile Include="thawk2\Career.cpp" />
     <ClCompile Include="thawk2\CClass.cpp" />
-    <ClCompile Include="THawk2\FileIO.h" />
+    <ClCompile Include="thawk2\IO\FileIO.h" />
     <ClCompile Include="lib\INI\IniWriter.cpp" />
     <ClCompile Include="thawk2\Globals.cpp" />
     <ClCompile Include="THawk2\Mem.h" />
@@ -150,6 +152,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="thawk2\PKR.cpp" />
+    <ClCompile Include="thawk2\Redbook.cpp" />
     <ClCompile Include="thawk2\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>

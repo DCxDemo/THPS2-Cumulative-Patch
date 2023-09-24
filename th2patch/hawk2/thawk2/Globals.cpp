@@ -28,20 +28,32 @@ int* gJoyEnabled = (int*)0x547a78;
 int* gAnalogsEnabled = (int*)0x6a1024; //??
 
 int* GLevel = (int*)0x5674F8;
+int* InFrontEnd = (int*)0x5674e0;
 
 int* SFXLEVEL = (int*)0x528CA4;
 int* XALEVEL = (int*)0x528CA8;
 
 int* Redbook_XAFadeScale = (int*)0x53458C;
+
 int* gMusicPlaying = (int*)0x5674E0;
 int* Redbook_XAFading = (int*)0x5684F8;
 int* Redbook_XACurrentChannel = (int*)0x5684E8;
 int* Redbook_XACurrentGroup = (int*)0x5684EC;
 int* Redbook_XACurrentSector = (int*)0x5684C8;
-int* Redbook_XACheckSectorOnVSync = (int*)0x5684DC;
+bool* Redbook_XACheckSectorOnVSync = (bool*)0x5684DC;
 int* Redbook_XAModeSet = (int*)0x5684DD;
 int* Redbook_XACompleteTimer = (int*)0x5684D8;
 int* Redbook_XAPaused = (int*)0x5684E0;
+bool* Redbook_XAValid = (bool*)0x5684e4;
+int* Redbook_XATryAgain = (int*)0x5684f0;
+int* Redbook_XASeeking = (int*)0x5684f4;
+
+int* Redbook_XAGroupStartingSector = (int*)0x5344fc;
+
+int* Redbook_XAStartSector = (int*)0x5684d4;
+int* Redbook_XAEndSector = (int*)0x5684c4;
+
+int* Redbook_PausedSongPos = (int*)0x55e350;
 
 int* Cheat_LevelSelect = (int*)0x567544;
-int* Cheat_Light = (int*)0x005674c8;
+int* Cheat_Light = (int*)0x5674c8;

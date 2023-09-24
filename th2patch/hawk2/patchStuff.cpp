@@ -9,7 +9,7 @@
 //thawk2 includes
 #include "thawk2/_old.h"
 #include "thawk2/Career.h"
-#include "thawk2/FileIO.h"
+#include "thawk2/IO/FileIO.h"
 #include "thawk2/Mess.h"
 #include "thawk2/Mem.h"
 #include "thawk2/Redbook.h"
@@ -18,6 +18,7 @@
 #include "thawk2/globals.h"
 #include "thawk2/Shatter.h"
 #include "thawk2/WinMain.h"
+#include "thawk2/Redbook.h"
 //patch includes
 #include "hawk2_utils.h"
 #include "cpatch.h"
@@ -54,19 +55,7 @@ int playingTrack = -1;
 string playingName;
 string playingFile;
 
-//string playlistPath = "patch\\tracklist.ini";
-string playlistPath; // = (string)(char*)0x521168;
-
-struct SONG_POS
-{
-	int Channel;
-	int Group;
-	int Sector;
-};
-
-
-typedef struct
-{
+typedef struct {
     int slot;
     string artist;
 	string title;
@@ -75,74 +64,35 @@ typedef struct
 
 Song song;
 
-int Redbook_XARemember2(SONG_POS *pos)
+void Redbook_XARemember_New(SONG_POS* pos)
 {
-	pos->Channel = *Redbook_XACurrentChannel;
-	pos->Group = *Redbook_XACurrentGroup;
-	pos->Sector = *Redbook_XACurrentSector;
-	return *Redbook_XACurrentGroup;
+	Redbook_XARemember(pos);
 }
 
-bool __cdecl Redbook_XAPause2(int a1)
+void Redbook_XAPause_New(bool state)
 {
-	bool result = *Redbook_XAPaused != 0;
-
-	if ( a1 != result )
-	{
-		result = PCMOVIE_Pause(a1);
-		*Redbook_XAPaused = a1;
-	}
-	return result;
+	Redbook_XAPause(state);
 }
 
-bool Redbook_XAStop2()
+void Redbook_XAStop_New()
 {
-	PCMOVIE_XAStop();
-	*Redbook_XACheckSectorOnVSync = 0;
-	*Redbook_XACompleteTimer = 30;
-	*Redbook_XAModeSet = 0;
-	return Redbook_XAPause2(1);
+	Redbook_XAStop();
 }
 
-
-void Redbook_XARestore2(SONG_POS *pos)
+void Redbook_XARestore2(SONG_POS* pos)
 {
-	if ( pos->Channel != *Redbook_XACurrentChannel || 
-		pos->Group != *Redbook_XACurrentGroup )
-	{
-		Redbook_XAStop2();
-		Redbook_XAPlay(pos->Channel, pos->Group);
-	}
-	else
-	{
-		*Redbook_XACurrentSector = pos->Sector;
-	}
+	Redbook_XARestore(pos);
 }
 
-
-void Redbook_XAUpdateVolume2()
+void Redbook_XAUpdateVolume_New()
 {
-	if ( *Redbook_XAFading )
-	{
-		*Redbook_XAFadeScale -= 3;
-		if ( *Redbook_XAFadeScale < 0 ) *Redbook_XAFadeScale = 0;
-    }
-
-	int v = *XALEVEL * *Redbook_XAFadeScale / 255;
-	if ( v > 255 ) v = 255;
-
-	//fout1 << v << endl;
-
-	PCMOVIE_SetXAVolume(v, v);
+	Redbook_XAUpdateVolume();
 }
 
-void Redbook_XABeginFade2()
+void Redbook_XABeginFade_New()
 {
-	if (options.Fade)
-	{
-		*Redbook_XAFadeScale = 255;
-		*Redbook_XAFading = 1;
-	}
+	if (!options.Fade) return;
+	Redbook_XABeginFade();
 }
 
 /*
@@ -194,18 +144,6 @@ void GetTotalTracks()
 */
 
 
-void* FontManager_LoadFont(char* filename)
-{
-	void* pData = Mem_New(FileIO_Open(filename), 0, 1, 0);
-	FileIO_Load(pData);
-	FileIO_Sync();
-
-	void* pFont = FontManger_LoadFont2(pData, filename);
-	Mem_Delete(pData);
-
-	return pFont;
-}
-
 void Redbook_XANextTrack2(int inc)
 {
 	if (options.totalTracks <= 0) 
@@ -213,9 +151,8 @@ void Redbook_XANextTrack2(int inc)
 		*XALEVEL = 0;
 	}
 
-	if ( *XALEVEL && (options.totalTracks > 0) )
+	if (*XALEVEL > 0)
 	{
-
 		if (!options.PlayRandom)
 		{
 			playingTrack = playingTrack + inc;
@@ -276,27 +213,22 @@ void Redbook_XANextTrack2(int inc)
 
 
 
-void PCMOVIE_XAPlay2(int a1, int a2)
+void PCMOVIE_XAPlay2(int group, int channel)
 {
-	char *cstr = &playingFile[0u];
+	int curTrack = channel + group * 8;
 
-	char lal[256] = "";
-
-	int curTrack = a2 + a1*8;
-
+	//ambience track?
 	if (curTrack < 15)
 	{
-		sprintf(lal, "%s%02i%s", "ltix", a2 + 8 * a1, ".dat");
-		PCMOVIE_StartMusic(lal);
-		return;
+		char buf[256];
+		sprintf(buf, "%s%02i%s", "ltix", curTrack, ".dat");
+		PCMOVIE_StartMusic(buf);
 	}
-
-	PCMOVIE_StartMusic(cstr);
+	else
+	{
+		PCMOVIE_StartMusic(&playingFile[0u]);
+	}
 }
-
-
-
-
 
 
 void Redirect_PCMOVIE_XAPlay()
@@ -318,7 +250,7 @@ void Redirect_Redbook_XAUpdateVolume()
 		0x4A9739   //xaupdate?
 	};
 
-	Proxify(offs, sizeof(offs) / 4, Redbook_XAUpdateVolume2);
+	Proxify(offs, sizeof(offs) / 4, Redbook_XAUpdateVolume_New);
 }
 
 void Redirect_Redbook_XABeginFade()
@@ -328,7 +260,7 @@ void Redirect_Redbook_XABeginFade()
 		0x466BA7  //game_over
 	};
 
-	Proxify(offs, sizeof(offs) / 4, Redbook_XABeginFade2);
+	Proxify(offs, sizeof(offs) / 4, Redbook_XABeginFade_New);
 }
 
 void Redirect_Redbook_XANextTrack()
@@ -347,6 +279,21 @@ void Redirect_Redbook_XANextTrack()
 }
 
 #pragma endregion 
+
+
+
+
+void* FontManager_LoadFont(char* filename)
+{
+	void* pData = Mem_New(FileIO_Open(filename), 0, 1, 0);
+	FileIO_Load(pData);
+	FileIO_Sync();
+
+	void* pFont = FontManger_LoadFont2(pData, filename);
+	Mem_Delete(pData);
+
+	return pFont;
+}
 
 
 //this is from physics.h
@@ -631,6 +578,7 @@ void GenPsxPadData_Hook()
 		if (state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) XInput_Press(PadButton::L1);
 		if (state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) XInput_Press(PadButton::R1);
 
+		//is trigger deadzone a thing?
 		if (state.Gamepad.bLeftTrigger > 1) XInput_Press(PadButton::L2);
 		if (state.Gamepad.bRightTrigger > 1) XInput_Press(PadButton::R2);
 
@@ -638,8 +586,10 @@ void GenPsxPadData_Hook()
 		if (state.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB)
 		{
 			XInput_Press(PadButton::R3);
-			if (!(Player1->GetOldState().Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB))
-				Redbook_XANextTrack2(1);
+
+			if (!*InFrontEnd && !*GamePaused)
+				if (!(Player1->GetOldState().Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB))
+					Redbook_XANextTrack2(1);
 		}
 
 		//L3
@@ -1078,35 +1028,53 @@ void ParseLevels()
 
 #pragma endregion
 
-#pragma region patch music 
+#pragma region patch music
 
 char query[256];
 
+sqlite3* db;
+sqlite3_stmt* stmt;
+
+int x = 16;
+
 void GetSong(int num)
 {
-	sqlite3 *db;
-    sqlite3_stmt* stmt;
-	
-    if(sqlite3_open("patch/music.db", &db) != SQLITE_OK) {
-		printf("ERROR: can't open database: %s\n", sqlite3_errmsg(db));
-        sqlite3_close(db);
-		return;
-    }
+	if (db == NULL)
+		if(sqlite3_open_v2("patch/music.db", &db, SQLITE_OPEN_READONLY, NULL) != SQLITE_OK) {
+			printf("ERROR: can't open database: %s\n", sqlite3_errmsg(db));
+			sqlite3_close(db);
+			return;
+		}
 
 
+	if (stmt == NULL)
+	{
+		sprintf(query,
+			"select * from ( SELECT * FROM SoundTrack where lower(game) like lower(@game) order by game, slot limit @num ) order by game desc, slot desc limit 1");
+	}
 
-	sprintf(query,
-		"select * from ( SELECT * FROM SoundTrack where lower(game) like lower('%s') order by game, slot limit %i ) order by  game desc, slot desc limit 1", 
-		options.SeparateTracks ? options.CurrentGame.c_str() : "%", num);
+	sqlite3_exec(db, "BEGIN TRANSACTION", 0, 0, 0);
 
-	printf("%s\n", query);
-
-    if(sqlite3_prepare_v2(db, query, -1, &stmt, NULL) != SQLITE_OK) {
+	if (sqlite3_prepare_v2(db, query, -1, &stmt, NULL) != SQLITE_OK) {
 		printf("ERROR: while compiling sql: %s\n", sqlite3_errmsg(db));
 		sqlite3_close(db);
 		sqlite3_finalize(stmt);
 		return;
-    }
+	}
+
+	sqlite3_bind_parameter_index(stmt, "@game");
+	sqlite3_bind_parameter_index(stmt, "@num");
+
+	if (options.SeparateTracks)
+	{
+		sqlite3_bind_text(stmt, 1, options.CurrentGame.c_str(), options.CurrentGame.length(), NULL);
+	}
+	else
+	{
+		sqlite3_bind_text(stmt, 1, "%", 1, NULL);
+	}
+
+	sqlite3_bind_int(stmt, 2, num);
 
 
 	int ret = 0;
@@ -1124,6 +1092,9 @@ void GetSong(int num)
 	    string* kek3 = new string((char*)sqlite3_column_text(stmt, 4));
 		song.filename = *kek3;
 	}
+
+	sqlite3_exec(db, "END TRANSACTION", 0, 0, 0);
+
     if(ret != SQLITE_DONE) {
         //this error handling could be done better, but it works
         printf("ERROR: while performing sql: %s\n", sqlite3_errmsg(db));
@@ -1132,7 +1103,7 @@ void GetSong(int num)
 	
 	//printf("Random song: %s - %s - %s\n", &song.artist[0], &song.title[0], &song.filename[0]);
 
-	sqlite3_close(db);
+	//sqlite3_close(db);
 }
 
 int CountSongs()
@@ -1197,6 +1168,7 @@ SGoal* GetGoal(int level, int goal)
 	return pGoal;
 }
 
+//main patches func, sets all hooks and changes vars needed
 void Patch()
 {
 	Career_ClearGameWithEveryone();
@@ -1314,6 +1286,13 @@ void Patch()
 	CPatch::SetInt((int)hW2, options.ResX);
 	CPatch::SetInt((int)hH2, options.ResY);
 
+
+	//??
+	CPatch::SetInt((int)0x524bb0, options.ResX);
+	CPatch::SetInt((int)0x524bb4, options.ResY);
+
+	
+
 	CPatch::SetInt((int)hardcodedWidth, options.ResX);
 	CPatch::SetInt((int)hardcodedHeight, options.ResY);
 
@@ -1334,6 +1313,7 @@ void Patch()
 	SetHooks();
 }
 
+
 #define HOOK_LIST_SIZE 128
 
 // list of all hooks
@@ -1342,8 +1322,8 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	//{ 0x452570, SFX_SpoolInLevelSFX },
 
 	{ 0x451F79, Redbook_XARestore2 },
-	{ 0x44F41F, Redbook_XARemember2 },
-	{ 0x4A94D5, Redbook_XARemember2 },
+	{ 0x44F41F, Redbook_XARemember_New },
+	{ 0x4A94D5, Redbook_XARemember_New },
 
 	{ 0x4CB27E, VIDMENU_Load_Hook },
 	{ 0x4CB455, VIDMENU_Load_Hook },

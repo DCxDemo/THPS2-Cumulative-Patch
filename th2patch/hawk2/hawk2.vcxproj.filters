@@ -105,6 +105,12 @@
     <ClInclude Include="thawk2\m3d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="thawk2\PKR.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thawk2\IO\PCIO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -134,7 +140,7 @@
     <ClCompile Include="THawk2\Mem.h">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="THawk2\FileIO.h">
+    <ClCompile Include="thawk2\IO\FileIO.h">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="THawk2\Pad.h">
@@ -165,6 +171,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="color.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thawk2\PKR.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thawk2\Redbook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
