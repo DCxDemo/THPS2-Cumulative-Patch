@@ -179,7 +179,7 @@ void Redbook_XANextTrack2(int inc)
 
 		//printf("Now playing: %s\n", playingName);
 
-		if (options.ShowTitle)
+		if (options.ShowTitle && options.ShowHUD)
 		{
 			//add file check here
 			//FileIO_SetSubDir("D:\\Games\\THPS2\\data\\music\\");

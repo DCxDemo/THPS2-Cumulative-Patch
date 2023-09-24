@@ -406,6 +406,9 @@ namespace th2patchlauncher
         {
             var fog = (int)(Math.Pow(fogSlider.Value, 2) / (float)fogSlider.Maximum + 10f);
 
+            if (fog < 10) fog = 10;
+            if (fog > 750) fog = 750;
+
             op.SetInt("Video", "FogScale", fog);
         }
 
