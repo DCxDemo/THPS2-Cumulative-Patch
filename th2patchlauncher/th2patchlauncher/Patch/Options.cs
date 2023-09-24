@@ -206,6 +206,8 @@ namespace th2patchlauncher
         public void Save()
         {
             var parser = new FileIniDataParser();
+
+            //https://stackoverflow.com/questions/5266069/streamwriter-and-utf-8-byte-order-marks
             parser.WriteFile(configfilename, config, new UTF8Encoding(false));
         }
 
