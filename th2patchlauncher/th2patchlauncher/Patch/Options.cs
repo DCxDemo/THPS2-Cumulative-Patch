@@ -17,27 +17,40 @@ namespace th2patchlauncher
         IniParserConfiguration cfg;
         IniData config;
 
+        private string TryGetValue(string section, string name)
+        {
+            try
+            {
+                var result = config[section][name];
+                return result;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public string GetString(string section, string name, string defaultValue)
         {
-            var result = config[section][name];
+            var result = TryGetValue(section, name);
             return result == null ? defaultValue : result;
         }
 
         public int GetInt(string section, string name, int defaultValue)
         {
-            var result = config[section][name];
+            var result = TryGetValue(section, name);
             return result == null ? defaultValue : Int32.Parse(result);
         }
 
         public bool GetBool(string section, string name, bool defaultValue)
         {
-            var result = config[section][name];
+            var result = TryGetValue(section, name);
             return result == null ? defaultValue : result == "1" ? true : false;
         }
 
         public float GetFloat(string section, string name, float defaultValue)
         {
-            var result = config[section][name];
+            var result = TryGetValue(section, name);
             return result == null ? defaultValue : Single.Parse(result);
         }
 
@@ -108,58 +121,19 @@ namespace th2patchlauncher
             if (!File.Exists(configfilename))
                 File.Create(configfilename).Close();
 
-            cfg = new IniParserConfiguration();
-            cfg.AllowKeysWithoutSection = false;
-            cfg.CaseInsensitive = true;
-            cfg.SkipInvalidLines = true;
-            cfg.CommentString = ";";
-            cfg.AllowDuplicateKeys = false;
-            cfg.AssigmentSpacer = "";
+            cfg = new IniParserConfiguration() {
+                AllowKeysWithoutSection = false,
+                CaseInsensitive = true,
+                SkipInvalidLines = true,
+                CommentString = ";",
+                AllowDuplicateKeys = false,
+                AssigmentSpacer = "",
+                AllowCreateSectionsOnFly = true,
+                ThrowExceptionsOnError = false
+            };
 
             var parser = new IniDataParser(cfg);
             config = parser.Parse(File.ReadAllText(configfilename));
-
-            ResX = Int32.Parse(config["VIDEO"]["ResX"]);
-            ResY = Int32.Parse(config["Video"]["ResY"]);
-            FogScale = Int32.Parse(config["Video"]["FogScale"]);
-
-            if (ResX == 0 || ResY == 0)
-            {
-                ResX = 1280;
-                ResY = 720;
-            }
-
-            if (FogScale < 10) FogScale = 10;
-            if (FogScale > 750) FogScale = 750;
-
-            SkipIntro = Convert.ToBoolean(Int32.Parse(config["Patch"]["SkipIntro"]));
-            Force32BPP = Convert.ToBoolean(Int32.Parse(config["Video"]["Force32bpp"]));
-            UnlockFPS = Convert.ToBoolean(Int32.Parse(config["Video"]["UnlockFPS"]));
-            AltSkins = Convert.ToBoolean(Int32.Parse(config["Patch"]["MoreSkins"]));
-            DickSwap = config["Patch"]["DickSwap"];
-            Game = config["Patch"]["Game"];
-            SeparateSave = Convert.ToBoolean(Int32.Parse(config["Patch"]["SeparateSaves"]));
-            UserPatch = GetBool("Patch", "UserPatch", false);
-
-            MusicAmbience = Convert.ToBoolean(Int32.Parse(config["Music"]["PlayAmbience"]));
-            MusicFade = Convert.ToBoolean(Int32.Parse(config["Music"]["Fade"]));
-            MusicTitle = Convert.ToBoolean(Int32.Parse(config["Music"]["ShowTitle"]));
-            MusicRandom = Convert.ToBoolean(Int32.Parse(config["Music"]["Random"]));
-            SeparateTracks = Convert.ToBoolean(Int32.Parse(config["Music"]["SeparateTracks"]));
-
-            BigDropEnabled = Convert.ToBoolean(Int32.Parse(config["Input"]["BigDrop"]));
-            XInputEnabled = Convert.ToBoolean(Int32.Parse(config["Input"]["XInput"]));
-            Vibration = Convert.ToBoolean(Int32.Parse(config["Input"]["Vibration"]));
-
-            CultureInfo ci = (CultureInfo)CultureInfo.CurrentCulture.Clone();
-            ci.NumberFormat.NumberDecimalSeparator = ".";
-            CultureInfo.CurrentCulture = ci;
-
-            ZoomFactor = (int)(Single.Parse(config["Video"]["FOV"]) * 100);
-
-            DrawShadow = Convert.ToBoolean(Int32.Parse(config["Video"]["DrawShadow"]));
-            ShowHUD = Convert.ToBoolean(Int32.Parse(config["Video"]["ShowHUD"]));
-            DisableNewTex = Convert.ToBoolean(Int32.Parse(config["Video"]["DisableNewTex"]));
 
             /*
             //what a mess

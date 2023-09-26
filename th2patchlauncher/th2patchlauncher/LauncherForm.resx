@@ -133,13 +133,13 @@
     <value>3, 2, 3, 2</value>
   </data>
   <data name="skipIntroBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>106, 17</value>
+    <value>97, 17</value>
   </data>
   <data name="skipIntroBox.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
   </data>
   <data name="skipIntroBox.Text" xml:space="preserve">
-    <value>Skip intro movies</value>
+    <value>Disable movies</value>
   </data>
   <data name="&gt;&gt;skipIntroBox.Name" xml:space="preserve">
     <value>skipIntroBox</value>
@@ -1282,7 +1282,7 @@
     <value>4</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
-    <value>THPS2 Cumulative patch
+    <value>THPS2 Cumulative patch r5
 2016-2023, DCxDemo.
 
 Thanks everyone at thps-mods.com and
@@ -1311,7 +1311,7 @@ and bug reports.</value>
     <value>NoControl</value>
   </data>
   <data name="linkLabel3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 118</value>
+    <value>6, 125</value>
   </data>
   <data name="linkLabel3.Size" type="System.Drawing.Size, System.Drawing">
     <value>277, 13</value>
@@ -1341,7 +1341,7 @@ and bug reports.</value>
     <value>NoControl</value>
   </data>
   <data name="linkLabel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>65, 138</value>
+    <value>67, 150</value>
   </data>
   <data name="linkLabel2.Size" type="System.Drawing.Size, System.Drawing">
     <value>148, 13</value>
