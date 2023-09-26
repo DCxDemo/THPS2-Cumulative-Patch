@@ -37,6 +37,7 @@ public:
 	int StickDeadzone = DEFAULT_DEADZONE;
 	bool Vibration = true;
 	bool BigDrop = true;
+	bool Manuals = true;
 
 	//music
 	bool Fade = true;

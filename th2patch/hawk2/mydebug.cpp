@@ -6,6 +6,7 @@
 #include "thawk2/Mess.h"
 #include "thawk2/globals.h"
 #include "thawk2/WinMain.h"
+#include "thawk2/CBruce.h"
 
 #include "patchStuff.h"
 
@@ -43,6 +44,17 @@ void PrintDebugStuff()
 	}
 	else
 	{
+		if (!*InFrontEnd)
+		{
+			/*
+			int* test = CBruce_GetTestValueInt( (int*)(*(int*)GSkater) , 0x0100);
+			//*test = 64;
+
+			sprintf(debugText, "test: %08X", *test);
+			DebugMessage(debugText, 10, 10);
+			*/
+		}
+
 		//sprintf(debugText, "test: %i", *GGame);
 		//DebugMessage(debugText, 512 / 2, 20);
 

@@ -89,6 +89,7 @@ namespace th2patchlauncher
         public bool MusicAmbience = true;
         public string DickSwap = "";
 
+        public bool ManualsEnabled = true;
         public bool BigDropEnabled = true;
         public bool Vibration = true;
         public bool XInputEnabled = true;

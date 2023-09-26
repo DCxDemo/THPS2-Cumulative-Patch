@@ -1044,6 +1044,36 @@
   <data name="&gt;&gt;musicTab.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="manualsBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="manualsBox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="manualsBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>151, 30</value>
+  </data>
+  <data name="manualsBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>101, 17</value>
+  </data>
+  <data name="manualsBox.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="manualsBox.Text" xml:space="preserve">
+    <value>Enable manuals</value>
+  </data>
+  <data name="&gt;&gt;manualsBox.Name" xml:space="preserve">
+    <value>manualsBox</value>
+  </data>
+  <data name="&gt;&gt;manualsBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;manualsBox.Parent" xml:space="preserve">
+    <value>inputTab</value>
+  </data>
+  <data name="&gt;&gt;manualsBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="drawshadowBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1072,7 +1102,7 @@
     <value>inputTab</value>
   </data>
   <data name="&gt;&gt;drawshadowBox.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="psxtexBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1099,7 +1129,7 @@
     <value>inputTab</value>
   </data>
   <data name="&gt;&gt;psxtexBox.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="drawhudBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1126,7 +1156,7 @@
     <value>inputTab</value>
   </data>
   <data name="&gt;&gt;drawhudBox.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="xinputBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1156,7 +1186,7 @@
     <value>inputTab</value>
   </data>
   <data name="&gt;&gt;xinputBox.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="bigDropBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1183,7 +1213,7 @@
     <value>inputTab</value>
   </data>
   <data name="&gt;&gt;bigDropBox.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="vibrationBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1210,7 +1240,7 @@
     <value>inputTab</value>
   </data>
   <data name="&gt;&gt;vibrationBox.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="inputTab.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
@@ -1519,6 +1549,9 @@ and bug reports.</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 8.25pt</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 2, 3, 2</value>

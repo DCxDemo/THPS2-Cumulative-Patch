@@ -41,6 +41,7 @@ namespace th2patchlauncher
             this.gameBox = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.videoTab = new System.Windows.Forms.TabPage();
+            this.rendererBox = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.fogSlider = new System.Windows.Forms.TrackBar();
             this.resBox = new System.Windows.Forms.ComboBox();
@@ -74,7 +75,7 @@ namespace th2patchlauncher
             this.quitButton = new System.Windows.Forms.Button();
             this.launchButton = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.rendererBox = new System.Windows.Forms.CheckBox();
+            this.manualsBox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.patchTab.SuspendLayout();
             this.videoTab.SuspendLayout();
@@ -191,6 +192,13 @@ namespace th2patchlauncher
             resources.ApplyResources(this.videoTab, "videoTab");
             this.videoTab.Name = "videoTab";
             this.videoTab.UseVisualStyleBackColor = true;
+            // 
+            // rendererBox
+            // 
+            resources.ApplyResources(this.rendererBox, "rendererBox");
+            this.rendererBox.Name = "rendererBox";
+            this.rendererBox.UseVisualStyleBackColor = true;
+            this.rendererBox.CheckedChanged += new System.EventHandler(this.rendererBox_CheckedChanged);
             // 
             // label2
             // 
@@ -341,6 +349,7 @@ namespace th2patchlauncher
             // 
             // inputTab
             // 
+            this.inputTab.Controls.Add(this.manualsBox);
             this.inputTab.Controls.Add(this.drawshadowBox);
             this.inputTab.Controls.Add(this.psxtexBox);
             this.inputTab.Controls.Add(this.drawhudBox);
@@ -451,12 +460,12 @@ namespace th2patchlauncher
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
             // 
-            // rendererBox
+            // manualsBox
             // 
-            resources.ApplyResources(this.rendererBox, "rendererBox");
-            this.rendererBox.Name = "rendererBox";
-            this.rendererBox.UseVisualStyleBackColor = true;
-            this.rendererBox.CheckedChanged += new System.EventHandler(this.rendererBox_CheckedChanged);
+            resources.ApplyResources(this.manualsBox, "manualsBox");
+            this.manualsBox.Name = "manualsBox";
+            this.manualsBox.UseVisualStyleBackColor = true;
+            this.manualsBox.CheckedChanged += new System.EventHandler(this.manualsBox_CheckedChanged);
             // 
             // LauncherForm
             // 
@@ -535,6 +544,7 @@ namespace th2patchlauncher
         private LinkLabel linkLabel1;
         private Label label5;
         private CheckBox rendererBox;
+        private CheckBox manualsBox;
     }
 }
 

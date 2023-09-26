@@ -116,6 +116,10 @@ static const PCMOVIE_XADone_t PCMOVIE_XADone = (PCMOVIE_XADone_t)0x4e45b0;
 typedef bool(__cdecl* PCMOVIE_XAPlay_t)(int group, int channel);
 static const PCMOVIE_XAPlay_t PCMOVIE_XAPlay = (PCMOVIE_XAPlay_t)0x4e44e0;
 
+typedef bool(__cdecl* PCMOVIE_PlayMovieFile_t)(int group, int channel);
+static const PCMOVIE_PlayMovieFile_t PCMOVIE_PlayMovieFile = (PCMOVIE_PlayMovieFile_t)0x004e3090;
+
+
 
 typedef void(*D3DPOLY_DrawOTag_t)(void* ot);
 /// This function renders PSX OT list.

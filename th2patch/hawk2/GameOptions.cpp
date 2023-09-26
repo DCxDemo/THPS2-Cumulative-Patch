@@ -44,6 +44,7 @@ void GameOptions::Load()
 	StickDeadzone = ini->ReadInt("INPUT", "StickDeadzone", DEFAULT_DEADZONE);
 	Vibration = ini->ReadBool("INPUT", "Vibration", true);
 	BigDrop = ini->ReadBool("INPUT", "BigDrop", true);
+	Manuals = ini->ReadBool("Input", "Manuals", true);
 
 	//music section
 	PlayRandom = ini->ReadBool("MUSIC", "Random", true);
@@ -51,6 +52,7 @@ void GameOptions::Load()
 	ShowTitle = ini->ReadBool("MUSIC", "ShowTitle", true);
 	PlayAmbience = ini->ReadBool("MUSIC", "PlayAmbience", true);
 	SeparateTracks = ini->ReadBool("MUSIC", "SeparateTracks", true);
+
 
 	delete ini;
 
@@ -90,6 +92,7 @@ void GameOptions::Save()
 	ini->WriteInt("INPUT", "StickDeadzone", StickDeadzone);
 	ini->WriteInt("INPUT", "Vibration", Vibration);
 	ini->WriteInt("INPUT", "BigDrop", BigDrop);
+	ini->WriteInt("INPUT", "Manuals", Manuals);
 
 	//music section
 	ini->WriteInt("MUSIC", "Random", PlayRandom);

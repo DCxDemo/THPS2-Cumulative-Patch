@@ -19,12 +19,14 @@
 #include "thawk2/Shatter.h"
 #include "thawk2/WinMain.h"
 #include "thawk2/Redbook.h"
+#include "thawk2/Physics.h"
 //patch includes
 #include "hawk2_utils.h"
 #include "cpatch.h"
 #include "GameOptions.h"
 #include "mydebug.h"
 #include "patchStuff.h"
+#include "thawk2/CBruce.h"
 
 
 //the old bigass all-in-one file, that should be cut into pizzas. this is my plastic fork!
@@ -536,8 +538,9 @@ void GenPsxPadData_Hook()
 		{
 			Player1->Vibrate(0, 0, options.Vibration);
 			exit(0);
-		}
-
+		}			
+		
+		
 		//process buttons
 		if (Player1->PressedA()) XInput_Press(PadButton::Cross);
 		if (Player1->PressedB()) XInput_Press(PadButton::Circle);
@@ -595,6 +598,9 @@ void GenPsxPadData_Hook()
 		//L3
 		if (state.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_THUMB)
 		{
+			//CVector* pos = CBruce_GetPosition((int*)(*(int*)GSkater));
+			//pos->Y -= state.Gamepad.sThumbRY * 10;
+
 			XInput_Press(PadButton::L3);
 		}
 	}
@@ -1171,10 +1177,18 @@ SGoal* GetGoal(int level, int goal)
 //main patches func, sets all hooks and changes vars needed
 void Patch()
 {
-	Career_ClearGameWithEveryone();
+	//doesnt seem to work
+	//Career_ClearGameWithEveryone();
 
 	if (!options.BigDrop)
-		CPatch::Nop(0x48F419, 0x48F430 - 0x48F419); //nops whole bail/award big drop path
+		//nops entire bail/award big drop path, since its a part of a func, not a separate one
+		CPatch::Nop(0x48F419, 0x48F430 - 0x48F419); 
+
+	if (!options.Manuals)
+	{
+		//set instant return from thiscall MaybeManual 
+		CPatch::SetInt((int)MaybeManual, 0x000008c2);
+	}
 
 	if (options.UnlockFPS)
 	{
@@ -1187,7 +1201,10 @@ void Patch()
 	}
 
 	if (options.SkipIntro)
-		CPatch::Nop(0x46A732, 5); //nops IntroMovies func
+	{
+		CPatch::SetChar((int)PCMOVIE_PlayMovieFile, 0xC3);
+		//CPatch::Nop(0x46A732, 5); //nops IntroMovies func
+	}
 
 	if (options.AddSkins)
 		PatchSkaters();  // adds skater styles
@@ -1202,6 +1219,7 @@ void Patch()
 
 	/*
 	SLevel* level = &Levels[0];
+
 	level->trgfile = "skware_t";
 	level->shortname = "ware";
 	level->subname = "Woodland Hills";
@@ -1213,8 +1231,8 @@ void Patch()
 	goal->stringParam = "boxes";
 
 	goal = GetGoal(0, 6);
-	goal->goalText = "50-50 the big rail";
-	goal->stringParam = "50-50";
+	goal->goalText = "Bluntslide the big rail";
+	goal->stringParam = "Bluntslide";
 
 	goal = GetGoal(0, 7);
 	goal->goalText = "Hit 3 transfers";
@@ -1230,7 +1248,7 @@ void Patch()
 	//removes title bar on win10
 	CPatch::SetInt(0x4f500A, WS_VISIBLE | WS_POPUP);
 
-	//enlarges available Fog range
+	//enlarges available Fog range in VIDMENU_Load
 	CPatch::SetChar(0x4CC4A4, 10);
 	CPatch::SetInt(0x4CC49C, 750);
 
@@ -1241,7 +1259,7 @@ void Patch()
 	//editor limit test
 	CPatch::SetInt(0x4371f1, 0);
 
-	//should remove polylimit error
+	//supposed to remove polylimit error
 	int* polyLimit = (int*)0x4301EF;
 	int polyLimitVal = *polyLimit;
 	CPatch::SetInt(0x4301EF, polyLimitVal + 0x10000);
@@ -1312,6 +1330,8 @@ void Patch()
 
 	SetHooks();
 }
+
+
 
 
 #define HOOK_LIST_SIZE 128

@@ -156,6 +156,8 @@ namespace th2patchlauncher
             drawshadowBox.Checked = op.GetBool("Video", "DrawShadow", true);
             drawhudBox.Checked = op.GetBool("Video", "ShowHUD", true);
 
+            manualsBox.Checked = op.GetBool("Input", "Manuals", true);
+
             this.Visible = true;
         }
 
@@ -310,6 +312,8 @@ namespace th2patchlauncher
         private void force32box_CheckedChanged(object sender, EventArgs e)
         {
             op.SetBool("Video", "Force32Bpp", (sender as CheckBox).Checked);
+
+            if ((sender as CheckBox).Checked) rendererBox.Checked = false;
         }
 
         #region [Music tab checkboxes]
@@ -436,6 +440,13 @@ namespace th2patchlauncher
         private void rendererBox_CheckedChanged(object sender, EventArgs e)
         {
             op.SetString("Video", "Renderer", (sender as CheckBox).Checked ? "Software" : "Hardware");
+
+            if ((sender as CheckBox).Checked) force32box.Checked = false;
+        }
+
+        private void manualsBox_CheckedChanged(object sender, EventArgs e)
+        {
+            op.SetBool("Input", "Manuals", (sender as CheckBox).Checked);
         }
     }
 }
