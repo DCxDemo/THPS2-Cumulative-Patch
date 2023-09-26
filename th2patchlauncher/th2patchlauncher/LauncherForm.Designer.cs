@@ -37,7 +37,6 @@ namespace th2patchlauncher
             this.swapBox = new System.Windows.Forms.ComboBox();
             this.separateSaveBox = new System.Windows.Forms.CheckBox();
             this.altSkinsBox = new System.Windows.Forms.CheckBox();
-            this.userPatchBox = new System.Windows.Forms.CheckBox();
             this.gameBox = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.videoTab = new System.Windows.Forms.TabPage();
@@ -61,6 +60,7 @@ namespace th2patchlauncher
             this.titleBox = new System.Windows.Forms.CheckBox();
             this.randomBox = new System.Windows.Forms.CheckBox();
             this.inputTab = new System.Windows.Forms.TabPage();
+            this.manualsBox = new System.Windows.Forms.CheckBox();
             this.drawshadowBox = new System.Windows.Forms.CheckBox();
             this.psxtexBox = new System.Windows.Forms.CheckBox();
             this.drawhudBox = new System.Windows.Forms.CheckBox();
@@ -75,7 +75,8 @@ namespace th2patchlauncher
             this.quitButton = new System.Windows.Forms.Button();
             this.launchButton = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.manualsBox = new System.Windows.Forms.CheckBox();
+            this.userPatchBox = new System.Windows.Forms.CheckBox();
+            this.skyBox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.patchTab.SuspendLayout();
             this.videoTab.SuspendLayout();
@@ -92,7 +93,7 @@ namespace th2patchlauncher
             resources.ApplyResources(this.skipIntroBox, "skipIntroBox");
             this.skipIntroBox.Name = "skipIntroBox";
             this.skipIntroBox.UseVisualStyleBackColor = true;
-            this.skipIntroBox.CheckedChanged += new System.EventHandler(this.skipIntroBox_CheckedChanged);
+            this.skipIntroBox.CheckStateChanged += new System.EventHandler(this.skipIntroBox_CheckedChanged);
             // 
             // tabControl1
             // 
@@ -139,21 +140,14 @@ namespace th2patchlauncher
             resources.ApplyResources(this.separateSaveBox, "separateSaveBox");
             this.separateSaveBox.Name = "separateSaveBox";
             this.separateSaveBox.UseVisualStyleBackColor = true;
-            this.separateSaveBox.CheckedChanged += new System.EventHandler(this.separateSaveBox_CheckedChanged);
+            this.separateSaveBox.CheckStateChanged += new System.EventHandler(this.separateSaveBox_CheckedChanged);
             // 
             // altSkinsBox
             // 
             resources.ApplyResources(this.altSkinsBox, "altSkinsBox");
             this.altSkinsBox.Name = "altSkinsBox";
             this.altSkinsBox.UseVisualStyleBackColor = true;
-            this.altSkinsBox.CheckedChanged += new System.EventHandler(this.altSkinsBox_CheckedChanged);
-            // 
-            // userPatchBox
-            // 
-            resources.ApplyResources(this.userPatchBox, "userPatchBox");
-            this.userPatchBox.Name = "userPatchBox";
-            this.userPatchBox.UseVisualStyleBackColor = true;
-            this.userPatchBox.CheckedChanged += new System.EventHandler(this.userPatchBox_CheckedChanged);
+            this.altSkinsBox.CheckStateChanged += new System.EventHandler(this.altSkinsBox_CheckedChanged);
             // 
             // gameBox
             // 
@@ -198,7 +192,7 @@ namespace th2patchlauncher
             resources.ApplyResources(this.rendererBox, "rendererBox");
             this.rendererBox.Name = "rendererBox";
             this.rendererBox.UseVisualStyleBackColor = true;
-            this.rendererBox.CheckedChanged += new System.EventHandler(this.rendererBox_CheckedChanged);
+            this.rendererBox.CheckStateChanged += new System.EventHandler(this.rendererBox_CheckedChanged);
             // 
             // label2
             // 
@@ -263,21 +257,21 @@ namespace th2patchlauncher
             resources.ApplyResources(this.overrideFOVbox, "overrideFOVbox");
             this.overrideFOVbox.Name = "overrideFOVbox";
             this.overrideFOVbox.UseVisualStyleBackColor = true;
-            this.overrideFOVbox.CheckedChanged += new System.EventHandler(this.overrideFOVbox_CheckedChanged);
+            this.overrideFOVbox.CheckStateChanged += new System.EventHandler(this.overrideFOVbox_CheckedChanged);
             // 
             // force32box
             // 
             resources.ApplyResources(this.force32box, "force32box");
             this.force32box.Name = "force32box";
             this.force32box.UseVisualStyleBackColor = true;
-            this.force32box.CheckedChanged += new System.EventHandler(this.force32box_CheckedChanged);
+            this.force32box.CheckStateChanged += new System.EventHandler(this.force32box_CheckedChanged);
             // 
             // unlockFPSbox
             // 
             resources.ApplyResources(this.unlockFPSbox, "unlockFPSbox");
             this.unlockFPSbox.Name = "unlockFPSbox";
             this.unlockFPSbox.UseVisualStyleBackColor = true;
-            this.unlockFPSbox.CheckedChanged += new System.EventHandler(this.unlockFPSbox_CheckedChanged);
+            this.unlockFPSbox.CheckStateChanged += new System.EventHandler(this.unlockFPSbox_CheckedChanged);
             // 
             // detectButton
             // 
@@ -317,38 +311,39 @@ namespace th2patchlauncher
             resources.ApplyResources(this.separateTracksBox, "separateTracksBox");
             this.separateTracksBox.Name = "separateTracksBox";
             this.separateTracksBox.UseVisualStyleBackColor = true;
-            this.separateTracksBox.CheckedChanged += new System.EventHandler(this.separateTracksBox_CheckedChanged);
+            this.separateTracksBox.CheckStateChanged += new System.EventHandler(this.separateTracksBox_CheckedChanged);
             // 
             // ambienceBox
             // 
             resources.ApplyResources(this.ambienceBox, "ambienceBox");
             this.ambienceBox.Name = "ambienceBox";
             this.ambienceBox.UseVisualStyleBackColor = true;
-            this.ambienceBox.CheckedChanged += new System.EventHandler(this.ambienceBox_CheckedChanged);
+            this.ambienceBox.CheckStateChanged += new System.EventHandler(this.ambienceBox_CheckedChanged);
             // 
             // fadeBox
             // 
             resources.ApplyResources(this.fadeBox, "fadeBox");
             this.fadeBox.Name = "fadeBox";
             this.fadeBox.UseVisualStyleBackColor = true;
-            this.fadeBox.CheckedChanged += new System.EventHandler(this.fadeBox_CheckedChanged);
+            this.fadeBox.CheckStateChanged += new System.EventHandler(this.fadeBox_CheckedChanged);
             // 
             // titleBox
             // 
             resources.ApplyResources(this.titleBox, "titleBox");
             this.titleBox.Name = "titleBox";
             this.titleBox.UseVisualStyleBackColor = true;
-            this.titleBox.CheckedChanged += new System.EventHandler(this.titleBox_CheckedChanged);
+            this.titleBox.CheckStateChanged += new System.EventHandler(this.titleBox_CheckedChanged);
             // 
             // randomBox
             // 
             resources.ApplyResources(this.randomBox, "randomBox");
             this.randomBox.Name = "randomBox";
             this.randomBox.UseVisualStyleBackColor = true;
-            this.randomBox.CheckedChanged += new System.EventHandler(this.randomBox_CheckedChanged);
+            this.randomBox.CheckStateChanged += new System.EventHandler(this.randomBox_CheckedChanged);
             // 
             // inputTab
             // 
+            this.inputTab.Controls.Add(this.skyBox);
             this.inputTab.Controls.Add(this.manualsBox);
             this.inputTab.Controls.Add(this.drawshadowBox);
             this.inputTab.Controls.Add(this.psxtexBox);
@@ -359,6 +354,13 @@ namespace th2patchlauncher
             resources.ApplyResources(this.inputTab, "inputTab");
             this.inputTab.Name = "inputTab";
             this.inputTab.UseVisualStyleBackColor = true;
+            // 
+            // manualsBox
+            // 
+            resources.ApplyResources(this.manualsBox, "manualsBox");
+            this.manualsBox.Name = "manualsBox";
+            this.manualsBox.UseVisualStyleBackColor = true;
+            this.manualsBox.CheckStateChanged += new System.EventHandler(this.manualsBox_CheckedChanged);
             // 
             // drawshadowBox
             // 
@@ -460,12 +462,19 @@ namespace th2patchlauncher
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
             // 
-            // manualsBox
+            // userPatchBox
             // 
-            resources.ApplyResources(this.manualsBox, "manualsBox");
-            this.manualsBox.Name = "manualsBox";
-            this.manualsBox.UseVisualStyleBackColor = true;
-            this.manualsBox.CheckedChanged += new System.EventHandler(this.manualsBox_CheckedChanged);
+            resources.ApplyResources(this.userPatchBox, "userPatchBox");
+            this.userPatchBox.Name = "userPatchBox";
+            this.userPatchBox.UseVisualStyleBackColor = true;
+            this.userPatchBox.CheckStateChanged += new System.EventHandler(this.userPatchBox_CheckedChanged);
+            // 
+            // skyBox
+            // 
+            resources.ApplyResources(this.skyBox, "skyBox");
+            this.skyBox.Name = "skyBox";
+            this.skyBox.UseVisualStyleBackColor = true;
+            this.skyBox.CheckedChanged += new System.EventHandler(this.skyBox_CheckedChanged);
             // 
             // LauncherForm
             // 
@@ -507,7 +516,6 @@ namespace th2patchlauncher
         private TabControl tabControl1;
         private TabPage patchTab;
         private CheckBox altSkinsBox;
-        private CheckBox userPatchBox;
         private ComboBox gameBox;
         private Label label3;
         private TabPage videoTab;
@@ -545,6 +553,8 @@ namespace th2patchlauncher
         private Label label5;
         private CheckBox rendererBox;
         private CheckBox manualsBox;
+        private CheckBox userPatchBox;
+        private CheckBox skyBox;
     }
 }
 

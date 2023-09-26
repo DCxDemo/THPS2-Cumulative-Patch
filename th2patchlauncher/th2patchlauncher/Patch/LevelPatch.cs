@@ -42,7 +42,6 @@ namespace th2patchlauncher
                         // System.Windows.Forms.MessageBox.Show(fn);
 
                         if (File.Exists(fn)) m.WriteFile(offset, fn);
-
                         return;
                     }
                     catch
@@ -190,11 +189,14 @@ namespace th2patchlauncher
             try
             {
                 Mem mem = new Mem(pr);
-                foreach (Level l in levels)
-                    if (currentgame == l.game) l.ApplyPatch(mem);
 
                 foreach (Level l in levels)
-                    if (l.game == "GLOBAL") l.ApplyPatch(mem);
+                    if (currentgame == l.game)
+                        l.ApplyPatch(mem);
+
+                foreach (Level l in levels)
+                    if (l.game == "GLOBAL")
+                        l.ApplyPatch(mem);
             }
             catch (Exception ex) 
             {

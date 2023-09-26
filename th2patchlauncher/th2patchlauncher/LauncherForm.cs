@@ -74,6 +74,7 @@ namespace th2patchlauncher
         private void UpdateControls()
         {
             gameBox.Text = op.GetString("Patch", "Game", "THPS2");
+            op.Game = gameBox.Text;
 
             if (!File.Exists(Path.Combine(".\\", patchPath, levelsFile)))
             {
@@ -81,7 +82,6 @@ namespace th2patchlauncher
                 op.SetString("Patch", "Game", "THPS2");
                 gameBox.Enabled = false;
             }
-
 
             userPatchBox.Checked = op.GetBool("Patch", "UserPatch", true);
 
@@ -155,6 +155,8 @@ namespace th2patchlauncher
             psxtexBox.Checked = op.GetBool("Video", "DisableNewtex", false);
             drawshadowBox.Checked = op.GetBool("Video", "DrawShadow", true);
             drawhudBox.Checked = op.GetBool("Video", "ShowHUD", true);
+
+            skyBox.Checked = op.GetBool("Patch", "DisableSky", false);
 
             manualsBox.Checked = op.GetBool("Input", "Manuals", true);
 
@@ -383,6 +385,7 @@ namespace th2patchlauncher
 
         private void altSkinsBox_CheckedChanged(object sender, EventArgs e)
         {
+            op.SetBool("Patch", "MoreSkins", (sender as CheckBox).Checked);
             swapBox.Enabled = altSkinsBox.Checked;
         }
 
@@ -447,6 +450,11 @@ namespace th2patchlauncher
         private void manualsBox_CheckedChanged(object sender, EventArgs e)
         {
             op.SetBool("Input", "Manuals", (sender as CheckBox).Checked);
+        }
+
+        private void skyBox_CheckedChanged(object sender, EventArgs e)
+        {
+            op.SetBool("Patch", "DisableSky", (sender as CheckBox).Checked);
         }
     }
 }

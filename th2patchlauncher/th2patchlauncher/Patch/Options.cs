@@ -17,40 +17,38 @@ namespace th2patchlauncher
         IniParserConfiguration cfg;
         IniData config;
 
-        private string TryGetValue(string section, string name)
+        private string TryGetValue(string section, string name, string defaultValue)
         {
-            try
+            var result = config[section][name];
+            if (result == null)
             {
-                var result = config[section][name];
-                return result;
+                config[section][name] = defaultValue;
+                result = defaultValue;
             }
-            catch
-            {
-                return null;
-            }
+            return result;
         }
 
         public string GetString(string section, string name, string defaultValue)
         {
-            var result = TryGetValue(section, name);
+            var result = TryGetValue(section, name, defaultValue);
             return result == null ? defaultValue : result;
         }
 
         public int GetInt(string section, string name, int defaultValue)
         {
-            var result = TryGetValue(section, name);
+            var result = TryGetValue(section, name, defaultValue.ToString());
             return result == null ? defaultValue : Int32.Parse(result);
         }
 
         public bool GetBool(string section, string name, bool defaultValue)
         {
-            var result = TryGetValue(section, name);
+            var result = TryGetValue(section, name, defaultValue ? "1" : "0");
             return result == null ? defaultValue : result == "1" ? true : false;
         }
 
         public float GetFloat(string section, string name, float defaultValue)
         {
-            var result = TryGetValue(section, name);
+            var result = TryGetValue(section, name, defaultValue.ToString());
             return result == null ? defaultValue : Single.Parse(result);
         }
 

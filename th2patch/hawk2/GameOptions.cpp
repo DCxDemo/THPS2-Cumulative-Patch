@@ -21,10 +21,11 @@ void GameOptions::Load()
 
 	//patch section
 	CurrentGame = ini->ReadString("PATCH", "Game", "THPS2");
-	SeparateSaves = ini->ReadBool("PATCH", "SeparateSaves", true);
-	SkipIntro = ini->ReadBool("PATCH", "SkipIntro", false);
-	AddSkins = ini->ReadBool("PATCH", "MoreSkins", false);
 	DickSwap = ini->ReadString("PATCH", "DickSwap", "");
+	SkipIntro = ini->ReadBool("PATCH", "SkipIntro", false);
+	SeparateSaves = ini->ReadBool("PATCH", "SeparateSaves", true);
+	AddSkins = ini->ReadBool("PATCH", "MoreSkins", false);
+
 	FreeStats = ini->ReadBool("PATCH", "FreeStats", false);
 	DisableVisToggle = ini->ReadBool("PATCH", "DisableVisToggle", false);
 	DisableSky = ini->ReadBool("PATCH", "DisableSky", false);

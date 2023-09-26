@@ -39,7 +39,7 @@ namespace th2patchlauncher
                     foundTH2 = false;
                 }
 
-               // System.Threading.Thread.Sleep(100);
+               System.Threading.Thread.Sleep(100);
             }
 
             lp.Patch(op.ExeName);
