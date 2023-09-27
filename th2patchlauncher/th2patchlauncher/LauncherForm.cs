@@ -17,7 +17,7 @@ namespace th2patchlauncher
         string userFile = "userpatch.ini";
         string hawkFile = "THawk2.exe";
         string configFile = "th2_opt.cfg";
-        string patchName = "input.dll";
+        string patchName = "dinput.dll";
 
         Options op;
 
@@ -122,6 +122,9 @@ namespace th2patchlauncher
                 default: gameBox.SelectedIndex = 0; break;
             }
 
+
+            op.ResX = op.GetInt("Video", "ResX", 1280);
+            op.ResY = op.GetInt("Video", "ResY", 1280);
 
             //video tab
             ResXbox.Text = op.GetString("Video", "ResX", "1280");

@@ -33,10 +33,11 @@ namespace th2patchlauncher
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LauncherForm));
             this.skipIntroBox = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.patchTab = new System.Windows.Forms.TabPage();
+            this.generalTab = new System.Windows.Forms.TabPage();
             this.swapBox = new System.Windows.Forms.ComboBox();
             this.separateSaveBox = new System.Windows.Forms.CheckBox();
             this.altSkinsBox = new System.Windows.Forms.CheckBox();
+            this.userPatchBox = new System.Windows.Forms.CheckBox();
             this.gameBox = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.videoTab = new System.Windows.Forms.TabPage();
@@ -59,7 +60,8 @@ namespace th2patchlauncher
             this.fadeBox = new System.Windows.Forms.CheckBox();
             this.titleBox = new System.Windows.Forms.CheckBox();
             this.randomBox = new System.Windows.Forms.CheckBox();
-            this.inputTab = new System.Windows.Forms.TabPage();
+            this.patchTab = new System.Windows.Forms.TabPage();
+            this.skyBox = new System.Windows.Forms.CheckBox();
             this.manualsBox = new System.Windows.Forms.CheckBox();
             this.drawshadowBox = new System.Windows.Forms.CheckBox();
             this.psxtexBox = new System.Windows.Forms.CheckBox();
@@ -75,15 +77,13 @@ namespace th2patchlauncher
             this.quitButton = new System.Windows.Forms.Button();
             this.launchButton = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.userPatchBox = new System.Windows.Forms.CheckBox();
-            this.skyBox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
-            this.patchTab.SuspendLayout();
+            this.generalTab.SuspendLayout();
             this.videoTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fogSlider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fovSlider)).BeginInit();
             this.musicTab.SuspendLayout();
-            this.inputTab.SuspendLayout();
+            this.patchTab.SuspendLayout();
             this.aboutTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -98,26 +98,26 @@ namespace th2patchlauncher
             // tabControl1
             // 
             resources.ApplyResources(this.tabControl1, "tabControl1");
-            this.tabControl1.Controls.Add(this.patchTab);
+            this.tabControl1.Controls.Add(this.generalTab);
             this.tabControl1.Controls.Add(this.videoTab);
             this.tabControl1.Controls.Add(this.musicTab);
-            this.tabControl1.Controls.Add(this.inputTab);
+            this.tabControl1.Controls.Add(this.patchTab);
             this.tabControl1.Controls.Add(this.aboutTab);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             // 
-            // patchTab
+            // generalTab
             // 
-            this.patchTab.Controls.Add(this.swapBox);
-            this.patchTab.Controls.Add(this.separateSaveBox);
-            this.patchTab.Controls.Add(this.skipIntroBox);
-            this.patchTab.Controls.Add(this.altSkinsBox);
-            this.patchTab.Controls.Add(this.userPatchBox);
-            this.patchTab.Controls.Add(this.gameBox);
-            this.patchTab.Controls.Add(this.label3);
-            resources.ApplyResources(this.patchTab, "patchTab");
-            this.patchTab.Name = "patchTab";
-            this.patchTab.UseVisualStyleBackColor = true;
+            this.generalTab.Controls.Add(this.swapBox);
+            this.generalTab.Controls.Add(this.separateSaveBox);
+            this.generalTab.Controls.Add(this.skipIntroBox);
+            this.generalTab.Controls.Add(this.altSkinsBox);
+            this.generalTab.Controls.Add(this.userPatchBox);
+            this.generalTab.Controls.Add(this.gameBox);
+            this.generalTab.Controls.Add(this.label3);
+            resources.ApplyResources(this.generalTab, "generalTab");
+            this.generalTab.Name = "generalTab";
+            this.generalTab.UseVisualStyleBackColor = true;
             // 
             // swapBox
             // 
@@ -148,6 +148,13 @@ namespace th2patchlauncher
             this.altSkinsBox.Name = "altSkinsBox";
             this.altSkinsBox.UseVisualStyleBackColor = true;
             this.altSkinsBox.CheckStateChanged += new System.EventHandler(this.altSkinsBox_CheckedChanged);
+            // 
+            // userPatchBox
+            // 
+            resources.ApplyResources(this.userPatchBox, "userPatchBox");
+            this.userPatchBox.Name = "userPatchBox";
+            this.userPatchBox.UseVisualStyleBackColor = true;
+            this.userPatchBox.CheckStateChanged += new System.EventHandler(this.userPatchBox_CheckedChanged);
             // 
             // gameBox
             // 
@@ -341,19 +348,26 @@ namespace th2patchlauncher
             this.randomBox.UseVisualStyleBackColor = true;
             this.randomBox.CheckStateChanged += new System.EventHandler(this.randomBox_CheckedChanged);
             // 
-            // inputTab
+            // patchTab
             // 
-            this.inputTab.Controls.Add(this.skyBox);
-            this.inputTab.Controls.Add(this.manualsBox);
-            this.inputTab.Controls.Add(this.drawshadowBox);
-            this.inputTab.Controls.Add(this.psxtexBox);
-            this.inputTab.Controls.Add(this.drawhudBox);
-            this.inputTab.Controls.Add(this.xinputBox);
-            this.inputTab.Controls.Add(this.bigDropBox);
-            this.inputTab.Controls.Add(this.vibrationBox);
-            resources.ApplyResources(this.inputTab, "inputTab");
-            this.inputTab.Name = "inputTab";
-            this.inputTab.UseVisualStyleBackColor = true;
+            this.patchTab.Controls.Add(this.skyBox);
+            this.patchTab.Controls.Add(this.manualsBox);
+            this.patchTab.Controls.Add(this.drawshadowBox);
+            this.patchTab.Controls.Add(this.psxtexBox);
+            this.patchTab.Controls.Add(this.drawhudBox);
+            this.patchTab.Controls.Add(this.xinputBox);
+            this.patchTab.Controls.Add(this.bigDropBox);
+            this.patchTab.Controls.Add(this.vibrationBox);
+            resources.ApplyResources(this.patchTab, "patchTab");
+            this.patchTab.Name = "patchTab";
+            this.patchTab.UseVisualStyleBackColor = true;
+            // 
+            // skyBox
+            // 
+            resources.ApplyResources(this.skyBox, "skyBox");
+            this.skyBox.Name = "skyBox";
+            this.skyBox.UseVisualStyleBackColor = true;
+            this.skyBox.CheckedChanged += new System.EventHandler(this.skyBox_CheckedChanged);
             // 
             // manualsBox
             // 
@@ -462,20 +476,6 @@ namespace th2patchlauncher
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
             // 
-            // userPatchBox
-            // 
-            resources.ApplyResources(this.userPatchBox, "userPatchBox");
-            this.userPatchBox.Name = "userPatchBox";
-            this.userPatchBox.UseVisualStyleBackColor = true;
-            this.userPatchBox.CheckStateChanged += new System.EventHandler(this.userPatchBox_CheckedChanged);
-            // 
-            // skyBox
-            // 
-            resources.ApplyResources(this.skyBox, "skyBox");
-            this.skyBox.Name = "skyBox";
-            this.skyBox.UseVisualStyleBackColor = true;
-            this.skyBox.CheckedChanged += new System.EventHandler(this.skyBox_CheckedChanged);
-            // 
             // LauncherForm
             // 
             resources.ApplyResources(this, "$this");
@@ -489,16 +489,16 @@ namespace th2patchlauncher
             this.Name = "LauncherForm";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
-            this.patchTab.ResumeLayout(false);
-            this.patchTab.PerformLayout();
+            this.generalTab.ResumeLayout(false);
+            this.generalTab.PerformLayout();
             this.videoTab.ResumeLayout(false);
             this.videoTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fogSlider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fovSlider)).EndInit();
             this.musicTab.ResumeLayout(false);
             this.musicTab.PerformLayout();
-            this.inputTab.ResumeLayout(false);
-            this.inputTab.PerformLayout();
+            this.patchTab.ResumeLayout(false);
+            this.patchTab.PerformLayout();
             this.aboutTab.ResumeLayout(false);
             this.aboutTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -514,7 +514,7 @@ namespace th2patchlauncher
         private Button launchButton;
         private CheckBox skipIntroBox;
         private TabControl tabControl1;
-        private TabPage patchTab;
+        private TabPage generalTab;
         private CheckBox altSkinsBox;
         private ComboBox gameBox;
         private Label label3;
@@ -539,7 +539,7 @@ namespace th2patchlauncher
         private CheckBox separateSaveBox;
         private CheckBox separateTracksBox;
         private TabPage aboutTab;
-        private TabPage inputTab;
+        private TabPage patchTab;
         private CheckBox vibrationBox;
         private CheckBox bigDropBox;
         private ComboBox swapBox;
