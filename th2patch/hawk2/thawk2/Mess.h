@@ -17,6 +17,7 @@ enum class eTextJustify : char {
 };
 
 
+
 //this should be moved to mess.h
 typedef struct
 {
@@ -110,3 +111,5 @@ static const Mess_UnloadFont_t	Mess_UnoadFont = (Mess_UnloadFont_t)0x473b10;
 void Mess_SetCurrentFont(void* pFont);
 	//static const Mess_SetCurrentFont2_t	Mess_SetCurrentFont2 = (Mess_SetCurrentFont_t)0x473b80;
 void Mess_SetCurrentFont(char* fontName);
+
+void Mess_SetScale_Wrap(int scale);

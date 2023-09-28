@@ -201,7 +201,7 @@ bool Career_GotGoalType(EGoalType goalType)
 {
     uint goalIndex = Career_GoalIndex(goalType);
 
-    return goalIndex == -1 ? false : Career_Got(goalIndex);
+    return goalIndex == NS_NULL ? false : Career_Got(goalIndex);
 }
 
 // counts the amount of non-zero bits in a binary value
@@ -215,7 +215,7 @@ int Career_CountBits(uint value)
             value >>= 1;
         } while (value != 0);
 
-        return numBits;
+    return numBits;
 }
 
 // calculates the amount of obtained goal gaps
@@ -375,20 +375,20 @@ void Career_ClearGameWithEveryone(void)
 // checks if gap is a trick gap
 bool Career_GapIsTrick(SGapTrick* pGap)
 {
-    return pGap->careerFlag == EGapFlag::TrickGap ? Career_GapActive(pGap) : false;
+    return pGap->Type == (short)EGapFlag::TrickGap ? Career_GapActive(pGap) : false;
 }
 
 // checks if gap is a trick gap
 bool Career_GapIsGoal(SGapTrick* pGap)
 {
-    return pGap->careerFlag == EGapFlag::GoalGap ? Career_GapActive(pGap) : false;
+    return pGap->Type == (short)EGapFlag::GoalGap ? Career_GapActive(pGap) : false;
 }
 
 // checks if gap is in this level
 bool Career_GapActive(SGapTrick* pGap)
 {
     SLevel* pLevel = &Levels[*GLevel];
-    int iVar1 = (int)pGap->index % 10000;
+    int iVar1 = (int)pGap->Value % 10000;
 
     return pLevel->gapStart <= iVar1 && iVar1 <= pLevel->gapEnd;
 }
@@ -400,7 +400,7 @@ int Career_GapNumber(SGapTrick* pGap)
     int gapIndex = 0;
 
     //loop through the gap table until index hits 0xFFFF
-    while (cursor->index != -1) {
+    while (cursor->Value != -1) {
 
         //if gap belongs to this level
         if (Career_GapActive(cursor)) {
@@ -408,7 +408,7 @@ int Career_GapNumber(SGapTrick* pGap)
             //if match, get gap index
             if (cursor == pGap) 
             {
-                printf("Gap found: %s %i\r\n", pGap->name, gapIndex);
+                printf("Gap found: %s %i\r\n", pGap->Name, gapIndex);
                 return gapIndex;
             }
 
@@ -418,7 +418,7 @@ int Career_GapNumber(SGapTrick* pGap)
         cursor++;
     }
 
-    printf("!!! GapTrick not found: %s\r\n", pGap->name);
+    printf("!!! GapTrick not found: %s\r\n", pGap->Name);
     
     return 0;
 }
@@ -430,7 +430,7 @@ int Career_GapTrickNumber(SGapTrick* pGap)
     int gapIndex = 0;
 
     //loop through the gap table until index hits 0xFFFF
-    while (cursor->index != -1) {
+    while (cursor->Value != -1) {
 
         //if gap belongs to this level and is trick
         if (Career_GapActive(cursor) && Career_GapIsTrick(pGap)) {
@@ -438,7 +438,7 @@ int Career_GapTrickNumber(SGapTrick* pGap)
             //if match, get gap index
             if (cursor == pGap)
             {
-                printf("Gap found: %s %i\r\n", pGap->name, gapIndex);
+                printf("Gap found: %s %i\r\n", pGap->Name, gapIndex);
                 return gapIndex;
             }
 
@@ -448,7 +448,7 @@ int Career_GapTrickNumber(SGapTrick* pGap)
         cursor++;
     }
 
-    printf("!!! GapTrick not found: %s\r\n", pGap->name);
+    printf("!!! GapTrick not found: %s\r\n", pGap->Name);
 
     return 0;
 }
@@ -460,7 +460,7 @@ int Career_GapGoalNumber(SGapTrick* pGap)
     int gapIndex = 0;
 
     //loop through the gap table until index hits 0xFFFF
-    while (cursor->index != -1) {
+    while (cursor->Value != -1) {
 
         //if gap belongs to this level and is trick
         if (Career_GapActive(cursor) && Career_GapIsGoal(pGap)) {
@@ -468,7 +468,7 @@ int Career_GapGoalNumber(SGapTrick* pGap)
             //if match, get gap index
             if (cursor == pGap)
             {
-                printf("Gap found: %s %i\r\n", pGap->name, gapIndex);
+                printf("Gap found: %s %i\r\n", pGap->Name, gapIndex);
                 return gapIndex;
             }
 
@@ -478,7 +478,7 @@ int Career_GapGoalNumber(SGapTrick* pGap)
         cursor++;
     }
 
-    printf("!!! GapTrick not found: %s\r\n", pGap->name);
+    printf("!!! GapTrick not found: %s\r\n", pGap->Name);
 
     return 0;
 }

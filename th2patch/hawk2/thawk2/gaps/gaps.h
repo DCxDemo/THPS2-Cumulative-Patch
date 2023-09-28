@@ -8,3 +8,4 @@ extern SGapTrick* pGapListThps4;
 
 void PrintGap(SGapTrick* pGap);
 void CopyGaps(SGapTrick* src, SGapTrick* dst);
+void WipeGaps();

@@ -114,6 +114,9 @@
     <ClInclude Include="thawk2\CBruce.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="thawk2\gaps\gaps.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -183,6 +186,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="thawk2\CBruce.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thawk2\gaps\thps1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thawk2\gaps\thps3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thawk2\gaps\thps4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thawk2\gaps\thps2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -31,6 +31,7 @@ public:
 	float FOV = 0.83;
 	int ResX = DEFAULT_WIDTH;
 	int ResY = DEFAULT_HEIGHT;
+	float FontScale = 1.0;
 
 	//input
 	bool XInput = true;

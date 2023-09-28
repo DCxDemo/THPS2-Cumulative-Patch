@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using System.Windows.Forms;
 
-namespace th2patchlauncher
+namespace thps2patch
 {
     class LevelPatch
     {

@@ -204,3 +204,7 @@ static const FontManger_LoadFont2_t FontManger_LoadFont2 = (FontManger_LoadFont2
 
 typedef void(__thiscall* Font_Draw_t)(void* _this, int x, int y, char* pMessage, int Angle);
 static const Font_Draw_t Font_Draw = (Font_Draw_t)0x44a010;
+
+
+typedef void(__thiscall* FallingTextEffect_SetScale_t)(void* _this, int scale);
+static const FallingTextEffect_SetScale_t FallingTextEffect_SetScale = (FallingTextEffect_SetScale_t)0x001126c8;

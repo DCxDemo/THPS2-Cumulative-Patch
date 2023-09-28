@@ -9,7 +9,7 @@ using IniParser.Model.Configuration;
 using IniParser.Parser;
 using System.Globalization;
 
-namespace th2patchlauncher
+namespace thps2patch
 {
     public class Options
     {
@@ -74,15 +74,20 @@ namespace th2patchlauncher
 
         public int ResX = 1280;
         public int ResY = 720;
+        
         public bool OverrideFOV = false;
         public int ZoomFactor = 100;
-        public int ZoomMin = 30;
-        public int ZoomMax = 140;
-        public bool Force32BPP = true;
-        public bool UnlockFPS = true;
+
+        public bool UserPatch = false;
         public string Game = "THPS2";
         public string ExeName = "Thawk2";
-        public bool UserPatch = false;
+
+        /*
+        public bool Force32BPP = true;
+        public bool UnlockFPS = true;
+ 
+
+
         public bool AltSkins = false;
         public bool SkipIntro = true;
         public int FogScale = 750;
@@ -104,12 +109,13 @@ namespace th2patchlauncher
         public bool BigDropEnabled = true;
         public bool Vibration = true;
         public bool XInputEnabled = true;
+        */
 
-        public void ChangeZoom(int x)
+        public int ValidateRange(int value, int min, int max)
         {
-            if (x < ZoomMin) return;
-            if (x > ZoomMax) return;
-            ZoomFactor = x;
+            if (value < min) { return min; }
+            if (value > max) { return max; }
+            return value;
         }
 
         public Options(string filename)
@@ -171,7 +177,7 @@ namespace th2patchlauncher
         {
             OverrideFOV = false;
             int ourzoom = (int)((4.0f * ResY) / (3.0f * ResX) * 100.0f);
-            ChangeZoom((int)(ourzoom + (100.0f - ourzoom) / 2.0f));
+            ZoomFactor = ValidateRange((int)(ourzoom + (100.0f - ourzoom) / 2.0f), 30, 140);
         }
 
         public float GetZoom() => ZoomFactor / 100.0f;
@@ -184,9 +190,9 @@ namespace th2patchlauncher
             parser.WriteFile(configfilename, config, new UTF8Encoding(false));
         }
 
-        public bool ParseResText(string x)
+        public void ParseResText(string x)
         {
-            string str = x.ToLower().Trim().Replace(" ", "");
+            string str = x.Trim().Replace(" ", "").ToLower();
 
             if (str.Contains("x"))
             {
@@ -199,36 +205,42 @@ namespace th2patchlauncher
                         ResX = Int32.Parse(buf[0]);
                         ResY = Int32.Parse(buf[1]);
 
-                        SetInt("Video", "ResX", ResX);
-                        SetInt("Video", "ResY", ResY);
+                        SetResolution(ResX, ResY);
 
-                        return true;
+                        return;
                     }
                     catch
                     {
-                        ResX = 640;
-                        ResY = 480;
-
-                        SetInt("Video", "ResX", ResX);
-                        SetInt("Video", "ResY", ResY);
-
-                        return true;
+                        MessageBox.Show("Please use (X)x(Y) format, example: 1920x1080");
                     }
                 }
             }
 
-            return false;
+            SetResolution(1280, 720);
         }
 
-        public string GetResText()
+        public void SetResolution(int X, int Y)
         {
-            return ResX + "x" + ResY;
+            ResX = X;
+            ResY = Y;
+
+            SetInt("Video", "ResX", ResX);
+            SetInt("Video", "ResY", ResY);
+
+            OnResolutionChanged?.Invoke();
         }
+
+        public delegate void ResolutionChangeHandler();
+        public ResolutionChangeHandler OnResolutionChanged;
+
+        public string ResolutionString => $"{ResX}x{ResY}";
 
         public void DetectResolution()
         {
             ResX = Screen.PrimaryScreen.Bounds.Width;
             ResY = Screen.PrimaryScreen.Bounds.Height;
+
+            SetResolution(ResX, ResY);
         }
     }
 }

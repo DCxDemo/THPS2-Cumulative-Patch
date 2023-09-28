@@ -2,6 +2,7 @@
 #include "mess.h"
 #include "mem.h"
 #include "_old.h"
+#include "GameOptions.h"
 
 typedef struct {
 	int R;
@@ -168,6 +169,11 @@ void Mess_SetCurrentFont(char* fontName)
 void __fastcall Font_Draw_Wrap(void* _this, void* _edx, int x, int y, char* pMessage, int Angle)
 {
 	Font_Draw(_this, x, y, pMessage, Angle);
+}
+
+void Mess_SetScale_Wrap(int scale)
+{
+	Mess_SetScale(scale * 0.5f);
 }
 
 //wraps font draw

@@ -61,7 +61,6 @@ namespace th2patchlauncher
             this.titleBox = new System.Windows.Forms.CheckBox();
             this.randomBox = new System.Windows.Forms.CheckBox();
             this.patchTab = new System.Windows.Forms.TabPage();
-            this.skyBox = new System.Windows.Forms.CheckBox();
             this.manualsBox = new System.Windows.Forms.CheckBox();
             this.drawshadowBox = new System.Windows.Forms.CheckBox();
             this.psxtexBox = new System.Windows.Forms.CheckBox();
@@ -77,6 +76,7 @@ namespace th2patchlauncher
             this.quitButton = new System.Windows.Forms.Button();
             this.launchButton = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.skyBox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.generalTab.SuspendLayout();
             this.videoTab.SuspendLayout();
@@ -241,7 +241,6 @@ namespace th2patchlauncher
             this.resBox.Name = "resBox";
             this.resBox.SelectedIndexChanged += new System.EventHandler(this.resBox_SelectedIndexChanged_1);
             this.resBox.SelectionChangeCommitted += new System.EventHandler(this.resBox_SelectionChangeCommitted);
-            this.resBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.resBox_KeyPress);
             // 
             // label4
             // 
@@ -362,13 +361,6 @@ namespace th2patchlauncher
             this.patchTab.Name = "patchTab";
             this.patchTab.UseVisualStyleBackColor = true;
             // 
-            // skyBox
-            // 
-            resources.ApplyResources(this.skyBox, "skyBox");
-            this.skyBox.Name = "skyBox";
-            this.skyBox.UseVisualStyleBackColor = true;
-            this.skyBox.CheckedChanged += new System.EventHandler(this.skyBox_CheckedChanged);
-            // 
             // manualsBox
             // 
             resources.ApplyResources(this.manualsBox, "manualsBox");
@@ -475,6 +467,13 @@ namespace th2patchlauncher
             resources.ApplyResources(this.pictureBox1, "pictureBox1");
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
+            // 
+            // skyBox
+            // 
+            resources.ApplyResources(this.skyBox, "skyBox");
+            this.skyBox.Name = "skyBox";
+            this.skyBox.UseVisualStyleBackColor = true;
+            this.skyBox.CheckedChanged += new System.EventHandler(this.skyBox_CheckedChanged);
             // 
             // LauncherForm
             // 

@@ -30,6 +30,8 @@ void GameOptions::Load()
 	DisableVisToggle = ini->ReadBool("PATCH", "DisableVisToggle", false);
 	DisableSky = ini->ReadBool("PATCH", "DisableSky", false);
 
+	FontScale = ini->ReadFloat("Patch", "FontScale", 1.0f);
+
 	//video section
 	ShowHUD = ini->ReadBool("VIDEO", "ShowHUD", true);
 	DrawShadow = ini->ReadBool("VIDEO", "DrawShadow", true);

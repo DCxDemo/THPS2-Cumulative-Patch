@@ -572,7 +572,14 @@ SGapTrick gapListThps2[] = {
 	{ 0x19,	0,	23005,	250,	"[BACKWOODS LEDGE]" },
 	{ 0x19,	0,	23006,	500,	"[BENDY'S LIP]" },
 	{ 0x19,	0,	23007,	3000,	"[ARE YOU KIDDING?]" },
+
+
 	{ 0x00,	0,	-1,	0,	"" },
 };
 
 SGapTrick* pGapListThps2 = gapListThps2;
+
+void WipeGaps()
+{
+	memset(pGaps, 0, sizeof(gapListThps2));
+}

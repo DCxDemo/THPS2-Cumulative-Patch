@@ -7,7 +7,6 @@ SGapTrick catGrind		= { 0x80,	0,	-2,	0,	"GRIND GAPS" };
 SGapTrick catManual		= { 0x80,	0,	-2, 0,	"MANUAL GAPS" };
 SGapTrick catLip		= { 0x80,	0,	-2,	0,	"LIP GAPS" };
 
-
 SGapTrick gapListThps3[] = {
 
 	//los angeles
@@ -215,6 +214,7 @@ SGapTrick gapListThps3[] = {
 	{ 0x13,	0,	2517,	100,	"[Death Gap West]" },
 	{ 0x13,	0,	2518,	500,	"[Gapman and Robin]" },
 	{ 0x13,	0,	2519,	500,	"[Getting Higher]" },
+	
 	catGrind,
 	{ 0x19,	0,	2538,	250,	"[Knock The Bucket]" },
 	{ 0x19,	0,	2539,	250,	"[Pipe-Hoppin' Grinder]" },

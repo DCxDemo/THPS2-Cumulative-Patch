@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.IO;
+using System.Diagnostics;
+using thps2patch;
+using System.Text;
 
 namespace th2patchlauncher
 {
@@ -17,6 +20,7 @@ namespace th2patchlauncher
         string userFile = "userpatch.ini";
         string hawkFile = "THawk2.exe";
         string configFile = "th2_opt.cfg";
+        string configFilePath => Path.Combine(curDir, configFile);
         string patchName = "dinput.dll";
 
         Options op;
@@ -49,7 +53,7 @@ namespace th2patchlauncher
         private void Form1_Load(object sender, EventArgs e)
         {
             //load options from files
-            op = new Options(Path.Combine(curDir, configFile));
+            op = new Options(configFilePath);
 
             //parse command line, if -F is there, apply patches and quit
             ParseCommandLineArgs();
@@ -88,8 +92,8 @@ namespace th2patchlauncher
             if (!File.Exists(Path.Combine(".\\", patchPath, userFile)))
             {
                 op.UserPatch = false;
-                op.SetBool("Patch", "UserPatch", false);
                 userPatchBox.Enabled = false;
+                op.SetBool("Patch", "UserPatch", false);
             }
 
 
@@ -129,7 +133,7 @@ namespace th2patchlauncher
             //video tab
             ResXbox.Text = op.ResX.ToString();
             ResYbox.Text = op.ResY.ToString();
-            resBox.Text = op.GetResText();
+            resBox.Text = op.ResolutionString;
 
             force32box.Checked = op.GetBool("Video", "Force32Bpp", false);
             unlockFPSbox.Checked = op.GetBool("Video", "UnlockFPS", false);
@@ -138,7 +142,7 @@ namespace th2patchlauncher
             rendererBox.Checked = op.GetString("Video", "Renderer", "Hardware") == "Software" ? true : false;
 
             //just in case if file value is out of bounds
-            op.ChangeZoom(op.ZoomFactor);
+            op.ZoomFactor = op.ValidateRange(op.ZoomFactor, 30, 140);
 
             fogSlider.Value = (int)Math.Sqrt( (op.GetInt("Video", "FogScale", 300) - 10) * fogSlider.Maximum );
 
@@ -169,29 +173,12 @@ namespace th2patchlauncher
         private void detectButtonClick(object sender, EventArgs e)
         {
             op.DetectResolution();
-            resBox.Text = op.GetResText();
+            resBox.Text = op.ResolutionString;
 
             MaybeUpdateFovBar();
         }
 
-        //random value comparison
-        public bool isSmallerExe()
-        {
-            bool result = false;
 
-            using (var br = new BinaryReader(File.Open(curDir + "\\" + hawkFile, FileMode.Open)))
-            {
-                if (br.BaseStream.Length >= 0x1642EC + 4)
-                {
-                    br.BaseStream.Position = 0x1642EC;
-
-                    if (br.ReadUInt32() == 0xF92BD1F7)
-                        result = true;
-                }
-            }
-
-            return result;
-        }
 
         public bool FileLocked(string filename)
         {
@@ -212,6 +199,25 @@ namespace th2patchlauncher
             }
 
             return false;
+        }
+
+        //random value comparison
+        public bool isSmallerExe()
+        {
+            bool result = false;
+
+            using (var br = new BinaryReader(File.Open($"{curDir}\\{hawkFile}", FileMode.Open)))
+            {
+                if (br.BaseStream.Length >= 0x1642EC + 4)
+                {
+                    br.BaseStream.Position = 0x1642EC;
+
+                    if (br.ReadUInt32() == 0xF92BD1F7)
+                        result = true;
+                }
+            }
+
+            return result;
         }
 
         public void LaunchTHPS(bool saveParams)
@@ -236,7 +242,7 @@ namespace th2patchlauncher
             {
                 if (saveParams) op.Save();
 
-                System.Diagnostics.Process.Start($".\\{hawkFile}");
+                Process.Start($".\\{hawkFile}");
 
                 var mp = new MainPatch(op);
                 mp.Patch();
@@ -260,11 +266,9 @@ namespace th2patchlauncher
             Application.Exit();
         }
 
-
-
         private void trackBar1_ValueChanged(object sender, EventArgs e)
         {
-            op.ChangeZoom(fovSlider.Value);
+            op.ZoomFactor = op.ValidateRange(fovSlider.Value, 30, 140);
             UpdateFOVbar();
         }
 
@@ -295,14 +299,6 @@ namespace th2patchlauncher
         {
             op.ParseResText(resBox.Text);
             MaybeUpdateFovBar();
-        }
-
-        private void resBox_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == 13)
-            {
-                if (op.ParseResText(resBox.Text)) MaybeUpdateFovBar();
-            }
         }
 
         private void trackBar2_Scroll(object sender, EventArgs e)
@@ -428,20 +424,24 @@ namespace th2patchlauncher
             MaybeUpdateFovBar();
         }
 
+
+        #region [About tab]
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start((sender as LinkLabel).Text);
+            Process.Start((sender as LinkLabel).Text);
         }
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start((sender as LinkLabel).Text);
+            Process.Start((sender as LinkLabel).Text);
         }
 
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start((sender as LinkLabel).Text);
+            Process.Start((sender as LinkLabel).Text);
         }
+        #endregion
+
 
         private void rendererBox_CheckedChanged(object sender, EventArgs e)
         {

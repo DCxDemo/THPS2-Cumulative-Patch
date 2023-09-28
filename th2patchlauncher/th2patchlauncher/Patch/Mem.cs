@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
-namespace th2patchlauncher
+namespace thps2patch
 {
     class Mem
     {

@@ -97,6 +97,7 @@
     <ClInclude Include="thawk2\CClass.h" />
     <ClInclude Include="thawk2\Crowd.h" />
     <ClInclude Include="thawk2\Flash.h" />
+    <ClInclude Include="thawk2\gaps\gaps.h" />
     <ClInclude Include="thawk2\Globals.h" />
     <ClInclude Include="thawk2\IO\PCIO.h" />
     <ClInclude Include="THawk2\LoadingScreen.h" />
@@ -127,6 +128,10 @@
     <ClCompile Include="Checksum.cpp" />
     <ClCompile Include="color.cpp" />
     <ClCompile Include="thawk2\CBruce.cpp" />
+    <ClCompile Include="thawk2\gaps\thps1.cpp" />
+    <ClCompile Include="thawk2\gaps\thps2.cpp" />
+    <ClCompile Include="thawk2\gaps\thps3.cpp" />
+    <ClCompile Include="thawk2\gaps\thps4.cpp" />
     <ClCompile Include="thawk2\Pad.cpp" />
     <ClCompile Include="thawk2\Career.cpp" />
     <ClCompile Include="thawk2\CClass.cpp" />

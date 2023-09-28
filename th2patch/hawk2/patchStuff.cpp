@@ -3,9 +3,11 @@
 #include <iostream>
 #include <fstream>
 #include "string.h"
+
 //lib includes
 #include "lib/sqlite/sqlite3.h"
 #include "lib/xinput/CXBOXController.h"
+
 //thawk2 includes
 #include "thawk2/_old.h"
 #include "thawk2/Career.h"
@@ -20,13 +22,15 @@
 #include "thawk2/WinMain.h"
 #include "thawk2/Redbook.h"
 #include "thawk2/Physics.h"
+#include "thawk2/CBruce.h"
+#include "thawk2/gaps/gaps.h"
+
 //patch includes
 #include "hawk2_utils.h"
 #include "cpatch.h"
 #include "GameOptions.h"
 #include "mydebug.h"
 #include "patchStuff.h"
-#include "thawk2/CBruce.h"
 
 
 //the old bigass all-in-one file, that should be cut into pizzas. this is my plastic fork!
@@ -909,7 +913,7 @@ void PatchSkaters()
 		CPatch::SetInt(Skater[k] + 24, 0);
 
 		char *bamname = (char*)(Skater[k] + 32);
-		sprintf(bamname, "Little Pesron");
+		sprintf(bamname, "Little Person");
 	}
 
 	if (options.DickSwap == "kor1")
@@ -1174,9 +1178,45 @@ SGoal* GetGoal(int level, int goal)
 	return pGoal;
 }
 
+
+void PatchThps3Gaps()
+{
+	int ranges[] = {
+		2500, //foun
+		2000, //can
+		2400, //rio
+		2300, //air
+		2100, //sub
+		2200, //si
+		1000, //la
+		2600, //tok
+		2800, //downhill
+	};
+
+	for (int i = 0; i < 9; i++)
+	{
+		Levels[i].gapStart = ranges[i];
+		Levels[i].gapEnd = Levels[i].gapStart + 99;
+	}
+
+	//now this is a hacky hack for skate heaven. find proper way to hide it.
+	Levels[9].gapStart = 1000;
+	Levels[9].gapEnd = 1000;
+
+	CopyGaps(pGapListThps3, pGaps);
+}
+
 //main patches func, sets all hooks and changes vars needed
 void Patch()
 {
+	WipeGaps();
+
+	if (options.CurrentGame == "THPS1") CopyGaps(pGapListThps1, pGaps);
+	else if (options.CurrentGame == "THPS2") CopyGaps(pGapListThps2, pGaps);
+	else if (options.CurrentGame == "THPS3") PatchThps3Gaps();
+	else if (options.CurrentGame == "THPS4") CopyGaps(pGapListThps4, pGaps);
+	else CopyGaps(pGapListThps2, pGaps); //restore if mhpb
+
 	//doesnt seem to work
 	//Career_ClearGameWithEveryone();
 
@@ -1368,9 +1408,11 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 
 	{ 0x460bf7, RenderSuperItemShadow_Hook },
 
+	/*
 	{ 0x41580c, Career_GetPointCost_Hook },
 	{ 0x4707b0, Career_GetPointCost_Hook },
 	{ 0x4b4a24, Career_GetPointCost_Hook },
+	*/
 
 	{ 0x48ef74, CBruce_StartGrind_Hook }, //in CBruce::HandeStickToRail
 	{ 0x49c288, CBruce_HandleJump_Hook }, //in CBruce::DoPhysics
@@ -1453,6 +1495,8 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	{ 0x48703b,	PCINPUT_ActuatorOn_Hook }, // in Pad_ActuatorOn
 	{ 0x4871d0, PCINPUT_ActuatorOff_Hook }, // in Pad_ActuatorOff
 
+
+
 		/*
 
 	{ 0x46a746, FontManager_LoadFont },
@@ -1480,6 +1524,95 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 
 	{ 0x00469fd7 ,	Mess_Update },  //in Game_Logic
 
+	*/
+
+		/*
+	{ 0x004dc28a,Mess_SetScale_Wrap },
+	{ 0x004dc225,Mess_SetScale_Wrap },
+	{ 0x004d928c,Mess_SetScale_Wrap },
+	{ 0x004c16df,Mess_SetScale_Wrap },
+	{ 0x004b67f0,Mess_SetScale_Wrap },
+	{ 0x004b66b8,Mess_SetScale_Wrap },
+	{ 0x004b666a,Mess_SetScale_Wrap },
+	{ 0x004b6653,Mess_SetScale_Wrap },
+	{ 0x004b65fc,Mess_SetScale_Wrap },
+	{ 0x004b65e5,Mess_SetScale_Wrap },
+	{ 0x0048a394,Mess_SetScale_Wrap },
+	{ 0x00489256,Mess_SetScale_Wrap },
+	{ 0x00473835,Mess_SetScale_Wrap },
+	{ 0x004684ce,Mess_SetScale_Wrap },
+	{ 0x00450f9b,Mess_SetScale_Wrap },
+	{ 0x00450ed7,Mess_SetScale_Wrap },
+	{ 0x00450eb3,Mess_SetScale_Wrap },
+	{ 0x00450e63,Mess_SetScale_Wrap },
+	{ 0x00450d42,Mess_SetScale_Wrap },
+	{ 0x00450963,Mess_SetScale_Wrap },
+	{ 0x00450912,Mess_SetScale_Wrap },
+	{ 0x00450898,Mess_SetScale_Wrap },
+	{ 0x00450834,Mess_SetScale_Wrap },
+	{ 0x004507c4,Mess_SetScale_Wrap },
+	{ 0x004507a4,Mess_SetScale_Wrap },
+	{ 0x0045076e,Mess_SetScale_Wrap },
+	{ 0x00450598,Mess_SetScale_Wrap },
+	{ 0x0045046a,Mess_SetScale_Wrap },
+	{ 0x004503ec,Mess_SetScale_Wrap },
+	{ 0x0045029f,Mess_SetScale_Wrap },
+	{ 0x0044e740,Mess_SetScale_Wrap },
+	{ 0x0044e712,Mess_SetScale_Wrap },
+	{ 0x0044d4d7,Mess_SetScale_Wrap },
+	{ 0x0044d49c,Mess_SetScale_Wrap },
+	{ 0x0044d480,Mess_SetScale_Wrap },
+	{ 0x0044d425,Mess_SetScale_Wrap },
+	{ 0x0044d407,Mess_SetScale_Wrap },
+	{ 0x0044d287,Mess_SetScale_Wrap },
+	{ 0x0044d1fe,Mess_SetScale_Wrap },
+	{ 0x0044d094,Mess_SetScale_Wrap },
+	{ 0x0044d06f,Mess_SetScale_Wrap },
+	{ 0x0044d02e,Mess_SetScale_Wrap },
+	{ 0x0044d009,Mess_SetScale_Wrap },
+	{ 0x0044cfca,Mess_SetScale_Wrap },
+	{ 0x0044cfa5,Mess_SetScale_Wrap },
+	{ 0x0044ce50,Mess_SetScale_Wrap },
+	{ 0x0044cd6f,Mess_SetScale_Wrap },
+	{ 0x0044cc34,Mess_SetScale_Wrap },
+	{ 0x0044ca44,Mess_SetScale_Wrap },
+	{ 0x0044c82e,Mess_SetScale_Wrap },
+	{ 0x0044c7f7,Mess_SetScale_Wrap },
+	{ 0x0044c7e0,Mess_SetScale_Wrap },
+	{ 0x0044c78a,Mess_SetScale_Wrap },
+	{ 0x0044c773,Mess_SetScale_Wrap },
+	{ 0x0044c706,Mess_SetScale_Wrap },
+	{ 0x0044ba78,Mess_SetScale_Wrap },
+	{ 0x0044b51b,Mess_SetScale_Wrap },
+	{ 0x0044b21b,Mess_SetScale_Wrap },
+	{ 0x0041bf6b,Mess_SetScale_Wrap },
+	{ 0x0041bf0f,Mess_SetScale_Wrap },
+	{ 0x0041beb0,Mess_SetScale_Wrap },
+	{ 0x0041be5d,Mess_SetScale_Wrap },
+	{ 0x0041bdfe,Mess_SetScale_Wrap },
+	{ 0x0041bdab,Mess_SetScale_Wrap },
+	{ 0x0041bd4d,Mess_SetScale_Wrap },
+	{ 0x0041bcf7,Mess_SetScale_Wrap },
+	{ 0x0041bc98,Mess_SetScale_Wrap },
+	{ 0x0041bc42,Mess_SetScale_Wrap },
+	{ 0x0041bbe3,Mess_SetScale_Wrap },
+	{ 0x0041bb8d,Mess_SetScale_Wrap },
+	{ 0x0041bae6,Mess_SetScale_Wrap },
+	{ 0x0041bab4,Mess_SetScale_Wrap },
+	{ 0x0041b9c8,Mess_SetScale_Wrap },
+	{ 0x0041b924,Mess_SetScale_Wrap },
+	{ 0x0041b872,Mess_SetScale_Wrap },
+	{ 0x0041b83f,Mess_SetScale_Wrap },
+	{ 0x0041b582,Mess_SetScale_Wrap },
+	{ 0x0041b459,Mess_SetScale_Wrap },
+	{ 0x0041afc8,Mess_SetScale_Wrap },
+	{ 0x0041af7e,Mess_SetScale_Wrap },
+	{ 0x0041af33,Mess_SetScale_Wrap },
+	{ 0x0041abe5,Mess_SetScale_Wrap },
+	{ 0x0041a9fc,Mess_SetScale_Wrap },
+	{ 0x0041a914,Mess_SetScale_Wrap },
+	{ 0x0041a83b,Mess_SetScale_Wrap },
+	{ 0x0041a262,Mess_SetScale_Wrap }
 	*/
 
 	//{ 0x473680, CreateMessage }
