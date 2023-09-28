@@ -11,8 +11,6 @@
 
 //TODO: map params for the lower half of funcs
 
-extern uint* Career_UnlockFlags;
-
 #define NUMGOALS_TH2 10
 #define NUMGOALS_TH1 5
 
@@ -62,11 +60,11 @@ enum class EGapFlag : short {
 };
 
 typedef struct SGapTrick {
-	short gapTypeFlags;		//gap type flags (stuff like CANCEL_GRIND CANCEL_WALL, etc)
-	EGapFlag careerFlag;	//defines whether the gap is used in goals
-	short index;			//gap index, 2 values - index / 10000 and index % 10000
-	short score;			//score points to award
-	char name[0x24];		//gap name
+	short Flags;		//gap type flags (stuff like CANCEL_GRIND CANCEL_WALL, etc)
+	short Type;		//defines whether the gap is used in goals
+	short Value;		//gap index, 2 values - index / 10000 and index % 10000
+	short Score;		//score points to award
+	char Name[0x24];	//gap name
 } SGapTrick;
 
 
@@ -78,6 +76,10 @@ typedef struct SGoal {
 	char* goalText;		//pointer to goal text for level goals screen
 	int unk;
 } SGoal;
+
+
+extern uint* Career_UnlockFlags;
+extern SGapTrick* pGaps;
 
 
 typedef void(*Career_Init_t)();
