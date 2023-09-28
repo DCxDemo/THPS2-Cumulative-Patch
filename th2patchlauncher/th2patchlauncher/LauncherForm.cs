@@ -124,11 +124,11 @@ namespace th2patchlauncher
 
 
             op.ResX = op.GetInt("Video", "ResX", 1280);
-            op.ResY = op.GetInt("Video", "ResY", 1280);
+            op.ResY = op.GetInt("Video", "ResY", 720);
 
             //video tab
-            ResXbox.Text = op.GetString("Video", "ResX", "1280");
-            ResYbox.Text = op.GetString("Video", "ResX", "720");
+            ResXbox.Text = op.ResX.ToString();
+            ResYbox.Text = op.ResY.ToString();
             resBox.Text = op.GetResText();
 
             force32box.Checked = op.GetBool("Video", "Force32Bpp", false);
