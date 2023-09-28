@@ -61,7 +61,7 @@ enum class EGapFlag : short {
 
 typedef struct SGapTrick {
 	short Flags;		//gap type flags (stuff like CANCEL_GRIND CANCEL_WALL, etc)
-	short Type;		//defines whether the gap is used in goals
+	short Type;			//defines whether the gap is used in goals
 	short Value;		//gap index, 2 values - index / 10000 and index % 10000
 	short Score;		//score points to award
 	char Name[0x24];	//gap name

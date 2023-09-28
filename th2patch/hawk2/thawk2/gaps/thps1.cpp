@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "thps1.h"
+#include "gaps.h"
 
 SGapTrick gapListThps1[] = {
 

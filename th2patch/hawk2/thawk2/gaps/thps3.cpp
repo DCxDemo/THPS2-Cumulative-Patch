@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "thps1.h"
+#include "gaps.h"
 
 //category headlines, used to divide gaps per type in gap list
 SGapTrick catAir		= { 0x80,	0,	-2,	0,	"AIR GAPS" };
