@@ -150,7 +150,7 @@ SGapTrick gapListThps1[] = {
 	/* GRIND GAPS */
 
 	//warehouse
-	{ 0x19,	2,	21000,	4296,	"[BIG RAIL]" },
+	{ 0x19,	2,	21000,	200,	"[BIG RAIL]" },
 	{ 0x19,	0,	21001,	300,	"[DECK 2 RAIL]" },
 	{ 0x19,	0,	21002,	500,	"[TAXI 2 LEDGE]" },
 	{ 0x19,	0,	21003,	1000,	"[TAXI 2 RAIL]" },
