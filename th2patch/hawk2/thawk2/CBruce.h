@@ -16,6 +16,23 @@ struct CSVector {
 
 typedef struct CSVector CSVector;
 
-CVector* CBruce_GetPosition(void* pBruce);
-CVector* CBruce_GetVelocity(void* pBruce);
-int* CBruce_GetTestValueInt(void* pBruce, int offset);
+enum class EStats : int {
+	STATS_AIR = 0,
+	STATS_HANGTIME = 1,
+	STATS_OLLIE = 2,
+	STATS_SPEED = 3,
+	STATS_SPIN = 4,
+	STATS_LANDING = 5,
+	STATS_SWITCH = 6,
+	STATS_RAILBALANCE = 7,
+	STATS_LIPBALANCE = 8,
+	STATS_MANUALS = 9
+};
+
+CVector* CBruce_GetPosition(void* pSkater);
+CVector* CBruce_GetVelocity(void* pSkater);
+int* CBruce_GetTestValueInt(void* pSkater, int offset);
+int* CBruce_GetManualBalance(void* pSkater);
+int* CBruce_GetManualBalanceOld(void* pSkater);
+int* CBruce_GetRailBalance(void* pSkater);
+int* CBruce_GetPhysicsState(void* pSkater);

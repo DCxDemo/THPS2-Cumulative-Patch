@@ -1,19 +1,40 @@
 #include "stdafx.h"
 #include "CBruce.h"
 
-CVector* CBruce_GetPosition(void* pBruce)
+CVector* CBruce_GetPosition(void* pSkater)
 {
-	return (CVector*)((int)pBruce + 0x08);
+	return (CVector*)((int)pSkater + 0x08);
 }
 
-CVector* CBruce_GetVelocity(void* pBruce)
+CVector* CBruce_GetVelocity(void* pSkater)
 {
-	return (CVector*)((int)pBruce + 0x4C);
+	return (CVector*)((int)pSkater + 0x4C);
 }
 
-int* CBruce_GetTestValueInt(void* pBruce, int offset)
+int* CBruce_GetManualBalance(void* pSkater)
 {
-	return (int*)((int)pBruce + offset);
+	return (int*)((int)pSkater + 0x2F14);
+}
+
+int* CBruce_GetRailBalance(void* pSkater)
+{
+	return (int*)((int)pSkater + 0x2ef0);
+}
+
+int* CBruce_GetManualBalanceOld(void* pSkater)
+{
+	return (int*)((int)pSkater + 0x2F18);
+}
+
+int* CBruce_GetPhysicsState(void* pSkater)
+{
+	return (int*)((int)pSkater + 0x30B8);
+}
+
+
+int* CBruce_GetTestValueInt(void* pSkater, int offset)
+{
+	return (int*)((int)pSkater + offset);
 }
 
 

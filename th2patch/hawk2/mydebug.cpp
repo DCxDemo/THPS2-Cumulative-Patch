@@ -7,9 +7,10 @@
 #include "thawk2/globals.h"
 #include "thawk2/WinMain.h"
 #include "thawk2/CBruce.h"
+#include "thawk2/physics.h"
 
 #include "patchStuff.h"
-
+#include "mydebug.h"
 
 char debugText[256];
 
@@ -53,7 +54,22 @@ void PrintDebugStuff()
 			sprintf(debugText, "test: %08X", *test);
 			DebugMessage(debugText, 10, 10);
 			*/
+
+			//int balance = *CBruce_GetManualBalance((int*)(*(int*)GSkater));
+
+			int railBal = *CBruce_GetRailBalance((int*)(*(int*)GSkater));
+			int state = *CBruce_GetPhysicsState((int*)(*(int*)GSkater));
+
+			//sprintf(debugText, "balance %i", railBal);
+			//DebugMessage(debugText, 10, 10);
+
+			if ((EPhysicsState)state == EPhysicsState::PHYSICS_ON_RAIL)
+			{
+				Panel_BalanceRail(railBal, 0x1000, 30, 200, 0x79, 0x0000ff, 0x00ff00);
+			}
 		}
+
+
 
 		//sprintf(debugText, "test: %i", *GGame);
 		//DebugMessage(debugText, 512 / 2, 20);
@@ -61,6 +77,32 @@ void PrintDebugStuff()
 		//Panel_LineX(-1.0, -1.0, 1.0, 1.0, 255, 0, 0);
 		//Panel_LineX(1.0, -1.0, -1.0, 1.0, 255, 0, 0);
 	}
+}
+
+
+void Panel_BalanceRail(int Balance, int Max, int Length, int x, int y, uint LineColor, uint MarkerColor)
+{
+	int iVar1;
+	int iVar2;
+	uint uVar3;
+
+	iVar2 = (Balance * Length) / Max + y;
+	Panel_Line(x, iVar2, x + 6, iVar2, MarkerColor);
+	iVar2 = y + Length;
+	Length = y - Length;
+	uVar3 = LineColor >> 3 & 0x1f1f1f;
+	Panel_Line(x, Length, x, iVar2, LineColor);
+	Panel_Line(x, Length, x + 6, Length, LineColor);
+	Panel_Line(x, y, x + 6, y, LineColor);
+	Panel_Line(x, iVar2, x + 6, iVar2, LineColor);
+	Length = Length + 1;
+	iVar2 = iVar2 + 1;
+	iVar1 = x + 1;
+	Panel_Line(iVar1, Length, iVar1, iVar2, uVar3);
+	x = x + 7;
+	Panel_Line(iVar1, Length, x, Length, uVar3);
+	Panel_Line(iVar1, y + 1, x, y + 1, uVar3);
+	Panel_Line(iVar1, iVar2, x, iVar2, uVar3);
 }
 
 

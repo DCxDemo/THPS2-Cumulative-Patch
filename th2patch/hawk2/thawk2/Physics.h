@@ -2,6 +2,20 @@
 
 //TODO: check for gaps in code, map params
 
+enum class EPhysicsState : int
+{
+	PHYSICS_ON_GROUND = 0,
+	PHYSICS_IN_AIR = 1,
+	PHYSICS_ON_INVISIBLE = 2,
+	PHYSICS_IN_AIR_STICK_TO = 3,
+	PHYSICS_ON_RAIL = 4,
+	PHYSICS_IN_WALLRIDE = 5,
+	PHYSICS_IN_FOOTPLANT = 6,
+	PHYSICS_STOPPED = 7,
+	PHYSICS_IN_HANDPLANT = 8,
+	PHYSICS_MANUAL = 9
+};
+
 typedef void(*GetFaceFlags_t)();
 typedef void(*PingPong_t)();
 typedef void(*TempTransform_t)();

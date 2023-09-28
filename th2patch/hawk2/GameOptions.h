@@ -28,7 +28,7 @@ public:
 	bool Force32bpp = true;
 	bool UnlockFPS = true;
 	bool DisableNewTex = false;
-	float FOV = 0.83;
+	float FOV = 0.83f;
 	int ResX = DEFAULT_WIDTH;
 	int ResY = DEFAULT_HEIGHT;
 	float FontScale = 1.0;
