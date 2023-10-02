@@ -40,7 +40,7 @@ void PrintDebugStuff()
 {
 	if (*GamePaused)
 	{
-		sprintf(debugText, "THPS2 Cumulative Patch r5");
+		sprintf(debugText, "THPS2 Cumulative Patch r6");
 		DebugMessage(debugText, 10, BUFFER_HEIGHT - 7);
 	}
 	else
