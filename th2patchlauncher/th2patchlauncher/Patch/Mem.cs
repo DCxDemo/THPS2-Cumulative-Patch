@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Linq;
-using System.Text;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace thps2patch
 {
@@ -178,13 +176,13 @@ namespace thps2patch
             int offset = where;
             byte x;
 
-            do 
+            do
             {
                 x = ReadByte(offset);
-                if (x!=0x0) str.Add(x);
+                if (x != 0x0) str.Add(x);
                 offset++;
             }
-            while (x!=0x0);
+            while (x != 0x0);
 
             return System.Text.Encoding.Default.GetString(str.ToArray());
         }

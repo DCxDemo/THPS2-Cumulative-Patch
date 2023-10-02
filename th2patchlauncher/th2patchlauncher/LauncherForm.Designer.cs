@@ -330,7 +330,6 @@ namespace th2patchlauncher
             this.fogSlider.SmallChange = 10;
             this.fogSlider.TickFrequency = 75;
             this.fogSlider.Value = 740;
-            this.fogSlider.Scroll += new System.EventHandler(this.trackBar2_Scroll);
             this.fogSlider.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBar2_MouseUp);
             // 
             // resBox

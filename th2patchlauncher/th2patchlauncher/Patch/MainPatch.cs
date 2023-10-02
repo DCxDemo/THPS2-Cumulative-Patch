@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace thps2patch
+﻿namespace thps2patch
 {
     class MainPatch
     {
@@ -39,7 +34,7 @@ namespace thps2patch
                     foundTH2 = false;
                 }
 
-               System.Threading.Thread.Sleep(100);
+                System.Threading.Thread.Sleep(100);
             }
 
             lp.Patch(op.ExeName);

@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Windows.Forms;
-using System.IO;
 using System.Diagnostics;
+using System.IO;
+using System.Windows.Forms;
 using thps2patch;
-using System.Text;
 
 namespace th2patchlauncher
 {
@@ -21,7 +20,9 @@ namespace th2patchlauncher
         string hawkFile = "THawk2.exe";
         string configFile = "th2_opt.cfg";
         string configFilePath => Path.Combine(curDir, configFile);
+#pragma warning disable CS0414 // The field 'LauncherForm.patchName' is assigned but its value is never used
         string patchName = "dinput.dll";
+#pragma warning restore CS0414 // The field 'LauncherForm.patchName' is assigned but its value is never used
 
         Options op;
 
@@ -144,7 +145,7 @@ namespace th2patchlauncher
             //just in case if file value is out of bounds
             op.ZoomFactor = op.ValidateRange(op.ZoomFactor, 30, 140);
 
-            fogSlider.Value = (int)Math.Sqrt( (op.GetInt("Video", "FogScale", 300) - 10) * fogSlider.Maximum );
+            fogSlider.Value = (int)Math.Sqrt((op.GetInt("Video", "FogScale", 300) - 10) * fogSlider.Maximum);
 
 
             UpdateFOVbar();
@@ -224,19 +225,22 @@ namespace th2patchlauncher
         public void LaunchTHPS(bool saveParams)
         {
             //wrong exe should lead to exit before trying to patch.
-            if (!File.Exists("Thawk2.exe")) { 
+            if (!File.Exists("Thawk2.exe"))
+            {
                 MessageBox.Show(ErrorMsg.Thawk2NotFound, "Warning");
                 return;
             }
 
-            if (FileLocked("Thawk2.exe")) {
-                MessageBox.Show(ErrorMsg.Thawk2InUse, "Warning"); 
-                return; 
+            if (FileLocked("Thawk2.exe"))
+            {
+                MessageBox.Show(ErrorMsg.Thawk2InUse, "Warning");
+                return;
             }
 
-            if (!isSmallerExe()) { 
-                MessageBox.Show(ErrorMsg.Thawk2NotSmaller, "Warning"); 
-                return; 
+            if (!isSmallerExe())
+            {
+                MessageBox.Show(ErrorMsg.Thawk2NotSmaller, "Warning");
+                return;
             }
 
             try
@@ -367,20 +371,13 @@ namespace th2patchlauncher
             MaybeUpdateFovBar();
         }
 
-        private void trackBar2_Scroll(object sender, EventArgs e)
-        {
-        }
-
         private void unlockFPSbox_CheckedChanged(object sender, EventArgs e)
         {
             op.SetBool("Video", "UnlockFPS", (sender as CheckBox).Checked);
-
         }
 
         private void force32box_CheckedChanged(object sender, EventArgs e)
         {
-            op.SetBool("Video", "Force32Bpp", (sender as CheckBox).Checked);
-
             bool force32bits = (sender as CheckBox).Checked;
 
             op.SetBool("Video", "Force32Bpp", force32bits);

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 using System.Windows.Forms;
 
@@ -173,7 +171,7 @@ namespace thps2patch
             string[] buf = s.Split('=');
 
             int x = Convert.ToInt32(buf[0], 16);
-            
+
             return new Level(game, x, buf[1].Replace(@"\*", "*").Replace('*', '\0'));
         }
 
@@ -183,7 +181,7 @@ namespace thps2patch
             ReadLevels(f);
         }
 
-       
+
         public void Patch(string pr)
         {
             try
@@ -198,7 +196,7 @@ namespace thps2patch
                     if (l.game == "GLOBAL")
                         l.ApplyPatch(mem);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -207,7 +205,7 @@ namespace thps2patch
         //huh?
         public void ModifyKorean()
         {
-            for (int i = 0; i<levels.Count; i++)
+            for (int i = 0; i < levels.Count; i++)
                 levels[i].ModifyOffset(0x3AC8);
         }
 

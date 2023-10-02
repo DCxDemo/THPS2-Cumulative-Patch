@@ -1,13 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Windows.Forms;
-using IniParser;
+﻿using IniParser;
 using IniParser.Model;
 using IniParser.Model.Configuration;
 using IniParser.Parser;
-using System.Globalization;
+using System;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
 
 namespace thps2patch
 {
@@ -74,7 +73,7 @@ namespace thps2patch
 
         public int ResX = 1280;
         public int ResY = 720;
-        
+
         public bool OverrideFOV = false;
         public int ZoomFactor = 100;
 
@@ -125,7 +124,8 @@ namespace thps2patch
             if (!File.Exists(configfilename))
                 File.Create(configfilename).Close();
 
-            cfg = new IniParserConfiguration() {
+            cfg = new IniParserConfiguration()
+            {
                 AllowKeysWithoutSection = false,
                 CaseInsensitive = true,
                 SkipInvalidLines = true,

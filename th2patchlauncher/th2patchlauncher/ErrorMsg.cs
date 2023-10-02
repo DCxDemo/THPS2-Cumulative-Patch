@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace th2patchlauncher
+﻿namespace th2patchlauncher
 {
     class ErrorMsg
     {
