@@ -55,7 +55,7 @@ void GameOptions::Load()
 	ShowTitle = ini->ReadBool("MUSIC", "ShowTitle", true);
 	PlayAmbience = ini->ReadBool("MUSIC", "PlayAmbience", true);
 	SeparateTracks = ini->ReadBool("MUSIC", "SeparateTracks", true);
-
+	RailBalanceBar = ini->ReadBool("PATCH", "RailBalanceBar", true);
 
 	delete ini;
 

@@ -21,6 +21,7 @@ public:
 	bool FreeStats = false;
 	bool DisableVisToggle = false;
 	bool DisableSky = false;
+	bool RailBalanceBar = true;
 
 	//video
 	bool ShowHUD = true;

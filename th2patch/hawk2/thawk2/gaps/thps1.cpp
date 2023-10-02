@@ -60,8 +60,8 @@ SGapTrick gapListThps1[] = {
 	{ 0x13,	0,	2005,	250,	"[DITCH SLAP]" },
 	{ 0x13,	0,	2006,	750,	"[OVER THE AIR CONDITIONER]" },
 	{ 0x13,	0,	2007,	1000,	"[OVER A FOOTBRIDGE]" },
-	{ 0x13,	0,	2008,	500,	"[PARK GAP]" },
-	{ 0x13,	0,	2009,	250,	"[MINI GAP]" },
+	{ 0x13,	1,	2008,	500,	"[PARK GAP]" },
+	{ 0x13,	1,	2009,	250,	"[MINI GAP]" },
 	{ 0x13,	0,	2010,	100,	"[PLANTER GAP]" },
 	{ 0x13,	0,	2011,	100,	"[KICKER GAP]" },
 
@@ -196,7 +196,7 @@ SGapTrick gapListThps1[] = {
 	{ 0x19,	0,	22005,	250,	"[FUNBOX TO RAIL TRANSFER]" },
 	{ 0x19,	0,	22006,	500,	"[FUNBOX TO TABLE TRANSFER]" },
 	{ 0x19,	0,	22007,	50,		"[GIMME GAP]" },
-	{ 0x19,	0,	22008,	500,	"[HANDICAP RAMP RAIL]" },
+	{ 0x19,	2,	22008,	500,	"[HANDICAP RAMP RAIL]" },
 
 	//mall
 	{ 0x19,	0,	22300,	1000,	"[COFFEE GRIND]" },

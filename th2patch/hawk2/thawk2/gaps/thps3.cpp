@@ -1,15 +1,9 @@
 #include "stdafx.h"
 #include "gaps.h"
 
-//category headlines, used to divide gaps per type in gap list
-SGapTrick catAir		= { 0x80,	0,	-2,	0,	"AIR GAPS" };
-SGapTrick catGrind		= { 0x80,	0,	-2,	0,	"GRIND GAPS" };
-SGapTrick catManual		= { 0x80,	0,	-2, 0,	"MANUAL GAPS" };
-SGapTrick catLip		= { 0x80,	0,	-2,	0,	"LIP GAPS" };
-
 SGapTrick gapListThps3[] = {
 
-	//los angeles
+	//los angeles - 25 gaps
 		catAir,
 	{ 0x13,	0,	1000,	250,	"[Flyin High!]" },
 	{ 0x13,	0,	1001,	250,	"[carwash]" },
@@ -39,7 +33,7 @@ SGapTrick gapListThps3[] = {
 	{ 0x80,	0,	-2,	0,	"Wall Grind Gaps" },
 	{ 0x19,	0,	1075,	500,	"[Get Up There!]" },
 
-	//rio
+	//rio - 29 gaps
 	catAir,
 	{ 0x13,	0,	2400,	250,	"[UP AND OVER]" },
 	{ 0x13,	0,	2401,	250,	"[HYPER MONKEY]" },
@@ -72,7 +66,7 @@ SGapTrick gapListThps3[] = {
 	{ 0x19,	0,	2456,	250,	"[PEEPING TOM]" },
 	{ 0x19,	0,	2458,	250,	"[FAST LIKE SQUIRREL]" },
 
-	//canada
+	//canada - 13 gaps
 	catAir,
 	{ 0x13,	0,	2000,	250,	"[Kicker 2 Kicker]" },
 	{ 0x13,	0,	2001,	500,	"[Over the Pool]" },
@@ -92,7 +86,7 @@ SGapTrick gapListThps3[] = {
 	catLip,
 	{ 0x80,	0,	-2,	0,	"OTHER GAPS" },
 
-	//suburbia
+	//suburbia - 22 gaps
 	catAir,
 	{ 0x13,	0,	2100,	250,	"[ICE THE ICE CREAM MAN]" },
 	{ 0x13,	0,	2101,	500,	"[REAR ENTRY]" },
@@ -118,7 +112,7 @@ SGapTrick gapListThps3[] = {
 	{ 0x19,	0,	2141,	250,	"[WELCOME TO SUBURBIA]" },
 	{ 0x19,	0,	2142,	250,	"[ALEX LIKES GRINDING]" },
 
-	//skater island
+	//skater island - 35 gaps
 	catAir,
 	{ 0x13,	0,	2200,	250,	"[Decked Out]" },
 	{ 0x13,	0,	2201,	500,	"[Channel Gap]" },
@@ -157,7 +151,7 @@ SGapTrick gapListThps3[] = {
 	{ 0x19,	0,	2249,	250,	"[Destroy The Deep End]" },
 	{ 0x19,	0,	2250,	250,	"[Sick Style]" },
 
-	//airport
+	//airport - 33 gaps
 	catAir,
 	{ 0x13,	0,	2301,	500,	"[Banana Gap]" },
 	{ 0x13,	0,	2302,	100,	"[Flight On Time]" },
@@ -195,7 +189,7 @@ SGapTrick gapListThps3[] = {
 	{ 0x27,	0,	2363,	500,	"[Precision]" },
 	{ 0x27,	0,	2364,	1000,	"[On Point]" },
 
-	//foundry
+	//foundry - 52 gaps
 	catAir,
 	{ 0x13,	0,	2500,	250,	"[Over the Halfpipe]" },
 	{ 0x13,	0,	2501,	500,	"[Perfect Gap]" },
@@ -252,7 +246,7 @@ SGapTrick gapListThps3[] = {
 	{ 0x19,	0,	2572,	500,	"[We Play Hard]" },
 	{ 0x19,	0,	2573,	800,	"[Sweat]" },
 
-	//tokyo
+	//tokyo - 21 gaps
 	catAir,
 	{ 0x13,	0,	2600,	2500,	"[Sushi Zone SF]" },
 	{ 0x13,	0,	2602,	750,	"[Nap Gap]" },
@@ -280,7 +274,7 @@ SGapTrick gapListThps3[] = {
 	{ 0x33,	0,	2675,	1000,	"[That's what I'm Sayin']" },
 	{ 0x22,	0,	2678,	2500,	"[Kamikaze]" },
 
-	//downhill
+	//downhill - 7 gaps
 	catAir,
 	{ 0x13,	0,	2800,	250,	"[McCrank It]" },
 	{ 0x13,	0,	2801,	500,	"[16 Stair Set]" },

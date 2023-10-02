@@ -3,6 +3,7 @@
 
 SGapTrick gapListThps4[] = {
 
+	/*
 	//???
 	{ 0xFF,	0,	300,	110,	"[Bunny Hop]" },
 	{ 0xFF,	0,	301,	1,	"[not in real game 01]" },
@@ -10,16 +11,18 @@ SGapTrick gapListThps4[] = {
 	{ 0xFF,	0,	303,	1,	"[not in real game 03]" },
 	{ 0xFF,	0,	304,	1,	"[not in real game 04]" },
 	{ 0xFF,	0,	305,	1,	"[not in real game x305]" },
+	*/
 
-
+	//college - 31 gaps
+	catAir,
 	{ 0x13,	0,	1104,	250,	"[OVER THE TRENCH]" },
 	{ 0x13,	0,	1105,	150,	"[PURE TRENCHING]" },
 	{ 0x13,	0,	1107,	150,	"[WEEZY TRANSFER]" },
 	{ 0x13,	0,	1108,	200,	"[BREAKIN' IN]" },
-
+	catManual,
 	{ 0x47,	0,	1201,	250,	"[Across the Courtyard]" },
 	{ 0x47,	0,	1202,	150,	"[Bridge Wheelie]" },
-
+	catGrind,
 	{ 0x19,	0,	1304,	200,	"[RAMPIN UP]" },
 	{ 0x19,	0,	1305,	200,	"[HIGH WIRE ACT]" },
 	{ 0x19,	0,	1306,	250,	"[UP... UP...]" },
@@ -41,24 +44,24 @@ SGapTrick gapListThps4[] = {
 	{ 0x19,	0,	1326,	100,	"[PLANTER2PLANTER]" },
 	{ 0x19,	0,	1327,	150,	"[BOOK RETURN]" },
 	{ 0x19,	0,	1329,	150,	"[Handrail Ride]" },
-
-	{ 0x00,	0,	1401,	280,	"[High Bars]" },
-	{ 0x00,	0,	1402,	240,	"[Better View]" },
-	{ 0x00,	0,	1403,	200,	"[Undergrad]" },
-
+	catLip,
+	{ 0x13,	0,	1401,	280,	"[High Bars]" },
+	{ 0x13,	0,	1402,	240,	"[Better View]" },
+	{ 0x13,	0,	1403,	200,	"[Undergrad]" },
+	catOther,
 	{ 0x19,	0,	1501,	300,	"[CLOCK TOWER]" },
 
+
+	//san francisco - 37 gaps
+	catAir,
 	{ 0x13,	0,	2101,	200,	"[Quarter Pipe Heights]" },
 	{ 0x13,	0,	2102,	250,	"[Above And Below]" },
 	{ 0x13,	0,	2103,	200,	"[Garage Door]" },
 	{ 0x13,	0,	2104,	150,	"[Yo Obus]" },
 	{ 0x13,	0,	2105,	150,	"[Roof To Roof]" },
-
-	{ 0x80,	0,	-2,	0,	"LIP GAPS" },
-	{ 0x13,	0,	2120,	100,	"[BOWL LIP]" },
-
+	catManual,
 	{ 0x47,	0,	2201,	250,	"[On Two Wheels]" },
-
+	catGrind,
 	{ 0x19,	0,	2303,	200,	"[Wire 2 Wire]" },
 	{ 0x19,	0,	2304,	200,	"[Out Of Steps]" },
 	{ 0x19,	0,	2305,	200,	"[Steep Handrail]" },
@@ -82,13 +85,20 @@ SGapTrick gapListThps4[] = {
 	{ 0x19,	0,	2323,	200,	"[Try A Transfer]" },
 	{ 0x19,	0,	2324,	250,	"[Good One Lad]" },
 	{ 0x19,	0,	2325,	150,	"[Rise Above Water]" },
-
+	{ 0x19,	0,	2326,	250,	"[Who lives here?]" },
+	catLip,
 	{ 0x13,	0,	2405,	250,	"[Pier Heights]" },
 	{ 0x13,	0,	2406,	250,	"[Pier Sights]" },
 	{ 0x13,	0,	2407,	250,	"[Pier Sounds]" },
+	{ 0x13,	0,	2408,	250,	"[Pier Tastes]" },
 	{ 0x13,	0,	2409,	250,	"[Pier Smells]" },
-	{ 0x13,	0,	2408,	250,	"[Pier tastes]" },
 	{ 0x13,	0,	2411,	200,	"[Check Him Out]" },
+	//assume 2410 or 2412?
+	//{ 0x13,	0,	?,	200 or 250,	"[Shoppin Ledge]" }, //missing gap
+
+
+	//alcatraz - 31 gaps
+	catAir,
 	{ 0x13,	0,	3101,	1000,	"[Big Air Gap!]" },
 	{ 0x13,	0,	3103,	250,	"[ova' de door]" },
 	{ 0x13,	0,	3105,	110,	"[Bunny Hop]" },
@@ -96,10 +106,10 @@ SGapTrick gapListThps4[] = {
 	{ 0x13,	0,	3109,	250,	"[Look out below!]" },
 	{ 0x13,	0,	3110,	200,	"[Roof Air One]" },
 	{ 0x13,	0,	3111,	200,	"[Roof Air Two]" },
-
+	catManual,
 	{ 0x47,	0,	3201,	250,	"[Freedumb Hill]" },
 	{ 0x47,	0,	3202,	250,	"[Shawshank Hill]" },
-
+	catGrind,
 	{ 0x19,	0,	3303,	320,	"[Over crumblin' rocks]" },
 	{ 0x19,	0,	3305,	150,	"[Three Five-O Cell]" },
 	{ 0x19,	0,	3306,	200,	"[Swimming Team]" },
@@ -120,22 +130,25 @@ SGapTrick gapListThps4[] = {
 	{ 0x19,	0,	3321,	150,	"[New Arrivals]" },
 	{ 0x19,	0,	3322,	150,	"[Courtyard Pipe Grind]" },
 	{ 0x19,	0,	3323,	200,	"[Another Pipe]" },
+	catLip,
+	{ 0x13,	0,	3401,	350,	"[Lip Test]" },
+	{ 0x13,	0,	3402,	250,	"[Cement lips]" },
 
-	{ 0x00,	0,	3401,	350,	"[Lip Test]" },
-	{ 0x00,	0,	3402,	250,	"[Cement lips]" },
 
+	//the sewers - 35 gaps
+	catAir,
 	{ 0x13,	0,	5101,	250,	"[Radioactive Ants]" },
 	{ 0x13,	0,	5102,	150,	"[Skip The Rails]" },
 	{ 0x13,	0,	5103,	200,	"[THPS4 Air]" },
 	{ 0x13,	0,	5104,	200,	"[Gools Night Out]" },
 	{ 0x13,	0,	5105,	300,	"[Plenty Of Air]" },
-
+	catManual,
 	{ 0x47,	0,	5201,	200,	"[First Rule Of Skate]" },
 	{ 0x47,	0,	5202,	200,	"[Don't Talk About Skate]" },
 	{ 0x47,	0,	5203,	250,	"[Second Level Manual]" },
 	{ 0x47,	0,	5205,	200,	"[Straight Tunnel Manual]" },
 	{ 0x47,	0,	5206,	200,	"[No Need For Rails]" },
-
+	catGrind,
 	{ 0x19,	0,	5301,	150,	"[High Bars]" },
 	{ 0x19,	0,	5302,	750,	"[Hidden Passage]" },
 	{ 0x19,	0,	5303,	150,	"[Green Goo]" },
@@ -162,14 +175,17 @@ SGapTrick gapListThps4[] = {
 	{ 0x19,	0,	5325,	250,	"[High Corner Pipe]" },
 	{ 0x19,	0,	5326,	150,	"[To The Wood Grind]" },
 
+
+	//shipyard - 30 gaps
+	catAir,
 	{ 0x13,	0,	6104,	300,	"[Now That's O Two!]" },
 	{ 0x13,	0,	6105,	150,	"[Lord Of The Air]" },
 	{ 0x13,	0,	6106,	200,	"[Bungalow Hero]" },
-
+	catManual,
 	{ 0x47,	0,	6201,	250,	"[High Slope Manual]" },
 	{ 0x47,	0,	6202,	200,	"[Tunnel Manual]" },
 	{ 0x47,	0,	6203,	200,	"[Catwalk Manual]" },
-
+	catGrind,
 	{ 0x19,	0,	6302,	200,	"[U Turn Grind]" },
 	{ 0x19,	0,	6303,	200,	"[Use The Handrail]" },
 	{ 0x19,	0,	6304,	150,	"[Rail Hop]" },
@@ -188,23 +204,26 @@ SGapTrick gapListThps4[] = {
 	{ 0x19,	0,	6319,	300,	"[High Above Grind]" },
 	{ 0x19,	0,	6320,	200,	"[Far Wall Grind]" },
 	{ 0x19,	0,	6321,	200,	"[Two Hops]" },
+	catLip,
+	{ 0x13,	0,	6401,	200,	"[A Little Rusty]" },
+	{ 0x13,	0,	6402,	200,	"[Next Shipment]" },
+	{ 0x13,	0,	6403,	200,	"[Impress The Boss]" },
+	{ 0x13,	0,	6404,	200,	"[Any Workers Here?]" },
+	{ 0x13,	0,	6405,	200,	"[First Edge]" },
+	{ 0x13,	0,	6406,	200,	"[Second Edge]" },
 
-	{ 0x00,	0,	6401,	200,	"[A Little Rusty]" },
-	{ 0x00,	0,	6402,	200,	"[Next Shipment]" },
-	{ 0x00,	0,	6403,	200,	"[Impress The Boss]" },
-	{ 0x00,	0,	6404,	200,	"[Any Workers Here?]" },
-	{ 0x00,	0,	6405,	200,	"[First Edge]" },
-	{ 0x00,	0,	6406,	200,	"[Second Edge]" },
 
+	//kona skatepark - 32 gaps
+	catAir,
 	{ 0x13,	0,	7101,	200,	"[Over The Roll-in]" },
 	{ 0x13,	0,	7102,	200,	"[Pool To Pool Transfer]" },
 	{ 0x13,	0,	7103,	200,	"[Adding Vert]" },
 	{ 0x13,	0,	7105,	200,	"[SPINAL GROoVES]" },
 	{ 0x13,	0,	7106,	150,	"[GIGA KONA]" },
-
+	catManual,
 	{ 0x47,	0,	7202,	200,	"[Momo's Style]" },
 	{ 0x47,	0,	7203,	200,	"[Judges Like]" },
-
+	catGrind,
 	{ 0x19,	0,	7301,	200,	"[Fun Box Rail]" },
 	{ 0x19,	0,	7302,	200,	"[Short Ramp Hop]" },
 	{ 0x19,	0,	7304,	200,	"[Picnic Transfer]" },
@@ -228,10 +247,12 @@ SGapTrick gapListThps4[] = {
 	{ 0x19,	0,	7322,	200,	"[Red Pool Grind]" },
 	{ 0x19,	0,	7323,	200,	"[Inspecting Pool]" },
 	{ 0x19,	0,	7324,	200,	"[Alternate Two Transfer]" },
+	catLip,
+	{ 0x13,	0,	7401,	150,	"[Tombstone]" },
+	{ 0x13,	0,	7403,	200,	"[Extra Height]" },
 
-	{ 0x00,	0,	7401,	150,	"[Tombstone]" },
-	{ 0x00,	0,	7403,	200,	"[Extra Height]" },
 
+	//london - 35 gaps
 	{ 0x13,	0,	8101,	150,	"[Queen's Knight]" },
 	{ 0x13,	0,	8102,	150,	"[Medieval Air]" },
 	{ 0x13,	0,	8103,	150,	"[Sir Nergets]" },
@@ -239,11 +260,11 @@ SGapTrick gapListThps4[] = {
 	{ 0x13,	0,	8106,	150,	"[What's Up Here?]" },
 	{ 0x13,	0,	8107,	250,	"[Supa Spine Sir]" },
 	{ 0x13,	0,	8108,	200,	"[Londoon Call In]" },
-
+	catManual,
 	{ 0x47,	0,	8201,	200,	"[Two Wheelin' Road]" },
 	{ 0x47,	0,	8202,	250,	"[Between the Fountains]" },
+	catGrind,
 	{ 0x19,	0,	8301,	150,	"[Bus Grind]" },
-
 	{ 0x19,	0,	8303,	100,	"[Pip Pip Chireo]" },
 	{ 0x19,	0,	8304,	150,	"[Balcony Hop]" },
 	{ 0x19,	0,	8305,	150,	"[No Seating]" },
@@ -265,17 +286,20 @@ SGapTrick gapListThps4[] = {
 	{ 0x19,	0,	8321,	100,	"[East Sidewalk Grind]" },
 	{ 0x19,	0,	8322,	250,	"[Tower Grind]" },
 	{ 0x19,	0,	8323,	1500,	"[YES IT IS RED!]" },
+	catLip,
+	{ 0x13,	0,	8401,	200,	"[East London Ledge]" },
+	{ 0x13,	0,	8402,	200,	"[South London Bar Ledge]" },
+	{ 0x13,	0,	8403,	200,	"[London's Bus Stop Ledge]" },
+	{ 0x13,	0,	8404,	200,	"[London Pillar Ledge]" },
 
-	{ 0x00,	0,	8401,	200,	"[East London Ledge]" },
-	{ 0x00,	0,	8402,	200,	"[South London Bar Ledge]" },
-	{ 0x00,	0,	8403,	200,	"[London's Bus Stop Ledge]" },
-	{ 0x00,	0,	8404,	200,	"[London Pillar Ledge]" },
 
+	//little big world - 14 gaps
+	catAir,
 	{ 0x13,	0,	9102,	200,	"[Cheesey Jump]" },
 	{ 0x13,	0,	9103,	200,	"[Now With A 900]" },
-
+	catManual,
 	{ 0x47,	0,	9201,	200,	"[Breakfast On Wheels]" },
-
+	catGrind,
 	{ 0x19,	0,	9301,	200,	"[Medium Well]" },
 	{ 0x19,	0,	9302,	200,	"[Light It Up]" },
 	{ 0x19,	0,	9303,	200,	"[Toasty Nergets]" },
@@ -286,8 +310,8 @@ SGapTrick gapListThps4[] = {
 	{ 0x19,	0,	9308,	200,	"[casManG Transfer]" },
 	{ 0x19,	0,	9310,	200,	"[Microwave Popcorn]" },
 	{ 0x19,	0,	9311,	200,	"[The Donuts]" },
-
-	{ 0x00,	0,	9401,	500,	"[Thanks For Playing!]" },
+	catLip,
+	{ 0x13,	0,	9401,	500,	"[Thanks For Playing!]" },
 
 	/* LIST TERMINATOR */
 

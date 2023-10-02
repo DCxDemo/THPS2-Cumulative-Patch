@@ -200,6 +200,9 @@
     <ClCompile Include="thawk2\gaps\thps2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="thawk2\gaps\gaps.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="hawk2.def">

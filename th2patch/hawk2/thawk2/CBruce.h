@@ -29,6 +29,18 @@ enum class EStats : int {
 	STATS_MANUALS = 9
 };
 
+
+class CBruce
+{
+public:
+	CBruce(void*);
+	void* pSkater;
+	int ManualBalance();
+	int RailBalance();
+	int PhysicsState();
+};
+
+
 CVector* CBruce_GetPosition(void* pSkater);
 CVector* CBruce_GetVelocity(void* pSkater);
 int* CBruce_GetTestValueInt(void* pSkater, int offset);

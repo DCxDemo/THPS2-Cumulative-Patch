@@ -57,16 +57,10 @@ void PrintDebugStuff()
 
 			//int balance = *CBruce_GetManualBalance((int*)(*(int*)GSkater));
 
-			int railBal = *CBruce_GetRailBalance((int*)(*(int*)GSkater));
-			int state = *CBruce_GetPhysicsState((int*)(*(int*)GSkater));
-
 			//sprintf(debugText, "balance %i", railBal);
 			//DebugMessage(debugText, 10, 10);
 
-			if ((EPhysicsState)state == EPhysicsState::PHYSICS_ON_RAIL)
-			{
-				Panel_BalanceRail(railBal, 0x1000, 30, 200, 0x79, 0x0000ff, 0x00ff00);
-			}
+
 		}
 
 
@@ -80,6 +74,56 @@ void PrintDebugStuff()
 }
 
 
+void Panel_BalanceRail(
+	int Balance, int Max, int Length, int Width,
+	int x, int y, uint LineColor, uint MarkerColor, bool horz)
+{
+	if (horz)
+	{
+		Length = Length * 4 / 3;
+		Width = Width * 3 / 4;
+
+		int markerX = (Balance * Length) / Max + x;
+		Panel_Line(markerX, y, markerX, y + Width, MarkerColor);
+		Panel_DrawBalanceBarLR(x, y, Length, Width, LineColor);
+		Panel_DrawBalanceBarLR(x + 1, y + 1, Length, Width, LineColor >> 3 & 0x1f1f1f);
+	}
+	else
+	{
+		//marker
+		int markerY = (Balance * Length) / Max + y;
+		Panel_Line(x, markerY, x + Width, markerY, MarkerColor);
+		Panel_DrawBalanceBarUD(x, y, Length, Width, LineColor);
+		Panel_DrawBalanceBarUD(x + 1, y + 1, Length, Width, LineColor >> 3 & 0x1f1f1f);
+	}
+}
+
+void Panel_DrawBalanceBarUD(int x, int y, int Length, int Width, uint color)
+{
+	int topY = y + Length;
+	int bottomY = y - Length;
+	int rightX = x + Width;
+
+	Panel_Line(x, topY, x, bottomY, color);
+	Panel_Line(x, topY, rightX, topY, color);
+	Panel_Line(x, y, rightX, y, color);
+	Panel_Line(x, bottomY, rightX, bottomY, color);
+}
+
+
+void Panel_DrawBalanceBarLR(int x, int y, int Length, int Width, uint color)
+{
+	int leftX = x + Length;
+	int rightX = x - Length;
+	int bottomY = y + Width;
+
+	Panel_Line(leftX, y, rightX, y, color);
+	Panel_Line(leftX, y, leftX, bottomY, color);
+	Panel_Line(x, y, x, bottomY, color);
+	Panel_Line(rightX, y, rightX, bottomY, color);
+}
+
+/*
 void Panel_BalanceRail(int Balance, int Max, int Length, int x, int y, uint LineColor, uint MarkerColor)
 {
 	int iVar1;
@@ -104,7 +148,7 @@ void Panel_BalanceRail(int Balance, int Max, int Length, int x, int y, uint Line
 	Panel_Line(iVar1, y + 1, x, y + 1, uVar3);
 	Panel_Line(iVar1, iVar2, x, iVar2, uVar3);
 }
-
+*/
 
 void VibrationTest(CXBOXController* Player1)
 {

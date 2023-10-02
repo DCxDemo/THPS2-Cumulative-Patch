@@ -11,24 +11,44 @@ CVector* CBruce_GetVelocity(void* pSkater)
 	return (CVector*)((int)pSkater + 0x4C);
 }
 
-int* CBruce_GetManualBalance(void* pSkater)
+
+
+#define CBRUCE_RAILBALANCE 0x2EF0
+//0x2ef4
+//0x2ef8
+//0x2efc
+//0x2f00
+//0x2f04
+//0x2f08
+//0x2f0c
+//0x2f10
+#define CBRUCE_MANUALBALANCE 0x2F14
+
+#define CBRUCE_PHYSICSSTATE 0x30B8
+
+CBruce::CBruce(void* pBruce)
 {
-	return (int*)((int)pSkater + 0x2F14);
+	pSkater = (void*)(*((int*)pBruce));
 }
 
-int* CBruce_GetRailBalance(void* pSkater)
+int CBruce::ManualBalance()
 {
-	return (int*)((int)pSkater + 0x2ef0);
+	return *(int*)((int)pSkater + CBRUCE_MANUALBALANCE);
+}
+
+int CBruce::RailBalance()
+{
+	return *(int*)((int)pSkater + CBRUCE_RAILBALANCE);
+}
+
+int CBruce::PhysicsState()
+{
+	return *(int*)((int)pSkater + CBRUCE_PHYSICSSTATE);
 }
 
 int* CBruce_GetManualBalanceOld(void* pSkater)
 {
 	return (int*)((int)pSkater + 0x2F18);
-}
-
-int* CBruce_GetPhysicsState(void* pSkater)
-{
-	return (int*)((int)pSkater + 0x30B8);
 }
 
 

@@ -31,6 +31,7 @@
 #include "GameOptions.h"
 #include "mydebug.h"
 #include "patchStuff.h"
+#include "color.h"
 
 
 //the old bigass all-in-one file, that should be cut into pizzas. this is my plastic fork!
@@ -652,10 +653,28 @@ int Career_GetPointCost_Hook()
 }
 
 
+
+
 void Panel_Display_Hook()
 {
 	if (options.ShowHUD)
+	{
 		Panel_Display();
+
+		if (options.RailBalanceBar)
+		{
+			CBruce skater = new CBruce(GSkater);
+
+			if ((EPhysicsState)skater.PhysicsState() == EPhysicsState::PHYSICS_ON_RAIL)
+			{
+				Panel_BalanceRail(skater.RailBalance(), 0x1000,
+					30, 6,
+					512 / 2, 240 / 3,
+					COLOR_RED, COLOR_GREEN,	//BGR color
+					true);
+			}
+		}
+	}
 
 	PrintDebugStuff();
 }
@@ -687,8 +706,10 @@ void Game_Init_Hook()
 	//VibrationTest(Player1);
 }
 
+
+
 void Game_Display_Hook()
-{
+{	
 	Game_Display();
 }
 
@@ -1200,10 +1221,37 @@ void PatchThps3Gaps()
 	}
 
 	//now this is a hacky hack for skate heaven. find proper way to hide it.
+	Levels[9].gapStart = 2500;
+	Levels[9].gapEnd = 2500;
+
+	CopyGaps(pGapListThps3, pGaps);
+}
+
+void PatchThps4Gaps()
+{
+	int ranges[] = {
+		1000, //col
+		2000, //sf2
+		3000, //alcatraz
+		5000, //sewers
+		6000, //shipyard
+		7000, //kona
+		8000, //london
+		9000, //lil big world
+		1000
+	};
+
+	for (int i = 0; i < 9; i++)
+	{
+		Levels[i].gapStart = ranges[i];
+		Levels[i].gapEnd = Levels[i].gapStart + 999;
+	}
+
+	//now this is a hacky hack for skate heaven. find proper way to hide it.
 	Levels[9].gapStart = 1000;
 	Levels[9].gapEnd = 1000;
 
-	CopyGaps(pGapListThps3, pGaps);
+	CopyGaps(pGapListThps4, pGaps);
 }
 
 //main patches func, sets all hooks and changes vars needed
@@ -1214,7 +1262,7 @@ void Patch()
 	if (options.CurrentGame == "THPS1") CopyGaps(pGapListThps1, pGaps);
 	else if (options.CurrentGame == "THPS2") CopyGaps(pGapListThps2, pGaps);
 	else if (options.CurrentGame == "THPS3") PatchThps3Gaps();
-	else if (options.CurrentGame == "THPS4") CopyGaps(pGapListThps4, pGaps);
+	else if (options.CurrentGame == "THPS4") PatchThps4Gaps();
 	else CopyGaps(pGapListThps2, pGaps); //restore if mhpb
 
 	//doesnt seem to work
@@ -1258,7 +1306,7 @@ void Patch()
 	ParseLevels(); //changes levels
 
 	/*
-	SLevel* level = &Levels[0];
+	SLevel* level = (SLevel*)((int)Levels + sizeof(SLevel) * 0);
 
 	level->trgfile = "skware_t";
 	level->shortname = "ware";
@@ -1271,13 +1319,38 @@ void Patch()
 	goal->stringParam = "boxes";
 
 	goal = GetGoal(0, 6);
-	goal->goalText = "Bluntslide the big rail";
-	goal->stringParam = "Bluntslide";
+	goal->goalText = "50-50 the Big Rail";
+	goal->stringParam = "50-50";
 
 	goal = GetGoal(0, 7);
 	goal->goalText = "Hit 3 transfers";
 	goal->stringParam = "transfers";
+	
+
+	level = (SLevel*)((int)Levels + sizeof(SLevel) * 1);
+
+	level->trgfile = "skschl_t";
+	level->shortname = "schl";
+	level->subname = "School Miami";
+	level->gapStart = 0;
+	level->gapEnd = 25000;
+
+	goal = GetGoal(1, 4);
+	goal->goalText = "Grind 5 picnic tables";
+	goal->stringParam = "picnic tables";
+
+	goal = GetGoal(1, 6);
+	goal->intParam = 1;
+	goal->goalText = "Nosegrind the handicap";
+	goal->stringParam = "NOSEGRIND";
+
+	goal = GetGoal(1, 7);
+	goal->intParam = 2;
+	goal->goalText = "Hit 2 playground transfers";
+	goal->stringParam = "TRANSFERS";
 	*/
+
+
 
 	Player1 = new CXBOXController(1);
 

@@ -128,6 +128,7 @@
     <ClCompile Include="Checksum.cpp" />
     <ClCompile Include="color.cpp" />
     <ClCompile Include="thawk2\CBruce.cpp" />
+    <ClCompile Include="thawk2\gaps\gaps.cpp" />
     <ClCompile Include="thawk2\gaps\thps1.cpp" />
     <ClCompile Include="thawk2\gaps\thps2.cpp" />
     <ClCompile Include="thawk2\gaps\thps3.cpp" />
