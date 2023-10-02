@@ -29,7 +29,7 @@ Make sure target binary is called dinput.dll, could be hawk2.dll by default \
 Make sure to install launcher dependencies (via NuGet):
 * ini-parser - https://github.com/rickyah/ini-parser
 
-# Links
+## Links
 * [LegacyTHPS Discord](https://discord.gg/vTWucHS)
 * [Video preview of the patch](https://www.youtube.com/watch?v=1eHHqhsgC6w)
 * [Original thps-mods thread](http://www.thps-mods.com/forum/viewtopic.php?t=5429)
