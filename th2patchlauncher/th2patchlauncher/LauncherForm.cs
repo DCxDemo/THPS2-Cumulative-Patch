@@ -267,120 +267,8 @@ namespace th2patchlauncher
             Application.Exit();
         }
 
-        private void trackBar1_ValueChanged(object sender, EventArgs e)
-        {
-            op.ZoomFactor = op.ValidateRange(fovSlider.Value, 30, 140);
-            UpdateFOVbar();
-        }
+        #region [General tab]
 
-        private void overrideFOVbox_CheckedChanged(object sender, EventArgs e)
-        {
-            fovSlider.Enabled = overrideFOVbox.Checked;
-
-            MaybeUpdateFovBar();
-        }
-
-        private void UpdateFOVbar()
-        {
-            fovSlider.Value = op.ZoomFactor;
-            label4.Text = op.GetZoom().ToString("0.0##");
-
-            op.SetFloat("Video", "FOV", op.GetZoom());
-        }
-
-        private void MaybeUpdateFovBar()
-        {
-            if (!fovSlider.Enabled)
-            {
-                op.AutoFOV();
-                UpdateFOVbar();
-            }
-        }
-
-        private void resBox_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-            op.ParseResText(resBox.Text);
-            MaybeUpdateFovBar();
-        }
-
-        private void trackBar2_Scroll(object sender, EventArgs e)
-        {
-        }
-
-        private void unlockFPSbox_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void force32box_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        #region [Music tab checkboxes]
-        private void randomBox_CheckedChanged(object sender, EventArgs e)
-        {
-            op.SetBool("Music", "Random", (sender as CheckBox).Checked);
-        }
-
-        private void titleBox_CheckedChanged(object sender, EventArgs e)
-        {
-            op.SetBool("Music", "ShowTitle", (sender as CheckBox).Checked);
-        }
-
-        private void fadeBox_CheckedChanged(object sender, EventArgs e)
-        {
-            op.SetBool("Music", "Fade", (sender as CheckBox).Checked);
-        }
-
-        private void ambienceBox_CheckedChanged(object sender, EventArgs e)
-        {
-            op.SetBool("Music", "PlayAmbience", (sender as CheckBox).Checked);
-        }
-
-        private void separateTracksBox_CheckedChanged(object sender, EventArgs e)
-        {
-            op.SetBool("Music", "SeparateTracks", (sender as CheckBox).Checked);
-        }
-        #endregion
-
-        #region [Patches tab checkboxes]
-        private void vibrationBox_CheckedChanged(object sender, EventArgs e)
-        {
-            op.SetBool("Input", "Vibration", (sender as CheckBox).Checked);
-        }
-
-        private void bigDropBox_CheckedChanged(object sender, EventArgs e)
-        {
-            op.SetBool("Input", "BigDrop", (sender as CheckBox).Checked);
-        }
-
-        private void xinputBox_CheckedChanged(object sender, EventArgs e)
-        {
-            op.SetBool("Input", "XInput", (sender as CheckBox).Checked);
-        }
-
-    #endregion
-
-        private void drawshadowBox_CheckedChanged(object sender, EventArgs e)
-        {
-            op.SetBool("Video", "DrawShadow", (sender as CheckBox).Checked);
-        }
-
-        private void drawhudBox_CheckedChanged(object sender, EventArgs e)
-        {
-            op.SetBool("Video", "ShowHUD", (sender as CheckBox).Checked);
-        }
-
-        private void psxtexBox_CheckedChanged(object sender, EventArgs e)
-        {
-            op.SetBool("Video", "DisableNewTex", (sender as CheckBox).Checked);
-        }
-
-        private void userPatchBox_CheckedChanged(object sender, EventArgs e)
-        {
-            op.SetBool("Patch", "UserPatch", (sender as CheckBox).Checked);
-        }
 
         private void altSkinsBox_CheckedChanged(object sender, EventArgs e)
         {
@@ -424,6 +312,163 @@ namespace th2patchlauncher
             MaybeUpdateFovBar();
         }
 
+        #endregion
+
+        #region [Video tab]
+
+        private void rendererBox_CheckedChanged(object sender, EventArgs e)
+        {
+            bool softrender = (sender as CheckBox).Checked;
+
+            op.SetString("Video", "Renderer", softrender ? "Software" : "Hardware");
+
+            if (softrender)
+                force32box.Checked = false;
+        }
+
+        private void fovSlider_Scroll(object sender, EventArgs e)
+        {
+
+        }
+
+        private void trackBar1_ValueChanged(object sender, EventArgs e)
+        {
+            op.ZoomFactor = op.ValidateRange(fovSlider.Value, 30, 140);
+            UpdateFOVbar();
+        }
+
+        private void overrideFOVbox_CheckedChanged(object sender, EventArgs e)
+        {
+            fovSlider.Enabled = overrideFOVbox.Checked;
+
+            MaybeUpdateFovBar();
+        }
+
+        private void UpdateFOVbar()
+        {
+            fovSlider.Value = op.ZoomFactor;
+            label4.Text = op.GetZoom().ToString("0.0##");
+
+            op.SetFloat("Video", "FOV", op.GetZoom());
+        }
+
+        private void MaybeUpdateFovBar()
+        {
+            if (!fovSlider.Enabled)
+            {
+                op.AutoFOV();
+                UpdateFOVbar();
+            }
+        }
+
+        private void resBox_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            op.ParseResText(resBox.Text);
+            MaybeUpdateFovBar();
+        }
+
+        private void trackBar2_Scroll(object sender, EventArgs e)
+        {
+        }
+
+        private void unlockFPSbox_CheckedChanged(object sender, EventArgs e)
+        {
+            op.SetBool("Video", "UnlockFPS", (sender as CheckBox).Checked);
+
+        }
+
+        private void force32box_CheckedChanged(object sender, EventArgs e)
+        {
+            op.SetBool("Video", "Force32Bpp", (sender as CheckBox).Checked);
+
+            bool force32bits = (sender as CheckBox).Checked;
+
+            op.SetBool("Video", "Force32Bpp", force32bits);
+
+            if (force32bits)
+                rendererBox.Checked = false;
+        }
+
+        #endregion
+
+        #region [Music tab]
+        private void randomBox_CheckedChanged(object sender, EventArgs e)
+        {
+            op.SetBool("Music", "Random", (sender as CheckBox).Checked);
+        }
+
+        private void titleBox_CheckedChanged(object sender, EventArgs e)
+        {
+            op.SetBool("Music", "ShowTitle", (sender as CheckBox).Checked);
+        }
+
+        private void fadeBox_CheckedChanged(object sender, EventArgs e)
+        {
+            op.SetBool("Music", "Fade", (sender as CheckBox).Checked);
+        }
+
+        private void ambienceBox_CheckedChanged(object sender, EventArgs e)
+        {
+            op.SetBool("Music", "PlayAmbience", (sender as CheckBox).Checked);
+        }
+
+        private void separateTracksBox_CheckedChanged(object sender, EventArgs e)
+        {
+            op.SetBool("Music", "SeparateTracks", (sender as CheckBox).Checked);
+        }
+        #endregion
+
+        #region [Patches tab]
+        private void skyBox_CheckedChanged(object sender, EventArgs e)
+        {
+            op.SetBool("Patch", "DisableSky", (sender as CheckBox).Checked);
+        }
+
+        private void vibrationBox_CheckedChanged(object sender, EventArgs e)
+        {
+            op.SetBool("Input", "Vibration", (sender as CheckBox).Checked);
+        }
+
+        private void bigDropBox_CheckedChanged(object sender, EventArgs e)
+        {
+            op.SetBool("Input", "BigDrop", (sender as CheckBox).Checked);
+        }
+
+        private void xinputBox_CheckedChanged(object sender, EventArgs e)
+        {
+            op.SetBool("Input", "XInput", (sender as CheckBox).Checked);
+        }
+
+        private void userPatchBox_CheckedChanged(object sender, EventArgs e)
+        {
+            op.SetBool("Patch", "UserPatch", (sender as CheckBox).Checked);
+        }
+
+        private void manualsBox_CheckedChanged(object sender, EventArgs e)
+        {
+            op.SetBool("Input", "Manuals", (sender as CheckBox).Checked);
+        }
+
+        private void railBarBox_CheckedChanged(object sender, EventArgs e)
+        {
+            op.SetBool("Patch", "RailBalanceBar", (sender as CheckBox).Checked);
+        }
+
+        private void drawshadowBox_CheckedChanged(object sender, EventArgs e)
+        {
+            op.SetBool("Video", "DrawShadow", (sender as CheckBox).Checked);
+        }
+
+        private void drawhudBox_CheckedChanged(object sender, EventArgs e)
+        {
+            op.SetBool("Video", "ShowHUD", (sender as CheckBox).Checked);
+        }
+
+        private void psxtexBox_CheckedChanged(object sender, EventArgs e)
+        {
+            op.SetBool("Video", "DisableNewTex", (sender as CheckBox).Checked);
+        }
+        #endregion
 
         #region [About tab]
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -442,30 +487,5 @@ namespace th2patchlauncher
         }
         #endregion
 
-
-        private void rendererBox_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void manualsBox_CheckedChanged(object sender, EventArgs e)
-        {
-            op.SetBool("Input", "Manuals", (sender as CheckBox).Checked);
-        }
-
-        private void skyBox_CheckedChanged(object sender, EventArgs e)
-        {
-            op.SetBool("Patch", "DisableSky", (sender as CheckBox).Checked);
-        }
-
-        private void railBarBox_CheckedChanged(object sender, EventArgs e)
-        {
-            op.SetBool("Patch", "RailBalanceBar", (sender as CheckBox).Checked);
-        }
-
-        private void fovSlider_Scroll(object sender, EventArgs e)
-        {
-
-        }
     }
 }
