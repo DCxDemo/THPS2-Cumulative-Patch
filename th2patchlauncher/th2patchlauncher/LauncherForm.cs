@@ -164,6 +164,7 @@ namespace th2patchlauncher
             drawhudBox.Checked = op.GetBool("Video", "ShowHUD", true);
 
             skyBox.Checked = op.GetBool("Patch", "DisableSky", false);
+            railBarBox.Checked = op.GetBool("Patch", "RailBalanceBar", true);
 
             manualsBox.Checked = op.GetBool("Input", "Manuals", true);
 
@@ -274,8 +275,7 @@ namespace th2patchlauncher
 
         private void overrideFOVbox_CheckedChanged(object sender, EventArgs e)
         {
-            op.OverrideFOV = overrideFOVbox.Checked;
-            fovSlider.Enabled = op.OverrideFOV;
+            fovSlider.Enabled = overrideFOVbox.Checked;
 
             MaybeUpdateFovBar();
         }
@@ -284,11 +284,13 @@ namespace th2patchlauncher
         {
             fovSlider.Value = op.ZoomFactor;
             label4.Text = op.GetZoom().ToString("0.0##");
+
+            op.SetFloat("Video", "FOV", op.GetZoom());
         }
 
         private void MaybeUpdateFovBar()
         {
-            if (!op.OverrideFOV)
+            if (!fovSlider.Enabled)
             {
                 op.AutoFOV();
                 UpdateFOVbar();
@@ -307,14 +309,12 @@ namespace th2patchlauncher
 
         private void unlockFPSbox_CheckedChanged(object sender, EventArgs e)
         {
-            op.SetBool("Video", "UnlockFPS", (sender as CheckBox).Checked);
+
         }
 
         private void force32box_CheckedChanged(object sender, EventArgs e)
         {
-            op.SetBool("Video", "Force32Bpp", (sender as CheckBox).Checked);
 
-            if ((sender as CheckBox).Checked) rendererBox.Checked = false;
         }
 
         #region [Music tab checkboxes]
@@ -445,9 +445,7 @@ namespace th2patchlauncher
 
         private void rendererBox_CheckedChanged(object sender, EventArgs e)
         {
-            op.SetString("Video", "Renderer", (sender as CheckBox).Checked ? "Software" : "Hardware");
 
-            if ((sender as CheckBox).Checked) force32box.Checked = false;
         }
 
         private void manualsBox_CheckedChanged(object sender, EventArgs e)
@@ -458,6 +456,16 @@ namespace th2patchlauncher
         private void skyBox_CheckedChanged(object sender, EventArgs e)
         {
             op.SetBool("Patch", "DisableSky", (sender as CheckBox).Checked);
+        }
+
+        private void railBarBox_CheckedChanged(object sender, EventArgs e)
+        {
+            op.SetBool("Patch", "RailBalanceBar", (sender as CheckBox).Checked);
+        }
+
+        private void fovSlider_Scroll(object sender, EventArgs e)
+        {
+
         }
     }
 }
