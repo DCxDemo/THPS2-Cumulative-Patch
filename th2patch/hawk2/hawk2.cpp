@@ -105,7 +105,8 @@ bool InitPatches()
 
 	srand(time(0));
 
-	
+	//only allocate console in a debug build
+	#ifdef _DEBUG
 	if (true)
 	{
 		AllocConsole();
@@ -114,6 +115,7 @@ bool InitPatches()
 		freopen("CONOUT$", "w", stdout);
 		freopen("CONOUT$", "w", stderr);
 	}
+	#endif
 
 	/*
 	//pxr extraction example

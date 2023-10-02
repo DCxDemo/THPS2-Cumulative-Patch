@@ -10,6 +10,7 @@ _junk
 #compiled stuff
 [Dd]ebug
 [Rr]elease
+*.pdb
 
 # not sure if needed
 *.sdf
