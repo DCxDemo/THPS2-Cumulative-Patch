@@ -1411,6 +1411,7 @@ void Patch()
 	//this patches resolution, probably not needed anymore
 	//CPatch::SetInt(0x0046A891, 2);
 
+	
 	int* hW2 = (int*)0x4f5496;
 	int* hH2 = (int*)0x4f54a0;
 
@@ -1419,8 +1420,8 @@ void Patch()
 
 
 	//??
-	CPatch::SetInt((int)0x524bb0, options.ResX);
-	CPatch::SetInt((int)0x524bb4, options.ResY);
+	//CPatch::SetInt((int)0x524bb0, options.ResX);
+	//CPatch::SetInt((int)0x524bb4, options.ResY);
 
 	
 
