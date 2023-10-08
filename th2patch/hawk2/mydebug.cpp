@@ -1,16 +1,6 @@
 #include "stdafx.h"
-
-#include "lib/xinput/CXBOXController.h"
-
-#include "thawk2/_old.h"
-#include "thawk2/Mess.h"
-#include "thawk2/globals.h"
-#include "thawk2/WinMain.h"
-#include "thawk2/CBruce.h"
-#include "thawk2/physics.h"
-
-#include "patchStuff.h"
 #include "mydebug.h"
+
 
 char debugText[256];
 
@@ -60,7 +50,20 @@ void PrintDebugStuff()
 			//sprintf(debugText, "balance %i", railBal);
 			//DebugMessage(debugText, 10, 10);
 
+			
+			CBruce* pSkater = new CBruce(GSkater);
 
+			sprintf(debugText, "gap test: %i %i",
+				pSkater->GetValue(0x3014),
+				pSkater->GetValue(0x3018)
+			);
+
+			delete pSkater;
+
+			
+			
+
+			DebugMessage(debugText, 10, 10);
 		}
 
 

@@ -4,8 +4,8 @@
 
 //PCINPUT namespace handles keyboard, mouse and joystick input via DirectInput
 
-int* pad1 = (int*)0x00567c58;
-int* pad2 = (int*)0x00567dc4;
+extern int* pad1;
+extern int* pad2;
 
 typedef void(*PCINPUT_ResetGameControls_t)();
 typedef void(*PCINPUT_SetShellMode_t)(int mode);

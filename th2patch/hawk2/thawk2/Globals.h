@@ -6,8 +6,14 @@ extern SLevel* Levels;
 extern void* GSkater;
 extern void* GSkater2;
 
+extern int* ViewportMode;
+
 extern EGameMode* GGame;
 extern bool* GamePaused;
+
+extern bool* Loading;
+extern int* LoadingTime;
+extern int* ProcessingTime;
 
 extern bool* GenerateLevel;
 

@@ -12,9 +12,6 @@ static const RunAnim_t CSuper_RunAnim = (RunAnim_t)0x47E020;
 typedef int(__thiscall *CycleAnim_t)(void* pSkater, __int16 animIndex, char a3);
 static const CycleAnim_t CSuper_CycleAnim = (CycleAnim_t)0x47E180;
 
-typedef void(__thiscall *SkaterPhysicsUpdate_t)(void* pSkater);
-static const SkaterPhysicsUpdate_t SkaterPhysicsUpdate = (SkaterPhysicsUpdate_t)0x49B460;
-
 typedef void(*CreateSkatersAndCameras_t)();
 static const CreateSkatersAndCameras_t CreateSkatersAndCameras = (CreateSkatersAndCameras_t)0x469170;
 
@@ -28,10 +25,6 @@ typedef char (*StartBinkMovie_t)(const char *a1, int a2, int a3);
 static const StartBinkMovie_t StartBinkMovie = (StartBinkMovie_t)0x4E3760;
 
 
-
-
-typedef int (*Spool_LoadPSHBuffer_t)(int *a1, int a2, int a3, int a4, int *a5, int a6);
-static const Spool_LoadPSHBuffer_t Spool_LoadPSHBuffer = (Spool_LoadPSHBuffer_t)0x4B2220;
 
 
 typedef int (*PCOpen_t)(char *path, int a2);

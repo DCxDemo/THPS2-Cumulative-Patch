@@ -33,18 +33,17 @@ enum class EStats : int {
 class CBruce
 {
 public:
-	CBruce(void*);
+	CBruce::CBruce(void*);
 	void* pSkater;
-	int ManualBalance();
-	int RailBalance();
-	int PhysicsState();
+	int CBruce::ManualBalance();
+	int CBruce::RailBalance();
+	int CBruce::PhysicsState();
+	int CBruce::TotalScore();
+	int CBruce::GetValue(int addr);
+	void CBruce::SetValue(int addr, int newValue);
+	char CBruce::GetValueChar(char addr);
 };
-
 
 CVector* CBruce_GetPosition(void* pSkater);
 CVector* CBruce_GetVelocity(void* pSkater);
 int* CBruce_GetTestValueInt(void* pSkater, int offset);
-int* CBruce_GetManualBalance(void* pSkater);
-int* CBruce_GetManualBalanceOld(void* pSkater);
-int* CBruce_GetRailBalance(void* pSkater);
-int* CBruce_GetPhysicsState(void* pSkater);

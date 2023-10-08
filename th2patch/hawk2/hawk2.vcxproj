@@ -91,6 +91,7 @@
   <ItemGroup>
     <ClInclude Include="color.h" />
     <ClInclude Include="cpatch.h" />
+    <ClInclude Include="thawk2\thawk2.h" />
     <ClInclude Include="lib\INI\IniWriter.h" />
     <ClInclude Include="THawk2\Career.h" />
     <ClInclude Include="thawk2\CBruce.h" />
@@ -114,7 +115,9 @@
     <ClInclude Include="thawk2\Shatter.h" />
     <ClInclude Include="thawk2\SkatMgr.h" />
     <ClInclude Include="thawk2\Soundlib.h" />
+    <ClInclude Include="thawk2\Spool.h" />
     <ClInclude Include="thawk2\types.h" />
+    <ClInclude Include="thawk2\Utils.h" />
     <ClInclude Include="thawk2\WinMain.h" />
     <ClInclude Include="THawk2\_old.h" />
     <ClInclude Include="hawk2_utils.h" />
@@ -160,8 +163,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="thawk2\PCInput.cpp" />
     <ClCompile Include="thawk2\PKR.cpp" />
     <ClCompile Include="thawk2\Redbook.cpp" />
+    <ClCompile Include="thawk2\Shatter.cpp" />
+    <ClCompile Include="thawk2\Spool.cpp" />
+    <ClCompile Include="thawk2\Utils.cpp" />
     <ClCompile Include="thawk2\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>

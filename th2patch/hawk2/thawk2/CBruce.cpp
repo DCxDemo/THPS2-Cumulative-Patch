@@ -12,6 +12,9 @@ CVector* CBruce_GetVelocity(void* pSkater)
 }
 
 
+#define CBRUCE_TOTALSCORE 0x16C
+
+#define CBRUCE_PENDINGSCORE 0x2A8
 
 #define CBRUCE_RAILBALANCE 0x2EF0
 //0x2ef4
@@ -26,9 +29,33 @@ CVector* CBruce_GetVelocity(void* pSkater)
 
 #define CBRUCE_PHYSICSSTATE 0x30B8
 
+
+
+//sizeof CBruce = 0x3538
+
 CBruce::CBruce(void* pBruce)
 {
 	pSkater = (void*)(*((int*)pBruce));
+}
+
+int CBruce::GetValue(int addr)
+{
+	return *(int*)((int)pSkater + addr);
+}
+
+char CBruce::GetValueChar(char addr)
+{
+	return *(char*)((char)pSkater + addr);
+}
+
+void CBruce::SetValue(int addr, int newValue)
+{
+	*(int*)((int)pSkater + addr) = newValue;
+}
+
+int CBruce::TotalScore()
+{
+	return *(int*)((int)pSkater + CBRUCE_TOTALSCORE);
 }
 
 int CBruce::ManualBalance()

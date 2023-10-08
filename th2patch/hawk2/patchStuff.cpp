@@ -8,22 +8,7 @@
 #include "lib/sqlite/sqlite3.h"
 #include "lib/xinput/CXBOXController.h"
 
-//thawk2 includes
-#include "thawk2/_old.h"
-#include "thawk2/Career.h"
-#include "thawk2/IO/FileIO.h"
-#include "thawk2/Mess.h"
-#include "thawk2/Mem.h"
-#include "thawk2/Redbook.h"
-#include "thawk2/Sfx.h"
-#include "thawk2/PCInput.h"
-#include "thawk2/globals.h"
-#include "thawk2/Shatter.h"
-#include "thawk2/WinMain.h"
-#include "thawk2/Redbook.h"
-#include "thawk2/Physics.h"
-#include "thawk2/CBruce.h"
-#include "thawk2/gaps/gaps.h"
+#include "thawk2/thawk2.h"
 
 //patch includes
 #include "hawk2_utils.h"
@@ -32,6 +17,8 @@
 #include "mydebug.h"
 #include "patchStuff.h"
 #include "color.h"
+
+#include "ddraw.h"
 
 
 //the old bigass all-in-one file, that should be cut into pizzas. this is my plastic fork!
@@ -438,7 +425,6 @@ void VIDMENU_Load_Hook()
 	options.Load();
 }
 
-
 //move to globals?
 
 int* hW2 = (int*)0x4f5496;
@@ -477,8 +463,14 @@ void WINMAIN_SwitchResolution_Hook(int a1)
 	//WINMAIN_SwitchResolution(a1);
 }
 
+
+
+
+
 #pragma region xinput processing
 //this stuff should be moved to pad entirely
+
+
 
 enum class PadButton : unsigned short
 {
@@ -727,8 +719,6 @@ void Game_Logic_Hook()
 
 	if (framesToVibrate > 0)
 		framesToVibrate--;
-
-	//CBruce_BoardOff(&GSkater);
 }
 
 
@@ -1272,6 +1262,7 @@ void Patch()
 		//nops entire bail/award big drop path, since its a part of a func, not a separate one
 		CPatch::Nop(0x48F419, 0x48F430 - 0x48F419); 
 
+
 	if (!options.Manuals)
 	{
 		//set instant return from thiscall MaybeManual 
@@ -1303,7 +1294,7 @@ void Patch()
 		memcpy(savename, &options.CurrentGame[0], options.CurrentGame.length()); //replaces THPS2 in saves with currentgame
 	}
 
-	ParseLevels(); //changes levels
+	//ParseLevels(); //changes levels
 
 	/*
 	SLevel* level = (SLevel*)((int)Levels + sizeof(SLevel) * 0);
@@ -1352,6 +1343,7 @@ void Patch()
 
 
 
+
 	Player1 = new CXBOXController(1);
 
 	//CPatch::SetChar(0x498707, 0x92);
@@ -1397,6 +1389,8 @@ void Patch()
 	//CPatch::SetInt(0x458586, rand());
 	//CPatch::SetInt(0x468DE4, rand());
 
+
+	
 	if (options.DisableNewTex)
 	{
 		//change newbmp pointers null
@@ -1412,18 +1406,19 @@ void Patch()
 	//CPatch::SetInt(0x0046A891, 2);
 
 	
+	
 	int* hW2 = (int*)0x4f5496;
 	int* hH2 = (int*)0x4f54a0;
 
 	CPatch::SetInt((int)hW2, options.ResX);
 	CPatch::SetInt((int)hH2, options.ResY);
-
+	
 
 	//??
 	//CPatch::SetInt((int)0x524bb0, options.ResX);
 	//CPatch::SetInt((int)0x524bb4, options.ResY);
 
-	
+
 
 	CPatch::SetInt((int)hardcodedWidth, options.ResX);
 	CPatch::SetInt((int)hardcodedHeight, options.ResY);
@@ -1436,6 +1431,7 @@ void Patch()
 
 
 
+	
 	//hooks related to soundtrack, revisit
 	Redirect_Redbook_XAUpdateVolume();
 	Redirect_Redbook_XABeginFade();
@@ -1455,6 +1451,16 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	//{ 0x458564, SFX_SpoolOutLevelSFX },
 	//{ 0x452570, SFX_SpoolInLevelSFX },
 
+	//hooks main 3 logic funcs
+	//all calls in PlayAway
+	{ 0x46a331, Game_Init_Hook },
+	{ 0x46a3ef, Game_Logic_Hook },
+	{ 0x46a407, Game_Display_Hook },
+
+	// hooks inputs
+	//in ReadDirectInput
+	{ 0x4E1CC6, GenPsxPadData_Hook },
+
 	{ 0x451F79, Redbook_XARestore2 },
 	{ 0x44F41F, Redbook_XARemember_New },
 	{ 0x4A94D5, Redbook_XARemember_New },
@@ -1467,7 +1473,18 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	{ 0x4CC4C3, VIDMENU_Save_Hook },
 	{ 0x4F3D3E, VIDMENU_Save_Hook },
 
-	{ 0x4E1CC6, GenPsxPadData_Hook }, //in ReadDirectInput
+
+	
+	{ 0x41f4c8, Spool_LoadPSH },
+	{ 0x41f7bb, Spool_LoadPSH },
+	{ 0x469011, Spool_LoadPSH },
+	{ 0x46902d, Spool_LoadPSH },
+	{ 0x4a283b, Spool_LoadPSH },
+	{ 0x4b569a, Spool_LoadPSH },
+	{ 0x4b56af, Spool_LoadPSH },
+	{ 0x4bd1fa, Spool_LoadPSH },
+	{ 0x4bd20f, Spool_LoadPSH },
+	
 
 	//{ 0x46DFEC, Land_Sound },
 	//{ 0x497DC8, Land_Sound },
@@ -1488,13 +1505,10 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	{ 0x4b4a24, Career_GetPointCost_Hook },
 	*/
 
-	{ 0x48ef74, CBruce_StartGrind_Hook }, //in CBruce::HandeStickToRail
-	{ 0x49c288, CBruce_HandleJump_Hook }, //in CBruce::DoPhysics
+	//{ 0x48ef74, CBruce_StartGrind_Hook }, //in CBruce::HandeStickToRail
+	//{ 0x49c288, CBruce_HandleJump_Hook }, //in CBruce::DoPhysics
 
-	//all calls in PlayAway
-	{ 0x46a331, Game_Init_Hook },
-	{ 0x46a3ef, Game_Logic_Hook },
-	{ 0x46a407, Game_Display_Hook },
+
 
 	//both in ExecuteCommandList
 	{ 0x004c3608, Utils_SetVisibilityInBox_Hook },
@@ -1502,7 +1516,7 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 
 	{ 0x469f4c, Shatter_MaybeMakeGlassShatterSound }, //in Game_Logic
 
-	{ 0x48d4a5, Panel_Bail_Hook },	//in CBruce::Trick_Bail
+	//{ 0x48d4a5, Panel_Bail_Hook },	//in CBruce::Trick_Bail
 
 	{ 0x468823, Panel_Display_Hook }, // in Display
 
@@ -1550,6 +1564,8 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	{ 0x4C2C13, ExecuteCommandList_Hook },
 	{ 0x4C52FC, ExecuteCommandList_Hook },
 	{ 0x4C5337, ExecuteCommandList_Hook },
+
+	//{ 0x4c654d, Utils_VblankProcessing },
 
 	/*
 	{ 0x414b16, Career_GapNumber },

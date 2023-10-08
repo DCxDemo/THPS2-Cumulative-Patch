@@ -6,6 +6,7 @@
 #include "hawk2_utils.h"
 #include "patchStuff.h"
 #include "thawk2/PKR.H"
+#include <ddraw.h>
 
 //LPDIRECTDRAW lpDD = *((LPDIRECTDRAW*)0x29D6FF8);
 
@@ -117,6 +118,8 @@ bool InitPatches()
 	}
 	#endif
 
+
+
 	/*
 	//pxr extraction example
 	pkr = new Pkr2();
@@ -133,11 +136,11 @@ bool InitPatches()
 	}
 	*/
 
+	
 	options.Load();
 
 	Patch();
 	LoadMessageProg();
-
 
 	return true;
 }
