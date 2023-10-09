@@ -4,6 +4,8 @@
 
 #include "thawk2/_old.h"
 #include "thawk2/Career.h"
+#include "thawk2/CClass.h"
+#include "thawk2/CMenu.h"
 #include "thawk2/IO/FileIO.h"
 #include "thawk2/Mess.h"
 #include "thawk2/Mem.h"

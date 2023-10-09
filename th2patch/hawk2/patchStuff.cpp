@@ -646,6 +646,14 @@ int Career_GetPointCost_Hook()
 
 
 
+void Front_Update_Hook()
+{
+	Front_Update();
+
+	//CreateTestMenu();
+	//CPatch::SetInt(0x0044ca6f + 2, (int)testMenu);
+}
+
 
 void Panel_Display_Hook()
 {
@@ -704,6 +712,7 @@ void Game_Display_Hook()
 {	
 	Game_Display();
 }
+
 
 bool skipframe = false;
 
@@ -1456,6 +1465,9 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	{ 0x46a331, Game_Init_Hook },
 	{ 0x46a3ef, Game_Logic_Hook },
 	{ 0x46a407, Game_Display_Hook },
+
+	//in Display
+	{ 0x46882d, Front_Update_Hook },
 
 	// hooks inputs
 	//in ReadDirectInput

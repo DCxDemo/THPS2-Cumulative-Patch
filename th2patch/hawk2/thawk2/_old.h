@@ -25,6 +25,10 @@ typedef char (*StartBinkMovie_t)(const char *a1, int a2, int a3);
 static const StartBinkMovie_t StartBinkMovie = (StartBinkMovie_t)0x4E3760;
 
 
+typedef void (*Front_Update_t)();
+static const Front_Update_t Front_Update = (Front_Update_t)0x0044ea50;
+
+	
 
 
 typedef int (*PCOpen_t)(char *path, int a2);
