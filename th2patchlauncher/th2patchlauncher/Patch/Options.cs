@@ -139,6 +139,9 @@ namespace thps2patch
             var parser = new IniDataParser(cfg);
             config = parser.Parse(File.ReadAllText(configfilename));
 
+            //temporary fix to loading fov value
+            ZoomFactor = (int)(GetFloat("VIDEO", "FOV", 1) * 100);
+
             /*
             //what a mess
 
@@ -175,6 +178,9 @@ namespace thps2patch
 
         public void AutoFOV()
         {
+            //check if user changed fov by knowing if ZoomFactor is other than 1.0
+            if (ZoomFactor != 100) return;
+
             OverrideFOV = false;
             int ourzoom = (int)((4.0f * ResY) / (3.0f * ResX) * 100.0f);
             ZoomFactor = ValidateRange((int)(ourzoom + (100.0f - ourzoom) / 2.0f), 30, 140);
