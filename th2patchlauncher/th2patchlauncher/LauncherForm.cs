@@ -127,6 +127,8 @@ namespace th2patchlauncher
                 default: gameBox.SelectedIndex = 0; break;
             }
 
+            //loading fov value
+            op.ZoomFactor = (int)(op.GetFloat("VIDEO", "FOV", 1) * 100);
 
             op.ResX = op.GetInt("Video", "ResX", 1280);
             op.ResY = op.GetInt("Video", "ResY", 720);
@@ -146,7 +148,6 @@ namespace th2patchlauncher
             op.ZoomFactor = op.ValidateRange(op.ZoomFactor, 30, 140);
 
             fogSlider.Value = (int)Math.Sqrt((op.GetInt("Video", "FogScale", 300) - 10) * fogSlider.Maximum);
-
 
             UpdateFOVbar();
 

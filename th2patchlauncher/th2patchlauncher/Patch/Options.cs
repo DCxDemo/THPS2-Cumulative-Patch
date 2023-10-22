@@ -139,9 +139,6 @@ namespace thps2patch
             var parser = new IniDataParser(cfg);
             config = parser.Parse(File.ReadAllText(configfilename));
 
-            //temporary fix to loading fov value
-            ZoomFactor = (int)(GetFloat("VIDEO", "FOV", 1) * 100);
-
             /*
             //what a mess
 
