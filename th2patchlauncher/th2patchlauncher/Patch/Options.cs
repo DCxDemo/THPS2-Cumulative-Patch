@@ -83,7 +83,6 @@ namespace thps2patch
 
         public object[] _169_resolutions = new object[]
         {
-            "320x240",
             "1600x900",
             "1920x1080",
             "2048x1152",
@@ -288,19 +287,28 @@ namespace thps2patch
             }
         }
 
-        public void setAspectRatioByResolution(ComboBox aspectRatiBox, string resolutionString)
+        public void setAspectRatioByResolution(ComboBox aspectRatioBox, string resolutionString)
         {
+            aspectRatioBox.SelectedItem = getAspectRatioOfResolution(resolutionString);
+        }
+
+        public string getAspectRatioOfResolution(string resolutionString)
+        {
+            string aspectratio = "";
+
             foreach (object item in _169_resolutions)
             {
                 if (resolutionString == item.ToString())
-                    aspectRatiBox.SelectedItem = "16:9";
+                    aspectratio = "16:9";
             }
 
             foreach (object item2 in _43_resolutions)
             {
                 if (resolutionString == item2.ToString())
-                    aspectRatiBox.SelectedItem = "4:3";
+                    aspectratio = "4:3";
             }
+
+            return aspectratio;
         }
     }
 }
