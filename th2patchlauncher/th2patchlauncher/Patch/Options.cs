@@ -81,6 +81,8 @@ namespace thps2patch
         public string Game = "THPS2";
         public string ExeName = "Thawk2";
 
+        public bool noConfigFileFound = false;
+
         public object[] _169_resolutions = new object[]
         {
             "1600x900",
@@ -141,8 +143,11 @@ namespace thps2patch
         {
             configfilename = filename;
 
-            if (!File.Exists(configfilename))
-                File.Create(configfilename).Close();
+            if (!File.Exists(configfilename)) 
+            {
+               noConfigFileFound = true;
+               File.Create(configfilename).Close();
+            }
 
             cfg = new IniParserConfiguration()
             {
@@ -195,8 +200,8 @@ namespace thps2patch
 
         public void AutoFOV()
         {
-            //check if user changed fov by knowing if ZoomFactor is other than 1.0
-            if (ZoomFactor != 100) return;
+            //check if user changed fov or has custom fov by checking if cfg exists
+            if (!noConfigFileFound) return;
 
             OverrideFOV = false;
             int ourzoom = (int)((4.0f * ResY) / (3.0f * ResX) * 100.0f);
