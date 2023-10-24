@@ -17,6 +17,7 @@
 #include "mydebug.h"
 #include "patchStuff.h"
 #include "color.h"
+#include "checksum.h"
 
 #include "ddraw.h"
 
@@ -609,7 +610,7 @@ void GenPsxPadData_Hook()
 
 void PCINPUT_ActuatorOn_Hook(int index, int time, int motor, int value)
 {
-	printf("index: %i time: %i motor: %i value: %i\r\n", index, time, motor, value);
+	//printf("index: %i time: %i motor: %i value: %i\r\n", index, time, motor, value);
 
 	PCINPUT_ActuatorOn(index, time, motor, value);
 	
@@ -655,6 +656,34 @@ void Front_Update_Hook()
 }
 
 
+int* D3DBEGINSCENE_lastVBlank = (int*)0x0056b490;
+int* gShellMode = (int*)0x006a35b4;
+
+void D3D_BeginScene_Hook(uint param_1, uint backColor)
+{
+	int waitframes = options.UnlockFPS ? 1 : 2;
+
+	if (*Vblanks < *D3DBEGINSCENE_lastVBlank + waitframes) {
+		do {
+			//Sleep(0);
+		} while (*Vblanks < *D3DBEGINSCENE_lastVBlank + waitframes);
+	}
+	
+	*D3DBEGINSCENE_lastVBlank = *Vblanks;
+
+	uint color = 0xff7080a0;
+
+	if ((*gShellMode != 0) || (*GLevel != 6)) {
+		color = backColor;
+	}
+
+	D3DPOLY_StartScene(param_1, color);
+}
+
+
+
+CMenu* menu;
+
 void Panel_Display_Hook()
 {
 	if (options.ShowHUD)
@@ -677,6 +706,13 @@ void Panel_Display_Hook()
 	}
 
 	PrintDebugStuff();
+
+	if (menu != NULL)
+		delete menu;
+
+	menu = new CMenu((SMenu*)0x0055e8a0);
+	//menu->DebugPrint();
+	
 }
 
 void RenderSuperItemShadow_Hook(void* superItem) //CSuper
@@ -788,217 +824,281 @@ LRESULT ProxyWinProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 
 #pragma endregion
 
-const string skaters[] = {
-	"hawk3", "hawk4",
-	"burnq4", "",
-	"ca3", "ca4",
-	"campb3", "campb4",
-	"glif3", "glif4",
-	"koston3", "koston4",
-	"lasek3", "lasek4",
-	"mullen3", "mullen4",
-	"muska3", "muska4",
-	"rynld3", "rynld4",
-	"rowley3", "rowley4",
-	"steam3", "steam4",
-	"thomas3", "thomas4",
-	"", "",
-	"", "",
-	"", "",
-	"", "",
-	"dick3", "",
-	"", ""
+
+#pragma region [patch skaters]
+
+SkaterProfile* profiles = (SkaterProfile*)0x5371B8;
+
+
+#define PROSKATER_HAWK 0
+#define PROSKATER_BURNQUIST 1
+#define PROSKATER_CABALLERO 2
+#define PROSKATER_CAMPBELL 3
+#define PROSKATER_GLIFBERG 4
+#define PROSKATER_KOSTON 5
+#define PROSKATER_LASEK 6
+#define PROSKATER_MULLEN 7
+#define PROSKATER_MUSKA 8
+#define PROSKATER_REYNOLDS 9
+#define PROSKATER_ROWLEY 10
+#define PROSKATER_STEAMER 11
+#define PROSKATER_THOMAS 12
+#define CAS_SLOT1 13
+#define CAS_SLOT2 14
+#define CAS_SLOT3 15
+#define CAS_SLOT4 16
+#define SKATER_SECRET1 17	//dick
+#define SKATER_SECRET2 18	//carrera
+#define SKATER_SECRET3 19	//spiderman
+
+/*
+SBoardInfo BamBoards[] = {
+	{ "s2dZe01n.bmp", "Animalism",		0, 1, 1, 1, 0, 0},
+	{ "s2dZe02n.bmp", "Arbor",			0, 1, 2, 2, 0, 0},
+	{ "s2dZe03n.bmp", "Letterman",		0, 2, 3, 2, 0, 0},
+	{ "s2dZe04n.bmp", "Manimal",		0, 3, 3, 3, 0, 0},
+	{ "s2dZe05n.bmp", "Squared",		0, 3, 4, 3, 0, 0},
+	{ "s2dZe06n.bmp", "Trophy",			0, 4, 4, 4, 0, 0},
+	{ "s2dZe07n.bmp", "FutureIsNature", 0, 4, 5, 4, 0, 0},
+	{ "s2dZe08n.bmp", "Harvest",		0, 5, 5, 5, 0, 0}
 };
 
-/*
-struct Costume
-{
-	char* style;
-	char* styleLow;
-}
-
-
-struct Board
-{
-	char* image_name;
-	char* name;
-	int u1;
-	int stat1;
-	int stat2;
-	int stat3;
-	int u2;
-	int u3;
-}
-
-//should be 0x170 bytes long
-struct SkaterProfile
-{
-	Costume style[4];   //24
-	char name[32];      //32
-	char* short_name;   //4
-	Board board[8];     //256
-	byte stats[10];     //10
-	bool unknown;       //1
-    bool unknown2;      //1
-	char* face;			//4
-	int* bioPtr;		//4
-}
+SBoardInfo LilPerBoards[] = {
+	{ "s2dlp01n.bmp", "clown dance",		0, 1, 1, 1, 0, 0},
+	{ "s2dlp02n.bmp", "clown face",			0, 1, 2, 2, 0, 0},
+	{ "s2dlp03n.bmp", "clown girlface",		0, 2, 3, 2, 0, 0},
+	{ "s2dlp04n.bmp", "clown halfface",		0, 3, 3, 3, 0, 0},
+	{ "s2dlp05n.bmp", "clown paint",		0, 3, 4, 3, 0, 0},
+	{ "s2dlp06n.bmp", "clown round",		0, 4, 4, 4, 0, 0},
+	{ "s2dlp07n.bmp", "clown spin",			0, 4, 5, 4, 0, 0},
+	{ "s2dlp08n.bmp", "clown",				0, 5, 5, 5, 0, 0}
+};
 */
-
-/*
-void OldPatchSkaters()
-{
-	int profilesPtr = 0x5371B8;
-
-	for (int i = 0; i<19; i++)
-	{
-		CPatch::SetInt(profilesPtr + i*0x170 + 16, skaters[i*2] == "" ? 0 : (int)&skaters[i*2][0u]);
-		CPatch::SetInt(profilesPtr + i*0x170 + 16 + 8, skaters[i*2 + 1] == "" ? 0 : (int)&skaters[i*2 + 1][0u]);
-	}
-
-}
-*/
-
-#pragma region patch skaters
-
-	string bam1 = "ba3";
-	string bam2 = "ba4";
-	string bam3 = "fry";
-	string wolve = "wolve";
-	string lilper = "lilper";
-
-	string kor1a = "white";
-	string kor1b = "white2";
-	string kor2a = "red";
-	string kor2b = "red2";
-	string kor3a = "blue";
-	string kor3b = "blue2";
-	string kor4a = "black";
-	string kor4b = "black2";
-
-	string mcsqueeb = "secret4";
-
-
-
-string ba3 = "ba3";
-string ba4 = "ba4";
-
-const int numSkaters = 19;
-int Skater[numSkaters];
 
 void PatchSkaters()
 {
-	Skater[0] = 0x5371B8;
+	SkaterProfile* p = &profiles[0];
 
-	for (int i = 1; i<numSkaters; i++) 
-		Skater[i] = Skater[i-1]+0x170; 
+	p->styleC_hi = "hawk3";
+	p->styleC_lo = "hawk3b";
+	p->styleD_hi = "hawk4";
+	p->styleD_lo = "hawk4b";
+	p->unk1 = -1;
 
-	for (int i = 0; i<numSkaters; i++)
+	p++;
+	p->styleC_hi = "burnq4";
+	p->styleC_lo = "burnq4b";
+	//burnquist wasnt in thps3, so no style D model
+
+	p++;
+	p->styleC_hi = "ca3";
+	p->styleC_lo = "ca3b";
+	p->styleD_hi = "ca4";
+	p->styleD_lo = "ca4b";
+
+	p++;
+	p->styleC_hi = "campb3";
+	p->styleC_lo = "campb3b";
+	p->styleD_hi = "campb4";
+	p->styleD_lo = "campb4b";
+
+	p++;
+	p->styleC_hi = "glif3";
+	p->styleC_lo = "glif3b";
+	p->styleD_hi = "glif4";
+	p->styleD_lo = "glif4b";
+
+	p++;
+	p->styleC_hi = "koston3";
+	p->styleC_lo = "koston3b";
+	p->styleD_hi = "koston4";
+	p->styleD_lo = "koston4b";
+
+	p++;
+	p->styleC_hi = "lasek3";
+	p->styleC_lo = "lasek3b";
+	p->styleD_hi = "lasek4";
+	p->styleD_lo = "lasek4b";
+
+	p++;
+	p->styleC_hi = "mullen3";
+	p->styleC_lo = "mullen3b";
+	p->styleD_hi = "mullen4";
+	p->styleD_lo = "mullen4b";
+
+	p++;
+	p->styleC_hi = "muska3";
+	p->styleC_lo = "muska3b";
+	p->styleD_hi = "muska4";
+	p->styleD_lo = "muska4b";
+
+	p++;
+	p->styleC_hi = "rynld3";
+	p->styleC_lo = "rynld3b";
+	p->styleD_hi = "rynld4";
+	p->styleD_lo = "rynld4b";
+
+	p++;
+	p->styleC_hi = "rowley3";
+	p->styleC_lo = "rowley3b";
+	p->styleD_hi = "rowley4";
+	p->styleD_lo = "rowley4b";
+
+	p++;
+	p->styleC_hi = "steam3";
+	p->styleC_lo = "steam3b";
+	p->styleD_hi = "steam4";
+	p->styleD_lo = "steam4b";
+
+	p++;
+	p->styleC_hi = "thomas3";
+	p->styleC_lo = "thomas3b";
+	p->styleD_hi = "thomas4";
+	p->styleD_lo = "thomas4b";
+
+
+	//now patch secret skater depending on the selected option
+
+	p = &profiles[SKATER_SECRET1];
+
+	uint hash = checksum(&options.DickSwap[0]);
+
+	printf("%s = 0x%08x\n", &options.DickSwap[0], hash);
+
+
+	if (options.DickSwap != "none")
 	{
-		CPatch::SetInt(Skater[i] + 16, skaters[i*2] == "" ? 0 : (int)&skaters[i*2][0u]);
-		CPatch::SetInt(Skater[i] + 16 + 8, skaters[i*2 + 1] == "" ? 0 : (int)&skaters[i*2 + 1][0u]);
+		switch (hash)
+		{
+			//"bam", margera + fry cook
+			case 0x680b1a5b: {
+				sprintf(p->FullName, "%s", "Bam Margera");
+				p->pShortName = "Bam";
+
+				p->styleA_hi = "ba3";
+				p->styleA_lo = "ba3b";
+				p->styleB_hi = "ba4";
+				p->styleB_lo = "ba4b";
+				p->styleC_hi = "fry";
+				p->styleC_lo = "fryb";
+
+				p->pFaceName = "s2fbam.bmp";
+
+				//memcpy(&p->boards, BamBoards, sizeof(BamBoards));
+
+				break;
+			}
+
+			//"wolve", wolverine from th3
+			case 0xe4f32b33: {
+				sprintf(p->FullName, "%s", "Wolverine");
+				p->pShortName = "wolve";
+
+				p->styleA_hi = "wolve";
+				p->styleA_lo = NULL;
+				p->styleB_hi = NULL;	//since we dont have style B for it, should patch with nulls
+				p->styleB_lo = NULL;
+
+				break;
+			}
+
+			//"lilper", Little Person from th4
+			case 0xadf13666: {
+				sprintf(p->FullName, "%s", "Little Person");
+				p->pShortName = "lilper";
+
+				p->styleA_hi = "lilper";
+				p->styleA_lo = NULL;
+				p->styleB_hi = NULL;	//since we dont have style B for it, should patch with nulls
+				p->styleB_lo = NULL;
+
+				//memcpy(&p->boards, LilPerBoards, sizeof(LilPerBoards));
+
+				break;
+			}
+
+			//kor1, fin k l band style B
+			case 0xfd91275c: {
+				sprintf(p->FullName, "%s", "Fin K. L.");
+				p->pShortName = "finkl";
+
+				p->styleA_hi = "white";
+				p->styleA_lo = NULL;
+				p->styleB_hi = "red";
+				p->styleB_lo = NULL;
+				p->styleC_hi = "blue";
+				p->styleC_lo = NULL;
+				p->styleD_hi = "black";
+				p->styleD_lo = NULL;
+
+				break;
+			}
+
+			//kor2, fin k l band style B
+			case 0x4ff07f11: {
+				sprintf(p->FullName, "%s", "Fin K. L.");
+				p->pShortName = "finkl";
+
+				p->styleA_hi = "white2";
+				p->styleA_lo = NULL;
+				p->styleB_hi = "red2";
+				p->styleB_lo = NULL;
+				p->styleC_hi = "blue2";
+				p->styleC_lo = NULL;
+				p->styleD_hi = "black2";
+				p->styleD_lo = NULL;
+
+				break;
+			}
+
+			//mcsqueeb, since tony already has 4 styles, bring this back in
+			case 0x92af0067: {
+				sprintf(p->FullName, "%s", "McSqueeb");
+				p->pShortName = "mcsqueeb";
+
+				p->styleA_hi = "secret4";
+				p->styleA_lo = "secret4b";
+				p->styleB_hi = NULL;	//since we dont have style B for it, should patch with nulls
+				p->styleB_lo = NULL;
+
+				break;
+			}
+
+			default:
+				printf("Unknown secret skater swap! %s", &options.DickSwap[0]);
+		}
 	}
-
-
-
-	int k = 17;
-
-	if (options.DickSwap == "bam")
+	else
 	{
-		CPatch::SetInt(Skater[k], (int)&bam1[0]);
-		CPatch::SetInt(Skater[k] + 8, (int)&bam2[0]);
-		CPatch::SetInt(Skater[k] + 16, (int)&bam3[0]);
-		CPatch::SetInt(Skater[k] + 24, 0);
-
-		char *bamname = (char*)(Skater[k] + 32);
-		sprintf(bamname, "Bam Margera");
+		p->styleC_hi = "dick3";
+		p->styleC_lo = "dick3b";
 	}
-
-	if (options.DickSwap == "wolve")
-	{
-		CPatch::SetInt(Skater[k], (int)&wolve[0]);
-		CPatch::SetInt(Skater[k] + 8, 0);
-		CPatch::SetInt(Skater[k] + 16, 0);
-		CPatch::SetInt(Skater[k] + 24, 0);
-
-		char *bamname = (char*)(Skater[k] + 32);
-		sprintf(bamname, "Wolverine");
-	}
-
-	if (options.DickSwap == "lilper")
-	{
-		CPatch::SetInt(Skater[k], (int)&lilper[0]);
-		CPatch::SetInt(Skater[k] + 8, 0);
-		CPatch::SetInt(Skater[k] + 16, 0);
-		CPatch::SetInt(Skater[k] + 24, 0);
-
-		char *bamname = (char*)(Skater[k] + 32);
-		sprintf(bamname, "Little Person");
-	}
-
-	if (options.DickSwap == "kor1")
-	{
-		CPatch::SetInt(Skater[k], (int)&kor1a[0]);
-		CPatch::SetInt(Skater[k] + 8, (int)&kor2a[0]);
-		CPatch::SetInt(Skater[k] + 16, (int)&kor3a[0]);
-		CPatch::SetInt(Skater[k] + 24, (int)&kor4a[0]);
-
-		char *bamname = (char*)(Skater[k] + 32);
-		sprintf(bamname, "Fin K. L.");
-
-		int *sex = (int*)(Skater[k] + 32 + 0x13C);
-		*sex = 0x61;
-	}
-
-	if (options.DickSwap == "kor2")
-	{
-		CPatch::SetInt(Skater[k], (int)&kor1b[0]);
-		CPatch::SetInt(Skater[k] + 8, (int)&kor2b[0]);
-		CPatch::SetInt(Skater[k] + 16, (int)&kor3b[0]);
-		CPatch::SetInt(Skater[k] + 24, (int)&kor4b[0]);
-
-		char *bamname = (char*)(Skater[k] + 32);
-		sprintf(bamname, "Fin K. L.");
-
-		int *sex = (int*)(Skater[k] + 32 + 0x13C);
-		*sex = 0x61;
-	}
-
-	if (options.DickSwap == "mcsqueeb")
-	{
-		CPatch::SetInt(Skater[k], (int)&mcsqueeb[0]);
-		CPatch::SetInt(Skater[k] + 8, 0);
-		CPatch::SetInt(Skater[k] + 16, 0);
-		CPatch::SetInt(Skater[k] + 24, 0);
-
-		char *bamname = (char*)(Skater[k] + 32);
-		sprintf(bamname, "McSqueeb");
-	}
-
 }
 
 #pragma endregion
+
 
 #pragma region patch levels
 
 int numLevels = 15;
 
-
-
-string SQLite_GetString(sqlite3_stmt* stmt, int col, string def)
+char* SQLite_GetString(sqlite3_stmt* stmt, int col, char* def)
 {
 	if (sqlite3_column_type(stmt, col) != SQLITE_NULL)
-		return string((char*)sqlite3_column_text(stmt, col));
+	{
+		string* cc = new string((const char*)sqlite3_column_text(stmt, col));
+
+		return (char*)cc->c_str();
+	}
 
 	return def;
 }
 
+
 void ParseLevels()
 {
-
 	//levPtr[8] = levPtr[0];
 	//levPtr[8].shortname = "mall";
-
 
 	sqlite3 *db;
     sqlite3_stmt* stmt;
@@ -1010,7 +1110,8 @@ void ParseLevels()
     }
 
 	string query = "select * \nfrom LevelProfile \nwhere game = lower('" + options.CurrentGame + "') \norder by slot limit 15\n";
-	printf("Query:\n%s\n", query);
+
+	printf("Query:\n%s\n", &query[0]);
 
 	// compile sql statement to binary
     if(sqlite3_prepare_v2(db, query.c_str(), -1, &stmt, NULL) != SQLITE_OK) {
@@ -1020,9 +1121,9 @@ void ParseLevels()
 		return;
     }
 
-   int cnt = 0;
+	int cnt = 0;
 
-   int ret_code = 0;
+	int ret_code = 0;
 
     while((ret_code = sqlite3_step(stmt)) == SQLITE_ROW) {
 
@@ -1030,24 +1131,26 @@ void ParseLevels()
 
 		//short name actually used for VAB loading, workaround needed
 		//levPtr[cnt].shortname = (char *)&(new string((char*)sqlite3_column_text(stmt, 1)))[0];
-
-		Levels[cnt].subname = (char *)(new string(SQLite_GetString(stmt, 4, "")));
-		Levels[cnt].trgfile = (char *)(new string(SQLite_GetString(stmt, 5, "skhan_t")));
-
-		Levels[cnt].thumb = (char *)&(new string((char*)sqlite3_column_text(stmt, 6)))[0];
-		Levels[cnt].renderthumb = (char *)&(new string((char*)sqlite3_column_text(stmt, 7)))[0];
+		
+		Levels[cnt].subname = SQLite_GetString(stmt, 4, "");
+		Levels[cnt].trgfile = SQLite_GetString(stmt, 5, "skhan_t");
+		Levels[cnt].thumb = SQLite_GetString(stmt, 6, "");
+		Levels[cnt].renderthumb = SQLite_GetString(stmt, 7, "");
+		
 		Levels[cnt].isCompetition = sqlite3_column_int(stmt, 8);
 		Levels[cnt].isCompetition2 = Levels[cnt].isCompetition;
+		
+
 		//levPtr[cnt].isCompetition = 1;
 		//levPtr[cnt].isCompetition2 = 1;
 
-		printf("Level %i is %s %s\n", cnt, Levels[cnt].name, Levels[cnt].subname);
+		printf("Level %i is %s %s\n", cnt, Levels[cnt].name, &Levels[cnt].subname[0]);
 
 		//fout1 << (char*)sqlite3_column_text(stmt, 4) << "|" << levPtr[cnt].subname << endl;
 		cnt++;
-
 	}
-    if(ret_code != SQLITE_DONE) {
+
+    if (ret_code != SQLITE_DONE) {
         //this error handling could be done better, but it works
         printf("ERROR: while performing sql: %s\n", sqlite3_errmsg(db));
         printf("ret_code = %d\n", ret_code);
@@ -1215,13 +1318,13 @@ void PatchThps3Gaps()
 
 	for (int i = 0; i < 9; i++)
 	{
-		Levels[i].gapStart = ranges[i];
-		Levels[i].gapEnd = Levels[i].gapStart + 99;
+		Levels[i].gapFirst = ranges[i];
+		Levels[i].gapLast = Levels[i].gapFirst + 99;
 	}
 
 	//now this is a hacky hack for skate heaven. find proper way to hide it.
-	Levels[9].gapStart = 2500;
-	Levels[9].gapEnd = 2500;
+	Levels[9].gapFirst = 2500;
+	Levels[9].gapLast = 2500;
 
 	CopyGaps(pGapListThps3, pGaps);
 }
@@ -1242,13 +1345,13 @@ void PatchThps4Gaps()
 
 	for (int i = 0; i < 9; i++)
 	{
-		Levels[i].gapStart = ranges[i];
-		Levels[i].gapEnd = Levels[i].gapStart + 999;
+		Levels[i].gapFirst = ranges[i];
+		Levels[i].gapLast = Levels[i].gapFirst + 999;
 	}
 
 	//now this is a hacky hack for skate heaven. find proper way to hide it.
-	Levels[9].gapStart = 1000;
-	Levels[9].gapEnd = 1000;
+	Levels[9].gapFirst = 1000;
+	Levels[9].gapLast = 1000;
 
 	CopyGaps(pGapListThps4, pGaps);
 }
@@ -1264,6 +1367,7 @@ void Patch()
 	else if (options.CurrentGame == "THPS4") PatchThps4Gaps();
 	else CopyGaps(pGapListThps2, pGaps); //restore if mhpb
 
+
 	//doesnt seem to work
 	//Career_ClearGameWithEveryone();
 
@@ -1277,6 +1381,9 @@ void Patch()
 		//set instant return from thiscall MaybeManual 
 		CPatch::SetInt((int)MaybeManual, 0x000008c2);
 	}
+
+	//disable skater rendering
+	//CPatch::Nop(0x00467dfa, 5);
 
 	if (options.UnlockFPS)
 	{
@@ -1294,8 +1401,13 @@ void Patch()
 		//CPatch::Nop(0x46A732, 5); //nops IntroMovies func
 	}
 
+
 	if (options.AddSkins)
-		PatchSkaters();  // adds skater styles
+	{
+		PatchSkaters();
+	}
+
+
 
 	if (options.SeparateSaves)
 	{
@@ -1303,17 +1415,40 @@ void Patch()
 		memcpy(savename, &options.CurrentGame[0], options.CurrentGame.length()); //replaces THPS2 in saves with currentgame
 	}
 
-	//ParseLevels(); //changes levels
+	if (options.CurrentGame != "THPS2")
+	{
+		ParseLevels(); //changes levels
+	}
 
 	/*
-	SLevel* level = (SLevel*)((int)Levels + sizeof(SLevel) * 0);
+	SLevel* level = Levels + 0;
 
 	level->trgfile = "skware_t";
 	level->shortname = "ware";
+	sprintf(level->name, "%s", "Warehouse");
 	level->subname = "Woodland Hills";
-	level->gapStart = 0;
-	level->gapEnd = 10000;
+	level->gapFirst = 11000;
+	level->gapLast = 11002;
 
+	SGoal waregoals[10] = {
+		{ EGoalType::Score,		10000, "", 100, "Rookie score - 10,000", 0 },
+		{ EGoalType::Score,		25000, "", 200, "Pro score - 25,000", 0 },
+		{ EGoalType::Score,		75000, "", 500, "SICK score - 75,000", 0 },
+
+		{ EGoalType::Skate,		0, "", 500, "Collect S-K-A-T-E", 0 },
+		{ EGoalType::Destroy,	5, "boxes", 500, "Smash 5 boxes", 0 },
+		{ EGoalType::Gaps,		1, "", 500, "Find a transfer", 0 },
+		{ EGoalType::Pickups,	0, "", 500, "Collect pickups", 0 },
+		{ EGoalType::Trick,		0, "50-50", 500, "Do a trick - 50-50", 0 },
+
+		{ EGoalType::Hidden,	0, "", 500, "Find a hidden tape", 0 },
+		{ EGoalType::Clear,		0, "", 500, "100% goals and cash", 0 }
+	};
+	
+	memcpy(level->Goals, waregoals, sizeof(SGoal) * 10);
+	*/
+
+	/*
 	SGoal* goal = GetGoal(0, 4);
 	goal->goalText = "Smash the boxes";
 	goal->stringParam = "boxes";
@@ -1325,8 +1460,9 @@ void Patch()
 	goal = GetGoal(0, 7);
 	goal->goalText = "Hit 3 transfers";
 	goal->stringParam = "transfers";
-	
+	*/
 
+	/*
 	level = (SLevel*)((int)Levels + sizeof(SLevel) * 1);
 
 	level->trgfile = "skschl_t";
@@ -1453,6 +1589,11 @@ void Patch()
 
 
 
+void Dummy()
+{
+}
+
+
 #define HOOK_LIST_SIZE 128
 
 // list of all hooks
@@ -1466,10 +1607,39 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	{ 0x46a3ef, Game_Logic_Hook },
 	{ 0x46a407, Game_Display_Hook },
 
+	//timer stuff
+	{ 0x42ffb8,	D3D_BeginScene_Hook },
+	{ 0x430508,	D3D_BeginScene_Hook },
+
 	//in Display
 	{ 0x46882d, Front_Update_Hook },
 
-	// hooks inputs
+
+	//in WinMain
+	{ 0x004f511c, TH2Main },
+
+	//in th2main
+	//{ 0x0046a712, Init_AtStart },
+
+
+	{ 0x00454590, Init_Restart },	//launchthedamngame
+	//{ 0x0046a71b, Init_Restart },	//th2main
+	{ 0x0046a8dc, Init_Restart },	//kickit
+	{ 0x0046ae11, Init_Restart },   //kickit
+
+
+	{ 0x0046a8e1, Init_ForGame }, //kickit
+
+
+	//D3D_ClearBuffers, doesnt seem to do anything
+	{ 0x0046a392, Dummy },
+	{ 0x0046a67a, Dummy },
+	{ 0x004e429b, Dummy },
+	{ 0x004f41a1, Dummy },
+	{ 0x004f50a9, Dummy },
+
+
+	//hooks inputs
 	//in ReadDirectInput
 	{ 0x4E1CC6, GenPsxPadData_Hook },
 
@@ -1486,7 +1656,7 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	{ 0x4F3D3E, VIDMENU_Save_Hook },
 
 
-	
+
 	{ 0x41f4c8, Spool_LoadPSH },
 	{ 0x41f7bb, Spool_LoadPSH },
 	{ 0x469011, Spool_LoadPSH },
@@ -1496,7 +1666,7 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	{ 0x4b56af, Spool_LoadPSH },
 	{ 0x4bd1fa, Spool_LoadPSH },
 	{ 0x4bd20f, Spool_LoadPSH },
-	
+
 
 	//{ 0x46DFEC, Land_Sound },
 	//{ 0x497DC8, Land_Sound },
@@ -1532,10 +1702,67 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 
 	{ 0x468823, Panel_Display_Hook }, // in Display
 
-	/*
 
-	{ 0x414d2d, Career_AwardGoalGap }, //in Career_AwardGap
-	{ 0x48c12d, Career_AwardGoalGap }, //in Panel_Land
+
+	///all career related hooks
+
+	//{ 0x004147bc,	Career_GapActive },  //gapisgoal
+	//{ 0x004147ec,	Career_GapActive },  //gapistrick
+	{ 0x00414851,	Career_GapActive },  //gapgoalnumber
+	{ 0x00414877,	Career_GapActive },  //gapgoalnumber
+	{ 0x00414931,	Career_GapActive },  //gaptricknumber
+	{ 0x00414957,	Career_GapActive },  //gaptricknumber
+	{ 0x004149e7,	Career_GapActive },  //gapnumber
+	{ 0x00414caf,	Career_GapActive },  //awardgap
+	{ 0x00414dd1,	Career_GapActive },  //awardtrickgap
+	{ 0x0041545a,	Career_GapActive },  //countthings
+	{ 0x00482619,	Career_GapActive },  //GapCheckListWindow::update
+	{ 0x00482688,	Career_GapActive },  //GapCheckListWindow::update
+
+	{ 0x004826dd,	Career_AnyoneGotGap }, //in GapCheckListWindow::update
+
+	{ 0x0048975b,	Career_CheckScore }, // in DisplayScore
+
+	{ 0x00414535,	Career_CheckClear }, //in Career_GiveGoal
+	{ 0x00415285,	Career_CheckClear }, //in Career_GiveMoney
+
+
+
+	{ 0x00414964, Career_GapIsTrick }, //gaptricknumber
+	{ 0x00414d52, Career_GapIsTrick }, //award gap
+	{ 0x00414e1d, Career_GapIsTrick }, //awardtrickgap
+	{ 0x00414e31, Career_GapIsTrick }, //awardtrickgap
+	{ 0x00415487, Career_GapIsTrick }, //countthings
+
+
+	{ 0x48e6ee, Career_AwardGap }, // in CheckForLipGaps
+	{ 0x49b53e, Career_AwardGap }, // in HandlehysicsState
+	{ 0x49b5a4, Career_AwardGap }, // in HandlehysicsState
+	{ 0x4c3955, Career_AwardGap }, // in ExecuteCommandList
+
+	{ 0x00414d2d, Career_AwardGoalGap }, //in Career_AwardGap
+	{ 0x0048c12d, Career_AwardGoalGap },	//in Panel_Land
+
+	{ 0x0048c10c, Career_AwardTrickGap },	//in Panel_Land
+
+	{ 0x00452a7b, Career_GotAllGaps }, //in Front_NewThing
+
+	{ 0x0045c01b, Career_LevelNeeds }, // in GoalScreenElement::setupMessage
+
+	// DECOMPILED ALL CALLS HERE
+
+	//{ 0x00414b16,	Career_GapNumber },	//career_giveGap
+	//{ 0x00414b55,	Career_GapNumber },	//carrer_anyonegotgap
+
+	//{ 0x00414cde,	Career_GiveGap },	// in Career_AwardGap
+
+	//{ 0x00415590,	Career_CountGaps },	//in Career_GotAllGaps
+
+	// 00414a85	Career_GapTrickNumber , Career_GotTrickGap
+	// 00414ae5	Career_GapTrickNumber, Career_GiveTrickGap
+
+
+	/*
 
 	{ 0x414643, Career_GiveGoalType },
 	{ 0x414bf0, Career_GiveGoalType },
@@ -1567,9 +1794,11 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	{ 0x486387,	Career_CheatName },
 	{ 0x48640c,	Career_CheatName },
 
-	{ 0x48975b, Career_CheckScore }, // in DisplayScore
+	{ 0x45c01b, Career_LevelNeeds }, // in GoalScreenElement::setupMessage
 
 	*/
+
+
 
 	{ 0x4C1E8C, ExecuteCommandList_Hook },
 	{ 0x4C2240, ExecuteCommandList_Hook },
@@ -1579,25 +1808,19 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 
 	//{ 0x4c654d, Utils_VblankProcessing },
 
-	/*
-	{ 0x414b16, Career_GapNumber },
-	{ 0x414b55, Career_GapNumber },
 
-	{ 0x48e6ee, Career_AwardGap }, // in CheckForLipGaps
-	{ 0x49b53e, Career_AwardGap }, // in HandlehysicsState 
-	{ 0x49b5a4, Career_AwardGap }, // in HandlehysicsState 
-	{ 0x4c3955, Career_AwardGap }, // in ExecuteCommandList
-
-	{ 0x48c10c, Career_AwardTrickGap }, // in Panel_Land
-
-	{ 0x45c01b, Career_LevelNeeds }, // in GoalScreenElement::setupMessage
-
-	*/
 
 	{ 0x48703b,	PCINPUT_ActuatorOn_Hook }, // in Pad_ActuatorOn
 	{ 0x4871d0, PCINPUT_ActuatorOff_Hook }, // in Pad_ActuatorOff
 
 
+	//called from Career_Init, Career_StoreSnapshot and Career_RestoreSnapshot
+	{ 0x00413935, Mem_CopyBytes },
+	{ 0x00413955, Mem_CopyBytes },
+	{ 0x0041397d, Mem_CopyBytes },
+	{ 0x00413996, Mem_CopyBytes },
+	{ 0x00417244, Mem_CopyBytes },
+	{ 0x004172d6, Mem_CopyBytes },
 
 		/*
 
@@ -1731,3 +1954,61 @@ void SetHooks()
 }
 
 #pragma endregion
+
+
+
+/*
+
+uint CheatCheckA;
+uint CheatCheckB;
+
+void frug(uint valA, uint valB)
+{
+  CheatCheckA = ((CheatCheckA ^ valA) >> 0x1f ^ (CheatCheckA ^ valA) * 2) * 0x209;
+  valB = CheatCheckA >> 8 ^ CheatCheckB ^ valB;
+  CheatCheckB = valB >> 0x1f ^ valB * 2;
+}
+
+ part of shell_doCheatProcessing
+ 
+	if (DAT_00567cf9) {
+		tValA = 0x01234567;
+		tValB = 0x34859f3a;
+	}
+	else if (DAT_00567ce8) {
+		tValA = 0xab432901;
+		tValB = 0x88d3a109;
+	}
+	else if (DAT_00567d09) {
+		tValA = 0x776643d1;
+		tValB = 0x0901d3e8;
+	}
+	else if (DAT_00567cd9) {
+		tValA = 0x93fe1682;
+		tValB = 0x92551072;
+	}
+	else if (DAT_00567c59) {
+		tValA = 0x31415926;
+		tValB = 0x7720de42;
+	}
+	else if (DAT_00567c78) {
+		tValA = 0xdeadbeef;
+		tValB = 0xfe3010f3;
+	}
+	else if (DAT_00567c88) {
+		tValA = 0xb87610db;
+		tValB = 0xde098401;
+	}
+	else if (DAT_00567c69) {
+		tValA = 0x03185332;
+		tValB = 0x80fe4187;
+	}
+	else {
+		return 0;
+	}
+
+	frug(tValA, tValB);
+
+	//then validate against cheats
+
+*/

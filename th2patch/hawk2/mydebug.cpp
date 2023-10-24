@@ -26,6 +26,9 @@ void Panel_LineX(float x1, float x2, float x3, float x4, int r, int g, int b)
 	);
 }
 
+
+
+
 void PrintDebugStuff()
 {
 	if (*GamePaused)
@@ -53,10 +56,14 @@ void PrintDebugStuff()
 			
 			CBruce* pSkater = new CBruce(GSkater);
 
-			sprintf(debugText, "gap test: %i %i",
-				pSkater->GetValue(0x3014),
-				pSkater->GetValue(0x3018)
+			sprintf(debugText, "bruce test: %i %i %i" ,
+				pSkater->GetValue(0x12c),
+				pSkater->GetValue(0x130),
+				pSkater->GetValue(0x134)
+
 			);
+
+			//pSkater->SetValue(0x28, 10);
 
 			delete pSkater;
 
@@ -83,8 +90,8 @@ void Panel_BalanceRail(
 {
 	if (horz)
 	{
-		Length = Length * 4 / 3;
-		Width = Width * 3 / 4;
+		Length = Length * 16 / 9;
+		Width = Width * 4 / 3;
 
 		int markerX = (Balance * Length) / Max + x;
 		Panel_Line(markerX, y, markerX, y + Width, MarkerColor);

@@ -8,7 +8,7 @@ Partially code is written in pure C, but there are some classes used.
 * globals may start with G (GLEVEL, gSmthEnabled)
 * pointers start with p (pData, pPSX)
 
-# names from PC version
+# file names from PC version
 backgrnd.cpp - must be handling skybox
 baddy.cpp - baddy class traces back to Apocalypse engine, it was used for enemies. baddy as in "bad guy.
 bit.cpp - CBit base class for glass shatter pieces, blood splats, water ripples, rotating billboard sprites etc
@@ -23,15 +23,15 @@ commonfe.cpp - shared frontend stuff?
 competition.cpp - competition related funcs
 cre_tex.cpp
 cre_texset.cpp
-create.cpp
+create.cpp - create-a-skater stuff
 create_color.cpp
 create_spool.cpp
-create_stitch.cpp
+create_stitch.cpp - stitching is the way neversoft created the illusion of skeleton animation. in reality it was a resident evil like blocky animation, but blocks are stitched together
 create_ui.cpp
 Credits.cpp - handles credits
 CreEdit.cpp
 perwin.cpp
-appwin.cpp
+appwin.cpp - probably game window creation, windows specific stuff
 cresave.cpp
 cresel.cpp
 custmgr.cpp
@@ -52,7 +52,7 @@ fileio.cpp - generic file input/output system. basically loads content from disc
 FontTools.cpp
 front.cpp
 displaygoals.cpp
-FrontEnd2.cpp - main menu functions. every menu screen has its own loop.
+FrontEnd2.cpp - main menu functions. every menu screen has its own loop, which is very inconvenitent. it's because originally every screen was a separate overlay file.
 frontpre.cpp
 gamefmv.cpp - wrapper for movie funcs
 handicap.cpp - probably handicap screen in multiplayer
@@ -68,14 +68,14 @@ m3dinit.cpp
 m3dutils.cpp - 3d math utils
 m3dzone.cpp
 main.cpp
-MainMenu.cpp - main menu screem
+MainMenu.cpp - main menu screen
 autoload.cpp
 mech.cpp - not sure what is it exactly, but the game uses global list of "mech"s
 medals.cpp - handles competition medals
 mem.cpp - memory manager
 Menu.cpp - assumed to be base CMenu class, maybe CBasicMenu as well
 Mess.cpp - C style messaging system, stores a queue of messages and shows them on the screen using "message programs"
-mmu.cpp
+mmu.cpp - handles memory card
 multisel.cpp
 NetMenu.cpp
 ob.cpp
@@ -93,12 +93,12 @@ powerup.cpp - CPowerUp class, probably traces back to apocalypse as well, used f
 PRE.cpp - PRE file management, PRE files store packed content of the specific menu screen. probably used to speedup menus loading on psx (which was rather long)
 rail.cpp - handles rail logic (stick to rail, orient to rail, etc)
 redbook.cpp - handles PSX CDXA audio, atrociously mapped to bik files on PC, keeping the redundant PSX specific parameters
-reloc.cpp
+reloc.cpp - handles "relocatable modules" or psx overlays. not used in the port.
 screentools.cpp
 sfx.cpp - SOUNDLIB wrapper, higher level sound functions
 Shatter.cpp - shatters object in pieces, most notably used for glass
 skatmgr.cpp - skater manager keeps track of selected skaters
-spool.cpp
+spool.cpp - data spooling system. loads data to ram from the disk
 Spooler.cpp
 statwin.cpp - probably some widget on statedit screen
 statedit.cpp - stat editor screen (possibly psx?)
@@ -112,12 +112,12 @@ trickscript.cpp - probably parses tricks.db file
 tricksel.cpp - trick selection screen
 trickwin.cpp - some widget on tricksel screen
 tricktips.cpp - handles the tips on the left side of the screen in the career mode
-trig.cpp - handles the trg file
+trig.cpp - handles the trg file (nodearray in later games)
 TrigGen.cpp
 video.cpp - rather misleading name, it handles the replays and highlights mode at the end of the run. they probably meant like "skate video"
 vidmenu.cpp - probably video options menu
 CDPlayer.cpp
-d3dfunc.cpp
+d3dfunc.cpp - all d3d stuff is probably for directdraw backend port
 d3dpoly.cpp
 d3dsprite.cpp
 d3dtex.cpp
@@ -125,7 +125,7 @@ D3dTimer.cpp - new game timer, on top of the old one
 DxPlay.cpp - low level netplay logic, wraps DirectPlay
 NetGame.cpp - high level netplay logic
 PcInput.cpp - input system, wraps directinput via lower level classes SDXEffect, SDXMouse, SDXKeyboard, SDXJoystick
-PCMovie.cpp
+PCMovie.cpp - movie player
 soundlib.cpp - sound system, creates directsound object and handles sound routines
 thstub.cpp
 WinMain.cpp

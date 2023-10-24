@@ -7,6 +7,39 @@
 	Handles vertical basic menu layout
 */
 
+
+struct SMenu {
+	void* vTable;
+	short justification;
+	char selectedEntry;
+	short unk1;
+	char numEntries;
+	short unk2;
+	int	X;
+	int	Y;
+	int	lineSeparation;
+	//SMenuEntry entries[15];
+};
+
+typedef struct SMenu SMenu;
+
+
+class CMenu {
+private:
+	SMenu* menu; //ptr to menu
+public:
+	CMenu(SMenu* menuPtr);
+	int FindEntry(char* pText);
+	void MenuReset();
+	bool ChoiceIs(char* pText);
+	void EntryOn(char* pText);
+	void EntryOff(char* pText);
+	bool IsEntryOn(char* pText);
+	void DebugPrint();
+};
+
+
+
 typedef void(*CMenu__new_t)();
 typedef void(*CMenu__destruct_t)();
 typedef void(*CMenu__delete_t)();
