@@ -10,10 +10,10 @@ SGapTrick gapListThps1[] = {
 	{ 0x13,	0,	2,		1000,	"[PHAT GAP]" },
 
 	//warehouse
-	{ 0x13,	0,	1001,	200,	"[TRANSFER]" },
+	{ 0x13,	1,	1001,	200,	"[TRANSFER]" },
 	{ 0x13,	0,	1005,	600,	"[TAXI GAP]" },
-	{ 0x13,	1,	1006,	100,	"[KICKER GAP]" },
-	{ 0x13,	1,	1007,	300,	"[OVER THE PIPE]" },
+	{ 0x13,	0,	1006,	100,	"[KICKER GAP]" },
+	{ 0x13,	0,	1007,	300,	"[OVER THE PIPE]" },
 	{ 0x13,	0,	1008,	300,	"[SECRET ROOM]" },
 	{ 0x13,	0,	1009,	400,	"[FACEPLANT]" },
 	{ 0x13,	0,	1010,	1000,	"[ACID DROP]" },

@@ -42,3 +42,17 @@ void WINMAIN_LoadSetting(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR lpDefault, L
 {
     GetPrivateProfileStringA(lpAppName, lpKeyName, lpDefault, lpReturnedString, 256, lpFileName);
 }
+
+
+/*
+void WINMAIN_ShutDown(void)
+{
+    printf("WinMain_Shutdown()\n");
+
+    NETGAME_ShutDown();
+    D3DTIMER_Kill();
+    PCINPUT_ShutDown();
+    PCMOVIE_StopFMV();
+    PCMOVIE_XAStop();
+    D3D_ShutDown(1);
+}*/

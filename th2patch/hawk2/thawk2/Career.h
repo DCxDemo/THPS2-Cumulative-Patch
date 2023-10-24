@@ -38,16 +38,17 @@ enum class ECheat : int {
 	Last = 16
 };
 
-
+//original game used defines for this enum
 enum class EGoalType : int {
-	Score = 0,			//get target score
-	SkateLetters = 1,	//get letters
-	GoalGaps = 2,		//get multiple gaps (hangtime gaps, roll call rails)
-	LevelPickups = 3,	//collect level specific pickups (wings, hall passes)
-	Collect2 = 4,		//barrels
-	TrickGap = 5,		//get a single gap with a specific trick (noserind the pipe, kickflip TC's roof)
-	SecretTape = 6,		//get secret tape
-	ClearedAll = 7,		//all goals and cash
+	Score = 0,		//High score, pro score or sick score (insane in demo)
+	Skate = 1,		//Collect SKATE letters
+	Gaps = 2,		//Collect gaps
+	Pickups = 3,	//Collect level pickups
+	Destroy = 4,	//Destroy objects (like barrels)
+	Trick = 5,		//Get a gap with a specific trick
+	Hidden = 6,		//Find the hidden tape
+	Clear = 7,		//Beat the level (100% goals and cash)
+
 	First = 0,
 	Last = 7
 };
@@ -59,9 +60,10 @@ enum class EGapFlag : short {
 	TrickGap = 2
 };
 
+
 typedef struct SGapTrick {
 	short Flags;		//gap type flags (stuff like CANCEL_GRIND CANCEL_WALL, etc)
-	short Type;			//defines whether the gap is used in goals
+	short Type;		//defines whether the gap is used in goals
 	short Value;		//gap index, 2 values - index / 10000 and index % 10000
 	short Score;		//score points to award
 	char Name[0x24];	//gap name
@@ -91,13 +93,13 @@ typedef void(*Options_Init_t)();
 typedef bool(*Career_Got_t)(int goalIndex);
 typedef bool(*Career_JustGot_t)(int param_1);
 typedef int(*Career_LevelTapes_t)(void* param_1, int param_2); //param_1 type = SCharacterProgress
-typedef int(*Career_NumLevelGoals_t)();
+//typedef int(*Career_NumLevelGoals_t)();
 typedef int(*Career_CountMoney_t)();
 //typedef void(*Career_CheckScore_t)();
 typedef void(*Career_GiveGoal_t)(int param_1);
 //typedef uint(*Career_GoalIndex_t)(EGoalType goalType);
 //typedef void(*Career_GiveGoalType_t)(EGoalType goalType);
-typedef void(*Career_CheckClear_t)();
+//typedef void(*Career_CheckClear_t)();
 //typedef bool(*Career_GotGoalType_t)(EGoalType goalType);
 typedef void(*Career_GiveMedal_t)(int param_1, char medalType); //param_2 = EMedalType
 //typedef bool(*Career_GapActive_t)(SGapTrick* gapTrick); //param_1 = SGapTrick
@@ -110,8 +112,8 @@ typedef void(*Career_GiveMedal_t)(int param_1, char medalType); //param_2 = EMed
 //typedef bool(*Career_GotTrickGap_t)(void* param_1); //param_1 = SGapTrick
 //typedef void(*Career_GiveGoalGap_t)(void* param_1); //param_1 = SGapTrick
 //typedef void(*Career_GiveTrickGap_t)(void* param_1); //param_1 = SGapTrick
-typedef bool(*Career_AnyoneGotGap_t)(SGapTrick* pGap);
-typedef void(*Career_GiveGap_t)(SGapTrick* pGap);
+//typedef bool(*Career_AnyoneGotGap_t)(SGapTrick* pGap);
+//typedef void(*Career_GiveGap_t)(SGapTrick* pGap);
 //typedef int(*Career_CountBits_t)(int param_1);
 //typedef int(*Career_NumGoalGapsGot_t)();
 //typedef int(*Career_NumTrickGapsGot_t)(int param_1);
@@ -123,8 +125,8 @@ typedef void(*Career_GotMoney_t)(int param_1);
 typedef void(*Career_GiveMoney_t)(int param_1, int amount);
 //typedef void(*Career_GetLevelPickup_t)();
 typedef void(*Career_CountThings_t)();
-typedef int(*Career_CountGaps_t)();
-typedef bool(*Career_GotAllGaps_t)();
+//typedef int(*Career_CountGaps_t)();
+//typedef bool(*Career_GotAllGaps_t)();
 typedef bool(*Career_BuyPoint_t)(int statIndex, int param_2);
 typedef bool(*Career_SellPoint_t)(int statIndex);
 typedef int(*Career_GetPointCost_t)();
@@ -175,7 +177,8 @@ static const Options_Init_t Options_Init = (Options_Init_t)0x00413f70;
 static const Career_Got_t Career_Got = (Career_Got_t)0x00414030;
 static const Career_JustGot_t Career_JustGot = (Career_JustGot_t)0x004140c0;
 static const Career_LevelTapes_t Career_LevelTapes = (Career_LevelTapes_t)0x00414130;
-static const Career_NumLevelGoals_t Career_NumLevelGoals = (Career_NumLevelGoals_t)0x004141a0;
+//static const Career_NumLevelGoals_t Career_NumLevelGoals = (Career_NumLevelGoals_t)0x004141a0;
+int Career_NumLevelGoals();
 static const Career_CountMoney_t Career_CountMoney = (Career_CountMoney_t)0x004141d0;
 //static const Career_CheckScore_t Career_CheckScore = (Career_CheckScore_t)0x00414280;
 void Career_CheckScore();
@@ -184,7 +187,8 @@ static const Career_GiveGoal_t Career_GiveGoal = (Career_GiveGoal_t)0x004142e0;
 uint Career_GoalIndex(EGoalType goalType);
 //static const Career_GiveGoalType_t Career_GiveGoalType = (Career_GiveGoalType_t)0x00414570;
 void Career_GiveGoalType(EGoalType goalType);
-static const Career_CheckClear_t Career_CheckClear = (Career_CheckClear_t)0x004145e0;
+//static const Career_CheckClear_t Career_CheckClear = (Career_CheckClear_t)0x004145e0;
+void Career_CheckClear();
 //static const Career_GotGoalType_t Career_GotGoalType = (Career_GotGoalType_t)0x00414650;
 bool Career_GotGoalType(EGoalType goalType);
 static const Career_GiveMedal_t Career_GiveMedal = (Career_GiveMedal_t)0x00414670;
@@ -208,8 +212,10 @@ bool Career_GotTrickGap(SGapTrick* pGap);
 void Career_GiveGoalGap(SGapTrick* pGap);
 //static const Career_GiveTrickGap_t Career_GiveTrickGap = (Career_GiveTrickGap_t)0x00414ae0;
 void Career_GiveTrickGap(SGapTrick* pGap); // SGapTrick*
-static const Career_AnyoneGotGap_t Career_AnyoneGotGap = (Career_AnyoneGotGap_t)0x00414b10;
-static const Career_GiveGap_t Career_GiveGap = (Career_GiveGap_t)0x00414b50;
+//static const Career_AnyoneGotGap_t Career_AnyoneGotGap = (Career_AnyoneGotGap_t)0x00414b10;
+bool Career_AnyoneGotGap(SGapTrick* pGapTrick);
+//static const Career_GiveGap_t Career_GiveGap = (Career_GiveGap_t)0x00414b50;
+void Career_GiveGap(SGapTrick* pGap);
 //static const Career_CountBits_t Career_CountBits = (Career_CountBits_t)0x00414b90;
 int Career_CountBits(uint value);
 //static const Career_NumGoalGapsGot_t Career_NumGoalGapsGot = (Career_NumGoalGapsGot_t)0x00414bb0;
@@ -228,8 +234,10 @@ static const Career_GiveMoney_t Career_GiveMoney = (Career_GiveMoney_t)0x0041518
 //static const Career_GetLevelPickup_t Career_GetLevelPickup = (Career_GetLevelPickup_t)0x004152f0;
 void Career_GetLevelPickup();
 static const Career_CountThings_t Career_CountThings = (Career_CountThings_t)0x00415380;
-static const Career_CountGaps_t Career_CountGaps = (Career_CountGaps_t)0x00415560;
-static const Career_GotAllGaps_t Career_GotAllGaps = (Career_GotAllGaps_t)0x00415590;
+//static const Career_CountGaps_t Career_CountGaps = (Career_CountGaps_t)0x00415560;
+int Career_CountGaps();
+//static const Career_GotAllGaps_t Career_GotAllGaps = (Career_GotAllGaps_t)0x00415590;
+bool Career_GotAllGaps();
 static const Career_BuyPoint_t Career_BuyPoint = (Career_BuyPoint_t)0x004155a0;
 static const Career_SellPoint_t Career_SellPoint = (Career_SellPoint_t)0x004156f0;
 static const Career_GetPointCost_t Career_GetPointCost = (Career_GetPointCost_t)0x00415820;
@@ -276,3 +284,7 @@ static const Career_TakeSnapShot_t Career_TakeSnapShot = (Career_TakeSnapShot_t)
 static const Career_RestoreSnapShot_t Career_RestoreSnapShot = (Career_RestoreSnapShot_t)0x00417250;
 static const Career_SaveCharacterStates_t Career_SaveCharacterStates = (Career_SaveCharacterStates_t)0x004172f0;
 static const Career_ResetCheats_t Career_ResetCheats = (Career_ResetCheats_t)0x00417320;
+
+//additional functions
+void Career_SetAllGaps(bool value);
+void Career_PrintGoals();

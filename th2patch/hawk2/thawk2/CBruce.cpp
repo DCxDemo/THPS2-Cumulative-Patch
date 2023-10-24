@@ -27,6 +27,9 @@ CVector* CBruce_GetVelocity(void* pSkater)
 //0x2f10
 #define CBRUCE_MANUALBALANCE 0x2F14
 
+#define CBRUCE_LASTGAPTRICK 0x3024
+#define CBRUCE_LASTGOALTRICK 0x3028
+
 #define CBRUCE_PHYSICSSTATE 0x30B8
 
 
@@ -52,6 +55,7 @@ void CBruce::SetValue(int addr, int newValue)
 {
 	*(int*)((int)pSkater + addr) = newValue;
 }
+
 
 int CBruce::TotalScore()
 {

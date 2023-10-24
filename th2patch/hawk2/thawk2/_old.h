@@ -1,6 +1,9 @@
 #pragma once
 
+#include "types.h"
+
 //these are the old random messy unsorted mappings
+//put here random declarations that dont have separate headers yet
 //remove once sorted and available via other files
 
 typedef void(*ASSERTER_t)(bool condition, char *text, ...);
@@ -16,9 +19,21 @@ typedef void(*CreateSkatersAndCameras_t)();
 static const CreateSkatersAndCameras_t CreateSkatersAndCameras = (CreateSkatersAndCameras_t)0x469170;
 
 
-typedef int(*CalcTime_t)();
-static const CalcTime_t CalcTime = (CalcTime_t)0x4D7FC0;
+typedef int(*D3DTIMER_CalcSystemSpeed_t)();
+static const D3DTIMER_CalcSystemSpeed_t D3DTIMER_CalcSystemSpeed = (D3DTIMER_CalcSystemSpeed_t)0x4D7FC0;
 
+
+typedef void(*D3DPOLY_DrawOTag_t)(void* ot);
+/// This function renders PSX OT list.
+/// Call from Db_DisplayDraw draws Frontend menus.
+/// Call from Db_Vblank draws level polygons.
+static const D3DPOLY_DrawOTag_t D3DPOLY_DrawOTag = (D3DPOLY_DrawOTag_t)0x004d0370;
+
+typedef void (*D3D_BeginScene_t)(uint param_1, uint backColor);
+static const D3D_BeginScene_t D3D_BeginScene = (D3D_BeginScene_t)0x4cddd0;
+
+typedef void (*D3DPOLY_StartScene_t)(uint param_1, uint param_2);
+static const D3DPOLY_StartScene_t D3DPOLY_StartScene = (D3DPOLY_StartScene_t)0x4d0d50;
 
 
 typedef char (*StartBinkMovie_t)(const char *a1, int a2, int a3);
@@ -31,10 +46,6 @@ static const Front_Update_t Front_Update = (Front_Update_t)0x0044ea50;
 	
 
 
-typedef int (*PCOpen_t)(char *path, int a2);
-static const PCOpen_t PCOpen = (PCOpen_t)0x4E4780;
-
-
 typedef int (__thiscall *WheelElementList_t)(void* a1, int a2, int a3, int a4, int a5);
 static const WheelElementList_t WheelElementList = (WheelElementList_t)0x46B800;
 
@@ -43,8 +54,8 @@ static const WheelElementList_t WheelElementList = (WheelElementList_t)0x46B800;
 typedef void(*Front_Display_t)();
 static const Front_Display_t Front_Display = (Front_Display_t)0x44CA00;
 
-typedef int(*TempDecl_t)(int a1, int a2);
-static const TempDecl_t TempDecl = (TempDecl_t)0x4E5650;
+typedef int(*VectorNormal_t)(void* pVector);
+static const VectorNormal_t VectorNormal = (VectorNormal_t)0x4E5650;
 
 //WINMAIN stuff
 
@@ -118,12 +129,8 @@ static const PCMOVIE_PlayMovieFile_t PCMOVIE_PlayMovieFile = (PCMOVIE_PlayMovieF
 
 
 
-typedef void(*D3DPOLY_DrawOTag_t)(void* ot);
-/// This function renders PSX OT list.
-/// Call from Db_DisplayDraw draws Frontend menus.
-/// Call from Db_Vblank draws level polygons.
-static const D3DPOLY_DrawOTag_t D3DPOLY_DrawOTag = (D3DPOLY_DrawOTag_t)0x004d0370;
 
+//these are in CBruce.h. !!remove!!
 
 /// CBruce: snaps to rail and begins a grind trick
 typedef void(__thiscall *CBruce_StartGrind_t)(void* _this, int param);
@@ -159,6 +166,7 @@ static const Game_Logic_t Game_Logic = (Game_Logic_t)0x469d70;
 typedef void(*Game_Display_t)();
 //main game render func, called once per frame
 static const Game_Display_t Game_Display = (Game_Display_t)0x46a080;
+
 
 typedef void(*Panel_Line_t)(short param_1, short param_2, short param_3, short param_4, int param_5);
 //simply draws a line on the screen.
@@ -199,9 +207,64 @@ static const SlicedImage2_screenHeight_t SlicedImage2_screenHeight = (SlicedImag
 typedef void*(*FontManger_LoadFont2_t)(void* stuff, char* name);
 static const FontManger_LoadFont2_t FontManger_LoadFont2 = (FontManger_LoadFont2_t)0x0044ae40;
 
-typedef void(__thiscall* Font_Draw_t)(void* _this, int x, int y, char* pMessage, int Angle);
+typedef void(__thiscall *Font_Draw_t)(void* _this, int x, int y, char* pMessage, int Angle);
 static const Font_Draw_t Font_Draw = (Font_Draw_t)0x44a010;
 
 
-typedef void(__thiscall* FallingTextEffect_SetScale_t)(void* _this, int scale);
+typedef void(__thiscall *FallingTextEffect_SetScale_t)(void* _this, int scale);
 static const FallingTextEffect_SetScale_t FallingTextEffect_SetScale = (FallingTextEffect_SetScale_t)0x001126c8;
+
+
+
+
+typedef void (*MMU_Init_t)();
+static const MMU_Init_t MMU_Init = (MMU_Init_t)0x00477de0;
+
+typedef void (*Init_ResetMemory_t)(int heap0size);
+static const Init_ResetMemory_t Init_ResetMemory = (Init_ResetMemory_t)0x00458600;
+
+typedef void (*Pad_InitAtStart_t)();
+static const Pad_InitAtStart_t Pad_InitAtStart = (Pad_InitAtStart_t)0x00486d90;
+
+typedef void (*M3dInit_InitAtStart_t)();
+static const M3dInit_InitAtStart_t M3dInit_InitAtStart = (M3dInit_InitAtStart_t)0x00464580;
+
+typedef void (*Front_ClearGVideoRestartData_t)();
+//just reset replay related values
+static const Front_ClearGVideoRestartData_t Front_ClearGVideoRestartData = (Front_ClearGVideoRestartData_t)0x004a9cd0;
+
+typedef void (*Db_Init_t)(int param_1, int param_2, char param_3, int param_4);
+static const Db_Init_t Db_Init = (Db_Init_t)0x00430290;
+
+typedef void (*IntroMovies_t)();
+static const IntroMovies_t IntroMovies = (IntroMovies_t)0x0046a490;
+
+typedef void (*LogoScreen_t)();
+static const LogoScreen_t LogoScreen = (LogoScreen_t)0x0046a510;
+
+typedef void (*FrontEnd2_Main_t)();
+static const FrontEnd2_Main_t FrontEnd2_Main = (FrontEnd2_Main_t)0x00452f60;
+
+typedef void (*Init_AtEnd_t)();
+static const Init_AtEnd_t Init_AtEnd = (Init_AtEnd_t)0x004587b0;
+
+typedef void (*Init_Cleanup_t)(int cleanupType);
+static const Init_Cleanup_t Init_Cleanup = (Init_Cleanup_t)0x00458470;
+
+typedef void (*Db_Reset_t)();
+static const Db_Reset_t Db_Reset = (Db_Reset_t)0x00430180;
+
+typedef void (*Spool_Init_t)();
+static const Spool_Init_t Spool_Init = (Spool_Init_t)0x004af3a0;
+
+typedef void (*Pal_Init_t)(int numPal4, int numPal8);
+static const Pal_Init_t Pal_Init = (Pal_Init_t)0x004879a0;
+
+typedef void (*Front_Init_t)();
+static const Front_Init_t Front_Init = (Front_Init_t)0x0044bdf0;
+
+typedef void (*Video_InitOnce_t)();
+static const Video_InitOnce_t Video_InitOnce = (Video_InitOnce_t)0x004c8c90;
+
+typedef bool (*Video_Playing_t)();
+static const Video_Playing_t Video_Playing = (Video_Playing_t)0x004cb0c0;

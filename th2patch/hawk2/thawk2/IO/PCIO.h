@@ -14,7 +14,7 @@
 typedef void(*PCinit_t)();
 typedef void(*PCstop_t)();
 typedef void(*PCremove_t)();
-typedef void(*PCopen_t)();
+typedef void(*PCopen_t)(char* filename, int mode);
 typedef int(*getFreeFileIndex_t)();
 typedef void*(*PCcreate_t)(char* filename);
 typedef long(*PClseek_t)(int fileID, int offset, int origin);

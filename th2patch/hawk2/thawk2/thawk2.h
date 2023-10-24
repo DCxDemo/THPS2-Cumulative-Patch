@@ -3,14 +3,15 @@
 // includes all required decomp headers
 
 #include "thawk2/_old.h"
+#include "thawk2/Mem.h"
 #include "thawk2/Career.h"
 #include "thawk2/CClass.h"
 #include "thawk2/CMenu.h"
 #include "thawk2/IO/FileIO.h"
 #include "thawk2/Mess.h"
-#include "thawk2/Mem.h"
 #include "thawk2/Redbook.h"
 #include "thawk2/Sfx.h"
+#include "thawk2/Init.h"
 #include "thawk2/PCInput.h"
 #include "thawk2/globals.h"
 #include "thawk2/Shatter.h"
@@ -21,3 +22,5 @@
 #include "thawk2/gaps/gaps.h"
 #include "thawk2/Utils.h"
 #include "thawk2/Spool.h"
+#include "thawk2/SkaterProfile.h"
+#include "thawk2/flash.h"

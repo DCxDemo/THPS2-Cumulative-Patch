@@ -108,12 +108,12 @@ SMessage* CreateMessage()
 {
 	SMessage* pMess = (SMessage*)Mem_New(sizeof(SMessage), false, true, NULL);
 
-	pMess->pPrevious = 0;
+	pMess->pPrevious = NULL;
 	pMess->pNext = *pMessages;
 
 	*pMessages = pMess;
 
-	if (pMess->pNext != 0)
+	if (pMess->pNext != NULL)
 		pMess->pNext->pPrevious = pMess;
 
 	return pMess;

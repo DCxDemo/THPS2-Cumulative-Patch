@@ -57,14 +57,14 @@ typedef struct SLevel
     int globeX;
     int globeY;
     char* thumb;
-    int cashtounlock;
-    int medalstounlock;
+    int cashToUnlock;
+    int medalsToUnlock;
     int isCompetition2; //bool
     int somedata[4];
     int index;
     int somedata2[5];
-    int gapStart;
-    int gapEnd;
+    int gapFirst;
+    int gapLast;
     SGoal Goals[10];
     int killers;
 } SLevel;
