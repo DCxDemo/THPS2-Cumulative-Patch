@@ -128,7 +128,8 @@ namespace th2patchlauncher
             }
 
             //loading fov value
-            op.ZoomFactor = (int)(op.GetFloat("VIDEO", "FOV", 1) * 100);
+            op.fovValueExist = op.CheckValueExsistance("video", "FOV");
+            op.ZoomFactor = (int)(op.GetFloat("Video", "FOV", 1) * 100);
 
             op.ResX = op.GetInt("Video", "ResX", 1280);
             op.ResY = op.GetInt("Video", "ResY", 720);
@@ -181,7 +182,7 @@ namespace th2patchlauncher
             op.setAspectRatioByResolution(aspectRatioDrop, op.ResolutionString);
             resBox.SelectedItem = op.ResolutionString;
 
-            MaybeUpdateFovBar();
+            MaybeUpdateFovBar(true);
         }
 
 
@@ -322,7 +323,7 @@ namespace th2patchlauncher
         private void resBox_SelectionChangeCommitted(object sender, EventArgs e)
         {
             op.ParseResText(resBox.Text);
-            MaybeUpdateFovBar();
+            MaybeUpdateFovBar(false);
         }
 
 
@@ -355,7 +356,7 @@ namespace th2patchlauncher
         {
             fovSlider.Enabled = overrideFOVbox.Checked;
 
-            MaybeUpdateFovBar();
+            MaybeUpdateFovBar(true);
         }
 
         private void UpdateFOVbar()
@@ -366,11 +367,11 @@ namespace th2patchlauncher
             op.SetFloat("Video", "FOV", op.GetZoom());
         }
 
-        private void MaybeUpdateFovBar()
+        private void MaybeUpdateFovBar(bool forceAutoFOV)
         {
             if (!fovSlider.Enabled)
             {
-                op.AutoFOV();
+                op.AutoFOV(forceAutoFOV);
                 UpdateFOVbar();
             }
         }
@@ -378,7 +379,7 @@ namespace th2patchlauncher
         private void resBox_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             op.ParseResText(resBox.Text);
-            MaybeUpdateFovBar();
+            MaybeUpdateFovBar(false);
         }
 
         private void unlockFPSbox_CheckedChanged(object sender, EventArgs e)

@@ -27,6 +27,12 @@ namespace thps2patch
             return result;
         }
 
+        public bool CheckValueExsistance(string section, string name)
+        {
+            var result = config[section][name];
+            return result == null ? false : true;
+        }
+
         public string GetString(string section, string name, string defaultValue)
         {
             var result = TryGetValue(section, name, defaultValue);
@@ -74,6 +80,7 @@ namespace thps2patch
         public int ResX = 1280;
         public int ResY = 720;
 
+        public bool fovValueExist = false;
         public bool OverrideFOV = false;
         public int ZoomFactor = 100;
 
@@ -198,10 +205,13 @@ namespace thps2patch
             */
         }
 
-        public void AutoFOV()
+        public void AutoFOV(bool forceAutoFOV)
         {
-            //check if user changed fov or has custom fov by checking if cfg exists
-            if (!noConfigFileFound) return;
+            if(!forceAutoFOV)
+            {
+                //check if user changed fov or has custom fov by checking if fov value exist
+                if (fovValueExist) return;
+            }
 
             OverrideFOV = false;
             int ourzoom = (int)((4.0f * ResY) / (3.0f * ResX) * 100.0f);
