@@ -81,6 +81,27 @@ namespace thps2patch
         public string Game = "THPS2";
         public string ExeName = "Thawk2";
 
+        public object[] _169_resolutions = new object[]
+        {
+            "320x240",
+            "1600x900",
+            "1920x1080",
+            "2048x1152",
+            "2560x1440"
+        };
+
+        public object[] _43_resolutions = new object[]
+        {
+            "320x240",
+            "640x480",
+            "800x600",
+            "1024x768",
+            "1280x720",
+            "1600x1200",
+            "1920x1200",
+            "2048x1536"
+        };
+
         /*
         public bool Force32BPP = true;
         public bool UnlockFPS = true;
@@ -244,6 +265,42 @@ namespace thps2patch
             ResY = Screen.PrimaryScreen.Bounds.Height;
 
             SetResolution(ResX, ResY);
+        }
+
+        public void applyResolutionListByAspectRatio(ComboBox resbox, string aspectRatio)
+        {
+            if(resbox.Items.Count > 0) resbox.Items.Clear();
+
+            if(aspectRatio == "16:9")
+            {
+                foreach (object item in _169_resolutions)
+                {
+                    resbox.Items.Add(item);
+                }
+            }
+
+            if (aspectRatio == "4:3")
+            {
+                foreach (object item in _43_resolutions)
+                {
+                    resbox.Items.Add(item);
+                }
+            }
+        }
+
+        public void setAspectRatioByResolution(ComboBox aspectRatiBox, string resolutionString)
+        {
+            foreach (object item in _169_resolutions)
+            {
+                if (resolutionString == item.ToString())
+                    aspectRatiBox.SelectedItem = "16:9";
+            }
+
+            foreach (object item2 in _43_resolutions)
+            {
+                if (resolutionString == item2.ToString())
+                    aspectRatiBox.SelectedItem = "4:3";
+            }
         }
     }
 }

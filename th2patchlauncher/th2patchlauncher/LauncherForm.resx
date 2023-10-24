@@ -117,15 +117,90 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="&gt;&gt;label5.Name" xml:space="preserve">
+    <value>label5</value>
+  </data>
+  <data name="&gt;&gt;label5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label5.Parent" xml:space="preserve">
+    <value>aboutTab</value>
+  </data>
+  <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;linkLabel3.Name" xml:space="preserve">
+    <value>linkLabel3</value>
+  </data>
+  <data name="&gt;&gt;linkLabel3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;linkLabel3.Parent" xml:space="preserve">
+    <value>aboutTab</value>
+  </data>
+  <data name="&gt;&gt;linkLabel3.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;linkLabel2.Name" xml:space="preserve">
+    <value>linkLabel2</value>
+  </data>
+  <data name="&gt;&gt;linkLabel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;linkLabel2.Parent" xml:space="preserve">
+    <value>aboutTab</value>
+  </data>
+  <data name="&gt;&gt;linkLabel2.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;linkLabel1.Name" xml:space="preserve">
+    <value>linkLabel1</value>
+  </data>
+  <data name="&gt;&gt;linkLabel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;linkLabel1.Parent" xml:space="preserve">
+    <value>aboutTab</value>
+  </data>
+  <data name="&gt;&gt;linkLabel1.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="aboutTab.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="aboutTab.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="aboutTab.Size" type="System.Drawing.Size, System.Drawing">
+    <value>295, 178</value>
+  </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="aboutTab.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="aboutTab.Text" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="&gt;&gt;aboutTab.Name" xml:space="preserve">
+    <value>aboutTab</value>
+  </data>
+  <data name="&gt;&gt;aboutTab.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;aboutTab.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;aboutTab.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="label5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
     <value>39, 15</value>
   </data>
@@ -248,32 +323,140 @@ and bug reports.</value>
   <data name="&gt;&gt;linkLabel1.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="aboutTab.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+  <data name="&gt;&gt;railBarBox.Name" xml:space="preserve">
+    <value>railBarBox</value>
   </data>
-  <data name="aboutTab.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 2, 3, 2</value>
+  <data name="&gt;&gt;railBarBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="aboutTab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>295, 178</value>
+  <data name="&gt;&gt;railBarBox.Parent" xml:space="preserve">
+    <value>patchTab</value>
   </data>
-  <data name="aboutTab.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;railBarBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;skyBox.Name" xml:space="preserve">
+    <value>skyBox</value>
+  </data>
+  <data name="&gt;&gt;skyBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;skyBox.Parent" xml:space="preserve">
+    <value>patchTab</value>
+  </data>
+  <data name="&gt;&gt;skyBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;manualsBox.Name" xml:space="preserve">
+    <value>manualsBox</value>
+  </data>
+  <data name="&gt;&gt;manualsBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;manualsBox.Parent" xml:space="preserve">
+    <value>patchTab</value>
+  </data>
+  <data name="&gt;&gt;manualsBox.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;drawshadowBox.Name" xml:space="preserve">
+    <value>drawshadowBox</value>
+  </data>
+  <data name="&gt;&gt;drawshadowBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;drawshadowBox.Parent" xml:space="preserve">
+    <value>patchTab</value>
+  </data>
+  <data name="&gt;&gt;drawshadowBox.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="aboutTab.Text" xml:space="preserve">
-    <value>About</value>
+  <data name="&gt;&gt;psxtexBox.Name" xml:space="preserve">
+    <value>psxtexBox</value>
   </data>
-  <data name="&gt;&gt;aboutTab.Name" xml:space="preserve">
-    <value>aboutTab</value>
+  <data name="&gt;&gt;psxtexBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;aboutTab.Type" xml:space="preserve">
+  <data name="&gt;&gt;psxtexBox.Parent" xml:space="preserve">
+    <value>patchTab</value>
+  </data>
+  <data name="&gt;&gt;psxtexBox.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;drawhudBox.Name" xml:space="preserve">
+    <value>drawhudBox</value>
+  </data>
+  <data name="&gt;&gt;drawhudBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;drawhudBox.Parent" xml:space="preserve">
+    <value>patchTab</value>
+  </data>
+  <data name="&gt;&gt;drawhudBox.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;xinputBox.Name" xml:space="preserve">
+    <value>xinputBox</value>
+  </data>
+  <data name="&gt;&gt;xinputBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;xinputBox.Parent" xml:space="preserve">
+    <value>patchTab</value>
+  </data>
+  <data name="&gt;&gt;xinputBox.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;bigDropBox.Name" xml:space="preserve">
+    <value>bigDropBox</value>
+  </data>
+  <data name="&gt;&gt;bigDropBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;bigDropBox.Parent" xml:space="preserve">
+    <value>patchTab</value>
+  </data>
+  <data name="&gt;&gt;bigDropBox.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;vibrationBox.Name" xml:space="preserve">
+    <value>vibrationBox</value>
+  </data>
+  <data name="&gt;&gt;vibrationBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;vibrationBox.Parent" xml:space="preserve">
+    <value>patchTab</value>
+  </data>
+  <data name="&gt;&gt;vibrationBox.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="patchTab.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="patchTab.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="patchTab.Size" type="System.Drawing.Size, System.Drawing">
+    <value>295, 178</value>
+  </data>
+  <data name="patchTab.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="patchTab.Text" xml:space="preserve">
+    <value>Patches</value>
+  </data>
+  <data name="&gt;&gt;patchTab.Name" xml:space="preserve">
+    <value>patchTab</value>
+  </data>
+  <data name="&gt;&gt;patchTab.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;aboutTab.Parent" xml:space="preserve">
+  <data name="&gt;&gt;patchTab.Parent" xml:space="preserve">
     <value>tabControl1</value>
   </data>
-  <data name="&gt;&gt;aboutTab.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="&gt;&gt;patchTab.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="railBarBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -545,35 +728,674 @@ and bug reports.</value>
   <data name="&gt;&gt;vibrationBox.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
-  <data name="patchTab.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="patchTab.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="patchTab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>295, 178</value>
-  </data>
-  <data name="patchTab.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="patchTab.Text" xml:space="preserve">
-    <value>Patches</value>
-  </data>
-  <data name="&gt;&gt;patchTab.Name" xml:space="preserve">
-    <value>patchTab</value>
-  </data>
-  <data name="&gt;&gt;patchTab.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;patchTab.Parent" xml:space="preserve">
-    <value>tabControl1</value>
-  </data>
-  <data name="&gt;&gt;patchTab.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="tabControl1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;swapBox.Name" xml:space="preserve">
+    <value>swapBox</value>
+  </data>
+  <data name="&gt;&gt;swapBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;swapBox.Parent" xml:space="preserve">
+    <value>generalTab</value>
+  </data>
+  <data name="&gt;&gt;swapBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;separateSaveBox.Name" xml:space="preserve">
+    <value>separateSaveBox</value>
+  </data>
+  <data name="&gt;&gt;separateSaveBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;separateSaveBox.Parent" xml:space="preserve">
+    <value>generalTab</value>
+  </data>
+  <data name="&gt;&gt;separateSaveBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;skipIntroBox.Name" xml:space="preserve">
+    <value>skipIntroBox</value>
+  </data>
+  <data name="&gt;&gt;skipIntroBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;skipIntroBox.Parent" xml:space="preserve">
+    <value>generalTab</value>
+  </data>
+  <data name="&gt;&gt;skipIntroBox.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;altSkinsBox.Name" xml:space="preserve">
+    <value>altSkinsBox</value>
+  </data>
+  <data name="&gt;&gt;altSkinsBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;altSkinsBox.Parent" xml:space="preserve">
+    <value>generalTab</value>
+  </data>
+  <data name="&gt;&gt;altSkinsBox.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;userPatchBox.Name" xml:space="preserve">
+    <value>userPatchBox</value>
+  </data>
+  <data name="&gt;&gt;userPatchBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;userPatchBox.Parent" xml:space="preserve">
+    <value>generalTab</value>
+  </data>
+  <data name="&gt;&gt;userPatchBox.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;gameBox.Name" xml:space="preserve">
+    <value>gameBox</value>
+  </data>
+  <data name="&gt;&gt;gameBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;gameBox.Parent" xml:space="preserve">
+    <value>generalTab</value>
+  </data>
+  <data name="&gt;&gt;gameBox.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
+  </data>
+  <data name="&gt;&gt;label3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>generalTab</value>
+  </data>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="generalTab.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="generalTab.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="generalTab.Size" type="System.Drawing.Size, System.Drawing">
+    <value>295, 178</value>
+  </data>
+  <data name="generalTab.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="generalTab.Text" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="&gt;&gt;generalTab.Name" xml:space="preserve">
+    <value>generalTab</value>
+  </data>
+  <data name="&gt;&gt;generalTab.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;generalTab.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;generalTab.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="aspectRatioDrop.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="aspectRatioDrop.Items" xml:space="preserve">
+    <value>16:9</value>
+  </data>
+  <data name="aspectRatioDrop.Items1" xml:space="preserve">
+    <value>4:3</value>
+  </data>
+  <data name="aspectRatioDrop.Location" type="System.Drawing.Point, System.Drawing">
+    <value>189, 17</value>
+  </data>
+  <data name="aspectRatioDrop.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 21</value>
+  </data>
+  <data name="aspectRatioDrop.TabIndex" type="System.Int32, mscorlib">
+    <value>102</value>
+  </data>
+  <data name="&gt;&gt;aspectRatioDrop.Name" xml:space="preserve">
+    <value>aspectRatioDrop</value>
+  </data>
+  <data name="&gt;&gt;aspectRatioDrop.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;aspectRatioDrop.Parent" xml:space="preserve">
+    <value>videoTab</value>
+  </data>
+  <data name="&gt;&gt;aspectRatioDrop.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="rendererBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="rendererBox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="rendererBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>127, 99</value>
+  </data>
+  <data name="rendererBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="rendererBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>110, 17</value>
+  </data>
+  <data name="rendererBox.TabIndex" type="System.Int32, mscorlib">
+    <value>101</value>
+  </data>
+  <data name="rendererBox.Text" xml:space="preserve">
+    <value>Software renderer</value>
+  </data>
+  <data name="&gt;&gt;rendererBox.Name" xml:space="preserve">
+    <value>rendererBox</value>
+  </data>
+  <data name="&gt;&gt;rendererBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rendererBox.Parent" xml:space="preserve">
+    <value>videoTab</value>
+  </data>
+  <data name="&gt;&gt;rendererBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>35, 125</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 13</value>
+  </data>
+  <data name="label2.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Fog scale</value>
+  </data>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>videoTab</value>
+  </data>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="fogSlider.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="fogSlider.Location" type="System.Drawing.Point, System.Drawing">
+    <value>115, 125</value>
+  </data>
+  <data name="fogSlider.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="fogSlider.Size" type="System.Drawing.Size, System.Drawing">
+    <value>119, 45</value>
+  </data>
+  <data name="fogSlider.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;fogSlider.Name" xml:space="preserve">
+    <value>fogSlider</value>
+  </data>
+  <data name="&gt;&gt;fogSlider.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;fogSlider.Parent" xml:space="preserve">
+    <value>videoTab</value>
+  </data>
+  <data name="&gt;&gt;fogSlider.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="resBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>75, 17</value>
+  </data>
+  <data name="resBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="resBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>108, 21</value>
+  </data>
+  <data name="resBox.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;resBox.Name" xml:space="preserve">
+    <value>resBox</value>
+  </data>
+  <data name="&gt;&gt;resBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;resBox.Parent" xml:space="preserve">
+    <value>videoTab</value>
+  </data>
+  <data name="&gt;&gt;resBox.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>240, 54</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>22, 13</value>
+  </data>
+  <data name="label4.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>1.0</value>
+  </data>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
+  </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>videoTab</value>
+  </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="fovSlider.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="fovSlider.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="fovSlider.Location" type="System.Drawing.Point, System.Drawing">
+    <value>115, 51</value>
+  </data>
+  <data name="fovSlider.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="fovSlider.Size" type="System.Drawing.Size, System.Drawing">
+    <value>119, 45</value>
+  </data>
+  <data name="fovSlider.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;fovSlider.Name" xml:space="preserve">
+    <value>fovSlider</value>
+  </data>
+  <data name="&gt;&gt;fovSlider.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;fovSlider.Parent" xml:space="preserve">
+    <value>videoTab</value>
+  </data>
+  <data name="&gt;&gt;fovSlider.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="overrideFOVbox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="overrideFOVbox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="overrideFOVbox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>19, 53</value>
+  </data>
+  <data name="overrideFOVbox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="overrideFOVbox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 17</value>
+  </data>
+  <data name="overrideFOVbox.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="overrideFOVbox.Text" xml:space="preserve">
+    <value>Override FOV</value>
+  </data>
+  <data name="&gt;&gt;overrideFOVbox.Name" xml:space="preserve">
+    <value>overrideFOVbox</value>
+  </data>
+  <data name="&gt;&gt;overrideFOVbox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;overrideFOVbox.Parent" xml:space="preserve">
+    <value>videoTab</value>
+  </data>
+  <data name="&gt;&gt;overrideFOVbox.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="force32box.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="force32box.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="force32box.Location" type="System.Drawing.Point, System.Drawing">
+    <value>19, 76</value>
+  </data>
+  <data name="force32box.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="force32box.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 17</value>
+  </data>
+  <data name="force32box.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="force32box.Text" xml:space="preserve">
+    <value>Force 32 bit</value>
+  </data>
+  <data name="&gt;&gt;force32box.Name" xml:space="preserve">
+    <value>force32box</value>
+  </data>
+  <data name="&gt;&gt;force32box.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;force32box.Parent" xml:space="preserve">
+    <value>videoTab</value>
+  </data>
+  <data name="&gt;&gt;force32box.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="unlockFPSbox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="unlockFPSbox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="unlockFPSbox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>19, 99</value>
+  </data>
+  <data name="unlockFPSbox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="unlockFPSbox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 17</value>
+  </data>
+  <data name="unlockFPSbox.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="unlockFPSbox.Text" xml:space="preserve">
+    <value>Unlock FPS</value>
+  </data>
+  <data name="&gt;&gt;unlockFPSbox.Name" xml:space="preserve">
+    <value>unlockFPSbox</value>
+  </data>
+  <data name="&gt;&gt;unlockFPSbox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;unlockFPSbox.Parent" xml:space="preserve">
+    <value>videoTab</value>
+  </data>
+  <data name="&gt;&gt;unlockFPSbox.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="detectButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="detectButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>243, 17</value>
+  </data>
+  <data name="detectButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="detectButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 21</value>
+  </data>
+  <data name="detectButton.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="detectButton.Text" xml:space="preserve">
+    <value>Detect</value>
+  </data>
+  <data name="&gt;&gt;detectButton.Name" xml:space="preserve">
+    <value>detectButton</value>
+  </data>
+  <data name="&gt;&gt;detectButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;detectButton.Parent" xml:space="preserve">
+    <value>videoTab</value>
+  </data>
+  <data name="&gt;&gt;detectButton.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="ResYbox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>63, 181</value>
+  </data>
+  <data name="ResYbox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="ResYbox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>52, 20</value>
+  </data>
+  <data name="ResYbox.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;ResYbox.Name" xml:space="preserve">
+    <value>ResYbox</value>
+  </data>
+  <data name="&gt;&gt;ResYbox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ResYbox.Parent" xml:space="preserve">
+    <value>videoTab</value>
+  </data>
+  <data name="&gt;&gt;ResYbox.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="ResXbox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 181</value>
+  </data>
+  <data name="ResXbox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="ResXbox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>52, 20</value>
+  </data>
+  <data name="ResXbox.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;ResXbox.Name" xml:space="preserve">
+    <value>ResXbox</value>
+  </data>
+  <data name="&gt;&gt;ResXbox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ResXbox.Parent" xml:space="preserve">
+    <value>videoTab</value>
+  </data>
+  <data name="&gt;&gt;ResXbox.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 20</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>57, 13</value>
+  </data>
+  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+    <value>100</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Resolution</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>videoTab</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="videoTab.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="videoTab.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="videoTab.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="videoTab.Size" type="System.Drawing.Size, System.Drawing">
+    <value>295, 178</value>
+  </data>
+  <data name="videoTab.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="videoTab.Text" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="&gt;&gt;videoTab.Name" xml:space="preserve">
+    <value>videoTab</value>
+  </data>
+  <data name="&gt;&gt;videoTab.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;videoTab.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;videoTab.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;separateTracksBox.Name" xml:space="preserve">
+    <value>separateTracksBox</value>
+  </data>
+  <data name="&gt;&gt;separateTracksBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;separateTracksBox.Parent" xml:space="preserve">
+    <value>musicTab</value>
+  </data>
+  <data name="&gt;&gt;separateTracksBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;ambienceBox.Name" xml:space="preserve">
+    <value>ambienceBox</value>
+  </data>
+  <data name="&gt;&gt;ambienceBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ambienceBox.Parent" xml:space="preserve">
+    <value>musicTab</value>
+  </data>
+  <data name="&gt;&gt;ambienceBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;fadeBox.Name" xml:space="preserve">
+    <value>fadeBox</value>
+  </data>
+  <data name="&gt;&gt;fadeBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;fadeBox.Parent" xml:space="preserve">
+    <value>musicTab</value>
+  </data>
+  <data name="&gt;&gt;fadeBox.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;titleBox.Name" xml:space="preserve">
+    <value>titleBox</value>
+  </data>
+  <data name="&gt;&gt;titleBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;titleBox.Parent" xml:space="preserve">
+    <value>musicTab</value>
+  </data>
+  <data name="&gt;&gt;titleBox.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;randomBox.Name" xml:space="preserve">
+    <value>randomBox</value>
+  </data>
+  <data name="&gt;&gt;randomBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;randomBox.Parent" xml:space="preserve">
+    <value>musicTab</value>
+  </data>
+  <data name="&gt;&gt;randomBox.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="musicTab.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="musicTab.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="musicTab.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="musicTab.Size" type="System.Drawing.Size, System.Drawing">
+    <value>295, 178</value>
+  </data>
+  <data name="musicTab.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="musicTab.Text" xml:space="preserve">
+    <value>Music</value>
+  </data>
+  <data name="&gt;&gt;musicTab.Name" xml:space="preserve">
+    <value>musicTab</value>
+  </data>
+  <data name="&gt;&gt;musicTab.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;musicTab.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;musicTab.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tabControl1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 122</value>
+  </data>
+  <data name="tabControl1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 2</value>
+  </data>
+  <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>303, 204</value>
+  </data>
+  <data name="tabControl1.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.Name" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="swapBox.Items" xml:space="preserve">
     <value>Officer Dick</value>
@@ -818,489 +1640,6 @@ and bug reports.</value>
   <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="generalTab.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="generalTab.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 2, 3, 2</value>
-  </data>
-  <data name="generalTab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>295, 178</value>
-  </data>
-  <data name="generalTab.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="generalTab.Text" xml:space="preserve">
-    <value>General</value>
-  </data>
-  <data name="&gt;&gt;generalTab.Name" xml:space="preserve">
-    <value>generalTab</value>
-  </data>
-  <data name="&gt;&gt;generalTab.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;generalTab.Parent" xml:space="preserve">
-    <value>tabControl1</value>
-  </data>
-  <data name="&gt;&gt;generalTab.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="rendererBox.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="rendererBox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="rendererBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 99</value>
-  </data>
-  <data name="rendererBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 2, 3, 2</value>
-  </data>
-  <data name="rendererBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>110, 17</value>
-  </data>
-  <data name="rendererBox.TabIndex" type="System.Int32, mscorlib">
-    <value>101</value>
-  </data>
-  <data name="rendererBox.Text" xml:space="preserve">
-    <value>Software renderer</value>
-  </data>
-  <data name="&gt;&gt;rendererBox.Name" xml:space="preserve">
-    <value>rendererBox</value>
-  </data>
-  <data name="&gt;&gt;rendererBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rendererBox.Parent" xml:space="preserve">
-    <value>videoTab</value>
-  </data>
-  <data name="&gt;&gt;rendererBox.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>35, 125</value>
-  </data>
-  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 13</value>
-  </data>
-  <data name="label2.TabIndex" type="System.Int32, mscorlib">
-    <value>19</value>
-  </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>Fog scale</value>
-  </data>
-  <data name="&gt;&gt;label2.Name" xml:space="preserve">
-    <value>label2</value>
-  </data>
-  <data name="&gt;&gt;label2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
-    <value>videoTab</value>
-  </data>
-  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="fogSlider.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="fogSlider.Location" type="System.Drawing.Point, System.Drawing">
-    <value>115, 125</value>
-  </data>
-  <data name="fogSlider.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 2, 3, 2</value>
-  </data>
-  <data name="fogSlider.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 45</value>
-  </data>
-  <data name="fogSlider.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;fogSlider.Name" xml:space="preserve">
-    <value>fogSlider</value>
-  </data>
-  <data name="&gt;&gt;fogSlider.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;fogSlider.Parent" xml:space="preserve">
-    <value>videoTab</value>
-  </data>
-  <data name="&gt;&gt;fogSlider.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="resBox.Items" xml:space="preserve">
-    <value>320x240</value>
-  </data>
-  <data name="resBox.Items1" xml:space="preserve">
-    <value>640x480</value>
-  </data>
-  <data name="resBox.Items2" xml:space="preserve">
-    <value>800x600</value>
-  </data>
-  <data name="resBox.Items3" xml:space="preserve">
-    <value>1024x768</value>
-  </data>
-  <data name="resBox.Items4" xml:space="preserve">
-    <value>1280x720</value>
-  </data>
-  <data name="resBox.Items5" xml:space="preserve">
-    <value>1280x1024</value>
-  </data>
-  <data name="resBox.Items6" xml:space="preserve">
-    <value>1366x768</value>
-  </data>
-  <data name="resBox.Items7" xml:space="preserve">
-    <value>1440x900</value>
-  </data>
-  <data name="resBox.Items8" xml:space="preserve">
-    <value>1440x960</value>
-  </data>
-  <data name="resBox.Items9" xml:space="preserve">
-    <value>1600x900</value>
-  </data>
-  <data name="resBox.Items10" xml:space="preserve">
-    <value>1600x1200</value>
-  </data>
-  <data name="resBox.Items11" xml:space="preserve">
-    <value>1920x1080</value>
-  </data>
-  <data name="resBox.Items12" xml:space="preserve">
-    <value>1920x1200</value>
-  </data>
-  <data name="resBox.Items13" xml:space="preserve">
-    <value>2048x1152</value>
-  </data>
-  <data name="resBox.Items14" xml:space="preserve">
-    <value>2048x1536</value>
-  </data>
-  <data name="resBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>75, 17</value>
-  </data>
-  <data name="resBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 2, 3, 2</value>
-  </data>
-  <data name="resBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 21</value>
-  </data>
-  <data name="resBox.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;resBox.Name" xml:space="preserve">
-    <value>resBox</value>
-  </data>
-  <data name="&gt;&gt;resBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;resBox.Parent" xml:space="preserve">
-    <value>videoTab</value>
-  </data>
-  <data name="&gt;&gt;resBox.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>240, 54</value>
-  </data>
-  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>22, 13</value>
-  </data>
-  <data name="label4.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="label4.Text" xml:space="preserve">
-    <value>1.0</value>
-  </data>
-  <data name="&gt;&gt;label4.Name" xml:space="preserve">
-    <value>label4</value>
-  </data>
-  <data name="&gt;&gt;label4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
-    <value>videoTab</value>
-  </data>
-  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="fovSlider.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="fovSlider.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="fovSlider.Location" type="System.Drawing.Point, System.Drawing">
-    <value>115, 51</value>
-  </data>
-  <data name="fovSlider.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 2, 3, 2</value>
-  </data>
-  <data name="fovSlider.Size" type="System.Drawing.Size, System.Drawing">
-    <value>119, 45</value>
-  </data>
-  <data name="fovSlider.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;fovSlider.Name" xml:space="preserve">
-    <value>fovSlider</value>
-  </data>
-  <data name="&gt;&gt;fovSlider.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TrackBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;fovSlider.Parent" xml:space="preserve">
-    <value>videoTab</value>
-  </data>
-  <data name="&gt;&gt;fovSlider.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="overrideFOVbox.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="overrideFOVbox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="overrideFOVbox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>19, 53</value>
-  </data>
-  <data name="overrideFOVbox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 2, 3, 2</value>
-  </data>
-  <data name="overrideFOVbox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 17</value>
-  </data>
-  <data name="overrideFOVbox.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="overrideFOVbox.Text" xml:space="preserve">
-    <value>Override FOV</value>
-  </data>
-  <data name="&gt;&gt;overrideFOVbox.Name" xml:space="preserve">
-    <value>overrideFOVbox</value>
-  </data>
-  <data name="&gt;&gt;overrideFOVbox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;overrideFOVbox.Parent" xml:space="preserve">
-    <value>videoTab</value>
-  </data>
-  <data name="&gt;&gt;overrideFOVbox.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="force32box.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="force32box.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="force32box.Location" type="System.Drawing.Point, System.Drawing">
-    <value>19, 76</value>
-  </data>
-  <data name="force32box.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 2, 3, 2</value>
-  </data>
-  <data name="force32box.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 17</value>
-  </data>
-  <data name="force32box.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="force32box.Text" xml:space="preserve">
-    <value>Force 32 bit</value>
-  </data>
-  <data name="&gt;&gt;force32box.Name" xml:space="preserve">
-    <value>force32box</value>
-  </data>
-  <data name="&gt;&gt;force32box.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;force32box.Parent" xml:space="preserve">
-    <value>videoTab</value>
-  </data>
-  <data name="&gt;&gt;force32box.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="unlockFPSbox.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="unlockFPSbox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="unlockFPSbox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>19, 99</value>
-  </data>
-  <data name="unlockFPSbox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 2, 3, 2</value>
-  </data>
-  <data name="unlockFPSbox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>83, 17</value>
-  </data>
-  <data name="unlockFPSbox.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="unlockFPSbox.Text" xml:space="preserve">
-    <value>Unlock FPS</value>
-  </data>
-  <data name="&gt;&gt;unlockFPSbox.Name" xml:space="preserve">
-    <value>unlockFPSbox</value>
-  </data>
-  <data name="&gt;&gt;unlockFPSbox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;unlockFPSbox.Parent" xml:space="preserve">
-    <value>videoTab</value>
-  </data>
-  <data name="&gt;&gt;unlockFPSbox.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="detectButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="detectButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>201, 17</value>
-  </data>
-  <data name="detectButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 2, 3, 2</value>
-  </data>
-  <data name="detectButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>87, 21</value>
-  </data>
-  <data name="detectButton.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="detectButton.Text" xml:space="preserve">
-    <value>Detect</value>
-  </data>
-  <data name="&gt;&gt;detectButton.Name" xml:space="preserve">
-    <value>detectButton</value>
-  </data>
-  <data name="&gt;&gt;detectButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;detectButton.Parent" xml:space="preserve">
-    <value>videoTab</value>
-  </data>
-  <data name="&gt;&gt;detectButton.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="ResYbox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>63, 181</value>
-  </data>
-  <data name="ResYbox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 2, 3, 2</value>
-  </data>
-  <data name="ResYbox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>52, 20</value>
-  </data>
-  <data name="ResYbox.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;ResYbox.Name" xml:space="preserve">
-    <value>ResYbox</value>
-  </data>
-  <data name="&gt;&gt;ResYbox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ResYbox.Parent" xml:space="preserve">
-    <value>videoTab</value>
-  </data>
-  <data name="&gt;&gt;ResYbox.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="ResXbox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 181</value>
-  </data>
-  <data name="ResXbox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 2, 3, 2</value>
-  </data>
-  <data name="ResXbox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>52, 20</value>
-  </data>
-  <data name="ResXbox.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;ResXbox.Name" xml:space="preserve">
-    <value>ResXbox</value>
-  </data>
-  <data name="&gt;&gt;ResXbox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ResXbox.Parent" xml:space="preserve">
-    <value>videoTab</value>
-  </data>
-  <data name="&gt;&gt;ResXbox.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 20</value>
-  </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>57, 13</value>
-  </data>
-  <data name="label1.TabIndex" type="System.Int32, mscorlib">
-    <value>100</value>
-  </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Resolution</value>
-  </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
-  </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>videoTab</value>
-  </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="videoTab.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="videoTab.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 2, 3, 2</value>
-  </data>
-  <data name="videoTab.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 2, 3, 2</value>
-  </data>
-  <data name="videoTab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>295, 178</value>
-  </data>
-  <data name="videoTab.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="videoTab.Text" xml:space="preserve">
-    <value>Video</value>
-  </data>
-  <data name="&gt;&gt;videoTab.Name" xml:space="preserve">
-    <value>videoTab</value>
-  </data>
-  <data name="&gt;&gt;videoTab.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;videoTab.Parent" xml:space="preserve">
-    <value>tabControl1</value>
-  </data>
-  <data name="&gt;&gt;videoTab.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="separateTracksBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -1465,60 +1804,6 @@ and bug reports.</value>
   </data>
   <data name="&gt;&gt;randomBox.ZOrder" xml:space="preserve">
     <value>4</value>
-  </data>
-  <data name="musicTab.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="musicTab.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 2, 3, 2</value>
-  </data>
-  <data name="musicTab.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 2, 3, 2</value>
-  </data>
-  <data name="musicTab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>295, 178</value>
-  </data>
-  <data name="musicTab.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="musicTab.Text" xml:space="preserve">
-    <value>Music</value>
-  </data>
-  <data name="&gt;&gt;musicTab.Name" xml:space="preserve">
-    <value>musicTab</value>
-  </data>
-  <data name="&gt;&gt;musicTab.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;musicTab.Parent" xml:space="preserve">
-    <value>tabControl1</value>
-  </data>
-  <data name="&gt;&gt;musicTab.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="tabControl1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 122</value>
-  </data>
-  <data name="tabControl1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 2, 3, 2</value>
-  </data>
-  <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>303, 204</value>
-  </data>
-  <data name="tabControl1.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="&gt;&gt;tabControl1.Name" xml:space="preserve">
-    <value>tabControl1</value>
-  </data>
-  <data name="&gt;&gt;tabControl1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tabControl1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="quitButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>

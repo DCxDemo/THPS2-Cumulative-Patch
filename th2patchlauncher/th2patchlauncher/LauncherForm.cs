@@ -133,10 +133,12 @@ namespace th2patchlauncher
             op.ResX = op.GetInt("Video", "ResX", 1280);
             op.ResY = op.GetInt("Video", "ResY", 720);
 
+            op.setAspectRatioByResolution(aspectRatioDrop, op.ResolutionString);
+
             //video tab
             ResXbox.Text = op.ResX.ToString();
             ResYbox.Text = op.ResY.ToString();
-            resBox.Text = op.ResolutionString;
+            resBox.SelectedItem = op.ResolutionString;
 
             force32box.Checked = op.GetBool("Video", "Force32Bpp", false);
             unlockFPSbox.Checked = op.GetBool("Video", "UnlockFPS", false);
@@ -176,7 +178,8 @@ namespace th2patchlauncher
         private void detectButtonClick(object sender, EventArgs e)
         {
             op.DetectResolution();
-            resBox.Text = op.ResolutionString;
+            op.setAspectRatioByResolution(aspectRatioDrop, op.ResolutionString);
+            resBox.SelectedItem = op.ResolutionString;
 
             MaybeUpdateFovBar();
         }
@@ -301,6 +304,11 @@ namespace th2patchlauncher
             op.SetString("Patch", "Game", (sender as ComboBox).Text);
         }
 
+        private void aspectRatioDrop_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            op.applyResolutionListByAspectRatio(resBox, aspectRatioDrop.Text);
+        }
+
         private void trackBar2_MouseUp(object sender, MouseEventArgs e)
         {
             var fog = (int)(Math.Pow(fogSlider.Value, 2) / (float)fogSlider.Maximum + 10f);
@@ -316,6 +324,7 @@ namespace th2patchlauncher
             op.ParseResText(resBox.Text);
             MaybeUpdateFovBar();
         }
+
 
         #endregion
 

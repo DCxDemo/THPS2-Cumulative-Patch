@@ -56,6 +56,7 @@ namespace th2patchlauncher
             this.gameBox = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.videoTab = new System.Windows.Forms.TabPage();
+            this.aspectRatioDrop = new System.Windows.Forms.ComboBox();
             this.rendererBox = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.fogSlider = new System.Windows.Forms.TrackBar();
@@ -292,6 +293,7 @@ namespace th2patchlauncher
             // 
             // videoTab
             // 
+            this.videoTab.Controls.Add(this.aspectRatioDrop);
             this.videoTab.Controls.Add(this.rendererBox);
             this.videoTab.Controls.Add(this.label2);
             this.videoTab.Controls.Add(this.fogSlider);
@@ -308,6 +310,17 @@ namespace th2patchlauncher
             resources.ApplyResources(this.videoTab, "videoTab");
             this.videoTab.Name = "videoTab";
             this.videoTab.UseVisualStyleBackColor = true;
+            // 
+            // aspectRatioDrop
+            // 
+            this.aspectRatioDrop.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.aspectRatioDrop.FormattingEnabled = true;
+            resources.ApplyResources(this.aspectRatioDrop, "aspectRatioDrop");
+            this.aspectRatioDrop.Items.AddRange(new object[] {
+            resources.GetString("aspectRatioDrop.Items"),
+            resources.GetString("aspectRatioDrop.Items1")});
+            this.aspectRatioDrop.Name = "aspectRatioDrop";
+            this.aspectRatioDrop.SelectedIndexChanged += new System.EventHandler(this.aspectRatioDrop_SelectedIndexChanged);
             // 
             // rendererBox
             // 
@@ -334,23 +347,8 @@ namespace th2patchlauncher
             // 
             // resBox
             // 
+            this.resBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.resBox.FormattingEnabled = true;
-            this.resBox.Items.AddRange(new object[] {
-            resources.GetString("resBox.Items"),
-            resources.GetString("resBox.Items1"),
-            resources.GetString("resBox.Items2"),
-            resources.GetString("resBox.Items3"),
-            resources.GetString("resBox.Items4"),
-            resources.GetString("resBox.Items5"),
-            resources.GetString("resBox.Items6"),
-            resources.GetString("resBox.Items7"),
-            resources.GetString("resBox.Items8"),
-            resources.GetString("resBox.Items9"),
-            resources.GetString("resBox.Items10"),
-            resources.GetString("resBox.Items11"),
-            resources.GetString("resBox.Items12"),
-            resources.GetString("resBox.Items13"),
-            resources.GetString("resBox.Items14")});
             resources.ApplyResources(this.resBox, "resBox");
             this.resBox.Name = "resBox";
             this.resBox.SelectedIndexChanged += new System.EventHandler(this.resBox_SelectedIndexChanged_1);
@@ -564,6 +562,7 @@ namespace th2patchlauncher
         private Button quitButton;
         private Button launchButton;
         private PictureBox pictureBox1;
+        private ComboBox aspectRatioDrop;
     }
 }
 
