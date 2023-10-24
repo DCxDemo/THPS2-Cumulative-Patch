@@ -92,6 +92,7 @@ namespace thps2patch
 
         public object[] _169_resolutions = new object[]
         {
+            "1280x720",
             "1600x900",
             "1920x1080",
             "2048x1152",
@@ -104,9 +105,7 @@ namespace thps2patch
             "640x480",
             "800x600",
             "1024x768",
-            "1280x720",
             "1600x1200",
-            "1920x1200",
             "2048x1536"
         };
 

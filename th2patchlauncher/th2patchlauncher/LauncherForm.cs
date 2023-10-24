@@ -379,7 +379,7 @@ namespace th2patchlauncher
         private void resBox_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             op.ParseResText(resBox.Text);
-            MaybeUpdateFovBar(false);
+            MaybeUpdateFovBar(true);
         }
 
         private void unlockFPSbox_CheckedChanged(object sender, EventArgs e)
