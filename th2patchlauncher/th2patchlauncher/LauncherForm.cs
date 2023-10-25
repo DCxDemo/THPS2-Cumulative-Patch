@@ -323,7 +323,7 @@ namespace th2patchlauncher
         private void resBox_SelectionChangeCommitted(object sender, EventArgs e)
         {
             op.ParseResText(resBox.Text);
-            MaybeUpdateFovBar(false);
+            MaybeUpdateFovBar(true);
         }
 
 
@@ -379,7 +379,7 @@ namespace th2patchlauncher
         private void resBox_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             op.ParseResText(resBox.Text);
-            MaybeUpdateFovBar(true);
+            MaybeUpdateFovBar(false);
         }
 
         private void unlockFPSbox_CheckedChanged(object sender, EventArgs e)
