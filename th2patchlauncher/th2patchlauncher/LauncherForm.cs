@@ -283,7 +283,6 @@ namespace th2patchlauncher
 
         #region [General tab]
 
-
         private void altSkinsBox_CheckedChanged(object sender, EventArgs e)
         {
             op.SetBool("Patch", "MoreSkins", (sender as CheckBox).Checked);
@@ -309,28 +308,6 @@ namespace th2patchlauncher
         {
             op.SetString("Patch", "Game", (sender as ComboBox).Text);
         }
-
-        private void aspectRatioDrop_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            op.applyResolutionListByAspectRatio(resBox, aspectRatioDrop.Text);
-        }
-
-        private void trackBar2_MouseUp(object sender, MouseEventArgs e)
-        {
-            var fog = (int)(Math.Pow(fogSlider.Value, 2) / (float)fogSlider.Maximum + 10f);
-
-            if (fog < 10) fog = 10;
-            if (fog > 750) fog = 750;
-
-            op.SetInt("Video", "FogScale", fog);
-        }
-
-        private void resBox_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            op.ParseResText(resBox.Text);
-            MaybeUpdateFovBar(true);
-        }
-
 
         #endregion
 
@@ -371,9 +348,12 @@ namespace th2patchlauncher
         {
             fogSlider.Enabled = fogCheck.Checked;
 
+            //reset to default for professionalism 
             if(!fogSlider.Enabled)
             {
                 fogSlider.Value = (int)Math.Sqrt((300 - 10) * fogSlider.Maximum);
+
+                op.SetInt("Video", "FogScale", 300);
             }
         }
 
@@ -422,6 +402,27 @@ namespace th2patchlauncher
 
             if (force32bits)
                 rendererBox.Checked = false;
+        }
+
+        private void aspectRatioDrop_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            op.applyResolutionListByAspectRatio(resBox, aspectRatioDrop.Text);
+        }
+
+        private void trackBar2_MouseUp(object sender, MouseEventArgs e)
+        {
+            var fog = (int)(Math.Pow(fogSlider.Value, 2) / (float)fogSlider.Maximum + 10f);
+
+            if (fog < 10) fog = 10;
+            if (fog > 750) fog = 750;
+
+            op.SetInt("Video", "FogScale", fog);
+        }
+
+        private void resBox_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            op.ParseResText(resBox.Text);
+            MaybeUpdateFovBar(true);
         }
 
         #endregion
