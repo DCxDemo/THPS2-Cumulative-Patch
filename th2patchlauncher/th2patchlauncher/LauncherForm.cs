@@ -367,6 +367,16 @@ namespace th2patchlauncher
             label6.Text = fog.ToString();
         }
 
+        private void fogCheck_CheckedChanged(object sender, EventArgs e)
+        {
+            fogSlider.Enabled = fogCheck.Checked;
+
+            if(!fogSlider.Enabled)
+            {
+                fogSlider.Value = (int)Math.Sqrt((300 - 10) * fogSlider.Maximum);
+            }
+        }
+
         private void overrideFOVbox_CheckedChanged(object sender, EventArgs e)
         {
             fovSlider.Enabled = overrideFOVbox.Checked;

@@ -58,7 +58,6 @@ namespace th2patchlauncher
             this.videoTab = new System.Windows.Forms.TabPage();
             this.aspectRatioDrop = new System.Windows.Forms.ComboBox();
             this.rendererBox = new System.Windows.Forms.CheckBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.fogSlider = new System.Windows.Forms.TrackBar();
             this.resBox = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -80,6 +79,7 @@ namespace th2patchlauncher
             this.launchButton = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.fogCheck = new System.Windows.Forms.CheckBox();
             this.aboutTab.SuspendLayout();
             this.patchTab.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -294,10 +294,10 @@ namespace th2patchlauncher
             // 
             // videoTab
             // 
+            this.videoTab.Controls.Add(this.fogCheck);
             this.videoTab.Controls.Add(this.label6);
             this.videoTab.Controls.Add(this.aspectRatioDrop);
             this.videoTab.Controls.Add(this.rendererBox);
-            this.videoTab.Controls.Add(this.label2);
             this.videoTab.Controls.Add(this.fogSlider);
             this.videoTab.Controls.Add(this.resBox);
             this.videoTab.Controls.Add(this.label4);
@@ -330,11 +330,6 @@ namespace th2patchlauncher
             this.rendererBox.Name = "rendererBox";
             this.rendererBox.UseVisualStyleBackColor = true;
             this.rendererBox.CheckedChanged += new System.EventHandler(this.rendererBox_CheckedChanged);
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
             // 
             // fogSlider
             // 
@@ -489,6 +484,13 @@ namespace th2patchlauncher
             resources.ApplyResources(this.label6, "label6");
             this.label6.Name = "label6";
             // 
+            // fogCheck
+            // 
+            resources.ApplyResources(this.fogCheck, "fogCheck");
+            this.fogCheck.Name = "fogCheck";
+            this.fogCheck.UseVisualStyleBackColor = true;
+            this.fogCheck.CheckedChanged += new System.EventHandler(this.fogCheck_CheckedChanged);
+            // 
             // LauncherForm
             // 
             resources.ApplyResources(this, "$this");
@@ -548,7 +550,6 @@ namespace th2patchlauncher
         private Label label3;
         private TabPage videoTab;
         private CheckBox rendererBox;
-        private Label label2;
         private TrackBar fogSlider;
         private ComboBox resBox;
         private Label label4;
@@ -571,6 +572,7 @@ namespace th2patchlauncher
         private PictureBox pictureBox1;
         private ComboBox aspectRatioDrop;
         private Label label6;
+        private CheckBox fogCheck;
     }
 }
 
