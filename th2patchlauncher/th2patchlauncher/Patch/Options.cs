@@ -90,6 +90,8 @@ namespace thps2patch
 
         public bool noConfigFileFound = false;
 
+        public bool unfixResSelect = false;
+
         public object[] _169_resolutions = new object[]
         {
             "1280x720",

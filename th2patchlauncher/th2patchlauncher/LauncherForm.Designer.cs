@@ -79,6 +79,7 @@ namespace th2patchlauncher
             this.quitButton = new System.Windows.Forms.Button();
             this.launchButton = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.aboutTab.SuspendLayout();
             this.patchTab.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -293,6 +294,7 @@ namespace th2patchlauncher
             // 
             // videoTab
             // 
+            this.videoTab.Controls.Add(this.label6);
             this.videoTab.Controls.Add(this.aspectRatioDrop);
             this.videoTab.Controls.Add(this.rendererBox);
             this.videoTab.Controls.Add(this.label2);
@@ -343,11 +345,11 @@ namespace th2patchlauncher
             this.fogSlider.SmallChange = 10;
             this.fogSlider.TickFrequency = 75;
             this.fogSlider.Value = 740;
+            this.fogSlider.ValueChanged += new System.EventHandler(this.fogSlider_ValueChanged);
             this.fogSlider.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBar2_MouseUp);
             // 
             // resBox
             // 
-            this.resBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.resBox.FormattingEnabled = true;
             resources.ApplyResources(this.resBox, "resBox");
             this.resBox.Name = "resBox";
@@ -482,6 +484,11 @@ namespace th2patchlauncher
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
             // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
+            // 
             // LauncherForm
             // 
             resources.ApplyResources(this, "$this");
@@ -563,6 +570,7 @@ namespace th2patchlauncher
         private Button launchButton;
         private PictureBox pictureBox1;
         private ComboBox aspectRatioDrop;
+        private Label label6;
     }
 }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection.Emit;
 using System.Windows.Forms;
 using thps2patch;
 
@@ -139,7 +140,7 @@ namespace th2patchlauncher
             //video tab
             ResXbox.Text = op.ResX.ToString();
             ResYbox.Text = op.ResY.ToString();
-            resBox.SelectedItem = op.ResolutionString;
+            resBox.Text = op.ResolutionString;
 
             force32box.Checked = op.GetBool("Video", "Force32Bpp", false);
             unlockFPSbox.Checked = op.GetBool("Video", "UnlockFPS", false);
@@ -150,9 +151,13 @@ namespace th2patchlauncher
             //just in case if file value is out of bounds
             op.ZoomFactor = op.ValidateRange(op.ZoomFactor, 30, 140);
 
-            fogSlider.Value = (int)Math.Sqrt((op.GetInt("Video", "FogScale", 300) - 10) * fogSlider.Maximum);
+            int fogValue = op.GetInt("Video", "FogScale", 300);
+            fogSlider.Value = (int)Math.Sqrt((fogValue - 10) * fogSlider.Maximum);
+            label6.Text = fogValue.ToString();
 
             UpdateFOVbar();
+
+            op.unfixResSelect = true;
 
             ambienceBox.Checked = op.GetBool("Music", "PlayAmbience", true);
             fadeBox.Checked = op.GetBool("Music", "Fade", true);
@@ -180,7 +185,7 @@ namespace th2patchlauncher
         {
             op.DetectResolution();
             op.setAspectRatioByResolution(aspectRatioDrop, op.ResolutionString);
-            resBox.SelectedItem = op.ResolutionString;
+            resBox.Text = op.ResolutionString;
 
             MaybeUpdateFovBar(true);
         }
@@ -352,6 +357,16 @@ namespace th2patchlauncher
             UpdateFOVbar();
         }
 
+        private void fogSlider_ValueChanged(object sender, EventArgs e)
+        {
+            var fog = (int)(Math.Pow(fogSlider.Value, 2) / (float)fogSlider.Maximum + 10f);
+
+            if (fog < 10) fog = 10;
+            if (fog > 750) fog = 750;
+
+            label6.Text = fog.ToString();
+        }
+
         private void overrideFOVbox_CheckedChanged(object sender, EventArgs e)
         {
             fovSlider.Enabled = overrideFOVbox.Checked;
@@ -379,7 +394,9 @@ namespace th2patchlauncher
         private void resBox_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             op.ParseResText(resBox.Text);
-            MaybeUpdateFovBar(false);
+
+            //selecting other res doesn't update with autoFOV when false, this bool truns true after initiation to fix
+            MaybeUpdateFovBar(op.unfixResSelect);
         }
 
         private void unlockFPSbox_CheckedChanged(object sender, EventArgs e)
