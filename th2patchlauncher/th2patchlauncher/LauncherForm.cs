@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection.Emit;
 using System.Windows.Forms;
 using thps2patch;
 
