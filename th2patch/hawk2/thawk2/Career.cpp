@@ -182,6 +182,8 @@ void Career_AwardGap(SGapTrick* pGap)
 // level specific item pickup logic
 void Career_GetLevelPickup()
 {
+    SLevel* level = &Levels[*GLevel];
+
     (*Career_LevelPickupsGot)++;
 
     int goalIndex = Career_GoalIndex(EGoalType::Pickups);
@@ -194,14 +196,12 @@ void Career_GetLevelPickup()
     }
     else
     {
-        char** itemName = (char**)(0x5390b8 + *GLevel * 0x1ac /*sizeof level struct*/ + goalIndex * sizeof(SGoal));
-
         sprintf(
-            AwardLevelPickupMessage,//text buffer
-            "%d of %d %s",          //message
-            *Career_LevelPickupsGot,//got items
-            *Career_LevelPickups,   //out of items
-            &(*itemName)[0]         //level specific item name
+            AwardLevelPickupMessage,    //text buffer
+            "%d of %d %s",              //message
+            *Career_LevelPickupsGot,    //got items
+            *Career_LevelPickups,       //out of items
+            level->Goals[Career_GoalIndex(EGoalType::Gaps)].stringParam     //level specific item name
         );
 
         printf("%s\r\n", AwardLevelPickupMessage);
@@ -681,14 +681,14 @@ int* Career_TotalGaps = (int*)0x0055ca34;
 /// <summary>
 /// Checks whether player got all gaps or not. Used to unlock carrera.
 /// </summary>
-/// <param name=""></param>
 /// <returns></returns>
-bool Career_GotAllGaps(void)
+bool Career_GotAllGaps()
 {
     return Career_CountGaps() >= *Career_TotalGaps;
 }
 
-int Career_NumLevelGoals(void)
+
+int Career_NumLevelGoals()
 {
     void* charProg = Career_GetCurrentCharacterProgress();
 

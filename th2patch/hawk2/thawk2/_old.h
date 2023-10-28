@@ -172,9 +172,9 @@ typedef void(*Panel_Line_t)(short param_1, short param_2, short param_3, short p
 //simply draws a line on the screen.
 static const Panel_Line_t Panel_Line = (Panel_Line_t)0x00488410;
 
-typedef void(*Utils_SetVisibilityInBox_t)(void*, void*, char, char);
+//typedef void(*Utils_SetVisibilityInBox_t)(void*, void*, char, char);
 //takes bbox, objects list and state bool, loops through all objects and toggles visibility for those 
-static const Utils_SetVisibilityInBox_t Utils_SetVisibilityInBox = (Utils_SetVisibilityInBox_t)0x004c7530;
+//static const Utils_SetVisibilityInBox_t Utils_SetVisibilityInBox = (Utils_SetVisibilityInBox_t)0x004c7530;
 
 
 

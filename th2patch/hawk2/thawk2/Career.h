@@ -60,22 +60,26 @@ enum class EGapFlag : short {
 	TrickGap = 2
 };
 
-
+/// <summary>
+/// Defines a gap trick aka "blue text transfer".
+/// </summary>
 typedef struct SGapTrick {
-	short Flags;		//gap type flags (stuff like CANCEL_GRIND CANCEL_WALL, etc)
-	short Type;		//defines whether the gap is used in goals
-	short Value;		//gap index, 2 values - index / 10000 and index % 10000
-	short Score;		//score points to award
-	char Name[0x24];	//gap name
+	short Flags;		// gap type flags (stuff like CANCEL_GRIND CANCEL_WALL, etc)
+	short Type;			// defines whether the gap is used in goal checks ( EGapFlag enum )
+	short Value;		// gap index, 2 values - index / 10000 and index % 10000
+	short Score;		// score points to award
+	char Name[0x24];	// gap name
 } SGapTrick;
 
-
+/// <summary>
+/// Defines a single level goal.
+/// </summary>
 typedef struct SGoal {
-	EGoalType goalType;	//goal type
-	int intParam;		//score value, num items or gap checksum
-	char* stringParam;	//pointer to item text, like "pilot wings" or trick match
-	int cashAward;		//amount of cash to award
-	char* goalText;		//pointer to goal text for level goals screen
+	EGoalType goalType;	// goal type
+	int intParam;		// score value, num items or gap checksum
+	char* stringParam;	// pointer to item text, like "pilot wings" or trick match
+	int cashAward;		// amount of cash to award
+	char* goalText;		// pointer to goal text for level goals screen
 	int unk;
 } SGoal;
 
