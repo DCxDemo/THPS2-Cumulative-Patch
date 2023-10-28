@@ -56,11 +56,13 @@ namespace th2patchlauncher
             this.gameBox = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.videoTab = new System.Windows.Forms.TabPage();
+            this.fogCheck = new System.Windows.Forms.CheckBox();
+            this.fogLabel = new System.Windows.Forms.Label();
             this.aspectRatioDrop = new System.Windows.Forms.ComboBox();
             this.rendererBox = new System.Windows.Forms.CheckBox();
             this.fogSlider = new System.Windows.Forms.TrackBar();
             this.resBox = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.fovLabel = new System.Windows.Forms.Label();
             this.fovSlider = new System.Windows.Forms.TrackBar();
             this.overrideFOVbox = new System.Windows.Forms.CheckBox();
             this.force32box = new System.Windows.Forms.CheckBox();
@@ -78,8 +80,6 @@ namespace th2patchlauncher
             this.quitButton = new System.Windows.Forms.Button();
             this.launchButton = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.fogCheck = new System.Windows.Forms.CheckBox();
             this.aboutTab.SuspendLayout();
             this.patchTab.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -295,12 +295,12 @@ namespace th2patchlauncher
             // videoTab
             // 
             this.videoTab.Controls.Add(this.fogCheck);
-            this.videoTab.Controls.Add(this.label6);
+            this.videoTab.Controls.Add(this.fogLabel);
             this.videoTab.Controls.Add(this.aspectRatioDrop);
             this.videoTab.Controls.Add(this.rendererBox);
             this.videoTab.Controls.Add(this.fogSlider);
             this.videoTab.Controls.Add(this.resBox);
-            this.videoTab.Controls.Add(this.label4);
+            this.videoTab.Controls.Add(this.fovLabel);
             this.videoTab.Controls.Add(this.fovSlider);
             this.videoTab.Controls.Add(this.overrideFOVbox);
             this.videoTab.Controls.Add(this.force32box);
@@ -312,6 +312,18 @@ namespace th2patchlauncher
             resources.ApplyResources(this.videoTab, "videoTab");
             this.videoTab.Name = "videoTab";
             this.videoTab.UseVisualStyleBackColor = true;
+            // 
+            // fogCheck
+            // 
+            resources.ApplyResources(this.fogCheck, "fogCheck");
+            this.fogCheck.Name = "fogCheck";
+            this.fogCheck.UseVisualStyleBackColor = true;
+            this.fogCheck.CheckedChanged += new System.EventHandler(this.fogCheck_CheckedChanged);
+            // 
+            // fogLabel
+            // 
+            resources.ApplyResources(this.fogLabel, "fogLabel");
+            this.fogLabel.Name = "fogLabel";
             // 
             // aspectRatioDrop
             // 
@@ -351,10 +363,10 @@ namespace th2patchlauncher
             this.resBox.SelectedIndexChanged += new System.EventHandler(this.resBox_SelectedIndexChanged_1);
             this.resBox.SelectionChangeCommitted += new System.EventHandler(this.resBox_SelectionChangeCommitted);
             // 
-            // label4
+            // fovLabel
             // 
-            resources.ApplyResources(this.label4, "label4");
-            this.label4.Name = "label4";
+            resources.ApplyResources(this.fovLabel, "fovLabel");
+            this.fovLabel.Name = "fovLabel";
             // 
             // fovSlider
             // 
@@ -479,18 +491,6 @@ namespace th2patchlauncher
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
             // 
-            // label6
-            // 
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
-            // 
-            // fogCheck
-            // 
-            resources.ApplyResources(this.fogCheck, "fogCheck");
-            this.fogCheck.Name = "fogCheck";
-            this.fogCheck.UseVisualStyleBackColor = true;
-            this.fogCheck.CheckedChanged += new System.EventHandler(this.fogCheck_CheckedChanged);
-            // 
             // LauncherForm
             // 
             resources.ApplyResources(this, "$this");
@@ -552,7 +552,7 @@ namespace th2patchlauncher
         private CheckBox rendererBox;
         private TrackBar fogSlider;
         private ComboBox resBox;
-        private Label label4;
+        private Label fovLabel;
         private TrackBar fovSlider;
         private CheckBox overrideFOVbox;
         private CheckBox force32box;
@@ -571,7 +571,7 @@ namespace th2patchlauncher
         private Button launchButton;
         private PictureBox pictureBox1;
         private ComboBox aspectRatioDrop;
-        private Label label6;
+        private Label fogLabel;
         private CheckBox fogCheck;
     }
 }

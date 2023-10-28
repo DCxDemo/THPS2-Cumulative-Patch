@@ -134,12 +134,10 @@ namespace th2patchlauncher
             op.ResX = op.GetInt("Video", "ResX", 1280);
             op.ResY = op.GetInt("Video", "ResY", 720);
 
-            op.setAspectRatioByResolution(aspectRatioDrop, op.ResolutionString);
-
             //video tab
             ResXbox.Text = op.ResX.ToString();
             ResYbox.Text = op.ResY.ToString();
-            resBox.Text = op.ResolutionString;
+            op.setResAspectText(resBox, aspectRatioDrop, op.ResolutionString);
 
             force32box.Checked = op.GetBool("Video", "Force32Bpp", false);
             unlockFPSbox.Checked = op.GetBool("Video", "UnlockFPS", false);
@@ -152,7 +150,7 @@ namespace th2patchlauncher
 
             int fogValue = op.GetInt("Video", "FogScale", 300);
             fogSlider.Value = (int)Math.Sqrt((fogValue - 10) * fogSlider.Maximum);
-            label6.Text = fogValue.ToString();
+            fogLabel.Text = fogValue.ToString();
 
             UpdateFOVbar();
 
@@ -183,8 +181,7 @@ namespace th2patchlauncher
         private void detectButtonClick(object sender, EventArgs e)
         {
             op.DetectResolution();
-            op.setAspectRatioByResolution(aspectRatioDrop, op.ResolutionString);
-            resBox.Text = op.ResolutionString;
+            op.setResAspectText(resBox, aspectRatioDrop, op.ResolutionString);
 
             MaybeUpdateFovBar(true);
         }
@@ -335,12 +332,9 @@ namespace th2patchlauncher
 
         private void fogSlider_ValueChanged(object sender, EventArgs e)
         {
-            var fog = (int)(Math.Pow(fogSlider.Value, 2) / (float)fogSlider.Maximum + 10f);
+            var fog = op.ValidateRange((int)(Math.Pow(fogSlider.Value, 2) / (float)fogSlider.Maximum + 10f), 10, 750);
 
-            if (fog < 10) fog = 10;
-            if (fog > 750) fog = 750;
-
-            label6.Text = fog.ToString();
+            fogLabel.Text = fog.ToString();
         }
 
         private void fogCheck_CheckedChanged(object sender, EventArgs e)
@@ -348,12 +342,19 @@ namespace th2patchlauncher
             fogSlider.Enabled = fogCheck.Checked;
 
             //reset to default for professionalism 
-            if(!fogSlider.Enabled)
-            {
-                fogSlider.Value = (int)Math.Sqrt((300 - 10) * fogSlider.Maximum);
+            //if(!fogSlider.Enabled)
+            //{
+            //    fogSlider.Value = (int)Math.Sqrt((300 - 10) * fogSlider.Maximum);
 
-                op.SetInt("Video", "FogScale", 300);
-            }
+            //    op.SetInt("Video", "FogScale", 300);
+            //}
+        }
+
+        private void trackBar2_MouseUp(object sender, MouseEventArgs e)
+        {
+            var fog = op.ValidateRange((int)(Math.Pow(fogSlider.Value, 2) / (float)fogSlider.Maximum + 10f), 10, 750);
+
+            op.SetInt("Video", "FogScale", fog);
         }
 
         private void overrideFOVbox_CheckedChanged(object sender, EventArgs e)
@@ -366,7 +367,7 @@ namespace th2patchlauncher
         private void UpdateFOVbar()
         {
             fovSlider.Value = op.ZoomFactor;
-            label4.Text = op.GetZoom().ToString("0.0##");
+            fovLabel.Text = op.GetZoom().ToString("0.0##");
 
             op.SetFloat("Video", "FOV", op.GetZoom());
         }
@@ -406,16 +407,6 @@ namespace th2patchlauncher
         private void aspectRatioDrop_SelectedIndexChanged(object sender, EventArgs e)
         {
             op.applyResolutionListByAspectRatio(resBox, aspectRatioDrop.Text);
-        }
-
-        private void trackBar2_MouseUp(object sender, MouseEventArgs e)
-        {
-            var fog = (int)(Math.Pow(fogSlider.Value, 2) / (float)fogSlider.Maximum + 10f);
-
-            if (fog < 10) fog = 10;
-            if (fog > 750) fog = 750;
-
-            op.SetInt("Video", "FogScale", fog);
         }
 
         private void resBox_SelectionChangeCommitted(object sender, EventArgs e)

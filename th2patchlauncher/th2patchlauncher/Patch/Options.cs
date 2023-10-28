@@ -88,8 +88,6 @@ namespace thps2patch
         public string Game = "THPS2";
         public string ExeName = "Thawk2";
 
-        public bool noConfigFileFound = false;
-
         public bool unfixResSelect = false;
 
         public object[] _169_resolutions = new object[]
@@ -153,7 +151,6 @@ namespace thps2patch
 
             if (!File.Exists(configfilename)) 
             {
-               noConfigFileFound = true;
                File.Create(configfilename).Close();
             }
 
@@ -303,25 +300,41 @@ namespace thps2patch
             }
         }
 
-        public void setAspectRatioByResolution(ComboBox aspectRatioBox, string resolutionString)
+        //updates resbox and aspect ratio box text accordingly to resolution
+        public void setResAspectText(ComboBox resBox, ComboBox aspectRatioBox, string resolutionString)
         {
             aspectRatioBox.SelectedItem = getAspectRatioOfResolution(resolutionString);
+            resBox.Text = ResolutionString;
         }
 
+        //this only works with resolutions listed in the following arrays
         public string getAspectRatioOfResolution(string resolutionString)
         {
             string aspectratio = "";
+            bool found = false;
 
-            foreach (object item in _169_resolutions)
+            if (!found)
             {
-                if (resolutionString == item.ToString())
-                    aspectratio = "16:9";
+                foreach (object item in _169_resolutions)
+                {
+                    if (resolutionString == item.ToString())
+                    {
+                        aspectratio = "16:9";
+                        found = true;
+                    }
+                }
             }
 
-            foreach (object item2 in _43_resolutions)
+            if (!found)
             {
-                if (resolutionString == item2.ToString())
-                    aspectratio = "4:3";
+                foreach (object item2 in _43_resolutions)
+                {
+                    if (resolutionString == item2.ToString())
+                    {
+                        aspectratio = "4:3";
+                        found = true;
+                    }
+                }
             }
 
             return aspectratio;

@@ -855,13 +855,13 @@ and bug reports.</value>
     <value>3, 2, 3, 2</value>
   </data>
   <data name="fogCheck.Size" type="System.Drawing.Size, System.Drawing">
-    <value>72, 17</value>
+    <value>87, 17</value>
   </data>
   <data name="fogCheck.TabIndex" type="System.Int32, mscorlib">
     <value>104</value>
   </data>
   <data name="fogCheck.Text" xml:space="preserve">
-    <value>Fog scale</value>
+    <value>Override Fog</value>
   </data>
   <data name="&gt;&gt;fogCheck.Name" xml:space="preserve">
     <value>fogCheck</value>
@@ -875,34 +875,34 @@ and bug reports.</value>
   <data name="&gt;&gt;fogCheck.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="label6.AutoSize" type="System.Boolean, mscorlib">
+  <data name="fogLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="fogLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="fogLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>240, 130</value>
   </data>
-  <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="fogLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>22, 13</value>
   </data>
-  <data name="label6.TabIndex" type="System.Int32, mscorlib">
+  <data name="fogLabel.TabIndex" type="System.Int32, mscorlib">
     <value>103</value>
   </data>
-  <data name="label6.Text" xml:space="preserve">
+  <data name="fogLabel.Text" xml:space="preserve">
     <value>1.0</value>
   </data>
-  <data name="&gt;&gt;label6.Name" xml:space="preserve">
-    <value>label6</value>
+  <data name="&gt;&gt;fogLabel.Name" xml:space="preserve">
+    <value>fogLabel</value>
   </data>
-  <data name="&gt;&gt;label6.Type" xml:space="preserve">
+  <data name="&gt;&gt;fogLabel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
+  <data name="&gt;&gt;fogLabel.Parent" xml:space="preserve">
     <value>videoTab</value>
   </data>
-  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;fogLabel.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="aspectRatioDrop.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
@@ -1022,34 +1022,34 @@ and bug reports.</value>
   <data name="&gt;&gt;resBox.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+  <data name="fovLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="fovLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="fovLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>240, 54</value>
   </data>
-  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="fovLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>22, 13</value>
   </data>
-  <data name="label4.TabIndex" type="System.Int32, mscorlib">
+  <data name="fovLabel.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
   </data>
-  <data name="label4.Text" xml:space="preserve">
+  <data name="fovLabel.Text" xml:space="preserve">
     <value>1.0</value>
   </data>
-  <data name="&gt;&gt;label4.Name" xml:space="preserve">
-    <value>label4</value>
+  <data name="&gt;&gt;fovLabel.Name" xml:space="preserve">
+    <value>fovLabel</value>
   </data>
-  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+  <data name="&gt;&gt;fovLabel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+  <data name="&gt;&gt;fovLabel.Parent" xml:space="preserve">
     <value>videoTab</value>
   </data>
-  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;fovLabel.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
   <data name="fovSlider.Enabled" type="System.Boolean, mscorlib">
