@@ -56,7 +56,7 @@ namespace th2patchlauncher
             this.gameBox = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.videoTab = new System.Windows.Forms.TabPage();
-            this.fogCheck = new System.Windows.Forms.CheckBox();
+            this.fogScaleLabel = new System.Windows.Forms.Label();
             this.fogLabel = new System.Windows.Forms.Label();
             this.aspectRatioDrop = new System.Windows.Forms.ComboBox();
             this.rendererBox = new System.Windows.Forms.CheckBox();
@@ -294,7 +294,7 @@ namespace th2patchlauncher
             // 
             // videoTab
             // 
-            this.videoTab.Controls.Add(this.fogCheck);
+            this.videoTab.Controls.Add(this.fogScaleLabel);
             this.videoTab.Controls.Add(this.fogLabel);
             this.videoTab.Controls.Add(this.aspectRatioDrop);
             this.videoTab.Controls.Add(this.rendererBox);
@@ -313,12 +313,10 @@ namespace th2patchlauncher
             this.videoTab.Name = "videoTab";
             this.videoTab.UseVisualStyleBackColor = true;
             // 
-            // fogCheck
+            // fogScaleLabel
             // 
-            resources.ApplyResources(this.fogCheck, "fogCheck");
-            this.fogCheck.Name = "fogCheck";
-            this.fogCheck.UseVisualStyleBackColor = true;
-            this.fogCheck.CheckedChanged += new System.EventHandler(this.fogCheck_CheckedChanged);
+            resources.ApplyResources(this.fogScaleLabel, "fogScaleLabel");
+            this.fogScaleLabel.Name = "fogScaleLabel";
             // 
             // fogLabel
             // 
@@ -353,7 +351,7 @@ namespace th2patchlauncher
             this.fogSlider.TickFrequency = 75;
             this.fogSlider.Value = 740;
             this.fogSlider.ValueChanged += new System.EventHandler(this.fogSlider_ValueChanged);
-            this.fogSlider.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBar2_MouseUp);
+            this.fogSlider.MouseUp += new System.Windows.Forms.MouseEventHandler(this.fogSlider_MouseUp);
             // 
             // resBox
             // 
@@ -572,7 +570,7 @@ namespace th2patchlauncher
         private PictureBox pictureBox1;
         private ComboBox aspectRatioDrop;
         private Label fogLabel;
-        private CheckBox fogCheck;
+        private Label fogScaleLabel;
     }
 }
 

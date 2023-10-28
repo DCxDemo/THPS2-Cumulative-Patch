@@ -337,20 +337,7 @@ namespace th2patchlauncher
             fogLabel.Text = fog.ToString();
         }
 
-        private void fogCheck_CheckedChanged(object sender, EventArgs e)
-        {
-            fogSlider.Enabled = fogCheck.Checked;
-
-            //reset to default for professionalism 
-            //if(!fogSlider.Enabled)
-            //{
-            //    fogSlider.Value = (int)Math.Sqrt((300 - 10) * fogSlider.Maximum);
-
-            //    op.SetInt("Video", "FogScale", 300);
-            //}
-        }
-
-        private void trackBar2_MouseUp(object sender, MouseEventArgs e)
+        private void fogSlider_MouseUp(object sender, MouseEventArgs e)
         {
             var fog = op.ValidateRange((int)(Math.Pow(fogSlider.Value, 2) / (float)fogSlider.Maximum + 10f), 10, 750);
 
@@ -385,7 +372,7 @@ namespace th2patchlauncher
         {
             op.ParseResText(resBox.Text);
 
-            //selecting other res doesn't update with autoFOV when false, this bool truns true after initiation to fix
+            //selecting other res doesn't update with autoFOV when false, this bool truns true after initiation
             MaybeUpdateFovBar(op.unfixResSelect);
         }
 

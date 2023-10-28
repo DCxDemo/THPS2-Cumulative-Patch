@@ -207,7 +207,7 @@ namespace thps2patch
         {
             if(!forceAutoFOV)
             {
-                //check if user changed fov or has custom fov by checking if fov value exist
+                //check fov value in cfg
                 if (fovValueExist) return;
             }
 
