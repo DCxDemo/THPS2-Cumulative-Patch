@@ -3,6 +3,7 @@ using IniParser.Model;
 using IniParser.Model.Configuration;
 using IniParser.Parser;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -90,23 +91,19 @@ namespace thps2patch
 
         public bool unfixResSelect = false;
 
-        public object[] _169_resolutions = new object[]
+        Dictionary<string, string> _resolutions = new Dictionary<string, string>
         {
-            "1280x720",
-            "1600x900",
-            "1920x1080",
-            "2048x1152",
-            "2560x1440"
-        };
-
-        public object[] _43_resolutions = new object[]
-        {
-            "320x240",
-            "640x480",
-            "800x600",
-            "1024x768",
-            "1600x1200",
-            "2048x1536"
+            {"320x240", "4:3"},
+            {"640x480", "4:3"},
+            {"800x600", "4:3"},
+            {"1024x768", "4:3"},
+            {"1600x1200", "4:3"},
+            {"2048x1536", "4:3"},
+            {"1280x720", "16:9"},
+            {"1600x900", "16:9"},
+            {"1920x1080", "16:9"},
+            {"2048x1152", "16:9"},
+            {"2560x1440", "16:9"}
         };
 
         /*
@@ -149,9 +146,9 @@ namespace thps2patch
         {
             configfilename = filename;
 
-            if (!File.Exists(configfilename)) 
+            if (!File.Exists(configfilename))
             {
-               File.Create(configfilename).Close();
+                File.Create(configfilename).Close();
             }
 
             cfg = new IniParserConfiguration()
@@ -205,7 +202,7 @@ namespace thps2patch
 
         public void AutoFOV(bool forceAutoFOV)
         {
-            if(!forceAutoFOV)
+            if (!forceAutoFOV)
             {
                 //check fov value in cfg
                 if (fovValueExist) return;
@@ -281,59 +278,33 @@ namespace thps2patch
 
         public void applyResolutionListByAspectRatio(ComboBox resbox, string aspectRatio)
         {
-            if(resbox.Items.Count > 0) resbox.Items.Clear();
+            if (resbox.Items.Count > 0) resbox.Items.Clear();
 
-            if(aspectRatio == "16:9")
+            foreach (KeyValuePair<string, string> res in _resolutions)
             {
-                foreach (object item in _169_resolutions)
+                if (res.Value == aspectRatio)
                 {
-                    resbox.Items.Add(item);
-                }
-            }
-
-            if (aspectRatio == "4:3")
-            {
-                foreach (object item in _43_resolutions)
-                {
-                    resbox.Items.Add(item);
+                    resbox.Items.Add(res.Key);
                 }
             }
         }
 
-        //updates resbox and aspect ratio box text accordingly to resolution
+        //updates resbox and aspect ratio box text accordingly by resolution
         public void setResAspectText(ComboBox resBox, ComboBox aspectRatioBox, string resolutionString)
         {
             aspectRatioBox.SelectedItem = getAspectRatioOfResolution(resolutionString);
             resBox.Text = ResolutionString;
         }
 
-        //this only works with resolutions listed in the following arrays
         public string getAspectRatioOfResolution(string resolutionString)
         {
             string aspectratio = "";
-            bool found = false;
 
-            if (!found)
+            foreach (KeyValuePair<string, string> res in _resolutions)
             {
-                foreach (object item in _169_resolutions)
+                if (res.Key == resolutionString)
                 {
-                    if (resolutionString == item.ToString())
-                    {
-                        aspectratio = "16:9";
-                        found = true;
-                    }
-                }
-            }
-
-            if (!found)
-            {
-                foreach (object item2 in _43_resolutions)
-                {
-                    if (resolutionString == item2.ToString())
-                    {
-                        aspectratio = "4:3";
-                        found = true;
-                    }
+                    aspectratio = res.Value;
                 }
             }
 
