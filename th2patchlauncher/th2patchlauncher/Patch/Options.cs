@@ -28,12 +28,6 @@ namespace thps2patch
             return result;
         }
 
-        public bool CheckValueExsistance(string section, string name)
-        {
-            var result = config[section][name];
-            return result == null ? false : true;
-        }
-
         public string GetString(string section, string name, string defaultValue)
         {
             var result = TryGetValue(section, name, defaultValue);
@@ -81,9 +75,10 @@ namespace thps2patch
         public int ResX = 1280;
         public int ResY = 720;
 
-        public bool fovValueExist = false;
+        public float fovValueExist = 0;
         public bool OverrideFOV = false;
         public int ZoomFactor = 100;
+        public int fog = 300;
 
         public bool UserPatch = false;
         public string Game = "THPS2";
@@ -204,8 +199,8 @@ namespace thps2patch
         {
             if (!forceAutoFOV)
             {
-                //check fov value in cfg
-                if (fovValueExist) return;
+                //check fov value presence in cfg
+                if (fovValueExist != 0) return;
             }
 
             OverrideFOV = false;

@@ -128,7 +128,7 @@ namespace th2patchlauncher
             }
 
             //loading fov value
-            op.fovValueExist = op.CheckValueExsistance("video", "FOV");
+            op.fovValueExist = op.GetFloat("Video", "FOV", 0);
             op.ZoomFactor = (int)(op.GetFloat("Video", "FOV", 1) * 100);
 
             op.ResX = op.GetInt("Video", "ResX", 1280);
@@ -151,6 +151,7 @@ namespace th2patchlauncher
             int fogValue = op.GetInt("Video", "FogScale", 300);
             fogSlider.Value = (int)Math.Sqrt((fogValue - 10) * fogSlider.Maximum);
             fogLabel.Text = fogValue.ToString();
+            op.fog = fogValue;
 
             UpdateFOVbar();
 
@@ -335,13 +336,13 @@ namespace th2patchlauncher
             var fog = op.ValidateRange((int)(Math.Pow(fogSlider.Value, 2) / (float)fogSlider.Maximum + 10f), 10, 750);
 
             fogLabel.Text = fog.ToString();
+            
+            op.fog = fog;
         }
 
         private void fogSlider_MouseUp(object sender, MouseEventArgs e)
         {
-            var fog = op.ValidateRange((int)(Math.Pow(fogSlider.Value, 2) / (float)fogSlider.Maximum + 10f), 10, 750);
-
-            op.SetInt("Video", "FogScale", fog);
+            op.SetInt("Video", "FogScale", op.fog);
         }
 
         private void overrideFOVbox_CheckedChanged(object sender, EventArgs e)
