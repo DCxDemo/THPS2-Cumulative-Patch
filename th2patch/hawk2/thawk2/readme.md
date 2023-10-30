@@ -34,3 +34,4 @@ Source file names and function names are authentic Neversoft names coming from t
 * PC Demo leftover source files
  	there are a few scattered C source files with .mik extension found in PC early demo
 	there is debug VS project DB containing all symbols, including structs, enums, etc.
+	it contains most core stuff already, but there are many differences still - incomplete enums, missing funcs, etc.

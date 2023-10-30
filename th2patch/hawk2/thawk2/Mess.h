@@ -19,7 +19,7 @@ enum class eTextJustify : char {
 
 
 //this should be moved to mess.h
-typedef struct
+typedef struct SMessageProg
 {
 	short Duration;
 	char Semitrans;

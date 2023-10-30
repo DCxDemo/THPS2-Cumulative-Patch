@@ -18,6 +18,7 @@
 #include "patchStuff.h"
 #include "color.h"
 #include "checksum.h"
+#include "thawk2/Utils.h"
 
 #include "ddraw.h"
 
@@ -883,7 +884,6 @@ void PatchSkaters()
 	p->styleC_lo = "hawk3b";
 	p->styleD_hi = "hawk4";
 	p->styleD_lo = "hawk4b";
-	p->unk1 = -1;
 
 	p++;
 	p->styleC_hi = "burnq4";
@@ -961,6 +961,7 @@ void PatchSkaters()
 
 	p = &profiles[SKATER_SECRET1];
 
+	//since we can't have a switch case by string in C, lets just calculate string checksum, used a lot in later games.
 	uint hash = checksum(&options.DickSwap[0]);
 
 	printf("%s = 0x%08x\n", &options.DickSwap[0], hash);
@@ -1373,7 +1374,7 @@ void Patch()
 
 	if (!options.BigDrop)
 		//nops entire bail/award big drop path, since its a part of a func, not a separate one
-		CPatch::Nop(0x48F419, 0x48F430 - 0x48F419); 
+		CPatch::Nop(0x48F419, 0x48F430 - 0x48F419);
 
 
 	if (!options.Manuals)
@@ -1582,6 +1583,7 @@ void Patch()
 	Redirect_Redbook_XABeginFade();
 	Redirect_Redbook_XANextTrack();
 	Redirect_PCMOVIE_XAPlay();
+
 
 	SetHooks();
 }
@@ -1941,6 +1943,40 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	*/
 
 	//{ 0x473680, CreateMessage }
+
+
+	{ 0x00405323, Utils_CalcUnit },
+	{ 0x0040d006, Utils_CalcUnit },
+	{ 0x0040d0fe, Utils_CalcUnit },
+	{ 0x0040d121, Utils_CalcUnit },
+	{ 0x0040d478, Utils_CalcUnit },
+	{ 0x0040e12b, Utils_CalcUnit },
+	{ 0x0049b0bf, Utils_CalcUnit },
+	{ 0x004acd4c, Utils_CalcUnit },
+
+
+	{ 0x0040614e, Utils_GetVecFromMagDir },
+	{ 0x00410749, Utils_GetVecFromMagDir },
+	{ 0x00410844, Utils_GetVecFromMagDir },
+	{ 0x0041088e, Utils_GetVecFromMagDir },
+	{ 0x004114f1, Utils_GetVecFromMagDir },
+	{ 0x00411547, Utils_GetVecFromMagDir },
+	{ 0x0049d97f, Utils_GetVecFromMagDir },
+	{ 0x0049da5a, Utils_GetVecFromMagDir },
+	{ 0x0049dba5, Utils_GetVecFromMagDir },
+
+
+	{ 0x00422e29, Utils_LimitRange },
+	{ 0x004555b2, Utils_LimitRange },
+
+
+	//sine cosine patch for wheel
+	{ 0x457939, ScreenScaledCosine },
+	{ 0x457992, ScreenScaledCosine },
+
+	{ 0x457947, ScreenScaledSine },
+	{ 0x45795D, ScreenScaledSine },
+		
 };
 
 //loops through the list of hooks and redirects the call

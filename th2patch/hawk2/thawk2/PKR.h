@@ -1,32 +1,26 @@
 #pragma once
 
 
-struct Pkr2Header {
+typedef struct Pkr2Header {
     uint32_t Magic;
     uint32_t unk1;
     uint32_t numFolders;
     uint32_t numFiles;
-};
-typedef struct Pkr2Header Pkr2Header;
+} Pkr2Header;
 
-
-struct Pkr2Folder {
+typedef struct Pkr2Folder {
     char Name[32];
     uint32_t Offset;
     uint32_t NumFiles;
-};
-typedef struct Pkr2Folder Pkr2Folder;
+} Pkr2Folder;
 
-
-struct Pkr2File {
+typedef struct Pkr2File {
     char Name[32];
     uint32_t CompressionType;
     char* DataPtr;
     uint32_t Size;
     uint32_t CompressedSize;
-};
-typedef struct Pkr2File Pkr2File;
-
+} Pkr2File;
 
 enum class PkrError {
     Success,
@@ -51,6 +45,6 @@ public:
 
     //implement some key value conversion here for some fast search. maybe adopt checksum search?
     //need a table of checksum/pointer, then some scanning code. either presort and binary search or research map
-    //checksum has to be generated from folder+path, cause that how you look that up.
+    //checksum has to be generated from folder+path, cause thats how you look that up.
     //fall back to search file on the disk is required
 };
