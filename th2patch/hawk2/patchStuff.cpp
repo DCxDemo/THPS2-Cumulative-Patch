@@ -439,6 +439,14 @@ int* _PixelAspectX = (int*)0x5606cc;
 int* _PixelAspectY = (int*)0x5606d0;
 
 
+float AutoFOV(float userScale = 1.0)
+{
+	float zoom = (4.0f * *_Yres) / (3.0f * *_Xres);
+	zoom = zoom + (1.0f - zoom) / 2.0f;
+
+	return zoom * userScale;
+}
+
 void M3dInit_SetResolution(int width, int height)
 {
 	WINMAIN_ScreenDimensions(&width, &height);
@@ -446,16 +454,17 @@ void M3dInit_SetResolution(int width, int height)
 	*_Xres = width;
 	*_Yres = height;
 
-	//if (height * w < width * h) 
-	//{
-		//*_PixelAspectX = 0x900;
-		//*_PixelAspectY = 0x900;// *((width * h) / (height * w));
-	//}
-	//else
-	{
-		*_PixelAspectX = 0x1000 * options.FOV; // (1 - diff / width43); //* ((height * w) / (width * h));
-		*_PixelAspectY = 0x1000 * options.FOV; // (1 - diff / width43);
-	}
+	//default pixel aspect ratio is 0x1000 (fixed point 1.0)
+	//if we are in frontend, we should use calculated aspect ratio
+	//if not, the fov scale from options
+	//if user doesnt select fov override, it will be 1.0 by default, hence no need to bother here
+
+	int aspect = 0x1000 * AutoFOV(*InFrontEnd ? 1.0 : options.FovScale);
+
+	//printf("aspect: %i\n", aspect);
+
+	*_PixelAspectX = aspect;
+	*_PixelAspectY = aspect;
 }
 
 
@@ -646,11 +655,22 @@ int Career_GetPointCost_Hook()
 	return options.FreeStats ? 0 : Career_GetPointCost();
 }
 
-
+int old_status = 0;
 
 void Front_Update_Hook()
 {
 	Front_Update();
+
+	if (old_status != *GStatus)
+	{
+		//char* t = (char*)*(int*)(statusNames + *GStatus * 4);
+
+		
+
+		printf("status: %s\n", statusNames[*GStatus]);
+
+		old_status = *GStatus;
+	}
 
 	//CreateTestMenu();
 	//CPatch::SetInt(0x0044ca6f + 2, (int)testMenu);
@@ -1302,6 +1322,15 @@ SGoal* GetGoal(int level, int goal)
 	return pGoal;
 }
 
+Pkr2* pkr;
+
+
+void* LoadFile(char* filename, bool heap)
+{
+	return FileIO_OpenLoad_Pkr(filename, heap, pkr);
+}
+
+
 
 void PatchThps3Gaps()
 {
@@ -1360,6 +1389,21 @@ void PatchThps4Gaps()
 //main patches func, sets all hooks and changes vars needed
 void Patch()
 {
+
+	//pxr extraction example
+	pkr = new Pkr2();
+
+	if (pkr->Load(".\\all9.pkr") == PkrError::Success)
+	{
+		printf("PKR LAOD OK\n");
+	}
+	else
+	{
+		printf("Failed to load PKR...\n");
+		delete pkr;
+	}
+
+
 	WipeGaps();
 
 	if (options.CurrentGame == "THPS1") CopyGaps(pGapListThps1, pGaps);
@@ -1596,12 +1640,55 @@ void Dummy()
 }
 
 
-#define HOOK_LIST_SIZE 128
+/*
+//D3DMODEL FUNCS
+004ce3e0	D3DMODEL_SetupDynamicLighting
+004ce6e0	D3DMODEL_RenderModel
+004ceac0	submitModelFaces
+004ceb70	lightFaceVerts
+004ceee0	applyLighting
+004cef50	submitFace
+004cf300	addDXPoly
+004cf520	hitherClipPoly
+004cf7d0	cliptozplane
+004cf8c0	computeZSort
+004cfbf0	transformProjectModelVertices
+004cffb0	D3DMODEL_Startup
+*/
+
+//so it returns actual struct, not pointer
+ColorBGRA applyLighting(ColorBGRA* vert, ColorBGRA* light)
+{
+	vert->R *= light->R / 255.0;
+	vert->G *= light->G / 255.0;
+	vert->B *= light->B / 255.0;
+
+	return *vert;
+}
+
+
+
+#define HOOK_LIST_SIZE 256
 
 // list of all hooks
 HookFunc hookList[HOOK_LIST_SIZE] = {
 	//{ 0x458564, SFX_SpoolOutLevelSFX },
 	//{ 0x452570, SFX_SpoolInLevelSFX },
+
+	{  0x004603c6,RenderModel},
+	{  0x0046040c,RenderModel},
+	{  0x0046024f,RenderModelFast},
+	{  0x0046029a,RenderModelFast},
+	{  0x0046104b,RenderBackgroundModel},
+	//{  0x004609a6,RenderModelInSuper},
+	//{  0x00461913,RenderModelInSuper},
+	{  0x0046190c,RenderModelInSuperFast},
+	{  0x00460338,RenderModelNonRotated},
+	{  0x00460386,RenderModelNonRotated},
+	{  0x00461043,RenderBackgroundModelNonRotated},
+
+
+
 
 	//hooks main 3 logic funcs
 	//all calls in PlayAway
@@ -1631,6 +1718,20 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 
 
 	{ 0x0046a8e1, Init_ForGame }, //kickit
+
+	//lights up polygons
+
+	{ 0x004cedae, applyLighting },
+	{ 0x004cedca, applyLighting },
+	{ 0x004cede6, applyLighting },
+	{ 0x004cee1f, applyLighting },
+	{ 0x004cee33, applyLighting },
+	{ 0x004cee47, applyLighting },
+	{ 0x004cee8b, applyLighting },
+	{ 0x004cee9f, applyLighting },
+	{ 0x004ceeb3, applyLighting },
+	{ 0x004ceec7, applyLighting },
+
 
 
 	//D3D_ClearBuffers, doesnt seem to do anything
@@ -1824,36 +1925,39 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 	{ 0x00417244, Mem_CopyBytes },
 	{ 0x004172d6, Mem_CopyBytes },
 
-		/*
 
-	{ 0x46a746, FontManager_LoadFont },
 
-	{ 0x0041a084	,	Mess_DeleteAll },
-	{ 0x0041a258	,	Mess_DeleteAll },
-	{ 0x0041a671	,	Mess_DeleteAll },
-	{ 0x0041a76c	,	Mess_DeleteAll },
-	{ 0x0041af29	,	Mess_DeleteAll },
-	{ 0x0041b578	,	Mess_DeleteAll },
-	{ 0x0044e046	,	Mess_DeleteAll },
-	{ 0x0044e436	,	Mess_DeleteAll },
-	{ 0x0044ed58	,	Mess_DeleteAll },
-	{ 0x00458430	,	Mess_DeleteAll },
-	{ 0x004a603e	,	Mess_DeleteAll },
-	{ 0x004c3247	,	Mess_DeleteAll },
 
-	{ 0x0047366a	,	Mess_DeleteMessage }, //Mess_Remove
-	{ 0x00473711	,	Mess_DeleteMessage }, //Mess_Update
+	/*
 
-	{ 0x0041535f	, Mess_Remove },
-	{ 0x0048b228	, Mess_Remove },
-	{ 0x004b5da6	, Mess_Remove },
-	{ 0x004b5db2	, Mess_Remove },
+{ 0x46a746, FontManager_LoadFont },
 
-	{ 0x00469fd7 ,	Mess_Update },  //in Game_Logic
+{ 0x0041a084	,	Mess_DeleteAll },
+{ 0x0041a258	,	Mess_DeleteAll },
+{ 0x0041a671	,	Mess_DeleteAll },
+{ 0x0041a76c	,	Mess_DeleteAll },
+{ 0x0041af29	,	Mess_DeleteAll },
+{ 0x0041b578	,	Mess_DeleteAll },
+{ 0x0044e046	,	Mess_DeleteAll },
+{ 0x0044e436	,	Mess_DeleteAll },
+{ 0x0044ed58	,	Mess_DeleteAll },
+{ 0x00458430	,	Mess_DeleteAll },
+{ 0x004a603e	,	Mess_DeleteAll },
+{ 0x004c3247	,	Mess_DeleteAll },
 
-	*/
+{ 0x0047366a	,	Mess_DeleteMessage }, //Mess_Remove
+{ 0x00473711	,	Mess_DeleteMessage }, //Mess_Update
 
-		/*
+{ 0x0041535f	, Mess_Remove },
+{ 0x0048b228	, Mess_Remove },
+{ 0x004b5da6	, Mess_Remove },
+{ 0x004b5db2	, Mess_Remove },
+
+{ 0x00469fd7 ,	Mess_Update },  //in Game_Logic
+
+*/
+
+	/*
 	{ 0x004dc28a,Mess_SetScale_Wrap },
 	{ 0x004dc225,Mess_SetScale_Wrap },
 	{ 0x004d928c,Mess_SetScale_Wrap },
@@ -1976,7 +2080,53 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 
 	{ 0x457947, ScreenScaledSine },
 	{ 0x45795D, ScreenScaledSine },
-		
+
+	{ 0x004c74d0, Utils_KillEverythingInBox },
+
+	{ 0x00450763, Utils_Pulse },
+	{ 0x004507b9, Utils_Pulse },
+	{ 0x00450829, Utils_Pulse },
+	{ 0x0045088d, Utils_Pulse },
+	{ 0x00450907, Utils_Pulse },
+	{ 0x00450958, Utils_Pulse },
+	{ 0x00450d3a, Utils_Pulse },
+	{ 0x00450e58, Utils_Pulse },
+	{ 0x00450ecc, Utils_Pulse },
+	{ 0x00450f90, Utils_Pulse },
+
+		/*
+	{ 0x004cb548, LoadFile },
+	{ 0x004bccbb, LoadFile },
+	{ 0x004b5054, LoadFile },
+	{ 0x004b21f1, LoadFile },
+	{ 0x004b201e, LoadFile },
+	{ 0x004b1d73, LoadFile },
+	{ 0x004a9a60, LoadFile },
+	{ 0x004a9a40, LoadFile },
+	{ 0x004a0452, LoadFile },
+	//{ 0x0049039a, LoadFile }, //tricks.bin, fails
+	{ 0x0047ebcd, LoadFile },
+	{ 0x0047a809, LoadFile },
+	{ 0x004793ea, LoadFile },
+	{ 0x0046b0cb, LoadFile },
+	{ 0x0045d2a7, LoadFile },
+	{ 0x00458bb3, LoadFile },
+	{ 0x004558b8, LoadFile },
+	{ 0x0044b37d, LoadFile },
+	{ 0x004449a8, LoadFile },
+	//{ 0x0042fa4b, LoadFile }, //sk2def.psx, fails
+	{ 0x0042f96f, LoadFile },
+	{ 0x0042cdf5, LoadFile },
+	{ 0x0042beda, LoadFile },
+	{ 0x00427739, LoadFile },
+	{ 0x0042646a, LoadFile },
+	{ 0x0041de92, LoadFile },
+	{ 0x0041c52a, LoadFile },
+	{ 0x00417493, LoadFile },
+	{ 0x00415cd0, LoadFile },
+	{ 0x00415c87, LoadFile }
+	*/
+
 };
 
 //loops through the list of hooks and redirects the call

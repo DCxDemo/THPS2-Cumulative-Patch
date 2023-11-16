@@ -15,9 +15,9 @@ void GameOptions::Load()
 {
 	totalTracks = CountSongs();
 
-	CIniReader* ini = new CIniReader(&iniPath[0]);
+	CIniReader* ini = new CIniReader(iniPath);
 
-	printf("Loading settings from %s\r\n", iniPath.c_str());
+	printf("Loading settings from %s\r\n", iniPath);
 
 	//patch section
 	CurrentGame = ini->ReadString("PATCH", "Game", "THPS2");
@@ -29,8 +29,8 @@ void GameOptions::Load()
 	FreeStats = ini->ReadBool("PATCH", "FreeStats", false);
 	DisableVisToggle = ini->ReadBool("PATCH", "DisableVisToggle", false);
 	DisableSky = ini->ReadBool("PATCH", "DisableSky", false);
-
-	FontScale = ini->ReadFloat("Patch", "FontScale", 1.0f);
+	RailBalanceBar = ini->ReadBool("PATCH", "RailBalanceBar", true);
+	FontScale = ini->ReadFloat("PATCH", "FontScale", 1.0f);
 
 	//video section
 	ShowHUD = ini->ReadBool("VIDEO", "ShowHUD", true);
@@ -40,7 +40,9 @@ void GameOptions::Load()
 	DisableNewTex = ini->ReadBool("VIDEO", "DisableNewTex", false);
 	ResX = ini->ReadInt("VIDEO", "ResX", DEFAULT_WIDTH);
 	ResY = ini->ReadInt("VIDEO", "ResY", DEFAULT_HEIGHT);
-	FOV = ini->ReadFloat("VIDEO", "FOV", 0.83f);
+
+	bool overrideFov = ini->ReadBool("VIDEO", "OverrideFov", false);
+	FovScale = overrideFov ? ini->ReadFloat("VIDEO", "FovScale", 1.0) : 1.0;
 
 	//input section
 	XInput = ini->ReadBool("INPUT", "XInput", true);
@@ -55,7 +57,6 @@ void GameOptions::Load()
 	ShowTitle = ini->ReadBool("MUSIC", "ShowTitle", true);
 	PlayAmbience = ini->ReadBool("MUSIC", "PlayAmbience", true);
 	SeparateTracks = ini->ReadBool("MUSIC", "SeparateTracks", true);
-	RailBalanceBar = ini->ReadBool("PATCH", "RailBalanceBar", true);
 
 	delete ini;
 
@@ -66,9 +67,9 @@ void GameOptions::Load()
 
 void GameOptions::Save()
 {
-	CIniWriter* ini = new CIniWriter(&iniPath[0]);
+	CIniWriter* ini = new CIniWriter(iniPath);
 
-	printf("Saving settings to %s\r\n", iniPath.c_str());
+	printf("Saving settings to %s\r\n", iniPath);
 
 	//patch section
 	ini->WriteString("PATCH", "Game", &CurrentGame[0]);
@@ -88,7 +89,6 @@ void GameOptions::Save()
 	ini->WriteInt("VIDEO", "DisableNewTex", DisableNewTex);
 	ini->WriteInt("VIDEO", "ResX", ResX);
 	ini->WriteInt("VIDEO", "ResY", ResY);
-	ini->WriteFloat("VIDEO", "FOV", FOV);
 
 	//input section
 	ini->WriteInt("INPUT", "XInput", XInput);

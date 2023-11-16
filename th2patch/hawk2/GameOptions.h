@@ -9,7 +9,7 @@ using namespace std;
 class GameOptions
 {
 private:
-	string iniPath;
+	char* iniPath;
 
 public:
 	//patch
@@ -29,10 +29,11 @@ public:
 	bool Force32bpp = true;
 	bool UnlockFPS = true;
 	bool DisableNewTex = false;
-	float FOV = 0.83f;
+	//float FOV = 0.83f;
 	int ResX = DEFAULT_WIDTH;
 	int ResY = DEFAULT_HEIGHT;
 	float FontScale = 1.0;
+	float FovScale = 1.0;
 
 	//input
 	bool XInput = true;

@@ -15,18 +15,26 @@
 
 typedef struct
 {
-	char R;
-	char G;
-	char B;
+	unsigned char R;
+	unsigned char G;
+	unsigned char B;
 } ColorRGB;
 
 typedef struct
 {
-	char R;
-	char G;
-	char B;
-	char A;
+	unsigned char R;
+	unsigned char G;
+	unsigned char B;
+	unsigned char A;
 } ColorRGBA;
+
+typedef struct
+{
+	unsigned char B;
+	unsigned char G;
+	unsigned char R;
+	unsigned char A;
+} ColorBGRA;
 
 ColorRGB Color_Black();
 ColorRGB Color_DarkGray();

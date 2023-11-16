@@ -1,6 +1,16 @@
 #include "stdafx.h"
 #include "../patchStuff.h"
 
+
+void* BaddyList = (void*)0x0055c31c;
+void* EnvironmentalObjectList = (void*)0x00567ba0;
+void* PowerUpList = (void*)0x00568490;
+void* SuspendedList = (void*)0x00567ba4;
+
+int* GStatus = (int*)0x0055e85c;
+bool* gotNewStatus = (bool*)0x0055e338;
+char** statusNames = (char**)0x00528cb0;
+
 SLevel* Levels = (SLevel*)0x538FF8;
 
 void* GSkater = (void*)0x5674b8;

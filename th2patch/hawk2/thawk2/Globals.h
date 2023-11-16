@@ -1,6 +1,15 @@
 #pragma once
 #include "../patchStuff.h"
 
+extern void* BaddyList;
+extern void* EnvironmentalObjectList;
+extern void* PowerUpList;
+extern void* SuspendedList;
+
+extern int* GStatus;
+extern bool* gotNewStatus;
+extern char** statusNames;
+
 extern SLevel* Levels;
 
 extern void* GSkater;
