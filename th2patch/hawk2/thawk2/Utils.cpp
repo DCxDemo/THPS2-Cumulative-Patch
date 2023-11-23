@@ -114,6 +114,61 @@ SVector3i* Utils_CalcUnit(SVector3i* unit, SVector3i* vec)
 }
 
 
+/// <summary>
+/// Calculates distance between 2 points.
+/// </summary>
+/// <param name="vec1"></param>
+/// <param name="vec2"></param>
+/// <returns></returns>
+uint Utils_Dist(SVector3i* a, SVector3i* b)
+{
+    SVector3i t = {
+        (a->X - b->X) >> 12,
+        (a->Y - b->Y) >> 12,
+        (a->Z - b->Z) >> 12
+    };
+
+    return (uint)sqrt(t.X * t.X + t.Y * t.Y + t.Z * t.Z);
+}
+
+
+/// <summary>
+/// Supposedly kills all objects in bounding box.
+/// </summary>
+/// <param name="min">BB min point</param>
+/// <param name="max">BB max point</param>
+void Utils_KillEverythingInBox(SVector3i* min, SVector3i* max)
+{
+    //find this func
+
+    printf("decomp Utils_KillEverythingInBox!\n");
+
+    Utils_KillObjectsInBox(min, max, BaddyList, true);
+    Utils_KillObjectsInBox(min, max, EnvironmentalObjectList, true);
+    Utils_KillObjectsInBox(min, max, PowerUpList, true);
+    Utils_KillObjectsInBox(min, max, SuspendedList, false);
+
+    //originally it returns sum of the above, but im not sure if its ever used
+}
+
+
+
+//this is called in front_update for level unlocked message. used to calculate text zoom
+int Utils_Pulse(int time, int period, int amplitude)
+{
+    if ((time < period) && (time > -1)) {
+
+        int iVar1 = period / 2;
+
+        if (time < iVar1) return (time * amplitude) / iVar1;
+
+        return ((period - time) * amplitude) / iVar1;
+    }
+
+    return 0;
+}
+
+
 
 
 

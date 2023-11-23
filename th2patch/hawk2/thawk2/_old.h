@@ -268,3 +268,6 @@ static const Video_InitOnce_t Video_InitOnce = (Video_InitOnce_t)0x004c8c90;
 
 typedef bool (*Video_Playing_t)();
 static const Video_Playing_t Video_Playing = (Video_Playing_t)0x004cb0c0;
+
+typedef void (*D3DMODEL_RenderModel_t)(void* pModel, uint renderFlags);
+static const D3DMODEL_RenderModel_t D3DMODEL_RenderModel = (D3DMODEL_RenderModel_t)0x004ce6e0;

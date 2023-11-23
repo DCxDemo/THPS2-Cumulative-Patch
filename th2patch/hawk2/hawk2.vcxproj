@@ -94,7 +94,9 @@
     <ClInclude Include="cpatch.h" />
     <ClInclude Include="patch\_patch.h" />
     <ClInclude Include="thawk2\CMenu.h" />
+    <ClInclude Include="thawk2\gte.h" />
     <ClInclude Include="thawk2\Init.h" />
+    <ClInclude Include="thawk2\Render.h" />
     <ClInclude Include="thawk2\SkaterProfile.h" />
     <ClInclude Include="thawk2\thawk2.h" />
     <ClInclude Include="lib\INI\IniWriter.h" />
@@ -135,7 +137,9 @@
   <ItemGroup>
     <ClCompile Include="Checksum.cpp" />
     <ClCompile Include="color.cpp" />
+    <ClCompile Include="thawk2\gte.cpp" />
     <ClCompile Include="thawk2\Init.cpp" />
+    <ClCompile Include="thawk2\IO\FileIO.cpp" />
     <ClCompile Include="thawk2\Mem.cpp" />
     <ClCompile Include="thawk2\CBruce.cpp" />
     <ClCompile Include="thawk2\CMenu.cpp" />
@@ -175,6 +179,7 @@
     <ClCompile Include="thawk2\PCInput.cpp" />
     <ClCompile Include="thawk2\PKR.cpp" />
     <ClCompile Include="thawk2\Redbook.cpp" />
+    <ClCompile Include="thawk2\Render.cpp" />
     <ClCompile Include="thawk2\Shatter.cpp" />
     <ClCompile Include="thawk2\Spool.cpp" />
     <ClCompile Include="thawk2\Utils.cpp" />

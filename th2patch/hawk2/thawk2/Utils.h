@@ -27,7 +27,7 @@ typedef void(*Utils_RotateY_t)();
 typedef void(*FUN_004c6660_t)();
 //typedef void(*Utils_CalcUnit_t)();
 //typedef void(*Utils_GetVecFromMagDir_t)();
-typedef void(*Utils_Dist_t)();
+//typedef void(*Utils_Dist_t)();
 typedef void(*Utils_XZDist_t)();
 typedef void(*Utils_CrapDist_t)();
 typedef void(*FUN_004c6930_t)();
@@ -49,13 +49,13 @@ typedef void(*FUN_004c7230_t)();
 typedef void(*Utils_ArcCos__apparently_t)();
 typedef void(*Utils_LineOfSight_t)();
 typedef void(*Utils_GetGroundHeight_t)();
-typedef void(*Utils_KillObjectsInBox_t)();
-typedef void(*Utils_KillEverythingInBox_t)();
+typedef int(*Utils_KillObjectsInBox_t)(SVector3i* min, SVector3i* max, void* pList, bool useDie);
+//typedef void(*Utils_KillEverythingInBox_t)();
 typedef void(*Utils_SetVisibilityInBox_t)(void*, void*, char, char);
 typedef void(*FUN_004c7880_objectIsInEnviroList__unused_t)();
 typedef void(*FUN_004c78b0_t)();
 typedef void(*Utils_CalculateSpatialAttenuation_t)();
-typedef void(*Utils_Pulse_t)();
+//typedef void(*Utils_Pulse_t)();
 //typedef void(*Utils_LimitRange_t)();
 
 static const Utils_StartFade_t Utils_StartFade = (Utils_StartFade_t)0x004c6170;
@@ -72,7 +72,8 @@ static const FUN_004c6660_t FUN_004c6660 = (FUN_004c6660_t)0x004c6660;
 SVector3i* Utils_CalcUnit(SVector3i* unit, SVector3i* vec);
 //static const Utils_GetVecFromMagDir_t Utils_GetVecFromMagDir = (Utils_GetVecFromMagDir_t)0x004c6760;
 void Utils_GetVecFromMagDir(SVector3i* angles, int magnitude, SVector3s* velocity);
-static const Utils_Dist_t Utils_Dist = (Utils_Dist_t)0x004c67f0;
+//static const Utils_Dist_t Utils_Dist = (Utils_Dist_t)0x004c67f0;
+uint Utils_Dist(SVector3i* a, SVector3i* b);
 static const Utils_XZDist_t Utils_XZDist = (Utils_XZDist_t)0x004c6840;
 static const Utils_CrapDist_t Utils_CrapDist = (Utils_CrapDist_t)0x004c6880;
 static const FUN_004c6930_t FUN_004c6930 = (FUN_004c6930_t)0x004c6930;
@@ -96,12 +97,14 @@ static const Utils_ArcCos__apparently_t Utils_ArcCos__apparently = (Utils_ArcCos
 static const Utils_LineOfSight_t Utils_LineOfSight = (Utils_LineOfSight_t)0x004c7320;
 static const Utils_GetGroundHeight_t Utils_GetGroundHeight = (Utils_GetGroundHeight_t)0x004c73a0;
 static const Utils_KillObjectsInBox_t Utils_KillObjectsInBox = (Utils_KillObjectsInBox_t)0x004c7440;
-static const Utils_KillEverythingInBox_t Utils_KillEverythingInBox = (Utils_KillEverythingInBox_t)0x004c74d0;
+//static const Utils_KillEverythingInBox_t Utils_KillEverythingInBox = (Utils_KillEverythingInBox_t)0x004c74d0;
+void Utils_KillEverythingInBox(SVector3i* min, SVector3i* max);
 static const Utils_SetVisibilityInBox_t Utils_SetVisibilityInBox = (Utils_SetVisibilityInBox_t)0x004c7530;
 static const FUN_004c7880_objectIsInEnviroList__unused_t FUN_004c7880_objectIsInEnviroList__unused = (FUN_004c7880_objectIsInEnviroList__unused_t)0x004c7880;
 static const FUN_004c78b0_t FUN_004c78b0 = (FUN_004c78b0_t)0x004c78b0;
 static const Utils_CalculateSpatialAttenuation_t Utils_CalculateSpatialAttenuation = (Utils_CalculateSpatialAttenuation_t)0x004c78f0;
-static const Utils_Pulse_t Utils_Pulse = (Utils_Pulse_t)0x004c7af0;
+//static const Utils_Pulse_t Utils_Pulse = (Utils_Pulse_t)0x004c7af0;
+int Utils_Pulse(int time, int period, int amplitude);
 //static const Utils_LimitRange_t Utils_LimitRange = (Utils_LimitRange_t)0x004c7b30;
 void Utils_LimitRange(int* value, int min, int max);
 
@@ -122,38 +125,59 @@ uint ScreenScaledCosine(uint deg);
 
 known Utils namespace function names, lots of unused stuff from apocalypse it seems
 
-Utils_CanSee
-Utils_LineOfSight
-Utils_XZDist
-Utils_GetVecFromMagDir
-Utils_CalcUnit
-Utils_CalcAim
-Utils_Dist
-Utils_CrapDist
-Utils_CopyString
-Utils_CompareStrings
-Utils_InitialRand
-Utils_ArcCos
-Utils_FadeTrails
-Utils_SineSquaredInterpolate //and some overload
-Utils_CheckObjectCollision
-Utils_Pulse
-Utils_InBetween
-Utils_ClearExplosionStack
-Utils_CalculateSpatialAttenuation
+Utils_StartFade
+Utils_StopFade
 Utils_VblankProcessing
-Utils_ShuffleArray
-Utils_IsInEnviro
-Utils_SetVisibilityInBox
-Utils_KillEverythingInBox
-Utils_KillObjectsInBox
-Utils_GetGroundHeight
+MyVSync
+Pause
+Utils_InitialRand
+Rnd
+Utils_RotateY
+    Utils_LessAccurateRotateY // here????
+Utils_CalcUnit
+Utils_GetVecFromMagDir
+Utils_Dist
+Utils_XZDist
+Utils_CrapDist
+?
+Utils_CalcAim
 Utils_TurnTowards
+?
+?
+?
+?
+? used!
+Utils_ClearExplosionStack
+?
+?
+Utils_SineSquaredInterpolate //
+Utils_SineSquaredInterpolate //overload
+Utils_CompareStrings
+Utils_CopyString
+? used!
+Utils_ArcCos
+Utils_LineOfSight
+Utils_GetGroundHeight
+Utils_KillObjectsInBox
+Utils_KillEverythingInBox
+Utils_SetVisibilityInBox
+Utils_IsInEnviro
+?
+Utils_CalculateSpatialAttenuation
+Utils_Pulse
+Utils_LimitRange
+
+
+
+
+Utils_CanSee
+Utils_FadeTrails
+Utils_CheckObjectCollision
+Utils_InBetween
+Utils_ShuffleArray
 Utils_AnglesFromMatrix
 Utils_SendExplosionEvent
 Utils_GenerateCRC
-Utils_RotateY
-Utils_LessAccurateRotateY //lol
 Utils_SendDamage
 Utils_SimpleCollision
 Utils_AutoAim
@@ -161,6 +185,5 @@ Utils_SelectTarget
 Utils_WobblePartDisps
 Utils_WobblePartAngles
 Utils_GetCos
-Utils_CanSee
 
 */

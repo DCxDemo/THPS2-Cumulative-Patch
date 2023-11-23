@@ -1,10 +1,11 @@
 #include "stdafx.h"
+#include "..\PKR.h"
 
 typedef void	(*FileIO_LoadHed_t)();
 typedef void	(*FileIO_UnLoadHed_t)();
 typedef void	(*FileIO_AddDirToFileName_t)(char* filename);
 typedef void	(*FileIO_AddSubDirToFileName_t)(char* filename);
-typedef void*	(*FileIO_OpenLoad_t)(char* filename, int mode);
+typedef void*	(*FileIO_OpenLoad_t)(char* filename, int heap);
 typedef void	(*FileIO_SetSectorsPerFrame_t)(int value);
 typedef void	(*FileIO_Init_t)();
 typedef int		(*FileIO_Open_t)(char* filename);
@@ -31,6 +32,9 @@ static const FileIO_Continue_t				FileIO_Continue = (FileIO_Continue_t)0x0044945
 static const FileIO_Sync_t					FileIO_Sync = (FileIO_Sync_t)0x00449600;
 static const FileIO_GetSubDir_t				FileIO_GetSubDir = (FileIO_GetSubDir_t)0x00449690;
 static const FileIO_SetSubDir_t				FileIO_SetSubDir = (FileIO_SetSubDir_t)0x004496a0;
+
+
+void* FileIO_OpenLoad_Pkr(char* filename, bool heap, Pkr2* pkr);
 
 
 /*

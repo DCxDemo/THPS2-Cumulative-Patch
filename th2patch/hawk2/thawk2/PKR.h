@@ -1,6 +1,5 @@
 #pragma once
 
-
 typedef struct Pkr2Header {
     uint32_t Magic;
     uint32_t unk1;
@@ -17,7 +16,7 @@ typedef struct Pkr2Folder {
 typedef struct Pkr2File {
     char Name[32];
     uint32_t CompressionType;
-    char* DataPtr;
+    char* pData;
     uint32_t Size;
     uint32_t CompressedSize;
 } Pkr2File;

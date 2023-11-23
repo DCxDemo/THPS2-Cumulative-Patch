@@ -16,9 +16,6 @@ enum class eTextJustify : char {
 	Right = 2
 };
 
-
-
-//this should be moved to mess.h
 typedef struct SMessageProg
 {
 	short Duration;

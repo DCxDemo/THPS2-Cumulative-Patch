@@ -48,7 +48,7 @@ PkrError Pkr2::Load(char* filename)
 
 	for (int i = 0; i < Header->numFiles; i++)
 	{
-		Files[i].DataPtr += (int)data;
+		Files[i].pData += (int)data;
 	}
 
 	//we're all good
@@ -76,7 +76,7 @@ void Pkr2::ExportAll(char* path)
 			sprintf(buf, "%s%s", bufpath, Files[curFile].Name);
 
 			file = fopen(buf, "wb");
-			fwrite((void*)Files[curFile].DataPtr, 1, Files[curFile].Size, file);
+			fwrite((void*)Files[curFile].pData, 1, Files[curFile].Size, file);
 			fclose(file);
 
 			curFile++;

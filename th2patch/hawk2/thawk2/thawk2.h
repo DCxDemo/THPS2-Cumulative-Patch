@@ -24,3 +24,4 @@
 #include "thawk2/Spool.h"
 #include "thawk2/SkaterProfile.h"
 #include "thawk2/flash.h"
+#include "thawk2/Render.h"
