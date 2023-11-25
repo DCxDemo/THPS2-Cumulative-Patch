@@ -127,6 +127,9 @@ namespace th2patchlauncher
                 default: gameBox.SelectedIndex = 0; break;
             }
 
+            //loading fov value
+            op.fovValueExist = op.GetFloat("Video", "FOV", 0);
+            op.ZoomFactor = (int)(op.GetFloat("Video", "FOV", 1) * 100);
 
             op.ResX = op.GetInt("Video", "ResX", 1280);
             op.ResY = op.GetInt("Video", "ResY", 720);
@@ -134,7 +137,7 @@ namespace th2patchlauncher
             //video tab
             ResXbox.Text = op.ResX.ToString();
             ResYbox.Text = op.ResY.ToString();
-            resBox.Text = op.ResolutionString;
+            op.setResAspectText(resBox, aspectRatioDrop, op.ResolutionString);
 
             force32box.Checked = op.GetBool("Video", "Force32Bpp", false);
             unlockFPSbox.Checked = op.GetBool("Video", "UnlockFPS", false);
@@ -145,10 +148,14 @@ namespace th2patchlauncher
             //just in case if file value is out of bounds
             op.ZoomFactor = op.ValidateRange(op.ZoomFactor, 30, 140);
 
-            fogSlider.Value = (int)Math.Sqrt((op.GetInt("Video", "FogScale", 300) - 10) * fogSlider.Maximum);
-
+            int fogValue = op.GetInt("Video", "FogScale", 300);
+            fogSlider.Value = (int)Math.Sqrt((fogValue - 10) * fogSlider.Maximum);
+            fogLabel.Text = fogValue.ToString();
+            op.fog = fogValue;
 
             UpdateFOVbar();
+
+            op.unfixResSelect = true;
 
             ambienceBox.Checked = op.GetBool("Music", "PlayAmbience", true);
             fadeBox.Checked = op.GetBool("Music", "Fade", true);
@@ -175,9 +182,9 @@ namespace th2patchlauncher
         private void detectButtonClick(object sender, EventArgs e)
         {
             op.DetectResolution();
-            resBox.Text = op.ResolutionString;
+            op.setResAspectText(resBox, aspectRatioDrop, op.ResolutionString);
 
-            MaybeUpdateFovBar();
+            MaybeUpdateFovBar(true);
         }
 
 
@@ -273,7 +280,6 @@ namespace th2patchlauncher
 
         #region [General tab]
 
-
         private void altSkinsBox_CheckedChanged(object sender, EventArgs e)
         {
             op.SetBool("Patch", "MoreSkins", (sender as CheckBox).Checked);
@@ -298,22 +304,6 @@ namespace th2patchlauncher
         private void gameBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             op.SetString("Patch", "Game", (sender as ComboBox).Text);
-        }
-
-        private void trackBar2_MouseUp(object sender, MouseEventArgs e)
-        {
-            var fog = (int)(Math.Pow(fogSlider.Value, 2) / (float)fogSlider.Maximum + 10f);
-
-            if (fog < 10) fog = 10;
-            if (fog > 750) fog = 750;
-
-            op.SetInt("Video", "FogScale", fog);
-        }
-
-        private void resBox_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            op.ParseResText(resBox.Text);
-            MaybeUpdateFovBar();
         }
 
         #endregion
@@ -341,26 +331,40 @@ namespace th2patchlauncher
             UpdateFOVbar();
         }
 
+        private void fogSlider_ValueChanged(object sender, EventArgs e)
+        {
+            var fog = op.ValidateRange((int)(Math.Pow(fogSlider.Value, 2) / (float)fogSlider.Maximum + 10f), 10, 750);
+
+            fogLabel.Text = fog.ToString();
+            
+            op.fog = fog;
+        }
+
+        private void fogSlider_MouseUp(object sender, MouseEventArgs e)
+        {
+            op.SetInt("Video", "FogScale", op.fog);
+        }
+
         private void overrideFOVbox_CheckedChanged(object sender, EventArgs e)
         {
             fovSlider.Enabled = overrideFOVbox.Checked;
 
-            MaybeUpdateFovBar();
+            MaybeUpdateFovBar(true);
         }
 
         private void UpdateFOVbar()
         {
             fovSlider.Value = op.ZoomFactor;
-            label4.Text = op.GetZoom().ToString("0.0##");
+            fovLabel.Text = op.GetZoom().ToString("0.0##");
 
             op.SetFloat("Video", "FOV", op.GetZoom());
         }
 
-        private void MaybeUpdateFovBar()
+        private void MaybeUpdateFovBar(bool forceAutoFOV)
         {
             if (!fovSlider.Enabled)
             {
-                op.AutoFOV();
+                op.AutoFOV(forceAutoFOV);
                 UpdateFOVbar();
             }
         }
@@ -368,7 +372,9 @@ namespace th2patchlauncher
         private void resBox_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             op.ParseResText(resBox.Text);
-            MaybeUpdateFovBar();
+
+            //selecting other res doesn't update with autoFOV when false, this bool truns true after initiation
+            MaybeUpdateFovBar(op.unfixResSelect);
         }
 
         private void unlockFPSbox_CheckedChanged(object sender, EventArgs e)
@@ -384,6 +390,17 @@ namespace th2patchlauncher
 
             if (force32bits)
                 rendererBox.Checked = false;
+        }
+
+        private void aspectRatioDrop_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            op.applyResolutionListByAspectRatio(resBox, aspectRatioDrop.Text);
+        }
+
+        private void resBox_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            op.ParseResText(resBox.Text);
+            MaybeUpdateFovBar(true);
         }
 
         #endregion

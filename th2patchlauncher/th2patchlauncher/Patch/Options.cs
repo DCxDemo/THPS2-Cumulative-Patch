@@ -3,6 +3,7 @@ using IniParser.Model;
 using IniParser.Model.Configuration;
 using IniParser.Parser;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -74,12 +75,31 @@ namespace thps2patch
         public int ResX = 1280;
         public int ResY = 720;
 
+        public float fovValueExist = 0;
         public bool OverrideFOV = false;
         public int ZoomFactor = 100;
+        public int fog = 300;
 
         public bool UserPatch = false;
         public string Game = "THPS2";
         public string ExeName = "Thawk2";
+
+        public bool unfixResSelect = false;
+
+        Dictionary<string, string> _resolutions = new Dictionary<string, string>
+        {
+            {"320x240", "4:3"},
+            {"640x480", "4:3"},
+            {"800x600", "4:3"},
+            {"1024x768", "4:3"},
+            {"1600x1200", "4:3"},
+            {"2048x1536", "4:3"},
+            {"1280x720", "16:9"},
+            {"1600x900", "16:9"},
+            {"1920x1080", "16:9"},
+            {"2048x1152", "16:9"},
+            {"2560x1440", "16:9"}
+        };
 
         /*
         public bool Force32BPP = true;
@@ -122,7 +142,9 @@ namespace thps2patch
             configfilename = filename;
 
             if (!File.Exists(configfilename))
+            {
                 File.Create(configfilename).Close();
+            }
 
             cfg = new IniParserConfiguration()
             {
@@ -173,8 +195,14 @@ namespace thps2patch
             */
         }
 
-        public void AutoFOV()
+        public void AutoFOV(bool forceAutoFOV)
         {
+            if (!forceAutoFOV)
+            {
+                //check fov value presence in cfg
+                if (fovValueExist != 0) return;
+            }
+
             OverrideFOV = false;
             int ourzoom = (int)((4.0f * ResY) / (3.0f * ResX) * 100.0f);
             ZoomFactor = ValidateRange((int)(ourzoom + (100.0f - ourzoom) / 2.0f), 30, 140);
@@ -241,6 +269,41 @@ namespace thps2patch
             ResY = Screen.PrimaryScreen.Bounds.Height;
 
             SetResolution(ResX, ResY);
+        }
+
+        public void applyResolutionListByAspectRatio(ComboBox resbox, string aspectRatio)
+        {
+            if (resbox.Items.Count > 0) resbox.Items.Clear();
+
+            foreach (KeyValuePair<string, string> res in _resolutions)
+            {
+                if (res.Value == aspectRatio)
+                {
+                    resbox.Items.Add(res.Key);
+                }
+            }
+        }
+
+        //updates resbox and aspect ratio box text accordingly by resolution
+        public void setResAspectText(ComboBox resBox, ComboBox aspectRatioBox, string resolutionString)
+        {
+            aspectRatioBox.SelectedItem = getAspectRatioOfResolution(resolutionString);
+            resBox.Text = ResolutionString;
+        }
+
+        public string getAspectRatioOfResolution(string resolutionString)
+        {
+            string aspectratio = "";
+
+            foreach (KeyValuePair<string, string> res in _resolutions)
+            {
+                if (res.Key == resolutionString)
+                {
+                    aspectratio = res.Value;
+                }
+            }
+
+            return aspectratio;
         }
     }
 }
