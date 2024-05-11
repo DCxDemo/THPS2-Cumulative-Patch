@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "gaps.h"
 
-SGapTrick gapListThps4[] = {
+Career::SGapTrick gapListThps4[] = {
 
 	/*
 	//???

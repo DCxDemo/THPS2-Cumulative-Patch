@@ -19,8 +19,9 @@
 #include "color.h"
 #include "checksum.h"
 #include "thawk2/Utils.h"
-
+#include "patch/hook.h"
 #include "ddraw.h"
+
 
 
 //the old bigass all-in-one file, that should be cut into pizzas. this is my plastic fork!
@@ -542,12 +543,17 @@ void GenPsxPadData_Hook()
 		XINPUT_STATE state = Player1->GetState();
 
 		//start+select: fast quit, get out of here!
-		if (Player1->PressedBack() && Player1->PressedStart())
+		if (options.FastQuit && Player1->PressedBack() && Player1->PressedStart())
 		{
+			// make sure to disable vibration before we quit
 			Player1->Vibrate(0, 0, options.Vibration);
+
+			// shutdown the game gracefully, please
+			WINMAIN_ShutDown();
+
+			// and now exit
 			exit(0);
-		}			
-		
+		}
 		
 		//process buttons
 		if (Player1->PressedA()) XInput_Press(PadButton::Cross);
@@ -680,6 +686,7 @@ void Front_Update_Hook()
 int* D3DBEGINSCENE_lastVBlank = (int*)0x0056b490;
 int* gShellMode = (int*)0x006a35b4;
 
+// on the beginning of every frame
 void D3D_BeginScene_Hook(uint param_1, uint backColor)
 {
 	int waitframes = options.UnlockFPS ? 1 : 2;
@@ -705,6 +712,7 @@ void D3D_BeginScene_Hook(uint param_1, uint backColor)
 
 CMenu* menu;
 
+// whenever HUD is displayed on the screen
 void Panel_Display_Hook()
 {
 	if (options.ShowHUD)
@@ -736,13 +744,14 @@ void Panel_Display_Hook()
 	
 }
 
+// shadow rendering
 void RenderSuperItemShadow_Hook(void* superItem) //CSuper
 {
 	if (options.DrawShadow)
 		RenderSuperItemShadow(superItem);
 }
 
-
+// 
 void _fastcall CBruce_StartGrind_Hook(void* _this, void* _edx, int param)
 {
 	CBruce_StartGrind(_this, param);
@@ -757,9 +766,16 @@ void _fastcall CBruce_HandleJump_Hook(void* _this, void* _edx)
 }
 
 
+// on new level loading
 void Game_Init_Hook()
 {
 	Game_Init();
+
+	// patch autokick
+	// https://github.com/PARTYMANX/partymod-thps2/blob/4f2a956ab813c2776dd33beca19edf2048c203f4/src/main.c#L51
+	*AutoKickSetting = options.AutoKick;
+	*AutoKickState = options.AutoKick;
+
 	//VibrationTest(Player1);
 }
 
@@ -1327,7 +1343,9 @@ Pkr2* pkr;
 
 void* LoadFile(char* filename, bool heap)
 {
-	return FileIO_OpenLoad_Pkr(filename, heap, pkr);
+	//check later why unresolved
+	return NULL;
+	//return FileIO_OpenLoad_Pkr(filename, heap, pkr);
 }
 
 
@@ -1419,7 +1437,6 @@ void Patch()
 	if (!options.BigDrop)
 		//nops entire bail/award big drop path, since its a part of a func, not a separate one
 		CPatch::Nop(0x48F419, 0x48F430 - 0x48F419);
-
 
 	if (!options.Manuals)
 	{
@@ -1628,8 +1645,9 @@ void Patch()
 	Redirect_Redbook_XANextTrack();
 	Redirect_PCMOVIE_XAPlay();
 
-
+	//TO DO split this into separate hooking funcs for each namespace and move to Hook::SetHooks
 	SetHooks();
+	Hook::SetHooks();
 }
 
 
@@ -1667,25 +1685,22 @@ ColorBGRA applyLighting(ColorBGRA* vert, ColorBGRA* light)
 }
 
 
-
-#define HOOK_LIST_SIZE 256
-
 // list of all hooks
-HookFunc hookList[HOOK_LIST_SIZE] = {
+Hook::Reroute hookList[] = {
 	//{ 0x458564, SFX_SpoolOutLevelSFX },
 	//{ 0x452570, SFX_SpoolInLevelSFX },
 
-	{  0x004603c6,RenderModel},
-	{  0x0046040c,RenderModel},
-	{  0x0046024f,RenderModelFast},
-	{  0x0046029a,RenderModelFast},
-	{  0x0046104b,RenderBackgroundModel},
+	{  0x004603c6,RenderModel },
+	{  0x0046040c,RenderModel },
+	{  0x0046024f,RenderModelFast },
+	{  0x0046029a,RenderModelFast },
+	{  0x0046104b,RenderBackgroundModel },
 	//{  0x004609a6,RenderModelInSuper},
 	//{  0x00461913,RenderModelInSuper},
-	{  0x0046190c,RenderModelInSuperFast},
-	{  0x00460338,RenderModelNonRotated},
-	{  0x00460386,RenderModelNonRotated},
-	{  0x00461043,RenderBackgroundModelNonRotated},
+	{  0x0046190c,RenderModelInSuperFast },
+	{  0x00460338,RenderModelNonRotated },
+	{  0x00460386,RenderModelNonRotated },
+	{  0x00461043,RenderBackgroundModelNonRotated },
 
 
 
@@ -1807,100 +1822,6 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 
 
 
-	///all career related hooks
-
-	//{ 0x004147bc,	Career_GapActive },  //gapisgoal
-	//{ 0x004147ec,	Career_GapActive },  //gapistrick
-	{ 0x00414851,	Career_GapActive },  //gapgoalnumber
-	{ 0x00414877,	Career_GapActive },  //gapgoalnumber
-	{ 0x00414931,	Career_GapActive },  //gaptricknumber
-	{ 0x00414957,	Career_GapActive },  //gaptricknumber
-	{ 0x004149e7,	Career_GapActive },  //gapnumber
-	{ 0x00414caf,	Career_GapActive },  //awardgap
-	{ 0x00414dd1,	Career_GapActive },  //awardtrickgap
-	{ 0x0041545a,	Career_GapActive },  //countthings
-	{ 0x00482619,	Career_GapActive },  //GapCheckListWindow::update
-	{ 0x00482688,	Career_GapActive },  //GapCheckListWindow::update
-
-	{ 0x004826dd,	Career_AnyoneGotGap }, //in GapCheckListWindow::update
-
-	{ 0x0048975b,	Career_CheckScore }, // in DisplayScore
-
-	{ 0x00414535,	Career_CheckClear }, //in Career_GiveGoal
-	{ 0x00415285,	Career_CheckClear }, //in Career_GiveMoney
-
-
-
-	{ 0x00414964, Career_GapIsTrick }, //gaptricknumber
-	{ 0x00414d52, Career_GapIsTrick }, //award gap
-	{ 0x00414e1d, Career_GapIsTrick }, //awardtrickgap
-	{ 0x00414e31, Career_GapIsTrick }, //awardtrickgap
-	{ 0x00415487, Career_GapIsTrick }, //countthings
-
-
-	{ 0x48e6ee, Career_AwardGap }, // in CheckForLipGaps
-	{ 0x49b53e, Career_AwardGap }, // in HandlehysicsState
-	{ 0x49b5a4, Career_AwardGap }, // in HandlehysicsState
-	{ 0x4c3955, Career_AwardGap }, // in ExecuteCommandList
-
-	{ 0x00414d2d, Career_AwardGoalGap }, //in Career_AwardGap
-	{ 0x0048c12d, Career_AwardGoalGap },	//in Panel_Land
-
-	{ 0x0048c10c, Career_AwardTrickGap },	//in Panel_Land
-
-	{ 0x00452a7b, Career_GotAllGaps }, //in Front_NewThing
-
-	{ 0x0045c01b, Career_LevelNeeds }, // in GoalScreenElement::setupMessage
-
-	// DECOMPILED ALL CALLS HERE
-
-	//{ 0x00414b16,	Career_GapNumber },	//career_giveGap
-	//{ 0x00414b55,	Career_GapNumber },	//carrer_anyonegotgap
-
-	//{ 0x00414cde,	Career_GiveGap },	// in Career_AwardGap
-
-	//{ 0x00415590,	Career_CountGaps },	//in Career_GotAllGaps
-
-	// 00414a85	Career_GapTrickNumber , Career_GotTrickGap
-	// 00414ae5	Career_GapTrickNumber, Career_GiveTrickGap
-
-
-	/*
-
-	{ 0x414643, Career_GiveGoalType },
-	{ 0x414bf0, Career_GiveGoalType },
-	{ 0x414e72, Career_GiveGoalType },
-	{ 0x48b108, Career_GiveGoalType },
-	{ 0x48b207, Career_GiveGoalType },
-	{ 0x4a614c, Career_GiveGoalType },
-
-	{ 0x402578, Career_GotGoalType },
-	{ 0x41462b, Career_GotGoalType },
-	{ 0x414d10, Career_GotGoalType },
-	{ 0x414d6d, Career_GotGoalType },
-	{ 0x414e4c, Career_GotGoalType },
-	{ 0x414f3a, Career_GotGoalType },
-	{ 0x4152ba, Career_GotGoalType },
-	{ 0x469557, Career_GotGoalType },
-	{ 0x46956a, Career_GotGoalType },
-	{ 0x46957f, Career_GotGoalType },
-	{ 0x4b6b6f, Career_GotGoalType },
-	{ 0x4b6b7f, Career_GotGoalType },
-
-	{ 0x4a626b, Career_GetLevelPickup }, //in TakeEffect
-
-	{ 0x4166d1, Career_ApplyCheats }, // in Career_PostLoad
-	{ 0x4531c7, Career_ApplyCheats }, // in FrontEnd2_Main
-
-	{ 0x450c82, Career_CheatName },
-	{ 0x486324,	Career_CheatName },
-	{ 0x486387,	Career_CheatName },
-	{ 0x48640c,	Career_CheatName },
-
-	{ 0x45c01b, Career_LevelNeeds }, // in GoalScreenElement::setupMessage
-
-	*/
-
 
 
 	{ 0x4C1E8C, ExecuteCommandList_Hook },
@@ -1957,186 +1878,187 @@ HookFunc hookList[HOOK_LIST_SIZE] = {
 
 */
 
-	/*
-	{ 0x004dc28a,Mess_SetScale_Wrap },
-	{ 0x004dc225,Mess_SetScale_Wrap },
-	{ 0x004d928c,Mess_SetScale_Wrap },
-	{ 0x004c16df,Mess_SetScale_Wrap },
-	{ 0x004b67f0,Mess_SetScale_Wrap },
-	{ 0x004b66b8,Mess_SetScale_Wrap },
-	{ 0x004b666a,Mess_SetScale_Wrap },
-	{ 0x004b6653,Mess_SetScale_Wrap },
-	{ 0x004b65fc,Mess_SetScale_Wrap },
-	{ 0x004b65e5,Mess_SetScale_Wrap },
-	{ 0x0048a394,Mess_SetScale_Wrap },
-	{ 0x00489256,Mess_SetScale_Wrap },
-	{ 0x00473835,Mess_SetScale_Wrap },
-	{ 0x004684ce,Mess_SetScale_Wrap },
-	{ 0x00450f9b,Mess_SetScale_Wrap },
-	{ 0x00450ed7,Mess_SetScale_Wrap },
-	{ 0x00450eb3,Mess_SetScale_Wrap },
-	{ 0x00450e63,Mess_SetScale_Wrap },
-	{ 0x00450d42,Mess_SetScale_Wrap },
-	{ 0x00450963,Mess_SetScale_Wrap },
-	{ 0x00450912,Mess_SetScale_Wrap },
-	{ 0x00450898,Mess_SetScale_Wrap },
-	{ 0x00450834,Mess_SetScale_Wrap },
-	{ 0x004507c4,Mess_SetScale_Wrap },
-	{ 0x004507a4,Mess_SetScale_Wrap },
-	{ 0x0045076e,Mess_SetScale_Wrap },
-	{ 0x00450598,Mess_SetScale_Wrap },
-	{ 0x0045046a,Mess_SetScale_Wrap },
-	{ 0x004503ec,Mess_SetScale_Wrap },
-	{ 0x0045029f,Mess_SetScale_Wrap },
-	{ 0x0044e740,Mess_SetScale_Wrap },
-	{ 0x0044e712,Mess_SetScale_Wrap },
-	{ 0x0044d4d7,Mess_SetScale_Wrap },
-	{ 0x0044d49c,Mess_SetScale_Wrap },
-	{ 0x0044d480,Mess_SetScale_Wrap },
-	{ 0x0044d425,Mess_SetScale_Wrap },
-	{ 0x0044d407,Mess_SetScale_Wrap },
-	{ 0x0044d287,Mess_SetScale_Wrap },
-	{ 0x0044d1fe,Mess_SetScale_Wrap },
-	{ 0x0044d094,Mess_SetScale_Wrap },
-	{ 0x0044d06f,Mess_SetScale_Wrap },
-	{ 0x0044d02e,Mess_SetScale_Wrap },
-	{ 0x0044d009,Mess_SetScale_Wrap },
-	{ 0x0044cfca,Mess_SetScale_Wrap },
-	{ 0x0044cfa5,Mess_SetScale_Wrap },
-	{ 0x0044ce50,Mess_SetScale_Wrap },
-	{ 0x0044cd6f,Mess_SetScale_Wrap },
-	{ 0x0044cc34,Mess_SetScale_Wrap },
-	{ 0x0044ca44,Mess_SetScale_Wrap },
-	{ 0x0044c82e,Mess_SetScale_Wrap },
-	{ 0x0044c7f7,Mess_SetScale_Wrap },
-	{ 0x0044c7e0,Mess_SetScale_Wrap },
-	{ 0x0044c78a,Mess_SetScale_Wrap },
-	{ 0x0044c773,Mess_SetScale_Wrap },
-	{ 0x0044c706,Mess_SetScale_Wrap },
-	{ 0x0044ba78,Mess_SetScale_Wrap },
-	{ 0x0044b51b,Mess_SetScale_Wrap },
-	{ 0x0044b21b,Mess_SetScale_Wrap },
-	{ 0x0041bf6b,Mess_SetScale_Wrap },
-	{ 0x0041bf0f,Mess_SetScale_Wrap },
-	{ 0x0041beb0,Mess_SetScale_Wrap },
-	{ 0x0041be5d,Mess_SetScale_Wrap },
-	{ 0x0041bdfe,Mess_SetScale_Wrap },
-	{ 0x0041bdab,Mess_SetScale_Wrap },
-	{ 0x0041bd4d,Mess_SetScale_Wrap },
-	{ 0x0041bcf7,Mess_SetScale_Wrap },
-	{ 0x0041bc98,Mess_SetScale_Wrap },
-	{ 0x0041bc42,Mess_SetScale_Wrap },
-	{ 0x0041bbe3,Mess_SetScale_Wrap },
-	{ 0x0041bb8d,Mess_SetScale_Wrap },
-	{ 0x0041bae6,Mess_SetScale_Wrap },
-	{ 0x0041bab4,Mess_SetScale_Wrap },
-	{ 0x0041b9c8,Mess_SetScale_Wrap },
-	{ 0x0041b924,Mess_SetScale_Wrap },
-	{ 0x0041b872,Mess_SetScale_Wrap },
-	{ 0x0041b83f,Mess_SetScale_Wrap },
-	{ 0x0041b582,Mess_SetScale_Wrap },
-	{ 0x0041b459,Mess_SetScale_Wrap },
-	{ 0x0041afc8,Mess_SetScale_Wrap },
-	{ 0x0041af7e,Mess_SetScale_Wrap },
-	{ 0x0041af33,Mess_SetScale_Wrap },
-	{ 0x0041abe5,Mess_SetScale_Wrap },
-	{ 0x0041a9fc,Mess_SetScale_Wrap },
-	{ 0x0041a914,Mess_SetScale_Wrap },
-	{ 0x0041a83b,Mess_SetScale_Wrap },
-	{ 0x0041a262,Mess_SetScale_Wrap }
-	*/
+/*
+{ 0x004dc28a,Mess_SetScale_Wrap },
+{ 0x004dc225,Mess_SetScale_Wrap },
+{ 0x004d928c,Mess_SetScale_Wrap },
+{ 0x004c16df,Mess_SetScale_Wrap },
+{ 0x004b67f0,Mess_SetScale_Wrap },
+{ 0x004b66b8,Mess_SetScale_Wrap },
+{ 0x004b666a,Mess_SetScale_Wrap },
+{ 0x004b6653,Mess_SetScale_Wrap },
+{ 0x004b65fc,Mess_SetScale_Wrap },
+{ 0x004b65e5,Mess_SetScale_Wrap },
+{ 0x0048a394,Mess_SetScale_Wrap },
+{ 0x00489256,Mess_SetScale_Wrap },
+{ 0x00473835,Mess_SetScale_Wrap },
+{ 0x004684ce,Mess_SetScale_Wrap },
+{ 0x00450f9b,Mess_SetScale_Wrap },
+{ 0x00450ed7,Mess_SetScale_Wrap },
+{ 0x00450eb3,Mess_SetScale_Wrap },
+{ 0x00450e63,Mess_SetScale_Wrap },
+{ 0x00450d42,Mess_SetScale_Wrap },
+{ 0x00450963,Mess_SetScale_Wrap },
+{ 0x00450912,Mess_SetScale_Wrap },
+{ 0x00450898,Mess_SetScale_Wrap },
+{ 0x00450834,Mess_SetScale_Wrap },
+{ 0x004507c4,Mess_SetScale_Wrap },
+{ 0x004507a4,Mess_SetScale_Wrap },
+{ 0x0045076e,Mess_SetScale_Wrap },
+{ 0x00450598,Mess_SetScale_Wrap },
+{ 0x0045046a,Mess_SetScale_Wrap },
+{ 0x004503ec,Mess_SetScale_Wrap },
+{ 0x0045029f,Mess_SetScale_Wrap },
+{ 0x0044e740,Mess_SetScale_Wrap },
+{ 0x0044e712,Mess_SetScale_Wrap },
+{ 0x0044d4d7,Mess_SetScale_Wrap },
+{ 0x0044d49c,Mess_SetScale_Wrap },
+{ 0x0044d480,Mess_SetScale_Wrap },
+{ 0x0044d425,Mess_SetScale_Wrap },
+{ 0x0044d407,Mess_SetScale_Wrap },
+{ 0x0044d287,Mess_SetScale_Wrap },
+{ 0x0044d1fe,Mess_SetScale_Wrap },
+{ 0x0044d094,Mess_SetScale_Wrap },
+{ 0x0044d06f,Mess_SetScale_Wrap },
+{ 0x0044d02e,Mess_SetScale_Wrap },
+{ 0x0044d009,Mess_SetScale_Wrap },
+{ 0x0044cfca,Mess_SetScale_Wrap },
+{ 0x0044cfa5,Mess_SetScale_Wrap },
+{ 0x0044ce50,Mess_SetScale_Wrap },
+{ 0x0044cd6f,Mess_SetScale_Wrap },
+{ 0x0044cc34,Mess_SetScale_Wrap },
+{ 0x0044ca44,Mess_SetScale_Wrap },
+{ 0x0044c82e,Mess_SetScale_Wrap },
+{ 0x0044c7f7,Mess_SetScale_Wrap },
+{ 0x0044c7e0,Mess_SetScale_Wrap },
+{ 0x0044c78a,Mess_SetScale_Wrap },
+{ 0x0044c773,Mess_SetScale_Wrap },
+{ 0x0044c706,Mess_SetScale_Wrap },
+{ 0x0044ba78,Mess_SetScale_Wrap },
+{ 0x0044b51b,Mess_SetScale_Wrap },
+{ 0x0044b21b,Mess_SetScale_Wrap },
+{ 0x0041bf6b,Mess_SetScale_Wrap },
+{ 0x0041bf0f,Mess_SetScale_Wrap },
+{ 0x0041beb0,Mess_SetScale_Wrap },
+{ 0x0041be5d,Mess_SetScale_Wrap },
+{ 0x0041bdfe,Mess_SetScale_Wrap },
+{ 0x0041bdab,Mess_SetScale_Wrap },
+{ 0x0041bd4d,Mess_SetScale_Wrap },
+{ 0x0041bcf7,Mess_SetScale_Wrap },
+{ 0x0041bc98,Mess_SetScale_Wrap },
+{ 0x0041bc42,Mess_SetScale_Wrap },
+{ 0x0041bbe3,Mess_SetScale_Wrap },
+{ 0x0041bb8d,Mess_SetScale_Wrap },
+{ 0x0041bae6,Mess_SetScale_Wrap },
+{ 0x0041bab4,Mess_SetScale_Wrap },
+{ 0x0041b9c8,Mess_SetScale_Wrap },
+{ 0x0041b924,Mess_SetScale_Wrap },
+{ 0x0041b872,Mess_SetScale_Wrap },
+{ 0x0041b83f,Mess_SetScale_Wrap },
+{ 0x0041b582,Mess_SetScale_Wrap },
+{ 0x0041b459,Mess_SetScale_Wrap },
+{ 0x0041afc8,Mess_SetScale_Wrap },
+{ 0x0041af7e,Mess_SetScale_Wrap },
+{ 0x0041af33,Mess_SetScale_Wrap },
+{ 0x0041abe5,Mess_SetScale_Wrap },
+{ 0x0041a9fc,Mess_SetScale_Wrap },
+{ 0x0041a914,Mess_SetScale_Wrap },
+{ 0x0041a83b,Mess_SetScale_Wrap },
+{ 0x0041a262,Mess_SetScale_Wrap }
+*/
 
-	//{ 0x473680, CreateMessage }
-
-
-	{ 0x00405323, Utils_CalcUnit },
-	{ 0x0040d006, Utils_CalcUnit },
-	{ 0x0040d0fe, Utils_CalcUnit },
-	{ 0x0040d121, Utils_CalcUnit },
-	{ 0x0040d478, Utils_CalcUnit },
-	{ 0x0040e12b, Utils_CalcUnit },
-	{ 0x0049b0bf, Utils_CalcUnit },
-	{ 0x004acd4c, Utils_CalcUnit },
+//{ 0x473680, CreateMessage }
 
 
-	{ 0x0040614e, Utils_GetVecFromMagDir },
-	{ 0x00410749, Utils_GetVecFromMagDir },
-	{ 0x00410844, Utils_GetVecFromMagDir },
-	{ 0x0041088e, Utils_GetVecFromMagDir },
-	{ 0x004114f1, Utils_GetVecFromMagDir },
-	{ 0x00411547, Utils_GetVecFromMagDir },
-	{ 0x0049d97f, Utils_GetVecFromMagDir },
-	{ 0x0049da5a, Utils_GetVecFromMagDir },
-	{ 0x0049dba5, Utils_GetVecFromMagDir },
+{ 0x00405323, Utils_CalcUnit },
+{ 0x0040d006, Utils_CalcUnit },
+{ 0x0040d0fe, Utils_CalcUnit },
+{ 0x0040d121, Utils_CalcUnit },
+{ 0x0040d478, Utils_CalcUnit },
+{ 0x0040e12b, Utils_CalcUnit },
+{ 0x0049b0bf, Utils_CalcUnit },
+{ 0x004acd4c, Utils_CalcUnit },
 
 
-	{ 0x00422e29, Utils_LimitRange },
-	{ 0x004555b2, Utils_LimitRange },
+{ 0x0040614e, Utils_GetVecFromMagDir },
+{ 0x00410749, Utils_GetVecFromMagDir },
+{ 0x00410844, Utils_GetVecFromMagDir },
+{ 0x0041088e, Utils_GetVecFromMagDir },
+{ 0x004114f1, Utils_GetVecFromMagDir },
+{ 0x00411547, Utils_GetVecFromMagDir },
+{ 0x0049d97f, Utils_GetVecFromMagDir },
+{ 0x0049da5a, Utils_GetVecFromMagDir },
+{ 0x0049dba5, Utils_GetVecFromMagDir },
 
 
-	//sine cosine patch for wheel
-	{ 0x457939, ScreenScaledCosine },
-	{ 0x457992, ScreenScaledCosine },
+{ 0x00422e29, Utils_LimitRange },
+{ 0x004555b2, Utils_LimitRange },
 
-	{ 0x457947, ScreenScaledSine },
-	{ 0x45795D, ScreenScaledSine },
 
-	{ 0x004c74d0, Utils_KillEverythingInBox },
+//sine cosine patch for wheel
+{ 0x457939, ScreenScaledCosine },
+{ 0x457992, ScreenScaledCosine },
 
-	{ 0x00450763, Utils_Pulse },
-	{ 0x004507b9, Utils_Pulse },
-	{ 0x00450829, Utils_Pulse },
-	{ 0x0045088d, Utils_Pulse },
-	{ 0x00450907, Utils_Pulse },
-	{ 0x00450958, Utils_Pulse },
-	{ 0x00450d3a, Utils_Pulse },
-	{ 0x00450e58, Utils_Pulse },
-	{ 0x00450ecc, Utils_Pulse },
-	{ 0x00450f90, Utils_Pulse },
+{ 0x457947, ScreenScaledSine },
+{ 0x45795D, ScreenScaledSine },
 
-		/*
-	{ 0x004cb548, LoadFile },
-	{ 0x004bccbb, LoadFile },
-	{ 0x004b5054, LoadFile },
-	{ 0x004b21f1, LoadFile },
-	{ 0x004b201e, LoadFile },
-	{ 0x004b1d73, LoadFile },
-	{ 0x004a9a60, LoadFile },
-	{ 0x004a9a40, LoadFile },
-	{ 0x004a0452, LoadFile },
-	//{ 0x0049039a, LoadFile }, //tricks.bin, fails
-	{ 0x0047ebcd, LoadFile },
-	{ 0x0047a809, LoadFile },
-	{ 0x004793ea, LoadFile },
-	{ 0x0046b0cb, LoadFile },
-	{ 0x0045d2a7, LoadFile },
-	{ 0x00458bb3, LoadFile },
-	{ 0x004558b8, LoadFile },
-	{ 0x0044b37d, LoadFile },
-	{ 0x004449a8, LoadFile },
-	//{ 0x0042fa4b, LoadFile }, //sk2def.psx, fails
-	{ 0x0042f96f, LoadFile },
-	{ 0x0042cdf5, LoadFile },
-	{ 0x0042beda, LoadFile },
-	{ 0x00427739, LoadFile },
-	{ 0x0042646a, LoadFile },
-	{ 0x0041de92, LoadFile },
-	{ 0x0041c52a, LoadFile },
-	{ 0x00417493, LoadFile },
-	{ 0x00415cd0, LoadFile },
-	{ 0x00415c87, LoadFile }
-	*/
+{ 0x004c74d0, Utils_KillEverythingInBox },
+
+{ 0x00450763, Utils_Pulse },
+{ 0x004507b9, Utils_Pulse },
+{ 0x00450829, Utils_Pulse },
+{ 0x0045088d, Utils_Pulse },
+{ 0x00450907, Utils_Pulse },
+{ 0x00450958, Utils_Pulse },
+{ 0x00450d3a, Utils_Pulse },
+{ 0x00450e58, Utils_Pulse },
+{ 0x00450ecc, Utils_Pulse },
+{ 0x00450f90, Utils_Pulse },
+
+/*
+{ 0x004cb548, LoadFile },
+{ 0x004bccbb, LoadFile },
+{ 0x004b5054, LoadFile },
+{ 0x004b21f1, LoadFile },
+{ 0x004b201e, LoadFile },
+{ 0x004b1d73, LoadFile },
+{ 0x004a9a60, LoadFile },
+{ 0x004a9a40, LoadFile },
+{ 0x004a0452, LoadFile },
+//{ 0x0049039a, LoadFile }, //tricks.bin, fails
+{ 0x0047ebcd, LoadFile },
+{ 0x0047a809, LoadFile },
+{ 0x004793ea, LoadFile },
+{ 0x0046b0cb, LoadFile },
+{ 0x0045d2a7, LoadFile },
+{ 0x00458bb3, LoadFile },
+{ 0x004558b8, LoadFile },
+{ 0x0044b37d, LoadFile },
+{ 0x004449a8, LoadFile },
+//{ 0x0042fa4b, LoadFile }, //sk2def.psx, fails
+{ 0x0042f96f, LoadFile },
+{ 0x0042cdf5, LoadFile },
+{ 0x0042beda, LoadFile },
+{ 0x00427739, LoadFile },
+{ 0x0042646a, LoadFile },
+{ 0x0041de92, LoadFile },
+{ 0x0041c52a, LoadFile },
+{ 0x00417493, LoadFile },
+{ 0x00415cd0, LoadFile },
+{ 0x00415c87, LoadFile }
+*/
+
+	//list terminator, do not remove
+	{ NULL, NULL }
 
 };
 
-//loops through the list of hooks and redirects the call
+Hook::Reroute* pHookList1 = &hookList[0];
+
+
 void SetHooks()
 {
-	for (int i = 0; i < HOOK_LIST_SIZE; i++)
-	{
-		if (hookList[i].address == NULL) break;
-		CPatch::RedirectCall(hookList[i].address, hookList[i].func);
-	}
+	Hook::ProcessList(pHookList1);
 }
 
 #pragma endregion

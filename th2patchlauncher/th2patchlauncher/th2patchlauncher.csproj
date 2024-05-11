@@ -59,8 +59,10 @@
       <HintPath>..\packages\ini-parser.2.5.2\lib\net20\INIFileParser.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ErrorMsg.cs" />
@@ -70,10 +72,12 @@
     <Compile Include="LauncherForm.Designer.cs">
       <DependentUpon>LauncherForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Patch\Helpers.cs" />
     <Compile Include="Patch\LevelPatch.cs" />
     <Compile Include="Patch\MainPatch.cs" />
     <Compile Include="Patch\Mem.cs" />
     <Compile Include="Patch\Options.cs" />
+    <Compile Include="Patch\Resolutions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="LauncherForm.resx">

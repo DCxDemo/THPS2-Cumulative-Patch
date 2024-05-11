@@ -41,6 +41,8 @@ public:
 	bool Vibration = true;
 	bool BigDrop = true;
 	bool Manuals = true;
+	bool AutoKick = true;
+	bool FastQuit = true;
 
 	//music
 	bool Fade = true;

@@ -7,10 +7,10 @@ namespace th2patchlauncher
     static class Program
     {
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             //in case we're gonna parse floats
-            CultureInfo ci = (CultureInfo)CultureInfo.CurrentCulture.Clone();
+            var ci = (CultureInfo)CultureInfo.CurrentCulture.Clone();
             ci.NumberFormat.NumberDecimalSeparator = ".";
             CultureInfo.CurrentCulture = ci;
 

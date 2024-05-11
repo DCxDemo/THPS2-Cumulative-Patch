@@ -4,13 +4,6 @@
 
 extern GameOptions options;
 
-// should be moved to a separate file
-typedef struct HookFunc {
-	int address;
-	void* func;
-} HookFunc;
-
-
 enum class EGeneratorTheme : int {
     Powerplant = 0,
     Industrial = 1,
@@ -65,10 +58,9 @@ typedef struct SLevel
     int somedata2[5];
     int gapFirst;
     int gapLast;
-    SGoal Goals[10];
+    Career::SGoal Goals[10];
     int killers;
 } SLevel;
-
 
 void Patch();
 void PatchSkaters();

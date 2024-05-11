@@ -55,4 +55,5 @@ void WINMAIN_ShutDown(void)
     PCMOVIE_StopFMV();
     PCMOVIE_XAStop();
     D3D_ShutDown(1);
-}*/
+}
+*/

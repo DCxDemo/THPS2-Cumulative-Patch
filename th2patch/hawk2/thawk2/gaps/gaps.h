@@ -1,6 +1,8 @@
 #pragma once
 #include "thawk2/Career.h"
 
+using namespace Career;
+
 //category headlines, used to divide gaps per type in gap list
 extern SGapTrick catAir;
 extern SGapTrick catGrind;

@@ -50,6 +50,8 @@ void GameOptions::Load()
 	Vibration = ini->ReadBool("INPUT", "Vibration", true);
 	BigDrop = ini->ReadBool("INPUT", "BigDrop", true);
 	Manuals = ini->ReadBool("Input", "Manuals", true);
+	AutoKick = ini->ReadBool("INPUT", "AutoKick", true);
+	FastQuit = ini->ReadBool("INPUT", "FastQuit", true);
 
 	//music section
 	PlayRandom = ini->ReadBool("MUSIC", "Random", true);

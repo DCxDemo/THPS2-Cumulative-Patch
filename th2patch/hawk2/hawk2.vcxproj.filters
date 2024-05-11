@@ -150,6 +150,12 @@
     <ClInclude Include="thawk2\gte.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="patch\hook.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thawk2\Rail.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -264,6 +270,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="thawk2\gte.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="patch\hook.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thawk2\Rail.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

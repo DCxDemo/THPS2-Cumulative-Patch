@@ -2,69 +2,82 @@
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using thps2patch;
 
 namespace th2patchlauncher
 {
     public partial class LauncherForm : Form
     {
+        Options op;
+
         public LauncherForm()
         {
             InitializeComponent();
         }
 
         string curDir = Directory.GetCurrentDirectory();
+        string hawkFile = "THawk2.exe";
+        string thawk2filePath => Path.Combine(curDir, hawkFile);
+
+        string configFile = "th2_opt.cfg";
+        string configFilePath => Path.Combine(curDir, configFile);
+
         string patchPath = "patch";
         string levelsFile = "levelpatch.ini";
         string userFile = "userpatch.ini";
-        string hawkFile = "THawk2.exe";
-        string configFile = "th2_opt.cfg";
-        string configFilePath => Path.Combine(curDir, configFile);
-#pragma warning disable CS0414 // The field 'LauncherForm.patchName' is assigned but its value is never used
-        string patchName = "dinput.dll";
-#pragma warning restore CS0414 // The field 'LauncherForm.patchName' is assigned but its value is never used
 
-        Options op;
-
-        private void ParseCommandLineArgs()
+        private bool ForcedLaunchRequested(string[] args)
         {
-            string[] args = Environment.GetCommandLineArgs();
-
-            try
+            foreach (var a in args)
             {
-                if (args[1].ToUpper() == "-F")
+                var arg = a.ToUpper();
+
+                //process both minus and slash
+                if (arg == "-F" || arg == "/F")
                 {
+                    //setup form visibility params
                     ShowInTaskbar = false;
                     WindowState = FormWindowState.Minimized;
                     Visible = false;
+
                     Hide();
 
+                    //wait for the game
                     LaunchTHPS(false);
 
+                    //shutdown
                     Close();
+
+                    return true;
                 }
             }
-            catch
-            {
-                //do nothing, we have no params
-            }
-        }
 
+            return false;
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //load options from files
-            op = new Options(configFilePath);
+            try
+            {
+                //load options from files
+                op = new Options(configFilePath);
 
-            //parse command line, if -F is there, apply patches and quit
-            ParseCommandLineArgs();
-
-            //if no args, setup UI
-            UpdateControls();
+                //parse command line, if -F is there, apply patches and quit
+                if (!ForcedLaunchRequested(Environment.GetCommandLineArgs()))
+                {
+                    //if no args, setup UI
+                    UpdateControls();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Something went wrong!\r\n{ex.Message}\r\n\r\n{ex.ToString()}", "Error");
+            }
         }
 
-
-        enum DickSwap
+        /// A list of chars to swap officer dick, must coincide with the patch.
+        public enum DickSwap
         {
             none = 0,
             bam = 1,
@@ -75,6 +88,7 @@ namespace th2patchlauncher
             mcsqueeb = 6
         }
 
+        // TO DO: Split settings here in regions, maybe separte functions as well
 
         private void UpdateControls()
         {
@@ -101,15 +115,16 @@ namespace th2patchlauncher
             altSkinsBox.Checked = op.GetBool("Patch", "MoreSkins", false);
             swapBox.Enabled = altSkinsBox.Checked;
 
-            switch (op.GetString("Patch", "DickSwap", "dick"))
+            switch (op.GetString("Patch", "DickSwap", "dick").ToLower())
             {
-                case "bam": swapBox.SelectedIndex = 1; break;
-                case "wolve": swapBox.SelectedIndex = 2; break;
-                case "lilper": swapBox.SelectedIndex = 3; break;
-                case "kor1": swapBox.SelectedIndex = 4; break;
-                case "kor2": swapBox.SelectedIndex = 5; break;
-                case "mcsqueeb": swapBox.SelectedIndex = 6; break;
-                default: swapBox.SelectedIndex = 0; break;
+                case "bam": swapBox.SelectedIndex = (int)DickSwap.bam; break;
+                case "wolve": swapBox.SelectedIndex = (int)DickSwap.wolve; break;
+                case "lilper": swapBox.SelectedIndex = (int)DickSwap.lilper; break;
+                case "kor1": swapBox.SelectedIndex = (int)DickSwap.kor1; break;
+                case "kor2": swapBox.SelectedIndex = (int)DickSwap.kor2; break;
+                case "mcsqueeb": swapBox.SelectedIndex = (int)DickSwap.mcsqueeb; break;
+
+                default: swapBox.SelectedIndex = (int)DickSwap.none; break;
             }
 
 
@@ -128,27 +143,35 @@ namespace th2patchlauncher
             }
 
 
-            op.ResX = op.GetInt("Video", "ResX", 1280);
-            op.ResY = op.GetInt("Video", "ResY", 720);
-
-            //video tab
-            ResXbox.Text = op.ResX.ToString();
-            ResYbox.Text = op.ResY.ToString();
-            resBox.Text = op.ResolutionString;
 
             force32box.Checked = op.GetBool("Video", "Force32Bpp", false);
             unlockFPSbox.Checked = op.GetBool("Video", "UnlockFPS", false);
-            overrideFOVbox.Checked = op.OverrideFOV;
-
             rendererBox.Checked = op.GetString("Video", "Renderer", "Hardware") == "Software" ? true : false;
+            psxtexBox.Checked = op.GetBool("Video", "DisableNewtex", false);
+            drawshadowBox.Checked = op.GetBool("Video", "DrawShadow", true);
+            drawhudBox.Checked = op.GetBool("Video", "ShowHUD", true);
 
-            //just in case if file value is out of bounds
-            op.ZoomFactor = op.ValidateRange(op.ZoomFactor, 30, 140);
+            op.SetResolution(
+                op.GetInt("Video", "ResX", Options.DefaultResolution.Width),
+                op.GetInt("Video", "ResY", Options.DefaultResolution.Height)
+            );
 
-            fogSlider.Value = (int)Math.Sqrt((op.GetInt("Video", "FogScale", 300) - 10) * fogSlider.Maximum);
+            op.setResAspectText(resBox, aspectRatioDrop, op.ResolutionString);
 
-
+            //read fov data
+            op.FovScale = op.GetFloat("Video", "FovScale", 1f);
             UpdateFOVbar();
+
+            //maybe fov override?
+            overrideFOVbox.Checked = op.GetBool("Video", "OverrideFov", false);
+
+
+
+            int fogValue = op.GetInt("Video", "FogScale", 300);
+            fogSlider.Value = (int)Math.Sqrt((fogValue - 10) * fogSlider.Maximum);
+            fogLabel.Text = fogValue.ToString();
+            op.fog = fogValue;
+
 
             ambienceBox.Checked = op.GetBool("Music", "PlayAmbience", true);
             fadeBox.Checked = op.GetBool("Music", "Fade", true);
@@ -156,71 +179,32 @@ namespace th2patchlauncher
             titleBox.Checked = op.GetBool("Music", "ShowTitle", true);
             separateTracksBox.Checked = op.GetBool("Music", "SeparateTracks", false);
 
-            bigDropBox.Checked = op.GetBool("Input", "BigDrop", true);
-            xinputBox.Checked = op.GetBool("Input", "XInput", true);
-            vibrationBox.Checked = op.GetBool("Input", "Vibration", true);
 
-            psxtexBox.Checked = op.GetBool("Video", "DisableNewtex", false);
-            drawshadowBox.Checked = op.GetBool("Video", "DrawShadow", true);
-            drawhudBox.Checked = op.GetBool("Video", "ShowHUD", true);
+
+
 
             skyBox.Checked = op.GetBool("Patch", "DisableSky", false);
             railBarBox.Checked = op.GetBool("Patch", "RailBalanceBar", true);
 
             manualsBox.Checked = op.GetBool("Input", "Manuals", true);
+            bigDropBox.Checked = op.GetBool("Input", "BigDrop", true);
+            xinputBox.Checked = op.GetBool("Input", "XInput", true);
+            vibrationBox.Checked = op.GetBool("Input", "Vibration", true);
+            autokickBox.Checked = op.GetBool("Input", "AutoKick", true);
+
 
             this.Visible = true;
         }
 
         private void detectButtonClick(object sender, EventArgs e)
         {
-            op.DetectResolution();
-            resBox.Text = op.ResolutionString;
-
-            MaybeUpdateFovBar();
+            op.SetResolution();
+            op.setResAspectText(resBox, aspectRatioDrop, op.ResolutionString);
         }
 
 
 
-        public bool FileLocked(string filename)
-        {
-            FileStream stream = null;
-            FileInfo file = new FileInfo(filename);
 
-            try
-            {
-                stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.None);
-            }
-            catch (IOException)
-            {
-                return true;
-            }
-            finally
-            {
-                if (stream != null) stream.Close();
-            }
-
-            return false;
-        }
-
-        //random value comparison
-        public bool isSmallerExe()
-        {
-            bool result = false;
-
-            using (var br = new BinaryReader(File.Open($"{curDir}\\{hawkFile}", FileMode.Open)))
-            {
-                if (br.BaseStream.Length >= 0x1642EC + 4)
-                {
-                    br.BaseStream.Position = 0x1642EC;
-
-                    if (br.ReadUInt32() == 0xF92BD1F7)
-                        result = true;
-                }
-            }
-
-            return result;
-        }
 
         public void LaunchTHPS(bool saveParams)
         {
@@ -231,13 +215,13 @@ namespace th2patchlauncher
                 return;
             }
 
-            if (FileLocked("Thawk2.exe"))
+            if (Helpers.FileLocked("Thawk2.exe"))
             {
                 MessageBox.Show(ErrorMsg.Thawk2InUse, "Warning");
                 return;
             }
 
-            if (!isSmallerExe())
+            if (!Helpers.isSmallerExe(thawk2filePath))
             {
                 MessageBox.Show(ErrorMsg.Thawk2NotSmaller, "Warning");
                 return;
@@ -273,7 +257,6 @@ namespace th2patchlauncher
 
         #region [General tab]
 
-
         private void altSkinsBox_CheckedChanged(object sender, EventArgs e)
         {
             op.SetBool("Patch", "MoreSkins", (sender as CheckBox).Checked);
@@ -300,22 +283,6 @@ namespace th2patchlauncher
             op.SetString("Patch", "Game", (sender as ComboBox).Text);
         }
 
-        private void trackBar2_MouseUp(object sender, MouseEventArgs e)
-        {
-            var fog = (int)(Math.Pow(fogSlider.Value, 2) / (float)fogSlider.Maximum + 10f);
-
-            if (fog < 10) fog = 10;
-            if (fog > 750) fog = 750;
-
-            op.SetInt("Video", "FogScale", fog);
-        }
-
-        private void resBox_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            op.ParseResText(resBox.Text);
-            MaybeUpdateFovBar();
-        }
-
         #endregion
 
         #region [Video tab]
@@ -335,40 +302,31 @@ namespace th2patchlauncher
 
         }
 
-        private void trackBar1_ValueChanged(object sender, EventArgs e)
+        private void fovSlider_ValueChanged(object sender, EventArgs e)
         {
-            op.ZoomFactor = op.ValidateRange(fovSlider.Value, 30, 140);
-            UpdateFOVbar();
+            op.FovScale = fovSlider.Value / 100f;
+            fovLabel.Text = op.FovScale.ToString("0.0##");
         }
 
-        private void overrideFOVbox_CheckedChanged(object sender, EventArgs e)
+        private void fogSlider_ValueChanged(object sender, EventArgs e)
         {
-            fovSlider.Enabled = overrideFOVbox.Checked;
+            op.fog = Helpers.MathClamp((int)(Math.Pow(fogSlider.Value, 2) / (float)fogSlider.Maximum + 10f), 10, 750);
 
-            MaybeUpdateFovBar();
+            op.SetInt("Video", "FogScale", op.fog);
+
+            fogLabel.Text = op.fog.ToString();
         }
+
+        private void fogSlider_MouseUp(object sender, MouseEventArgs e)
+        {
+        }
+
+
 
         private void UpdateFOVbar()
         {
-            fovSlider.Value = op.ZoomFactor;
-            label4.Text = op.GetZoom().ToString("0.0##");
-
-            op.SetFloat("Video", "FOV", op.GetZoom());
-        }
-
-        private void MaybeUpdateFovBar()
-        {
-            if (!fovSlider.Enabled)
-            {
-                op.AutoFOV();
-                UpdateFOVbar();
-            }
-        }
-
-        private void resBox_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-            op.ParseResText(resBox.Text);
-            MaybeUpdateFovBar();
+            fovSlider.Value = Helpers.MathClamp((int)(100 * op.FovScale), 30, 140);
+            fovLabel.Text = op.FovScale.ToString("0.0##");
         }
 
         private void unlockFPSbox_CheckedChanged(object sender, EventArgs e)
@@ -384,6 +342,26 @@ namespace th2patchlauncher
 
             if (force32bits)
                 rendererBox.Checked = false;
+        }
+
+        private void aspectRatioDrop_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            op.applyResolutionListByAspectRatio(resBox, aspectRatioDrop.Text);
+        }
+
+        private void resBox_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            var size = op.ParseResText(resBox.Text);
+
+            if (size != null) op.SetResolution(size.Width, size.Height);
+        }
+
+
+        private void resBox_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            var size = op.ParseResText(resBox.Text);
+
+            if (size != null) op.SetResolution(size.Width, size.Height);
         }
 
         #endregion
@@ -465,6 +443,11 @@ namespace th2patchlauncher
         {
             op.SetBool("Video", "DisableNewTex", (sender as CheckBox).Checked);
         }
+
+        private void autokickBox_CheckedChanged(object sender, EventArgs e)
+        {
+            op.SetBool("Input", "AutoKick", (sender as CheckBox).Checked);
+        }
         #endregion
 
         #region [About tab]
@@ -483,6 +466,18 @@ namespace th2patchlauncher
             Process.Start((sender as LinkLabel).Text);
         }
         #endregion
+
+        private void overrideFOVbox_CheckStateChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void overrideFOVbox_CheckedChanged(object sender, EventArgs e)
+        {
+            fovSlider.Enabled = overrideFOVbox.Checked;
+            op.SetBool("Video", "OverrideFov", overrideFOVbox.Checked);
+
+            op.FovScale = op.FovScale; //lol
+        }
 
     }
 }

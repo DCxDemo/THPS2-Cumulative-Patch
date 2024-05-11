@@ -7,14 +7,19 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace thps2patch
 {
-    public class Options
+    public partial class Options
     {
+        public static readonly Size DefaultResolution = new Size(1280, 720);
+
         string configfilename;
         IniParserConfiguration cfg;
         IniData config;
+
+        #region [ini helper methods]
 
         private string TryGetValue(string section, string name, string defaultValue)
         {
@@ -47,7 +52,7 @@ namespace thps2patch
 
         public float GetFloat(string section, string name, float defaultValue)
         {
-            var result = TryGetValue(section, name, defaultValue.ToString());
+            var result = TryGetValue(section, name, defaultValue.ToString("0.##"));
             return result == null ? defaultValue : Single.Parse(result);
         }
 
@@ -71,51 +76,31 @@ namespace thps2patch
             config[section][name] = value;
         }
 
+        #endregion
+
         public int ResX = 1280;
         public int ResY = 720;
 
-        public bool OverrideFOV = false;
-        public int ZoomFactor = 100;
+        public float FovScale
+        {
+            get { return userFovScale; }
+            set {
+                userFovScale = Helpers.MathClamp(value, 0.5f, 1.5f);
+                SetFloat("Video", "FovScale", userFovScale);
+            }
+        }
+
+        private float userFovScale = 1f;
+
+
+        public int fog = 300;
 
         public bool UserPatch = false;
         public string Game = "THPS2";
         public string ExeName = "Thawk2";
 
-        /*
-        public bool Force32BPP = true;
-        public bool UnlockFPS = true;
- 
 
 
-        public bool AltSkins = false;
-        public bool SkipIntro = true;
-        public int FogScale = 750;
-
-        public bool ShowHUD = true;
-        public bool DrawShadow = true;
-        public bool DisableNewTex = true;
-
-        public bool SeparateSave = false;
-        public bool SeparateTracks = false;
-
-        public bool MusicFade = true;
-        public bool MusicRandom = false;
-        public bool MusicTitle = false;
-        public bool MusicAmbience = true;
-        public string DickSwap = "";
-
-        public bool ManualsEnabled = true;
-        public bool BigDropEnabled = true;
-        public bool Vibration = true;
-        public bool XInputEnabled = true;
-        */
-
-        public int ValidateRange(int value, int min, int max)
-        {
-            if (value < min) { return min; }
-            if (value > max) { return max; }
-            return value;
-        }
 
         public Options(string filename)
         {
@@ -138,49 +123,7 @@ namespace thps2patch
 
             var parser = new IniDataParser(cfg);
             config = parser.Parse(File.ReadAllText(configfilename));
-
-            /*
-            //what a mess
-
-            foreach (string s in buf)
-            {
-                if (s.Contains('='))
-                {
-                    string[] bb = s.Split('=');
-
-                    switch (bb[0])
-                    {
-                        case "ZoomFactor":
-                            if (bb[1] == "auto")
-                            {
-                                AutoFOV();
-                            }
-                            else
-                            {
-                                try
-                                {
-                                    OverrideFOV = true;
-                                    ZoomFactor = Int32.Parse(bb[1]);
-                                }
-                                catch { }
-                            } break;
-
-                        case "UserPatch": try { UserPatch = Boolean.Parse(bb[1]); }
-                            catch { } break;
-                    }
-                }
-            }
-            */
         }
-
-        public void AutoFOV()
-        {
-            OverrideFOV = false;
-            int ourzoom = (int)((4.0f * ResY) / (3.0f * ResX) * 100.0f);
-            ZoomFactor = ValidateRange((int)(ourzoom + (100.0f - ourzoom) / 2.0f), 30, 140);
-        }
-
-        public float GetZoom() => ZoomFactor / 100.0f;
 
         public void Save()
         {
@@ -190,9 +133,9 @@ namespace thps2patch
             parser.WriteFile(configfilename, config, new UTF8Encoding(false));
         }
 
-        public void ParseResText(string x)
+        public Size ParseResText(string resolutionString)
         {
-            string str = x.Trim().Replace(" ", "").ToLower();
+            string str = resolutionString.Trim().Replace(" ", "").ToLower();
 
             if (str.Contains("x"))
             {
@@ -202,12 +145,7 @@ namespace thps2patch
                 {
                     try
                     {
-                        ResX = Int32.Parse(buf[0]);
-                        ResY = Int32.Parse(buf[1]);
-
-                        SetResolution(ResX, ResY);
-
-                        return;
+                        return new Size(Int32.Parse(buf[0]), Int32.Parse(buf[1]));
                     }
                     catch
                     {
@@ -216,13 +154,21 @@ namespace thps2patch
                 }
             }
 
-            SetResolution(1280, 720);
+            return Size.Empty;
         }
 
-        public void SetResolution(int X, int Y)
+        public void SetResolution(int X = 0, int Y = 0)
         {
-            ResX = X;
-            ResY = Y;
+            if (X > 0 && Y > 0)
+            {
+                ResX = Helpers.MathClamp(X, 0, 2048);
+                ResY = Helpers.MathClamp(Y, 0, 2048);
+            }
+            else
+            {
+                ResX = Screen.PrimaryScreen.Bounds.Width;
+                ResY = Screen.PrimaryScreen.Bounds.Height;
+            }
 
             SetInt("Video", "ResX", ResX);
             SetInt("Video", "ResY", ResY);
@@ -235,12 +181,35 @@ namespace thps2patch
 
         public string ResolutionString => $"{ResX}x{ResY}";
 
-        public void DetectResolution()
+        public void applyResolutionListByAspectRatio(ComboBox resbox, string aspectRatio)
         {
-            ResX = Screen.PrimaryScreen.Bounds.Width;
-            ResY = Screen.PrimaryScreen.Bounds.Height;
+            if (resbox.Items.Count > 0) resbox.Items.Clear();
 
-            SetResolution(ResX, ResY);
+            foreach (var res in _resolutions)
+            {
+                if (res.Value == aspectRatio)
+                {
+                    resbox.Items.Add(res.Key);
+                }
+            }
+        }
+
+        //updates resbox and aspect ratio box text accordingly by resolution
+        public void setResAspectText(ComboBox resBox, ComboBox aspectRatioBox, string resolutionString)
+        {
+            aspectRatioBox.SelectedItem = getAspectRatioOfResolution(resolutionString);
+            resBox.Text = ResolutionString;
+        }
+
+        public string getAspectRatioOfResolution(string resolutionString)
+        {
+            foreach (var res in _resolutions)
+            {
+                if (res.Key == resolutionString)
+                    return res.Value;
+            }
+
+            return "";
         }
     }
 }

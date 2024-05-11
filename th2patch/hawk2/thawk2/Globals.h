@@ -1,6 +1,9 @@
 #pragma once
 #include "../patchStuff.h"
 
+//array of high score initials, NS devs
+extern char** DefaultHighScoreInitials;
+
 extern void* BaddyList;
 extern void* EnvironmentalObjectList;
 extern void* PowerUpList;
@@ -14,6 +17,8 @@ extern SLevel* Levels;
 
 extern void* GSkater;
 extern void* GSkater2;
+
+extern int* GNumberOfPlayers;
 
 extern int* ViewportMode;
 
@@ -70,3 +75,14 @@ extern int* Redbook_PausedSongPos;
 
 extern int* Cheat_LevelSelect;
 extern int* Cheat_Light;
+
+
+extern int* Trig_OffsetList;
+extern int* NumNodes;
+
+extern int* TotalRailNodes;
+extern void* RailNodeLookup;
+
+
+extern bool* AutoKickSetting;
+extern bool* AutoKickState;

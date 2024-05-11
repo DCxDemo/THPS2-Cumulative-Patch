@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "gaps.h"
 
-SGapTrick gapListThps2[] = {
+Career::SGapTrick gapListThps2[] = {
 
 	// chopper drop
 	catAir,

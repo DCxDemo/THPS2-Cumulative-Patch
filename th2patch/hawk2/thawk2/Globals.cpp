@@ -2,6 +2,8 @@
 #include "../patchStuff.h"
 
 
+char** DefaultHighScoreInitials = (char**)0x00521ec8;
+
 void* BaddyList = (void*)0x0055c31c;
 void* EnvironmentalObjectList = (void*)0x00567ba0;
 void* PowerUpList = (void*)0x00568490;
@@ -15,6 +17,8 @@ SLevel* Levels = (SLevel*)0x538FF8;
 
 void* GSkater = (void*)0x5674b8;
 void* GSkater2 = (void*)0x5674bc;
+
+int* GNumberOfPlayers = (int*)0x00530d3c;
 
 int* ViewportMode = (int*)0x00567588;
 
@@ -73,3 +77,15 @@ int* Redbook_PausedSongPos = (int*)0x55e350;
 
 int* Cheat_LevelSelect = (int*)0x567544;
 int* Cheat_Light = (int*)0x5674c8;
+
+
+
+int* Trig_OffsetList = (int*)0x0056ae70;
+int* NumNodes = (int*)0x0056ae74;
+
+int* TotalRailNodes = (int*)0x005684bc;
+void* RailNodeLookup = (void*)0x005684b8;
+
+
+bool* AutoKickSetting = (bool*)0x00567038;
+bool* AutoKickState = (bool*)0x0055c88c;
