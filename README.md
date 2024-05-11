@@ -29,10 +29,17 @@ Make sure target binary is called dinput.dll, could be hawk2.dll by default \
 Make sure to install launcher dependencies (via NuGet):
 * ini-parser - https://github.com/rickyah/ini-parser
 
+# Decompilation effort
+There is a minor decompilation effort done for this project. If you want to contribute, make sure you're familiar with Ghidra, pointers and C++ classes:
+* https://github.com/DCxDemo/THPS2-Cumulative-Patch/tree/main/th2patch/hawk2/info
+
+Available decomp progress is stored in a "thawk2" subfolder over here:
+* https://github.com/DCxDemo/THPS2-Cumulative-Patch/tree/main/th2patch/hawk2/thawk2
+
 ## Links
 * [LegacyTHPS Discord](https://discord.gg/vTWucHS)
 * [Video preview of the patch](https://www.youtube.com/watch?v=1eHHqhsgC6w)
 * [Original thps-mods thread](http://www.thps-mods.com/forum/viewtopic.php?t=5429)
 * [Installation and troubleshooting](https://github.com/DCxDemo/THPS2-Cumulative-Patch/wiki)
 
-2016-2018, 2022-2023, DCxDemo*.
+2016-2018, 2022-2024, DCxDemo*.
