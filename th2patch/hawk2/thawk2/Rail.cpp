@@ -5,6 +5,7 @@
 #include "types.h"
 
 namespace Rail {
+
     // this should be whereever trigger file handling is located
     enum class ETriggerNodeType : int {
         RailPoint = 0x0A,
@@ -264,6 +265,8 @@ namespace Rail {
 
         printf("pass 2 done\n");
     }
+
+
 
 
     // === hook stuff ===

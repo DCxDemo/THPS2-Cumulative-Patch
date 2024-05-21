@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "..\types.h"
 
 /*
     Functions to acces files on PC.
@@ -14,13 +15,13 @@
 typedef void(*PCinit_t)();
 typedef void(*PCstop_t)();
 typedef void(*PCremove_t)();
-typedef void(*PCopen_t)(char* filename, int mode);
+typedef int(*PCopen_t)(char* filename, int mode);   // returns file ID
 typedef int(*getFreeFileIndex_t)();
 typedef void*(*PCcreate_t)(char* filename);
 typedef long(*PClseek_t)(int fileID, int offset, int origin);
 typedef void(*PCread_t)();
 typedef void(*PCwrite_t)();
-typedef void(*PCclose_t)();
+typedef void(*PCclose_t)(uint file);
 
 static const PCinit_t PCinit = (PCinit_t)0x004e45c0;
 static const PCstop_t PCstop = (PCstop_t)0x004e46c0;

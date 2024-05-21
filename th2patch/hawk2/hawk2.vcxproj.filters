@@ -156,6 +156,9 @@
     <ClInclude Include="thawk2\Rail.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="thawk2\pal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -278,6 +281,9 @@
     <ClCompile Include="thawk2\Rail.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="thawk2\pal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="hawk2.def">
@@ -288,6 +294,7 @@
     <None Include="lib\sqlite\readme.md" />
     <None Include="lib\readme.md" />
     <None Include="info\hooking_tutorial.md" />
+    <None Include="info\classes.md" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="lib\SQLite\sqlite3.lib" />

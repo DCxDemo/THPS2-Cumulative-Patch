@@ -97,7 +97,7 @@ void Init_AtStart()
 	//does nothing in the port
 	//SFX_InitAtStart();
 
-	FileIO_Init();
+	FileIO::FileIO_Init();
 
 	//empty func, must be something on psx
 	//GameFMV_Init();

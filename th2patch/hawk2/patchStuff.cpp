@@ -178,14 +178,15 @@ void Redbook_XANextTrack2(int inc)
 
 		if (options.ShowTitle && options.ShowHUD)
 		{
-			//add file check here
-			//FileIO_SetSubDir("D:\\Games\\THPS2\\data\\music\\");
+			printf("looking for %s...", &playingFile[0]);
 
-			//if (FileIO_Exists(&playingFile[0]))
-			//{
+			if (FileIO::Exists("music\\", &playingFile[0]))
+			{
+				//printf("exists: %i", exists);
+
 				Mess_DeleteAll();
 				DrawMessage(&playingName[0]);
-			//}
+			}
 		}
 
 		Redbook_XAPlay(newXA / 8, newXA % 8);
@@ -282,9 +283,9 @@ void Redirect_Redbook_XANextTrack()
 
 void* FontManager_LoadFont(char* filename)
 {
-	void* pData = Mem_New(FileIO_Open(filename), 0, 1, 0);
-	FileIO_Load(pData);
-	FileIO_Sync();
+	void* pData = Mem_New(FileIO::FileIO_Open(filename), 0, 1, 0);
+	FileIO::FileIO_Load(pData);
+	FileIO::FileIO_Sync();
 
 	void* pFont = FontManger_LoadFont2(pData, filename);
 	Mem_Delete(pData);
@@ -1431,6 +1432,9 @@ void Patch()
 	else CopyGaps(pGapListThps2, pGaps); //restore if mhpb
 
 
+	// this is set as callback, so should put as int
+	CPatch::SetInt(0x004f4ef4 + 3, (int)WINMAIN_WndProc);
+
 	//doesnt seem to work
 	//Career_ClearGameWithEveryone();
 
@@ -1648,6 +1652,10 @@ void Patch()
 	//TO DO split this into separate hooking funcs for each namespace and move to Hook::SetHooks
 	SetHooks();
 	Hook::SetHooks();
+
+	//WINMAIN_PatchWndProc();
+
+	//CPatch::RedirectJump(0x004f4ba0, WINMAIN_WndProc);
 }
 
 

@@ -10,6 +10,23 @@
 
 namespace Rail {
 
+	typedef struct Vector3i {
+		int X;
+		int Y;
+		int Z;
+	} Vector3i;
+
+	typedef struct CRail {
+		void* vTable;
+		char active;
+		char flags;
+		short nodeFlags;
+		Vector3i position;
+		Vector3i angle;
+		CRail* pNext;
+		CRail* pPrev;
+	} CRail;
+
 	extern Hook::Reroute* pHookList;
 
 	//move to trig
@@ -58,7 +75,8 @@ namespace Rail {
 	static const Rail_CreateRails_t Rail_CreateRails = (Rail_CreateRails_t)0x004a7eb0;
 	static const Rail_Init_t Rail_Init = (Rail_Init_t)0x004a8150;
 	static const Rail_DeleteAll_t Rail_DeleteAll = (Rail_DeleteAll_t)0x004a8180;
-	static const CRail_t CRail = (CRail_t)0x004a81a0;
+
+	static const CRail_t CRail_CRail = (CRail_t)0x004a81a0;
 	static const CRail_destruct_t CRail_destruct = (CRail_destruct_t)0x004a87f0;
 	static const CRail_destroy_t CRail_destroy = (CRail_destroy_t)0x004a8810;
 	static const Rail_Update_t Rail_Update = (Rail_Update_t)0x004a8850;

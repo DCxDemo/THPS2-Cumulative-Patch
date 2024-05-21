@@ -97,6 +97,7 @@
     <ClInclude Include="thawk2\CMenu.h" />
     <ClInclude Include="thawk2\gte.h" />
     <ClInclude Include="thawk2\Init.h" />
+    <ClInclude Include="thawk2\pal.h" />
     <ClInclude Include="thawk2\Rail.h" />
     <ClInclude Include="thawk2\Render.h" />
     <ClInclude Include="thawk2\SkaterProfile.h" />
@@ -179,6 +180,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="thawk2\pal.cpp" />
     <ClCompile Include="thawk2\PCInput.cpp" />
     <ClCompile Include="thawk2\PKR.cpp" />
     <ClCompile Include="thawk2\Rail.cpp" />
@@ -196,6 +198,7 @@
     <None Include="lib\sqlite\readme.md" />
     <None Include="lib\SQLite\sqlite3.exp" />
     <None Include="THawk2\readme.md" />
+    <None Include="info\classes.md" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="lib\SQLite\sqlite3.lib" />

@@ -23,5 +23,7 @@ namespace Hook
 		ProcessList(gte::pHookList);
 		ProcessList(Career::pHookList);
 		ProcessList(Rail::pHookList);
+		ProcessList(FileIO::pHookList);
+		ProcessList(Pal::pHookList);
 	}
 }
