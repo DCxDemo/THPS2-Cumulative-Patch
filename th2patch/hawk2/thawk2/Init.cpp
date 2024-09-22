@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "thawk2.h"
 #include "types.h"
+#include "Flash.h"
 
 
 //demo viewport, final is different
@@ -136,7 +137,7 @@ void Init_Restart()
 
 	*TitleTimeout = 0x14;
 
-	Flash_Reset();
+	Flash::Flash_Reset();
 
 	//unused in the port
 	//Pack_Init();

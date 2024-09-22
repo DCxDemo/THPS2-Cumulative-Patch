@@ -141,6 +141,7 @@
     <ClCompile Include="Checksum.cpp" />
     <ClCompile Include="color.cpp" />
     <ClCompile Include="patch\hook.cpp" />
+    <ClCompile Include="thawk2\Flash.cpp" />
     <ClCompile Include="thawk2\gte.cpp" />
     <ClCompile Include="thawk2\Init.cpp" />
     <ClCompile Include="thawk2\IO\FileIO.cpp" />
