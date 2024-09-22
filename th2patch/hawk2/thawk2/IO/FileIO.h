@@ -10,7 +10,7 @@ namespace FileIO {
     typedef void	(*FileIO_UnLoadHed_t)();
     typedef void	(*FileIO_AddDirToFileName_t)(char* filename);
     typedef void	(*FileIO_AddSubDirToFileName_t)(char* filename);
-    typedef void*   (*FileIO_OpenLoad_t)(char* filename, int heap);
+    //typedef void*   (*FileIO_OpenLoad_t)(char* filename, int heap);
     //typedef void	(*FileIO_SetSectorsPerFrame_t)(int sectorsPerFrame);
     typedef void	(*FileIO_Init_t)();
     typedef int		(*FileIO_Open_t)(char* filename);
@@ -26,7 +26,8 @@ namespace FileIO {
     // unused calc checksum func here 00448c50
     static const FileIO_AddDirToFileName_t		FileIO_AddDirToFileName = (FileIO_AddDirToFileName_t)0x00448ca0;
     static const FileIO_AddSubDirToFileName_t	FileIO_AddSubDirToFileName = (FileIO_AddSubDirToFileName_t)0x00448cd0;
-    static const FileIO_OpenLoad_t				FileIO_OpenLoad = (FileIO_OpenLoad_t)0x448D70;
+    //static const FileIO_OpenLoad_t				FileIO_OpenLoad = (FileIO_OpenLoad_t)0x448D70;
+    void* FileIO_OpenLoad(char* filename, int Heap);
     // static const FileIO_SetSectorsPerFrame_t	FileIO_SetSectorsPerFrame = (FileIO_SetSectorsPerFrame_t)0x00448ee0;
     void FileIO_SetSectorsPerFrame(int sectorsPerFrame);
     static const FileIO_Init_t					FileIO_Init = (FileIO_Init_t)0x00448ef0;

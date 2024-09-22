@@ -26,6 +26,8 @@ namespace FileIO {
 
     char* FileName = (char*)0x0055e1f0;
 
+    int* FileSize = (int*)0x0055e1ec;
+
     //char* FileSubDirName = "logos\\";
 
     /// <summary>
@@ -82,7 +84,7 @@ namespace FileIO {
     }
 
     /// <summary>
-    /// Checks where file exists. Only used once for mouse cursor...
+    /// Checks whether the file exists. Only used once for mouse cursor...
     /// </summary>
     /// <param name="fileName"></param>
     /// <returns></returns>
@@ -163,6 +165,54 @@ namespace FileIO {
         return FileIO_OpenLoad(filename, heap);
     }
 
+    /// <summary>
+    /// Loads file to memory.
+    /// </summary>
+    /// <param name="filename"></param>
+    /// <param name="Heap"></param>
+    /// <returns></returns>
+    void* FileIO_OpenLoad(char* filename, int Heap) {
+
+        printf("DECOMP FileIO_OpenLoad(%s)\n", filename);
+
+        // check file name, early null fallback
+        if (filename == NULL) {
+            printf("NULL name passed to FileIO_OpenLoad");
+            return NULL;
+        }
+
+        int size = FileIO_Open(filename);
+
+        // check file size, can remove this on PC to allow larger files
+        //if (size < 0 || size > MAX_FILESIZE) {
+        //    printf("Bad size returned from FileIO_Open");
+        //    return NULL;
+        //}
+
+        // check heap type
+        if (Heap != 0 && Heap != 1) {
+            printf("Unknown heap type");
+            return NULL;
+        }
+
+        // alloc memory
+        void* pFile = Mem_New(size, Heap, 1, 0);
+
+        // check allocation status
+        if (pFile == NULL) {
+            printf("Unable to allocate memory in FileIO_OpenLoad");
+            return NULL;
+        }
+
+        // load file data
+        FileIO_Load(pFile);
+
+        // finalize
+        FileIO_Sync();
+        Mem_Shrink(pFile, (*FileSize + 3U) & 0xfffffc);
+
+        return pFile;
+    }
 
 
 
@@ -170,6 +220,37 @@ namespace FileIO {
     // === hook stuff ===
 
     Hook::Reroute hookList[] = {
+
+        { 0x00415c87, FileIO_OpenLoad },
+        { 0x00415cd0, FileIO_OpenLoad },
+        { 0x00417493, FileIO_OpenLoad },
+        { 0x0041c52a, FileIO_OpenLoad },
+        { 0x0041de92, FileIO_OpenLoad },
+        { 0x0042646a, FileIO_OpenLoad },
+        { 0x00427739, FileIO_OpenLoad },
+        { 0x0042beda, FileIO_OpenLoad },
+        { 0x0042cdf5, FileIO_OpenLoad },
+        { 0x0042f96f, FileIO_OpenLoad },
+        { 0x0042fa4b, FileIO_OpenLoad },
+        { 0x004449a8, FileIO_OpenLoad },
+        { 0x0044b37d, FileIO_OpenLoad },
+        { 0x004558b8, FileIO_OpenLoad },
+        { 0x00458bb3, FileIO_OpenLoad },
+        { 0x0045d2a7, FileIO_OpenLoad },
+        { 0x0046b0cb, FileIO_OpenLoad },
+        { 0x004793ea, FileIO_OpenLoad },
+        { 0x0047a809, FileIO_OpenLoad },
+        { 0x0047ebcd, FileIO_OpenLoad },
+        { 0x0049039a, FileIO_OpenLoad },
+        { 0x004a0452, FileIO_OpenLoad },
+        { 0x004a9a40, FileIO_OpenLoad },
+        { 0x004a9a60, FileIO_OpenLoad },
+        { 0x004b1d73, FileIO_OpenLoad },
+        { 0x004b201e, FileIO_OpenLoad },
+        { 0x004b21f1, FileIO_OpenLoad },
+        { 0x004b5054, FileIO_OpenLoad },
+        { 0x004bccbb, FileIO_OpenLoad },
+        { 0x004cb548, FileIO_OpenLoad },
 
         { 0x0043258c, FileIO_GetSubDir },
         { 0x0042460e, FileIO_GetSubDir },
