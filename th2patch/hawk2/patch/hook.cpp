@@ -24,6 +24,8 @@ namespace Hook
 		ProcessList(Career::pHookList);
 		ProcessList(Rail::pHookList);
 		ProcessList(FileIO::pHookList);
-		ProcessList(Pal::pHookList);
+		ProcessList(Flash::pHookList);
+		ProcessList(Physics::pHookList);
+		//ProcessList(Pal::pHookList);
 	}
 }

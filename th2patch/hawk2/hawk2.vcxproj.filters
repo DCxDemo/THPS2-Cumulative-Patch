@@ -287,6 +287,9 @@
     <ClCompile Include="thawk2\Flash.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="thawk2\Physics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="hawk2.def">
