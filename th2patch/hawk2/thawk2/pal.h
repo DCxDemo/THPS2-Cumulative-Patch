@@ -14,7 +14,7 @@ namespace Pal {
         bool InVRAM;
         char RemapIndex;
         uint Checksum;
-        void* pD3dPalette;
+        void* pD3DPalette;
         S_Pal* pPrev;
         S_Pal* pNext;
     } S_Pal;
@@ -22,13 +22,13 @@ namespace Pal {
 
     typedef void(*Pal_Init_t)();
     typedef void(*Pal_Cleanup_t)();
-    //typedef void(*NewPaletteEntry_t)();
-    //typedef void(*RemovePaletteEntry_t)();
-    //typedef void(*Pal_FindPaletteEntry_t)();
-    typedef void(*Pal_RemoveUnusedPalettes_t)();
-    typedef void(*GetFree16Slot_t)();
+    // typedef void(*NewPaletteEntry_t)();
+    // typedef void(*RemovePaletteEntry_t)();
+    // typedef void(*Pal_FindPaletteEntry_t)();
+    // typedef void(*Pal_RemoveUnusedPalettes_t)();
+    // typedef void(*GetFree16Slot_t)();
     typedef void(*Free16Slot_t)();
-    typedef void(*GetFree256Slot_t)();
+    // typedef void(*GetFree256Slot_t)();
     typedef void(*_free256slot_t)();
     typedef void(*_calcPaletteUsageStats_t)();
     typedef void(*Get256SlotNumber_t)();
@@ -41,16 +41,19 @@ namespace Pal {
 
     static const Pal_Init_t Pal_Init = (Pal_Init_t)0x004879a0;
     static const Pal_Cleanup_t Pal_Cleanup = (Pal_Cleanup_t)0x00487c10;
-    //static const NewPaletteEntry_t NewPaletteEntry = (NewPaletteEntry_t)0x00487c50;
+    // static const NewPaletteEntry_t NewPaletteEntry = (NewPaletteEntry_t)0x00487c50;
     S_Pal* NewPaletteEntry(uint Checksum);
-    //static const RemovePaletteEntry_t RemovePaletteEntry = (RemovePaletteEntry_t)0x00487ca0;
+    // static const RemovePaletteEntry_t RemovePaletteEntry = (RemovePaletteEntry_t)0x00487ca0;
     void RemovePaletteEntry(S_Pal* pPal);
-    //static const Pal_FindPaletteEntry_t Pal_FindPaletteEntry = (Pal_FindPaletteEntry_t)0x00487cf0;
+    // static const Pal_FindPaletteEntry_t Pal_FindPaletteEntry = (Pal_FindPaletteEntry_t)0x00487cf0;
     S_Pal* Pal_FindPaletteEntry(uint Checksum);
-    static const Pal_RemoveUnusedPalettes_t Pal_RemoveUnusedPalettes = (Pal_RemoveUnusedPalettes_t)0x00487d10;
-    static const GetFree16Slot_t GetFree16Slot = (GetFree16Slot_t)0x00487d80;
+    // static const Pal_RemoveUnusedPalettes_t Pal_RemoveUnusedPalettes = (Pal_RemoveUnusedPalettes_t)0x00487d10;
+    void Pal_RemoveUnusedPalettes();
+    // static const GetFree16Slot_t GetFree16Slot = (GetFree16Slot_t)0x00487d80;
+    int GetFree16Slot();
     static const Free16Slot_t Free16Slot = (Free16Slot_t)0x00487df0;
-    static const GetFree256Slot_t GetFree256Slot = (GetFree256Slot_t)0x00487e80;
+    // static const GetFree256Slot_t GetFree256Slot = (GetFree256Slot_t)0x00487e80;
+    int GetFree256Slot();
     static const _free256slot_t _free256slot = (_free256slot_t)0x00487ef0;
     static const _calcPaletteUsageStats_t _calcPaletteUsageStats = (_calcPaletteUsageStats_t)0x00487f80;
     static const Get256SlotNumber_t Get256SlotNumber = (Get256SlotNumber_t)0x00487fe0;

@@ -1,13 +1,20 @@
 #include "stdafx.h"
-#include "thawk2/Mem.h"
-#include "thawk2/pal.h"
+#include "thawk2\Mem.h"
+#include "thawk2\pal.h"
 #include "types.h"
 #include "..\patch\hook.h"
+#include "thawk2\_old.h"
 
 namespace Pal {
 
     int* TotalPaletteUsage = (int*)0x00568364;
     S_Pal* pPaletteList = (S_Pal*)0x00567f50;
+
+    int* Pal16Max = (int*)0x00532dac;
+    int* Pal256Max = (int*)0x00532db0;
+
+    bool* Pal16Usage = (bool*)0x00568054;
+    bool* Pal256Usage = (bool*)0x00567f54;
 
     // creates a new palette entry
     S_Pal* NewPaletteEntry(uint Checksum) {
@@ -68,25 +75,84 @@ namespace Pal {
 
         printf("DECOMP Pal_FindPaletteEntry(): %i\n", Checksum);
 
+        if (pPaletteList == NULL) return NULL;
+
         S_Pal* pPal = pPaletteList;
 
-        // if list is not null
-        if (pPaletteList != NULL) {
-            do {
+        do {
+            // got a match?
+            if (pPal->Checksum == Checksum)
+                return pPal;
 
-                // maybe we found our palette checksum?
-                if (pPal->Checksum == Checksum)
-                    return pPal;
+            // go to the next palette
+            pPal = pPal->pPrev;
 
-                // go to the next palette
-                pPal = pPal->pPrev;
-
-            } while (pPal != NULL);
-        }
+        } while (pPal != NULL);
 
         return pPal;
     }
 
+    int GetFree16Slot()
+    {
+        for (int i = 0; i < *Pal16Max; i++)
+            if (Pal16Usage[i])
+            {
+                Pal16Usage[i] = false;
+                return i;
+            }
+
+        printf("Ran out of Pal16 slots!\n");
+
+        Pal16Usage[*Pal16Max - 1] = false;
+
+        return *Pal16Max - 1;
+    }
+
+    int GetFree256Slot()
+    {
+        for (int i = 0; i < *Pal256Max; i++)
+            if (Pal256Usage[i])
+            {
+                Pal256Usage[i] = false;
+                return i;
+            }
+
+        printf("Ran out of Pal256 slots!\n");
+
+        Pal16Usage[*Pal256Max - 1] = false;
+
+        return *Pal256Max - 1;
+    }
+
+
+
+    void Pal_RemoveUnusedPalettes()
+    {
+        if (pPaletteList == NULL) return;
+
+        S_Pal* pPal = pPaletteList;
+        S_Pal* pPrev = pPal->pPrev;
+
+        do {
+            if (pPal->Usage == 0) {
+
+                D3DTEX_FreePaletteEntry(pPal->pD3DPalette, 0);
+
+                pPal->pD3DPalette = NULL;
+
+                if (pPal->flags & 1)
+                    Pal16Usage[pPal->slot] = true;
+
+                if (pPal->flags & 2)
+                    Pal256Usage[pPal->slot] = true;
+
+                RemovePaletteEntry(pPal);
+            }
+
+            pPal = pPrev;
+
+        } while (pPrev != NULL);
+    }
 
 
     // === hook stuff ===
@@ -100,6 +166,14 @@ namespace Pal {
         { 0x004b05be,   Pal_FindPaletteEntry },
 
         { 0x00487d62,   RemovePaletteEntry },
+
+        { 0x00449d05,   GetFree16Slot },
+        { 0x0048824b,   GetFree16Slot },
+        { 0x00488034,   GetFree256Slot },
+        { 0x004882f3,   GetFree256Slot },
+        { 0x004ad751,   GetFree256Slot },
+
+
 
         //=========================
         { NULL, NULL }
