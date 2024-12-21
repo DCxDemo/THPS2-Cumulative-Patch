@@ -757,6 +757,15 @@ namespace Career {
     }
 
 
+    // Retrieve number of levels with any medal
+    // how exactly is this different from numlevelswithmedals?
+    int Career_CountMedals(void* pProg)
+    {
+        printf("DECOMP Career_CountMedals()... ");
+
+        return Career_NumLevelsWithMedals(pProg);
+    }
+
 
 
 
@@ -830,6 +839,8 @@ namespace Career {
     // clears the game, used by the unlock everything cheat
     void Career_ClearGameWithEveryone()
     {
+        printf("DECOMP Career_ClearGameWithEveryone()\n");
+
         for (int i = 0; i < NUM_SKATERS; i++)
             Career_ClearGame(i);
     }
@@ -1036,6 +1047,10 @@ namespace Career {
 
         { 0x0047fd40, Career_CountUnlockedCheats }, //anycheatsenabled
         { 0x00450ba4, Career_CountUnlockedCheats }, //front_update
+
+        { 0x004ad47b, Career_ClearGameWithEveryone },
+
+        { 0x000484225, Career_CountMedals },
 
 
         // DECOMPILED ALL CALLS HERE

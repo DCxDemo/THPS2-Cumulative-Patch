@@ -181,7 +181,7 @@ namespace Career {
 	typedef void(*Career_SpecialTrickAssigned_t)();
 	typedef void(*Career_AssignSpecialTrick_t)();
 	//typedef void(*Career_CountGoldMedals_t)();
-	typedef void(*Career_CountMedals_t)();
+	//typedef void(*Career_CountMedals_t)();
 	typedef void(*Career_PostLoad_t)();
 	typedef void(*Career_PreSave_t)();
 	typedef void(*Career_GameCleared_t)();
@@ -299,7 +299,8 @@ namespace Career {
 	static const Career_AssignSpecialTrick_t Career_AssignSpecialTrick = (Career_AssignSpecialTrick_t)0x00416370;
 	//static const Career_CountGoldMedals_t Career_CountGoldMedals = (Career_CountGoldMedals_t)0x004164a0;
 	int Career_CountGoldMedals(void* pProg);
-	static const Career_CountMedals_t Career_CountMedals = (Career_CountMedals_t)0x00416520;
+	//static const Career_CountMedals_t Career_CountMedals = (Career_CountMedals_t)0x00416520;
+	int Career_CountMedals(void* pProg);
 	static const Career_PostLoad_t Career_PostLoad = (Career_PostLoad_t)0x004165c0;
 	static const Career_PreSave_t Career_PreSave = (Career_PreSave_t)0x004166e0;
 	static const Career_GameCleared_t Career_GameCleared = (Career_GameCleared_t)0x00416730;
