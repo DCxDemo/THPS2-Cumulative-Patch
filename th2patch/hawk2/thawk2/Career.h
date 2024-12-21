@@ -21,6 +21,25 @@ namespace Career {
 
 #define NUMCAREERLEVELS_TH2 12
 
+	enum class ELevel : int {
+		Hangar = 0,
+		School2 = 1,
+		Marseille = 2,
+		NewYork = 3,
+		Venice = 4,
+		SkateStreet = 5,
+		Philly = 6,
+		Bullring = 7,
+		ChopperDrop = 8,
+		SkateHeaven = 9,
+		Warehouse = 10,
+		Vans = 11,
+		DownhillJam = 12,
+		CustomPark = 13,
+		First = 0,
+		Last = 13
+	};
+
 	enum class ECheat : int {
 		McSqueeb = 0,
 		Spiderman = 1,
@@ -68,6 +87,16 @@ namespace Career {
 	/// <summary>
 	/// Defines a gap trick aka "blue text transfer".
 	/// </summary>
+	typedef struct SCheat {
+		bool Unlocked;		// cheat unlock state
+		bool SkaterIndex;	// skater index unlocked? probably unused
+		bool State;			// cheat state
+		bool pad;			// apparently just padding
+	} SCheat;
+
+	/// <summary>
+	/// Defines a gap trick aka "blue text transfer".
+	/// </summary>
 	typedef struct SGapTrick {
 		short Flags;		// gap type flags (stuff like CANCEL_GRIND CANCEL_WALL, etc)
 		short Type;			// defines whether the gap is used in goal checks ( EGapFlag enum )
@@ -99,9 +128,9 @@ namespace Career {
 	typedef void(*Options_RemapControllers_t)();
 	typedef void(*Options_ResetControllerDefaults_t)();
 	typedef void(*Options_Init_t)();
-	typedef bool(*Career_Got_t)(int goalIndex);
-	typedef bool(*Career_JustGot_t)(int param_1);
-	typedef int(*Career_LevelTapes_t)(void* param_1, int param_2); //param_1 type = SCharacterProgress
+	//typedef bool(*Career_Got_t)(int goalIndex);
+	//typedef bool(*Career_JustGot_t)(int param_1);
+	//typedef int(*Career_LevelTapes_t)(void* param_1, int param_2); //param_1 type = SCharacterProgress
 	//typedef int(*Career_NumLevelGoals_t)();
 	typedef int(*Career_CountMoney_t)();
 	//typedef void(*Career_CheckScore_t)();
@@ -139,7 +168,7 @@ namespace Career {
 	typedef bool(*Career_BuyPoint_t)(int statIndex, int param_2);
 	typedef bool(*Career_SellPoint_t)(int statIndex);
 	typedef int(*Career_GetPointCost_t)();
-	typedef void(*Career_NumLevelsWithMedals_t)();
+	//typedef void(*Career_NumLevelsWithMedals_t)();
 	typedef bool(*Career_LevelOpenCareerMode_t)(int levelIndex, void* charProg); //is it? it is
 	typedef bool(*Career_LevelOpen_t)(int param_1, bool param_2);
 	//typedef int(*Career_HighestOpenLevel_t)(int param_1);
@@ -151,7 +180,7 @@ namespace Career {
 	typedef void(*Career_AssignTrick_t)();
 	typedef void(*Career_SpecialTrickAssigned_t)();
 	typedef void(*Career_AssignSpecialTrick_t)();
-	typedef void(*Career_CountGoldMedals_t)();
+	//typedef void(*Career_CountGoldMedals_t)();
 	typedef void(*Career_CountMedals_t)();
 	typedef void(*Career_PostLoad_t)();
 	typedef void(*Career_PreSave_t)();
@@ -159,13 +188,13 @@ namespace Career {
 	typedef void(*Career_ClearGame_t)(int skaterIndex);
 	typedef void(*Career_ClearGameWithEveryone_t)();
 	typedef void(*Career_UnlockCheat_t)();
-	typedef bool(*Career_CheatUnlocked_t)(ECheat cheat);
+	//typedef bool(*Career_CheatUnlocked_t)(ECheat cheat);
 	typedef void(*Career_CheatState_t)();
 	typedef void(*Career_GetCheat_t)();
-	typedef void(*Career_SetCheat_t)();
-	typedef void(*Career_ToggleCheat_t)(ECheat cheat, bool state);
+	typedef void(*Career_SetCheat_t)(ECheat cheat, bool state, int skaterIndex);
+	//typedef void(*Career_ToggleCheat_t)(ECheat cheat, int skaterIndex);
 	typedef void(*Career_NewCheat_t)();
-	typedef void(*Career_CountUnlockedCheats_t)();
+	//typedef void(*Career_CountUnlockedCheats_t)();
 	//typedef char*(*Career_CheatName_t)(int cheat);
 	//typedef void(*Career_CheatType_t)();
 	typedef void(*Career_UnlockCharacter_t)(int character); //?
@@ -183,9 +212,12 @@ namespace Career {
 	static const Options_RemapControllers_t Options_RemapControllers = (Options_RemapControllers_t)0x00413ed0;
 	static const Options_ResetControllerDefaults_t Options_ResetControllerDefaults = (Options_ResetControllerDefaults_t)0x00413f30;
 	static const Options_Init_t Options_Init = (Options_Init_t)0x00413f70;
-	static const Career_Got_t Career_Got = (Career_Got_t)0x00414030;
-	static const Career_JustGot_t Career_JustGot = (Career_JustGot_t)0x004140c0;
-	static const Career_LevelTapes_t Career_LevelTapes = (Career_LevelTapes_t)0x00414130;
+	//static const Career_Got_t Career_Got = (Career_Got_t)0x00414030;
+	bool Career_Got(int goalIndex);
+	//static const Career_JustGot_t Career_JustGot = (Career_JustGot_t)0x004140c0;
+	bool Career_JustGot(int goalIndex);
+	//static const Career_LevelTapes_t Career_LevelTapes = (Career_LevelTapes_t)0x00414130;
+	int Career_LevelTapes(void* pProg, int levelIndex);
 	//static const Career_NumLevelGoals_t Career_NumLevelGoals = (Career_NumLevelGoals_t)0x004141a0;
 	int Career_NumLevelGoals();
 	static const Career_CountMoney_t Career_CountMoney = (Career_CountMoney_t)0x004141d0;
@@ -250,7 +282,8 @@ namespace Career {
 	static const Career_BuyPoint_t Career_BuyPoint = (Career_BuyPoint_t)0x004155a0;
 	static const Career_SellPoint_t Career_SellPoint = (Career_SellPoint_t)0x004156f0;
 	static const Career_GetPointCost_t Career_GetPointCost = (Career_GetPointCost_t)0x00415820;
-	static const Career_NumLevelsWithMedals_t Career_NumLevelsWithMedals = (Career_NumLevelsWithMedals_t)0x004158d0;
+	//static const Career_NumLevelsWithMedals_t Career_NumLevelsWithMedals = (Career_NumLevelsWithMedals_t)0x004158d0;
+	int Career_NumLevelsWithMedals(void* pProg);
 	static const Career_LevelOpenCareerMode_t Career_LevelOpenCareerMode = (Career_LevelOpenCareerMode_t)0x00415910;
 	static const Career_LevelOpen_t Career_LevelOpen = (Career_LevelOpen_t)0x004159d0;
 	//static const Career_HighestOpenLevel_t Career_HighestOpenLevel = (Career_HighestOpenLevel_t)0x00415a90;
@@ -264,7 +297,8 @@ namespace Career {
 	static const Career_AssignTrick_t Career_AssignTrick = (Career_AssignTrick_t)0x00416220;
 	static const Career_SpecialTrickAssigned_t Career_SpecialTrickAssigned = (Career_SpecialTrickAssigned_t)0x00416330;
 	static const Career_AssignSpecialTrick_t Career_AssignSpecialTrick = (Career_AssignSpecialTrick_t)0x00416370;
-	static const Career_CountGoldMedals_t Career_CountGoldMedals = (Career_CountGoldMedals_t)0x004164a0;
+	//static const Career_CountGoldMedals_t Career_CountGoldMedals = (Career_CountGoldMedals_t)0x004164a0;
+	int Career_CountGoldMedals(void* pProg);
 	static const Career_CountMedals_t Career_CountMedals = (Career_CountMedals_t)0x00416520;
 	static const Career_PostLoad_t Career_PostLoad = (Career_PostLoad_t)0x004165c0;
 	static const Career_PreSave_t Career_PreSave = (Career_PreSave_t)0x004166e0;
@@ -273,13 +307,17 @@ namespace Career {
 	//static const Career_ClearGameWithEveryone_t Career_ClearGameWithEveryone = (Career_ClearGameWithEveryone_t)0x00416880;
 	void Career_ClearGameWithEveryone();
 	static const Career_UnlockCheat_t Career_UnlockCheat = (Career_UnlockCheat_t)0x004168a0;
-	static const Career_CheatUnlocked_t Career_CheatUnlocked = (Career_CheatUnlocked_t)0x00416930;
-	static const Career_CheatState_t Career_CheatState = (Career_CheatState_t)0x00416950;
+	//static const Career_CheatUnlocked_t Career_CheatUnlocked = (Career_CheatUnlocked_t)0x00416930;
+	bool Career_CheatUnlocked(ECheat cheat);
+	//static const Career_CheatState_t Career_CheatState = (Career_CheatState_t)0x00416950;
+	bool Career_CheatState(ECheat cheat);
 	static const Career_GetCheat_t Career_GetCheat = (Career_GetCheat_t)0x00416970;
 	static const Career_SetCheat_t Career_SetCheat = (Career_SetCheat_t)0x004169f0;
-	static const Career_ToggleCheat_t Career_ToggleCheat = (Career_ToggleCheat_t)0x00416c80;
+	//static const Career_ToggleCheat_t Career_ToggleCheat = (Career_ToggleCheat_t)0x00416c80;
+	void Career_ToggleCheat(ECheat cheat, int skaterIndex);
 	static const Career_NewCheat_t Career_NewCheat = (Career_NewCheat_t)0x00416cc0;
-	static const Career_CountUnlockedCheats_t Career_CountUnlockedCheats = (Career_CountUnlockedCheats_t)0x00416dd0;
+	//static const Career_CountUnlockedCheats_t Career_CountUnlockedCheats = (Career_CountUnlockedCheats_t)0x00416dd0;
+	int Career_CountUnlockedCheats();
 	//static const Career_CheatName_t Career_CheatName = (Career_CheatName_t)0x00416e20;
 	char* Career_CheatName(ECheat cheat);
 	//static const Career_CheatType_t Career_CheatType = (Career_CheatType_t)0x00416f40;
@@ -297,5 +335,6 @@ namespace Career {
 	//additional functions
 	void Career_SetAllGaps(bool value);
 	void Career_PrintGoals();
+	void* Career_GetCurrentCharacterProgress();
 
 }

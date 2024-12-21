@@ -10,7 +10,11 @@
 #include "CBruce.h"
 #include "_old.h"
 
+#define MACRO_CHECK_BIT(VALUE, INDEX) (bool)(VALUE & (1 << INDEX))
+
 namespace Career {
+
+    
 
     void* GSkaterManager = (void*)0x5691e0;
 
@@ -21,12 +25,20 @@ namespace Career {
 
     uint* Career_UnlockFlags = (uint*)0x5672ec;
 
+
     uint* Career_GapGoalGotMask = (uint*)0x55c990;
     uint* Career_GapTrickGotMask = (uint*)0x55ca40;
+
+    uint* Career_LevelGoalsGot = (uint*)0x0055c9dc;
 
     int* Career_LevelPickupsGot = (int*)0x55c9e0;
     int* Career_LevelPickups = (int*)0x0055c750;
 
+
+    int* Career_MoneyPickups = (int*)0x0055ca68;
+    int* Career_TotalGaps = (int*)0x0055ca34;
+
+    int* Career_GapBits = (int*)0x00566e9c;
     int* Career_GoalGaps = (int*)0x55ca38;
     int* Career_TrickGaps = (int*)0x55ca64;
 
@@ -34,16 +46,486 @@ namespace Career {
     char* AwardLevelPickupMessage = (char*)0x55c994;
     char* AwardTrickGapMessage = (char*)0x55c9b4;
 
+    SCheat* Cheats = (SCheat*)0x00566fd4;
+
     SMessageProg* Messprog_Goal = (SMessageProg*)0x531d68;
 
 
-    //new func
-    void* Career_GetCurrentCharacterProgress()
+
+    /// Checks whether skater got a goal on the current level by index.
+    bool Career_Got(int goalIndex)
     {
-        return Career_GetCharacterProgress(GetSkaterID(GSkaterManager));
+        //sir spams a lot
+        //printf("DECOMP Career_Got()\n");
+
+        if (goalIndex < 0 || goalIndex > 9)
+        {
+            printf("Invalid goal index! %i\n", goalIndex);
+            return false;
+        }
+
+        void* pCharProg = Career_GetCurrentCharacterProgress();
+        short* pGoalsTracker = (short*)((int)(pCharProg)+0x0C);
+
+        return MACRO_CHECK_BIT(pGoalsTracker[*GLevel], goalIndex);
     }
 
+    // Checks if skater just got the goal (checks global current level completion)
+    // Used on the end game goal list screen.
+    bool Career_JustGot(int goalIndex)
+    {
+        // sir spams a lot
+        //printf("DECOMP Career_JustGot()\n");
 
+        if (goalIndex < 0 || goalIndex > 9)
+        {
+            printf("Invalid goal index! %i\n", goalIndex);
+            return false;
+        }
+
+        return MACRO_CHECK_BIT(*Career_LevelGoalsGot, goalIndex);
+    }
+
+    // Retrieve number of goals given skater got in the level.
+    // Called in main menu, wrapped in NumLevelGoals func
+    int Career_LevelTapes(void* pCharProg, int levelIndex)
+    {
+        printf("DECOMP Career_LevelTapes()... ");
+
+        // null check the charprogress
+        if (pCharProg == NULL)
+        {
+            printf("No character progress!\n");
+            return 0;
+        }
+
+        // pointer to goals tracker array
+        short* pGoalsTracker = (short*)((int)(pCharProg)+0x0C);
+
+        int tapes = 0;
+
+        // foreach goal
+        for (int i = 0; i < NUMGOALS_TH2; i++)
+        {
+            // if bit Nth is set
+            if (MACRO_CHECK_BIT(pGoalsTracker[levelIndex], i))
+            {
+                // we've got a tape
+                tapes++;
+            }
+        }
+
+        printf("%i tapes\n", tapes);
+
+        return tapes;
+    }
+
+    // Retrieve number of goals current skater got in the current level.
+    int Career_NumLevelGoals()
+    {
+        return Career_LevelTapes(Career_GetCurrentCharacterProgress(), *GLevel);
+    }
+
+    // Career_CountMoney
+
+    // checks current player score
+    void Career_CheckScore()
+    {
+        CBruce* pSkater = new CBruce(GSkater);
+        SGoal* pGoal = Levels[*GLevel].Goals;
+
+        //loop through all goals
+        for (int goalIndex = 0; goalIndex < NUMGOALS_TH2; goalIndex++)
+        {
+            //if havent got the goal yet
+            if (!Career_Got(goalIndex))
+            {
+                //if it is a score goal
+                if (pGoal->goalType == EGoalType::Score)
+                {
+                    //our total score is higher than the requirement
+                    if (pSkater->TotalScore() >= pGoal->intParam)
+                    {
+                        //award the goal
+                        Career_GiveGoal(goalIndex);
+
+                        printf("Career_CheckScore(): got %s - %i\r\n", pGoal->goalText, pGoal->intParam);
+                    }
+                }
+            }
+
+            //next goal
+            pGoal++;
+        }
+
+        delete pSkater;
+    }
+
+    // Career_GiveGoal
+
+    // get career goal index by goal type
+    uint Career_GoalIndex(EGoalType goalType)
+    {
+        //this points to the goal array in the level array
+        SGoal* pGoal = &(Levels[*GLevel].Goals[0]);
+
+        for (int goalIndex = 0; goalIndex < NUMGOALS_TH2; goalIndex++)
+        {
+            if (pGoal->goalType == goalType)
+            {
+                printf("got goal index: %i", goalIndex);
+                return goalIndex;
+            }
+
+            pGoal++;
+        }
+
+        return NS_NULL;
+    }
+
+    // looks up goal index by type and awards goal by index
+    void Career_GiveGoalType(EGoalType goalType)
+    {
+        uint goalIndex = Career_GoalIndex(goalType);
+
+        if (goalIndex == NS_NULL)
+        {
+            printf("no goal of type %i in this level", goalType);
+            return;
+        }
+
+        printf("give goal type: %i\r\n", goalType);
+
+        Career_GiveGoal(goalIndex);
+    }
+
+    // checks the 100% level and cash goal
+    void Career_CheckClear(void)
+    {
+        printf("decomp Career_CheckClear called...\n");
+
+        //if picked up all money in the level (or more?)
+        if (Career_CountMoney() >= *Career_MoneyPickups) {
+
+            printf("\tgot all money\n");
+
+            //if it's a competition level
+            if (Levels[*GLevel].isCompetition) {
+
+                void* charProg = Career_GetCurrentCharacterProgress();
+
+                //set career progress money flag?
+                *(ushort*)((char*)charProg + 0xC + *GLevel * 2) |= 0x8000;
+
+                printf("\t! ! ! in a comp, money flag set ! ! !\n");
+            }
+            else //if not a comp
+            {
+                //if skater got 9 goals (all but 100%)
+                if (Career_NumLevelGoals() == 9)
+                {
+                    //if 100% not awarded already
+                    if (!Career_GotGoalType(EGoalType::Clear))
+                    {
+                        //award 100%
+                        Career_GiveGoalType(EGoalType::Clear);
+
+                        printf("\t! ! ! not in a comp, awarded 100%% goal ! ! !\n");
+                    }
+                }
+            }
+        }
+    }
+
+    // checks whether current skater got specific goal type
+    bool Career_GotGoalType(EGoalType goalType)
+    {
+        uint goalIndex = Career_GoalIndex(goalType);
+
+        return goalIndex == NS_NULL ? false : Career_Got(goalIndex);
+    }
+
+    // Career_GiveMedal
+
+    // checks if gap belongs to this level gap range
+    bool Career_GapActive(SGapTrick* pGap)
+    {
+        SLevel* level = &Levels[*GLevel];
+        int val = pGap->Value % 10000;
+
+        return level->gapFirst <= val && val <= level->gapLast;
+    }
+
+    // checks if gap is a goal gap (collect N gaps like roll call rails)
+    bool Career_GapIsGoal(SGapTrick* pGap)
+    {
+        printf("decomp Career_GapIsGoal called...\n");
+
+        return pGap->Type == (short)EGapFlag::GoalGap ? Career_GapActive(pGap) : false;
+    }
+
+    // checks if gap is a trick gap (hit 1 gap like nosegrind over the pipe)
+    bool Career_GapIsTrick(SGapTrick* pGap)
+    {
+        printf("decomp Career_GapIsTrick called...\n");
+
+        return pGap->Type == (short)EGapFlag::TrickGap ? Career_GapActive(pGap) : false;
+    }
+
+    // finds goal gap index in a gap table
+    int Career_GapGoalNumber(SGapTrick* pGap)
+    {
+        SGapTrick* cursor = pGaps;
+        int gapIndex = 0;
+
+        //loop through the gap table until index hits 0xFFFF
+        while (cursor->Value != -1) {
+
+            //if gap belongs to this level and is trick
+            if (Career_GapActive(cursor) && Career_GapIsGoal(pGap)) {
+
+                //if match, get gap index
+                if (cursor == pGap)
+                {
+                    printf("Gap found: %s %i\r\n", pGap->Name, gapIndex);
+                    return gapIndex;
+                }
+
+                gapIndex++;
+            }
+
+            cursor++;
+        }
+
+        printf("!!! GapTrick not found: %s\r\n", pGap->Name);
+
+        return 0;
+    }
+
+    // finds trick gap index in a gap table
+    int Career_GapTrickNumber(SGapTrick* pGap)
+    {
+        printf("decomp Career_GapTrickNumber called...\n");
+
+        SGapTrick* cursor = pGaps;
+        int gapIndex = 0;
+
+        //loop through the gap table until index hits 0xFFFF
+        while (cursor->Value != -1) {
+
+            //if gap belongs to this level and is trick
+            if (Career_GapActive(cursor) && Career_GapIsTrick(pGap)) {
+
+                //if match, get gap index
+                if (cursor == pGap)
+                {
+                    printf("\tGap found: %s %i\n", pGap->Name, gapIndex);
+                    return gapIndex;
+                }
+
+                gapIndex++;
+            }
+
+            cursor++;
+        }
+
+        printf("\t!!! GapTrick not found: %s\n", pGap->Name);
+
+        return 0;
+    }
+
+    // finds gap index of current level in the gap table
+    int Career_GapNumber(SGapTrick* pGap)
+    {
+        printf("decomp Career_GapNumber called\n");
+
+        SGapTrick* cursor = pGaps;
+        int gapIndex = 0;
+
+        //loop through the gap table until index hits 0xFFFF
+        while (cursor->Value != -1) {
+
+            //if gap belongs to this level
+            if (Career_GapActive(cursor)) {
+
+                //if match, get gap index
+                if (cursor == pGap)
+                {
+                    printf("\tGap found: %s %i\n", pGap->Name, gapIndex);
+                    return gapIndex;
+                }
+
+                //increment if belongs to the level, but doesnt match
+                gapIndex++;
+            }
+
+            //next gap
+            cursor++;
+        }
+
+        printf("\t!!! GapTrick not found: %s\n", pGap->Name);
+
+        return 0;
+    }
+
+    // checks goal gap mask
+    bool Career_GotGoalGap(SGapTrick* pGap)
+    {
+        printf("decomp Career_GotGoalGap called...\n");
+
+        return (*Career_GapGoalGotMask & (1 << Career_GapGoalNumber(pGap))) > 0;
+    }
+
+    // checks trick gap mask
+    bool Career_GotTrickGap(SGapTrick* pGap)
+    {
+        printf("decomp Career_GotTrickGap called...\n");
+
+        return (*Career_GapTrickGotMask & (1 << Career_GapTrickNumber(pGap))) > 0;
+    }
+
+    // adds goal gap to mask
+    void Career_GiveGoalGap(SGapTrick* pGap)
+    {
+        printf("decomp Career_GiveGoalGap called...\n");
+
+        *Career_GapGoalGotMask |= 1 << Career_GapGoalNumber(pGap);
+    }
+
+    // adds trick gap to mask
+    void Career_GiveTrickGap(SGapTrick* pGap)
+    {
+        printf("decomp Career_GiveTrickGap called...\n");
+
+        *Career_GapTrickGotMask |= 1 << Career_GapTrickNumber(pGap);
+    }
+
+    // checks if any skater got gap
+    bool Career_AnyoneGotGap(SGapTrick* pGapTrick)
+    {
+        int gapNum = Career_GapNumber(pGapTrick);
+
+        int loVal = gapNum & 0x1f;
+        int hiVal = gapNum >> 5;
+
+        return Career_GapBits[*GLevel * 3 + hiVal] & (1 << loVal);
+    }
+
+    char bufx[256];
+
+    // awards a new gap
+    void Career_GiveGap(SGapTrick* pGapTrick)
+    {
+        // It stores 3 uints per level in the array, meaning 96 gaps per level total cap
+        // first it gets the unlocked gap index in the current level
+        // 0x1f is 32 bit mask. >> 5 calculates the exact data index to write the gap bit
+        // once found it ORs it with 1 shifted by gapnum lower value
+        // array is hardcoded for 11 levels
+
+        int gapNum = Career_GapNumber(pGapTrick);
+
+        int loVal = gapNum & 0x1f;
+        int hiVal = gapNum >> 5;
+
+        if ((Career_GapBits[*GLevel * 3 + hiVal] & (1 << loVal)) == 0)
+        {
+            printf("!!!New gap awarded!!! %s\n", pGapTrick->Name);
+            //print mess message here, maybe sound too
+
+            sprintf(bufx, "new gap found %s", pGapTrick->Name);
+            DrawMessage(bufx);
+            SFX_PlayX(0, 0x2000, 0);
+
+            Career_GapBits[*GLevel * 3 + hiVal] |= (1 << loVal);
+        }
+    }
+
+    // counts the amount of non-zero bits in a binary value
+    int Career_CountBits(uint value)
+    {
+        int numBits = 0;
+
+        if (value > 0)
+            do {
+                if (value & 1) numBits++;
+                value >>= 1;
+            } while (value != 0);
+
+        return numBits;
+    }
+
+    // calculates the amount of obtained goal gaps
+    int Career_NumGoalGapsGot(void)
+    {
+        printf("decomp Career_NumGoalGapsGot called...\n");
+
+        return Career_CountBits(*Career_GapGoalGotMask);
+    }
+
+    // calculates the amount of obtained trick gaps
+    int Career_NumTrickGapsGot(void)
+    {
+        printf("decomp Career_NumTrickGapsGot called...\n");
+
+        return Career_CountBits(*Career_GapTrickGotMask);
+    }
+
+    // career gap logic 
+    void Career_AwardGap(SGapTrick* pGap)
+    {
+        printf("decomp Career_AwardGap called...\n");
+
+        CBruce* pSkater = new CBruce(GSkater);
+
+        if (!Career_GapActive(pGap)) return;
+
+        //get last hit gaps
+        SGapTrick* lastTrickGap = (SGapTrick*)pSkater->GetValue(0x3024);
+        SGapTrick* lastGoalGap = (SGapTrick*)pSkater->GetValue(0x3028);
+
+        //if th2 level and not level generator? whats level 13?
+        if ((*GLevel > 10 && *GLevel != 13) || *GenerateLevel) return;
+
+
+        //if not a single player game mode, leave
+        if (*GGame != EGameMode::Career && *GGame != EGameMode::Single && *GGame != EGameMode::Practice) return;
+
+        //contribute to unlocked gaps list
+        Career_GiveGap(pGap);
+
+        //if career mode, process goals
+        if (*GGame == EGameMode::Career)
+        {
+            //is this gap a goal gap?
+            if (Career_GapIsGoal(pGap))
+            {
+                //if havent got this gaptrick yet
+                if (!Career_GotGoalGap(pGap))
+
+                    //validate goal by type
+                    if (!Career_GotGoalType(EGoalType::Gaps)) {
+
+                        if (lastGoalGap != NULL) Career_AwardGoalGap(pGap);
+
+                        pSkater->SetValue(0x3028, (int)pGap);
+                    }
+            }
+            else if (Career_GapIsTrick(pGap))
+            {
+                if (!Career_GotTrickGap(pGap))
+                    if (!Career_GotGoalType(EGoalType::Trick))
+                        pSkater->SetValue(0x3024, (int)pGap);
+            }
+            else
+            {
+                printf("\tneither goal nor trick, wtf\n");
+            }
+        }
+
+        delete pSkater;
+
+        Career_PrintGoals();
+    }
 
     // goal gap logic
     void Career_AwardGoalGap(SGapTrick* pGap)
@@ -122,64 +604,11 @@ namespace Career {
         }
     }
 
-    // career gap logic 
-    void Career_AwardGap(SGapTrick* pGap)
-    {
-        printf("decomp Career_AwardGap called...\n");
+    // Carrer_MoneyNumber
 
-        CBruce* pSkater = new CBruce(GSkater);
+    // Career_GotMoney
 
-        if (!Career_GapActive(pGap)) return;
-
-        //get last hit gaps
-        SGapTrick* lastTrickGap = (SGapTrick*)pSkater->GetValue(0x3024);
-        SGapTrick* lastGoalGap = (SGapTrick*)pSkater->GetValue(0x3028);
-
-        //if th2 level and not level generator? whats level 13?
-        if ((*GLevel > 10 && *GLevel != 13) || *GenerateLevel) return;
-
-
-        //if not a single player game mode, leave
-        if (*GGame != EGameMode::Career && *GGame != EGameMode::Single && *GGame != EGameMode::Practice) return;
-
-        //contribute to unlocked gaps list
-        Career_GiveGap(pGap);
-
-        //if career mode, process goals
-        if (*GGame == EGameMode::Career)
-        {
-            //is this gap a goal gap?
-            if (Career_GapIsGoal(pGap))
-            {
-                //if havent got this gaptrick yet
-                if (!Career_GotGoalGap(pGap))
-
-                    //validate goal by type
-                    if (!Career_GotGoalType(EGoalType::Gaps)) {
-
-                        if (lastGoalGap != NULL) Career_AwardGoalGap(pGap);
-
-                        pSkater->SetValue(0x3028, (int)pGap);
-                    }
-            }
-            else if (Career_GapIsTrick(pGap))
-            {
-                if (!Career_GotTrickGap(pGap))
-                    if (!Career_GotGoalType(EGoalType::Trick))
-                        pSkater->SetValue(0x3024, (int)pGap);
-            }
-            else
-            {
-                printf("\tneither goal nor trick, wtf\n");
-            }
-        }
-
-        delete pSkater;
-
-        Career_PrintGoals();
-    }
-
-
+    // Career_GiveMoney
 
     // level specific item pickup logic
     void Career_GetLevelPickup()
@@ -212,126 +641,124 @@ namespace Career {
         }
     }
 
+    // Carrer_CountThings
+
+    //count total gaps player got so far
+    int Career_CountGaps()
+    {
+        int numGaps = 0;
+
+        for (int* p = Career_GapBits; p < Career_GapBits + 11 * 3; p++)
+            numGaps += Career_CountBits(*p);
+
+        printf("counting gaps: got %i gaps!\n", numGaps);
+
+        return numGaps;
+    }
+
+    // Checks whether player got all gaps or not. Used to unlock carrera.
+    bool Career_GotAllGaps()
+    {
+        return Career_CountGaps() >= *Career_TotalGaps;
+    }
+
+    // Career_BuyPoint
+
+    // Career_SellPoint
+
+    // Career_GetPointCost
+
+    // Count unlocked competition levels (0-3)
+    int Career_NumLevelsWithMedals(void* pProg)
+    {
+        printf("DECOMP Career_NumLevelsWithMedals()... ");
+
+        int levelsWithMedals = 0;
+
+        short* pGoalsTracker = (short*)((int)(pProg)+0x0C);
+
+        for (int i = 0; i < NUMCAREERLEVELS_TH2; i++)
+        {
+            if (Levels[i].isCompetition && (pGoalsTracker[i] & 0x1c00) != 0) {
+                levelsWithMedals++;
+            }
+        }
+
+        printf("got %i levels\n", levelsWithMedals);
+
+        return levelsWithMedals;
+    }
+
+
+
+
+
+
+
+
     // returns the number of unlocked levels
-    int Career_HighestOpenLevel(int param_1)
+    int Career_HighestOpenLevel(int levelIndex)
     {
         if (*Cheat_LevelSelect)
             return NUMCAREERLEVELS_TH2;
 
-        for (int open = 0; open <= NUMCAREERLEVELS_TH2; open++)
+        for (int i = 0; i <= NUMCAREERLEVELS_TH2; i++)
         {
-            if (!Career_LevelOpen(open, param_1))
-                return open;
+            if (!Career_LevelOpen(i, levelIndex))
+                return i;
         }
 
         return 0;
     }
 
-    // looks up goal index by type and awards goal by index
-    void Career_GiveGoalType(EGoalType goalType)
+    // returns the amount needed to unlock the level for message in level selection menu
+    int Career_LevelNeeds(int levelIndex)
     {
-        uint goalIndex = Career_GoalIndex(goalType);
+        void* charProg = Career_GetCurrentCharacterProgress();
 
-        if (goalIndex == NS_NULL)
+        //if level is already open
+        if (Career_LevelOpenCareerMode(levelIndex, charProg))
+            return 0;
+
+        //if requires medals be unlocked (minus sign encodes medal requirements)
+        if (Levels[levelIndex].medalsToUnlock != 0)
+            return -Levels[levelIndex].medalsToUnlock;
+
+        //if regular level
+        return Levels[levelIndex].cashToUnlock;
+    }
+
+    // Career_LoadingScreen
+
+    // just returns a pointer, easy one
+    // Career_GetCharacterProgress(int skaterIndex)
+
+
+
+    // Retrieve number of gold medals for given skater
+    int Career_CountGoldMedals(void* pProg)
+    {
+        printf("DECOMP Career_CountGoldMedals()... ");
+
+        int golds = 0;
+
+        short* pGoalsTracker = (short*)((int)(pProg)+0x0C);
+
+        for (int i = 0; i < NUMCAREERLEVELS_TH2; i++)
         {
-            printf("no goal of type %i in this level", goalType);
-            return;
-        }
-
-        printf("give goal type: %i\r\n", goalType);
-
-        Career_GiveGoal(goalIndex);
-    }
-
-    // checks whether current skater got specific goal type
-    bool Career_GotGoalType(EGoalType goalType)
-    {
-        uint goalIndex = Career_GoalIndex(goalType);
-
-        return goalIndex == NS_NULL ? false : Career_Got(goalIndex);
-    }
-
-    // counts the amount of non-zero bits in a binary value
-    int Career_CountBits(uint value)
-    {
-        int numBits = 0;
-
-        if (value > 0)
-            do {
-                if (value & 1) numBits++;
-                value >>= 1;
-            } while (value != 0);
-
-            return numBits;
-    }
-
-    // calculates the amount of obtained goal gaps
-    int Career_NumGoalGapsGot(void)
-    {
-        printf("decomp Career_NumGoalGapsGot called...\n");
-
-        return Career_CountBits(*Career_GapGoalGotMask);
-    }
-
-    // calculates the amount of obtained trick gaps
-    int Career_NumTrickGapsGot(void)
-    {
-        printf("decomp Career_NumTrickGapsGot called...\n");
-
-        return Career_CountBits(*Career_GapTrickGotMask);
-    }
-
-    // adds goal gap to mask
-    void Career_GiveGoalGap(SGapTrick* pGap)
-    {
-        printf("decomp Career_GiveGoalGap called...\n");
-
-        *Career_GapGoalGotMask |= 1 << Career_GapGoalNumber(pGap);
-    }
-
-    // adds trick gap to mask
-    void Career_GiveTrickGap(SGapTrick* pGap)
-    {
-        printf("decomp Career_GiveTrickGap called...\n");
-
-        *Career_GapTrickGotMask |= 1 << Career_GapTrickNumber(pGap);
-    }
-
-    // checks goal gap mask
-    bool Career_GotGoalGap(SGapTrick* pGap)
-    {
-        printf("decomp Career_GotGoalGap called...\n");
-
-        return (*Career_GapGoalGotMask & (1 << Career_GapGoalNumber(pGap))) > 0;
-    }
-
-    // checks trick gap mask
-    bool Career_GotTrickGap(SGapTrick* pGap)
-    {
-        printf("decomp Career_GotTrickGap called...\n");
-
-        return (*Career_GapTrickGotMask & (1 << Career_GapTrickNumber(pGap))) > 0;
-    }
-
-    // get career goal index by goal type
-    uint Career_GoalIndex(EGoalType goalType)
-    {
-        //this points to the goal array in the level array
-        SGoal* pGoal = &(Levels[*GLevel].Goals[0]);
-
-        for (int goalIndex = 0; goalIndex < NUMGOALS_TH2; goalIndex++)
-        {
-            if (pGoal->goalType == goalType)
-            {
-                printf("got goal index: %i", goalIndex);
-                return goalIndex;
+            if (Levels[i].isCompetition && (pGoalsTracker[i] & 0x0400) != 0) {
+                golds++;
             }
-
-            pGoal++;
         }
 
-        return NS_NULL;
+        printf("got %i golds\n", golds);
+
+        return golds;
     }
+
+
+
+
 
     // this is basically "give chars if unlocked" function
     void Career_ApplyCheats()
@@ -398,312 +825,58 @@ namespace Career {
         return 1;
     }
 
-    // checks current player score
-    void Career_CheckScore()
-    {
-        CBruce* pSkater = new CBruce(GSkater);
-        SGoal* pGoal = Levels[*GLevel].Goals;
-
-        //loop through all goals
-        for (int goalIndex = 0; goalIndex < NUMGOALS_TH2; goalIndex++)
-        {
-            //if havent got the goal yet
-            if (!Career_Got(goalIndex))
-                //if it is a score goal
-                if (pGoal->goalType == EGoalType::Score)
-                    //our total score is higher than the requirement
-                    if (pSkater->TotalScore() >= pGoal->intParam)
-                    {
-                        //award the goal
-                        Career_GiveGoal(goalIndex);
-
-                        printf("Career_CheckScore(): got %s - %i\r\n", pGoal->goalText, pGoal->intParam);
-                    }
-
-            //next goal
-            pGoal++;
-        }
-
-        delete pSkater;
-    }
-
 #define NUM_SKATERS 20
 
     // clears the game, used by the unlock everything cheat
-    void Career_ClearGameWithEveryone(void)
+    void Career_ClearGameWithEveryone()
     {
         for (int i = 0; i < NUM_SKATERS; i++)
             Career_ClearGame(i);
     }
 
-    // checks if gap is a trick gap (hit 1 gap like nosegrind over the pipe)
-    bool Career_GapIsTrick(SGapTrick* pGap)
-    {
-        printf("decomp Career_GapIsTrick called...\n");
 
-        return pGap->Type == (short)EGapFlag::TrickGap ? Career_GapActive(pGap) : false;
+    
+    void Career_ToggleCheat(ECheat cheat, int skaterIndex)
+    {
+        Career_SetCheat(cheat, !Career_CheatState(cheat), skaterIndex);
     }
+    
 
-    // checks if gap is a goal gap (collect N gaps like roll call rails)
-    bool Career_GapIsGoal(SGapTrick* pGap)
+    // Retrieve the number of unlocked cheats
+    // used in options menu
+    int Career_CountUnlockedCheats()
     {
-        printf("decomp Career_GapIsGoal called...\n");
+        printf("DECOMP Career_CountUnlockedCheats... ");
 
-        return pGap->Type == (short)EGapFlag::GoalGap ? Career_GapActive(pGap) : false;
-    }
+        int unlocked = 0;
 
-    // checks if gap belongs to this level gap range
-    bool Career_GapActive(SGapTrick* pGap)
-    {
-        SLevel* level = &Levels[*GLevel];
-        int val = pGap->Value % 10000;
-
-        return level->gapFirst <= val && val <= level->gapLast;
-    }
-
-    // finds gap index of current level in the gap table
-    int Career_GapNumber(SGapTrick* pGap)
-    {
-        printf("decomp Career_GapNumber called\n");
-
-        SGapTrick* cursor = pGaps;
-        int gapIndex = 0;
-
-        //loop through the gap table until index hits 0xFFFF
-        while (cursor->Value != -1) {
-
-            //if gap belongs to this level
-            if (Career_GapActive(cursor)) {
-
-                //if match, get gap index
-                if (cursor == pGap)
-                {
-                    printf("\tGap found: %s %i\n", pGap->Name, gapIndex);
-                    return gapIndex;
-                }
-
-                //increment if belongs to the level, but doesnt match
-                gapIndex++;
-            }
-
-            //next gap
-            cursor++;
-        }
-
-        printf("\t!!! GapTrick not found: %s\n", pGap->Name);
-
-        return 0;
-    }
-
-    // finds trick gap index in a gap table
-    int Career_GapTrickNumber(SGapTrick* pGap)
-    {
-        printf("decomp Career_GapTrickNumber called...\n");
-
-        SGapTrick* cursor = pGaps;
-        int gapIndex = 0;
-
-        //loop through the gap table until index hits 0xFFFF
-        while (cursor->Value != -1) {
-
-            //if gap belongs to this level and is trick
-            if (Career_GapActive(cursor) && Career_GapIsTrick(pGap)) {
-
-                //if match, get gap index
-                if (cursor == pGap)
-                {
-                    printf("\tGap found: %s %i\n", pGap->Name, gapIndex);
-                    return gapIndex;
-                }
-
-                gapIndex++;
-            }
-
-            cursor++;
-        }
-
-        printf("\t!!! GapTrick not found: %s\n", pGap->Name);
-
-        return 0;
-    }
-
-    // finds goal gap index in a gap table
-    int Career_GapGoalNumber(SGapTrick* pGap)
-    {
-        SGapTrick* cursor = pGaps;
-        int gapIndex = 0;
-
-        //loop through the gap table until index hits 0xFFFF
-        while (cursor->Value != -1) {
-
-            //if gap belongs to this level and is trick
-            if (Career_GapActive(cursor) && Career_GapIsGoal(pGap)) {
-
-                //if match, get gap index
-                if (cursor == pGap)
-                {
-                    printf("Gap found: %s %i\r\n", pGap->Name, gapIndex);
-                    return gapIndex;
-                }
-
-                gapIndex++;
-            }
-
-            cursor++;
-        }
-
-        printf("!!! GapTrick not found: %s\r\n", pGap->Name);
-
-        return 0;
-    }
-
-    /*
-    void Career_ToggleCheat(ECheat cheat, bool state)
-    {
-        Career_SetCheat(cheat, Career_CheatState(cheatType) == false, state);
-    }
-    */
-
-    // returns the amount needed to unlock the level for message in level selection menu
-    int Career_LevelNeeds(int levelIndex)
-    {
-        void* charProg = Career_GetCurrentCharacterProgress();
-
-        //if level is already open
-        if (Career_LevelOpenCareerMode(levelIndex, charProg))
-            return 0;
-
-        //if requires medals be unlocked (minus sign encodes medal requirements)
-        if (Levels[levelIndex].medalsToUnlock != 0)
-            return -Levels[levelIndex].medalsToUnlock;
-
-        //if regular level
-        return Levels[levelIndex].cashToUnlock;
-    }
-
-
-    int* Career_GapBits = (int*)0x00566e9c;
-
-    char bufx[256];
-
-    void Career_GiveGap(SGapTrick* pGapTrick)
-    {
-        // It stores 3 uints per level in the array, meaning 96 gaps per level total cap
-        // first it gets the unlocked gap index in the current level
-        // 0x1f is 32 bit mask. >> 5 calculates the exact data index to write the gap bit
-        // once found it ORs it with 1 shifted by gapnum lower value
-        // array is hardcoded for 11 levels
-
-        int gapNum = Career_GapNumber(pGapTrick);
-
-        int loVal = gapNum & 0x1f;
-        int hiVal = gapNum >> 5;
-
-        if ((Career_GapBits[*GLevel * 3 + hiVal] & (1 << loVal)) == 0)
+        for (int i = 0; i <= 16; i++)
         {
-            printf("!!!New gap awarded!!! %s\n", pGapTrick->Name);
-            //print mess message here, maybe sound too
-
-            sprintf(bufx, "new gap found %s", pGapTrick->Name);
-            DrawMessage(bufx);
-            SFX_PlayX(0, 0x2000, 0);
-
-            Career_GapBits[*GLevel * 3 + hiVal] |= (1 << loVal);
+            if (Career_CheatUnlocked((ECheat)i)) 
+                unlocked++;
         }
+
+        printf("%i cheats\n", unlocked);
+
+        return unlocked;
     }
 
-
-    bool Career_AnyoneGotGap(SGapTrick* pGapTrick)
+    // Checks if cheat is unlocked
+    bool Career_CheatUnlocked(ECheat cheat)
     {
-        int gapNum = Career_GapNumber(pGapTrick);
-
-        int loVal = gapNum & 0x1f;
-        int hiVal = gapNum >> 5;
-
-        return Career_GapBits[*GLevel * 3 + hiVal] & (1 << loVal);
+        return Cheats[(int)cheat].Unlocked;
     }
 
-
-    //count total gaps player got so far
-    int Career_CountGaps()
+    // Checks cheat state
+    bool Career_CheatState(ECheat cheat)
     {
-        int numGaps = 0;
-
-        for (int* p = Career_GapBits; p < Career_GapBits + 11 * 3; p++)
-            numGaps += Career_CountBits(*p);
-
-        printf("counting gaps: got %i gaps!\n", numGaps);
-
-        return numGaps;
+        return Cheats[(int)cheat].State;
     }
 
-
-
-    int* Career_MoneyPickups = (int*)0x0055ca68;
-
-    //checks the 100% level and cash goal
-    void Career_CheckClear(void)
-    {
-        printf("decomp Career_CheckClear called...\n");
-
-        //if picked up all money in the level (or more?)
-        if (Career_CountMoney() >= *Career_MoneyPickups) {
-
-            printf("\tgot all money\n");
-
-            //if it's a competition level
-            if (Levels[*GLevel].isCompetition) {
-
-                void* charProg = Career_GetCurrentCharacterProgress();
-
-                //set career progress money flag?
-                *(ushort*)((char*)charProg + 0xC + *GLevel * 2) |= 0x8000;
-
-                printf("\t! ! ! in a comp, money flag set ! ! !\n");
-            }
-            else //if not a comp
-            {
-                //if level got 9 goals (to exclude secret levels i guess)
-                if (Career_NumLevelGoals() == 9)
-                    //if not awarded already
-                    if (!Career_GotGoalType(EGoalType::Clear))
-                    {
-                        //award
-                        Career_GiveGoalType(EGoalType::Clear);
-
-                        printf("\t! ! ! not in a comp, awarded 100%% goal ! ! !\n");
-                    }
-            }
-        }
-    }
-
-
-    int* Career_TotalGaps = (int*)0x0055ca34;
-
-    /// <summary>
-    /// Checks whether player got all gaps or not. Used to unlock carrera.
-    /// </summary>
-    /// <returns></returns>
-    bool Career_GotAllGaps()
-    {
-        return Career_CountGaps() >= *Career_TotalGaps;
-    }
-
-
-    int Career_NumLevelGoals()
-    {
-        void* charProg = Career_GetCurrentCharacterProgress();
-
-        return Career_LevelTapes(charProg, *GLevel);
-    }
 
 
     /*
-    /// <summary>
-    /// Give money to the current player.
-    /// </summary>
-    /// <param name="nodeIndex"></param>
-    /// <param name="amount"></param>
+    // Give money to the current player.
     void Career_GiveMoney(int nodeIndex, int amount)
     {
         //we dont award money if it's replay mode
@@ -750,15 +923,19 @@ namespace Career {
     */
 
 
+    // ****************** NEW FUNCTIONS *************************
 
-    //set all gaps state
+    void* Career_GetCurrentCharacterProgress()
+    {
+        return Career_GetCharacterProgress(GetSkaterID(GSkaterManager));
+    }
+
     void Career_SetAllGaps(bool value)
     {
         //wipe all gaps bits array with 0
         for (int* p = Career_GapBits; p < Career_GapBits + 11 * 3; p++) *p = value ? -1 : 0;
     }
 
-    //print all goals
     void Career_PrintGoals()
     {
         printf("Goal checklist:\n");
@@ -781,6 +958,8 @@ namespace Career {
             goal++;
         }
     }
+
+
 
 
 
@@ -833,6 +1012,31 @@ namespace Career {
         { 0x00452a7b, Career_GotAllGaps }, //in Front_NewThing
 
         { 0x0045c01b, Career_LevelNeeds }, // in GoalScreenElement::setupMessage
+        
+        { 0x004141b8, Career_LevelTapes }, // in carrer numlevelgoals
+        { 0x00459cbd, Career_LevelTapes	}, // in level rotate
+        
+        { 0x0045032a, Career_JustGot }, // all in front_update
+        { 0x00450403, Career_JustGot },
+        { 0x004504f3, Career_JustGot },
+
+
+        //{ 0x004142b2, Career_Got }, //checkscore
+        //{ 0x00414666, Career_Got }, //gotgoaltype
+        { 0x00415ee4, Career_Got }, //loadingscreen
+        { 0x004503f2, Career_Got }, //front_update
+        { 0x00450500, Career_Got }, //front_update
+        { 0x0045dffd, Career_Got }, //loadingscreen_endloading
+
+
+        { 0x004159a4, Career_NumLevelsWithMedals },
+
+        { 0x004842e5, Career_CountGoldMedals },
+        { 0x0048430b, Career_CountGoldMedals },
+
+        { 0x0047fd40, Career_CountUnlockedCheats }, //anycheatsenabled
+        { 0x00450ba4, Career_CountUnlockedCheats }, //front_update
+
 
         // DECOMPILED ALL CALLS HERE
 
