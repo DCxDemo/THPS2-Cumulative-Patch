@@ -68,7 +68,8 @@ namespace FileIO {
 
 
     void FileIO_Sync() {
-        printf("DECOMP FileIO_Sync()\n");
+        // spams a lot
+        //printf("DECOMP FileIO_Sync()\n");
 
         if (*LoadFromPre) {
             *Loading = false;

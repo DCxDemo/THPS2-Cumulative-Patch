@@ -149,6 +149,33 @@ void Init_Restart()
 }
 
 
+void Init_KillAll()
+{
+	/*
+	NETGAME_DeletePlayers();
+
+	DeleteList(MechList);
+
+	// do this for every list
+	//if (MechList != 0)
+	//	printf("Leftover protected members of MechList\n");
+
+	DeleteList(CameraList);
+	DeleteList(BaddyList);
+	DeleteList(EnvironmentalObjectList);
+	DeleteList(BackgroundList);
+	DeleteList(PowerUpList);
+	DeleteList(SuspendedList);
+
+	TrickOb_DeleteAll();
+	Rail_DeleteAll();
+	Bit_DeleteAll();
+	*/
+	
+	Mess_DeleteAll();
+}
+
+
 void TH2Main()
 {
 	printf("th2 main here!\n");

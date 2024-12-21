@@ -271,3 +271,23 @@ static const Video_Playing_t Video_Playing = (Video_Playing_t)0x004cb0c0;
 
 typedef void (*D3DMODEL_RenderModel_t)(void* pModel, uint renderFlags);
 static const D3DMODEL_RenderModel_t D3DMODEL_RenderModel = (D3DMODEL_RenderModel_t)0x004ce6e0;
+
+// just wraps a call to freeD3DPalette
+typedef void (*D3DTEX_FreePaletteEntry_t)(void* pD3DPalette, int param_2);
+static const D3DTEX_FreePaletteEntry_t D3DTEX_FreePaletteEntry = (D3DTEX_FreePaletteEntry_t)0x004d7680;
+
+typedef int(*D3DTEX_TextureCountColors_t)(int**);
+static const D3DTEX_TextureCountColors_t D3DTEX_TextureCountColors = (D3DTEX_TextureCountColors_t)0x004d7430;
+
+
+typedef void(*LaunchTheDamnGame_t)(int level, int mode);
+static const LaunchTheDamnGame_t LaunchTheDamnGame = (LaunchTheDamnGame_t)0x00454410;
+
+
+
+typedef void(*UpdateTrickTables_t)();
+static const UpdateTrickTables_t UpdateTrickTables = (UpdateTrickTables_t)0x004ba440;
+
+
+typedef void(*RespackMain_t)(int param_1, int param_2);
+static const RespackMain_t RespackMain = (RespackMain_t)0x004e8480;

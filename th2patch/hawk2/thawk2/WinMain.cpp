@@ -115,7 +115,7 @@ LRESULT WINMAIN_WndProc(HWND hWnd, uint Msg, WPARAM wParam, LPARAM lParam)
             default:
                 //MessageBox(NULL, "test", "test", 0);
 
-                printf("wtf %i\n", wParam);
+                //printf("wtf %i\n", wParam);
 
                 //PCINPUT_DoWinKeyDown(wParam);
                 switch (wParam) {

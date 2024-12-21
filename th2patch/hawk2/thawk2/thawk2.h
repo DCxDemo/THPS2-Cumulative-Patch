@@ -20,7 +20,6 @@
 #include "thawk2/Physics.h"
 #include "thawk2/Rail.h"
 #include "thawk2/Redbook.h"
-#include "thawk2/Redbook.h"
 #include "thawk2/Render.h"
 #include "thawk2/Sfx.h"
 #include "thawk2/Shatter.h"

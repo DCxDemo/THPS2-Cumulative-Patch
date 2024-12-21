@@ -16,8 +16,6 @@ static const Spool_LoadPSHBuffer_t Spool_LoadPSHBuffer = (Spool_LoadPSHBuffer_t)
 //static const Spool_LoadPSH_t Spool_LoadPSH = (Spool_LoadPSH_t)0x4b2080;
 void Spool_LoadPSH(char* pName, int param_2, int param_3, int* param_4, int param_5);
 
-typedef int(*D3DTEX_TextureCountColors_t)(int**);
-static const D3DTEX_TextureCountColors_t D3DTEX_TextureCountColors = (D3DTEX_TextureCountColors_t)0x004d7430;
 
 typedef void*(*Spool_FindTextureEntry_t)(uint hash);
 static const Spool_FindTextureEntry_t Spool_FindTextureEntry = (Spool_FindTextureEntry_t)0x004af910;

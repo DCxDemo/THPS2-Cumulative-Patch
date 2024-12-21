@@ -50,10 +50,7 @@ namespace FileIO {
     //typedef bool(*tryOpenFile_t)(char* path, char* filename);
     //static const tryOpenFile_t tryOpenFile = (tryOpenFile_t)0x004f3900;
     bool Exists(char* path, char* filename);
-    
 
 }
 
-
 //void* FileIO_OpenLoad_Pkr(char* filename, bool heap, Pkr2* pkr);
-
