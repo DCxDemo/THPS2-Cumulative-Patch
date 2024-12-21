@@ -783,7 +783,7 @@ void Game_Init_Hook()
 
 
 void Game_Display_Hook()
-{	
+{
 	Game_Display();
 }
 
@@ -1408,7 +1408,6 @@ void PatchThps4Gaps()
 //main patches func, sets all hooks and changes vars needed
 void Patch()
 {
-
 	//pxr extraction example
 	pkr = new Pkr2();
 
@@ -1435,7 +1434,8 @@ void Patch()
 	// this is set as callback, so should put as int
 	CPatch::SetInt(0x004f4ef4 + 3, (int)WINMAIN_WndProc);
 
-	//doesnt seem to work
+
+	//doesnt seem to work, maybe get overwritten by loading routines.
 	//Career_ClearGameWithEveryone();
 
 	if (!options.BigDrop)
@@ -1445,7 +1445,7 @@ void Patch()
 	if (!options.Manuals)
 	{
 		//set instant return from thiscall MaybeManual 
-		CPatch::SetInt((int)MaybeManual, 0x000008c2);
+		CPatch::SetInt((int)Physics::MaybeManual, 0x000008c2);
 	}
 
 	//disable skater rendering
@@ -1624,6 +1624,10 @@ void Patch()
 	CPatch::SetInt((int)hW2, options.ResX);
 	CPatch::SetInt((int)hH2, options.ResY);
 	
+	//CalcAnimLeanFrame, disables turning anim if noped
+	//CPatch::Nop(0x004915db, 5);
+
+
 
 	//??
 	//CPatch::SetInt((int)0x524bb0, options.ResX);
@@ -1656,6 +1660,24 @@ void Patch()
 	//WINMAIN_PatchWndProc();
 
 	//CPatch::RedirectJump(0x004f4ba0, WINMAIN_WndProc);
+
+	/*
+	if (options.UnlockFPS)
+	{
+		// this patches menus to 60fps
+		// main menu
+		CPatch::SetChar(0x0046af9c + 2, 1);
+
+		// skater selection
+		CPatch::SetChar(0x004a3979 + 2, 1);
+
+		// level selection
+		CPatch::SetChar(0x004589e1 + 2, 1);
+
+		// career selection
+		CPatch::SetChar(0x004180b1 + 2, 1);
+	}
+	*/
 }
 
 
