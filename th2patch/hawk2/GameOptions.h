@@ -34,6 +34,7 @@ public:
 	int ResY = DEFAULT_HEIGHT;
 	float FontScale = 1.0;
 	float FovScale = 1.0;
+	bool DynamicLighting = true;
 
 	//input
 	bool XInput = true;

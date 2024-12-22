@@ -107,7 +107,7 @@ void Init_AtStart()
 	M3dInit_InitAtStart();
 
 	//resets redbook globals
-	Redbook_XAInit();
+	Redbook::Redbook_XAInit();
 
 	Career_SaveCharacterStates();
 
@@ -218,9 +218,10 @@ void TH2Main()
 	Init_AtEnd();
 }
 
+
 int* CamPtIndex = (int*)0x0055c744;
 
-void CamPt_Init(void)
+void CamPt_Init()
 {
 	*CamPtIndex = 0;
 }

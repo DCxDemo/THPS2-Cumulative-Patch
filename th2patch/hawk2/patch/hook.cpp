@@ -17,15 +17,24 @@ namespace Hook
 		}
 	}
 
+	// The idea behind this is to collect all hooks within the namespace it belongs to.
+	// just define pHookList in the namespace and add to the array.
+	// the sethooks is called in main patching func.
+
+	Reroute* pHookLists[] = {
+		gte::pHookList,
+		Career::pHookList,
+		Rail::pHookList,
+		FileIO::pHookList,
+		Flash::pHookList,
+		Physics::pHookList,
+		Redbook::pHookList
+		//Pal::pHookList
+	};
 
 	void SetHooks()
 	{
-		ProcessList(gte::pHookList);
-		ProcessList(Career::pHookList);
-		ProcessList(Rail::pHookList);
-		ProcessList(FileIO::pHookList);
-		ProcessList(Flash::pHookList);
-		ProcessList(Physics::pHookList);
-		//ProcessList(Pal::pHookList);
+		for (int i = 0; i < sizeof(pHookLists) / 4; i++)
+			ProcessList(pHookLists[i]);
 	}
 }

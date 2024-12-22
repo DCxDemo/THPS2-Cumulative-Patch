@@ -65,5 +65,6 @@ typedef struct SLevel
 void Patch();
 void PatchSkaters();
 void SetHooks();
+void GetSong(int num);
 int CountSongs();
 void PCINPUT_ActuatorOn_Hook(int index, int time, int motor, int value);

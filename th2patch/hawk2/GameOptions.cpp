@@ -40,6 +40,7 @@ void GameOptions::Load()
 	DisableNewTex = ini->ReadBool("VIDEO", "DisableNewTex", false);
 	ResX = ini->ReadInt("VIDEO", "ResX", DEFAULT_WIDTH);
 	ResY = ini->ReadInt("VIDEO", "ResY", DEFAULT_HEIGHT);
+	DynamicLighting = ini->ReadBool("VIDEO", "DynamicLighting", true);
 
 	bool overrideFov = ini->ReadBool("VIDEO", "OverrideFov", false);
 	FovScale = overrideFov ? ini->ReadFloat("VIDEO", "FovScale", 1.0) : 1.0;
@@ -91,6 +92,7 @@ void GameOptions::Save()
 	ini->WriteInt("VIDEO", "DisableNewTex", DisableNewTex);
 	ini->WriteInt("VIDEO", "ResX", ResX);
 	ini->WriteInt("VIDEO", "ResY", ResY);
+	ini->WriteBool("VIDEO", "DynamicLighting", DynamicLighting);
 
 	//input section
 	ini->WriteInt("INPUT", "XInput", XInput);

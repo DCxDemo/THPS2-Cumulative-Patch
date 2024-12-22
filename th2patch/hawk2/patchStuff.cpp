@@ -46,52 +46,6 @@ void Proxify(int offs[], int count, void* func)
 
 #pragma region patched redbook stuff, move to redbook.cpp
 
-//int totalTracks = 0;
-int playingTrack = -1;
-
-string playingName;
-string playingFile;
-
-typedef struct {
-    int slot;
-    string artist;
-	string title;
-    string filename;
-} Song;
-
-Song song;
-
-void Redbook_XARemember_New(SONG_POS* pos)
-{
-	Redbook_XARemember(pos);
-}
-
-void Redbook_XAPause_New(bool state)
-{
-	Redbook_XAPause(state);
-}
-
-void Redbook_XAStop_New()
-{
-	Redbook_XAStop();
-}
-
-void Redbook_XARestore2(SONG_POS* pos)
-{
-	Redbook_XARestore(pos);
-}
-
-void Redbook_XAUpdateVolume_New()
-{
-	Redbook_XAUpdateVolume();
-}
-
-void Redbook_XABeginFade_New()
-{
-	if (!options.Fade) return;
-	Redbook_XABeginFade();
-}
-
 /*
 void GetTrackInfo(int x)
 {	
@@ -141,76 +95,6 @@ void GetTotalTracks()
 */
 
 
-void Redbook_XANextTrack2(int inc)
-{
-	if (options.totalTracks <= 0) 
-	{
-		*XALEVEL = 0;
-	}
-
-	if (*XALEVEL > 0)
-	{
-		if (!options.PlayRandom)
-		{
-			playingTrack = playingTrack + inc;
-			if (playingTrack >= options.totalTracks) playingTrack = 0;
-			if (playingTrack < 0) playingTrack = options.totalTracks - 1;
-		}
-		else
-		{
-			int newTrack;
-			do newTrack = rand() % options.totalTracks;
-			while (newTrack == playingTrack);
-
-			playingTrack = newTrack;
-		}
-
-		int newXA = playingTrack + 16;
-
-		//GetTrackInfo(playingTrack);
-
-		GetSong(playingTrack+1);
-
-		playingName = song.artist + " - " + song.title;
-		playingFile = song.filename;
-
-		//printf("Now playing: %s\n", playingName);
-
-		if (options.ShowTitle && options.ShowHUD)
-		{
-			printf("looking for %s...", &playingFile[0]);
-
-			if (FileIO::Exists("music\\", &playingFile[0]))
-			{
-				//printf("exists: %i", exists);
-
-				Mess_DeleteAll();
-				DrawMessage(&playingName[0]);
-			}
-		}
-
-		Redbook_XAPlay(newXA / 8, newXA % 8);
-	}
-	else
-	{
-		//if (totalTracks <= 0) shouldPlayAmbience = true;
-
-		//fout1 << "now wtf " << *XALEVEL << " " << totalTracks << endl;
-
-		if (options.PlayAmbience)
-		{
-			int ambience = *GLevel > 10 ? 10 : *GLevel;
-
-			//if (!dword_5674E0)
-			Redbook_XAPlay(ambience / 8, ambience % 8);
-			PCMOVIE_SetXAVolume(*SFXLEVEL*20, *SFXLEVEL*20);
-		}
-	}
-}
-
-
-
-
 void PCMOVIE_XAPlay2(int group, int channel)
 {
 	int curTrack = channel + group * 8;
@@ -224,7 +108,7 @@ void PCMOVIE_XAPlay2(int group, int channel)
 	}
 	else
 	{
-		PCMOVIE_StartMusic(&playingFile[0u]);
+		PCMOVIE_StartMusic(&Redbook::playingFile[0u]);
 	}
 }
 
@@ -236,44 +120,6 @@ void Redirect_PCMOVIE_XAPlay()
 	};
 
 	Proxify(offs, sizeof(offs) / 4, PCMOVIE_XAPlay2);
-}
-
-void Redirect_Redbook_XAUpdateVolume()
-{
-	int offs[] = { 
-		0x451CDE,  //front_update
-		0x451F6F,  //front_update
-		0x484A0C,  //???
-		0x4A9525,  //redbook xa play
-		0x4A9739   //xaupdate?
-	};
-
-	Proxify(offs, sizeof(offs) / 4, Redbook_XAUpdateVolume_New);
-}
-
-void Redirect_Redbook_XABeginFade()
-{
-	int offs[] = {
-		0x427130, //credits
-		0x466BA7  //game_over
-	};
-
-	Proxify(offs, sizeof(offs) / 4, Redbook_XABeginFade_New);
-}
-
-void Redirect_Redbook_XANextTrack()
-{
-	int offs[] = {
-		0x451DCF,	//front_update
-		0x451EC6,	//front_update
-		0x451F29,
-		0x46A3CA,	//playaway
-		0x48474F,	//??
-		0x4A978F,	//XAUpdate
-		0x4A97A3
-	};
-
-	Proxify(offs, sizeof(offs) / 4, Redbook_XANextTrack2);
 }
 
 #pragma endregion 
@@ -429,6 +275,7 @@ void VIDMENU_Load_Hook()
 	options.Load();
 }
 
+
 //move to globals?
 
 int* hW2 = (int*)0x4f5496;
@@ -441,7 +288,7 @@ int* _PixelAspectX = (int*)0x5606cc;
 int* _PixelAspectY = (int*)0x5606d0;
 
 
-float AutoFOV(float userScale = 1.0)
+float AutoFOV(float userScale = 1.0f)
 {
 	float zoom = (4.0f * *_Yres) / (3.0f * *_Xres);
 	zoom = zoom + (1.0f - zoom) / 2.0f;
@@ -477,13 +324,8 @@ void WINMAIN_SwitchResolution_Hook(int a1)
 }
 
 
-
-
-
 #pragma region xinput processing
 //this stuff should be moved to pad entirely
-
-
 
 enum class PadButton : unsigned short
 {
@@ -607,7 +449,7 @@ void GenPsxPadData_Hook()
 
 			if (!*InFrontEnd && !*GamePaused)
 				if (!(Player1->GetOldState().Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB))
-					Redbook_XANextTrack2(1);
+					Redbook::Redbook_XANextTrack(1);
 		}
 
 		//L3
@@ -1252,16 +1094,16 @@ void GetSong(int num)
 
 
     while((ret = sqlite3_step(stmt)) == SQLITE_ROW) {
-		song.slot = sqlite3_column_int(stmt, 1);
+		Redbook::song.slot = sqlite3_column_int(stmt, 1);
 
 		string* kek = new string((char*)sqlite3_column_text(stmt, 2));
-		song.artist = *kek;
+		Redbook::song.artist = *kek;
 
 		string* kek2 = new string((char*)sqlite3_column_text(stmt, 3));
-		song.title = *kek2;
+		Redbook::song.title = *kek2;
 
 	    string* kek3 = new string((char*)sqlite3_column_text(stmt, 4));
-		song.filename = *kek3;
+		Redbook::song.filename = *kek3;
 	}
 
 	sqlite3_exec(db, "END TRANSACTION", 0, 0, 0);
@@ -1350,6 +1192,67 @@ void* LoadFile(char* filename, bool heap)
 }
 
 
+/*
+void PatchCareerGoals()
+{
+	if (options.CurrentGame == "THPS3")
+	{
+		SLevel* level = (SLevel*)((int)Levels + sizeof(SLevel) * 0);
+
+		level->trgfile = "aafoun_t";
+		level->shortname = "foun";
+		level->subname = "Foundry";
+		level->gapFirst = 0;
+		level->gapLast = 25000;
+
+		SGoal* goal = GetGoal(0, 0);
+		goal->goalText = "High Score - 10,000";
+		goal->intParam = 10000;
+		goal->goalType = EGoalType::Score;
+
+		goal = GetGoal(0, 1);
+		goal->goalText = "Pro Score - 25,000";
+		goal->intParam = 25000;
+		goal->goalType = EGoalType::Score;
+
+		goal = GetGoal(0, 2);
+		goal->goalText = "Sick Score - 75,000";
+		goal->intParam = 75000;
+		goal->goalType = EGoalType::Score;
+
+		goal = GetGoal(0, 3);
+		goal->goalText = "Collect S-K-A-T-E";
+		goal->goalType = EGoalType::Skate;
+
+		goal = GetGoal(0, 4);
+		goal->goalText = "Valves Unjammed";
+		goal->goalType = EGoalType::Pickups;
+		goal->intParam = 5;
+
+		goal = GetGoal(0, 5);
+		goal->goalText = "Activate Press";
+		goal->goalType = EGoalType::Destroy;
+
+		goal = GetGoal(0, 6);
+		goal->goalText = "Method over the halfpipe";
+		goal->goalType = EGoalType::Trick;
+		goal->stringParam = "METHOD";
+
+		goal = GetGoal(0, 7);
+		goal->goalText = "Grind the control booth";
+		goal->goalType = EGoalType::Gaps;
+		goal->intParam = 1;
+
+		goal = GetGoal(0, 8);
+		goal->goalText = "Find the secret tape";
+		goal->goalType = EGoalType::Hidden;
+
+		goal = GetGoal(0, 9);
+		goal->goalText = "100% goals, stats and decks";
+		goal->goalType = EGoalType::Clear;
+	}
+}
+*/
 
 void PatchThps3Gaps()
 {
@@ -1408,19 +1311,20 @@ void PatchThps4Gaps()
 //main patches func, sets all hooks and changes vars needed
 void Patch()
 {
-	//pxr extraction example
+	/*
+	//pkr extraction example
 	pkr = new Pkr2();
 
 	if (pkr->Load(".\\all9.pkr") == PkrError::Success)
 	{
-		printf("PKR LAOD OK\n");
+		printf("PKR LOAD OK\n");
 	}
 	else
 	{
 		printf("Failed to load PKR...\n");
 		delete pkr;
 	}
-
+	*/
 
 	WipeGaps();
 
@@ -1432,15 +1336,18 @@ void Patch()
 
 
 	// this is set as callback, so should put as int
-	CPatch::SetInt(0x004f4ef4 + 3, (int)WINMAIN_WndProc);
+	//CPatch::SetInt(0x004f4ef4 + 3, (int)WINMAIN_WndProc);
+	
 
-
-	//doesnt seem to work, maybe get overwritten by loading routines.
+	//doesnt seem to work, maybe gets overwritten by loading routines.
 	//Career_ClearGameWithEveryone();
 
+
 	if (!options.BigDrop)
+	{
 		//nops entire bail/award big drop path, since its a part of a func, not a separate one
 		CPatch::Nop(0x48F419, 0x48F430 - 0x48F419);
+	}
 
 	if (!options.Manuals)
 	{
@@ -1467,13 +1374,10 @@ void Patch()
 		//CPatch::Nop(0x46A732, 5); //nops IntroMovies func
 	}
 
-
 	if (options.AddSkins)
 	{
 		PatchSkaters();
 	}
-
-
 
 	if (options.SeparateSaves)
 	{
@@ -1513,6 +1417,8 @@ void Patch()
 	
 	memcpy(level->Goals, waregoals, sizeof(SGoal) * 10);
 	*/
+
+	//PatchCareerGoals();
 
 	/*
 	SGoal* goal = GetGoal(0, 4);
@@ -1648,14 +1554,13 @@ void Patch()
 
 	
 	//hooks related to soundtrack, revisit
-	Redirect_Redbook_XAUpdateVolume();
-	Redirect_Redbook_XABeginFade();
-	Redirect_Redbook_XANextTrack();
 	Redirect_PCMOVIE_XAPlay();
+
 
 	//TO DO split this into separate hooking funcs for each namespace and move to Hook::SetHooks
 	SetHooks();
 	Hook::SetHooks();
+
 
 	//WINMAIN_PatchWndProc();
 
@@ -1707,9 +1612,12 @@ void Dummy()
 //so it returns actual struct, not pointer
 ColorBGRA applyLighting(ColorBGRA* vert, ColorBGRA* light)
 {
-	vert->R *= light->R / 255.0;
-	vert->G *= light->G / 255.0;
-	vert->B *= light->B / 255.0;
+	if (options.DynamicLighting)
+	{
+		vert->R *= light->R / 255.0;
+		vert->G *= light->G / 255.0;
+		vert->B *= light->B / 255.0;
+	}
 
 	return *vert;
 }
@@ -1780,20 +1688,17 @@ Hook::Reroute hookList[] = {
 
 
 	//D3D_ClearBuffers, doesnt seem to do anything
+	/*
 	{ 0x0046a392, Dummy },
 	{ 0x0046a67a, Dummy },
 	{ 0x004e429b, Dummy },
 	{ 0x004f41a1, Dummy },
 	{ 0x004f50a9, Dummy },
-
+	*/
 
 	//hooks inputs
 	//in ReadDirectInput
 	{ 0x4E1CC6, GenPsxPadData_Hook },
-
-	{ 0x451F79, Redbook_XARestore2 },
-	{ 0x44F41F, Redbook_XARemember_New },
-	{ 0x4A94D5, Redbook_XARemember_New },
 
 	{ 0x4CB27E, VIDMENU_Load_Hook },
 	{ 0x4CB455, VIDMENU_Load_Hook },
