@@ -6,64 +6,13 @@
 
 namespace Redbook
 {
+    //int totalTracks = 0;
+    extern int playingTrack = -1;
 
-    void Redbook_XAPause(bool state)
-    {
-        if (*Redbook_XAPaused != state) {
-            PCMOVIE_Pause(state);
-            *Redbook_XAPaused = state;
-        }
-    }
+    string playingName;
+    string playingFile;
 
-    /*
-    void Redbook_XAUpdate()
-    {
-        if (*Redbook_XAFading)
-            Redbook_XAUpdateVolume();
-
-        if (!*Redbook_XAValid || *Redbook_XAPaused) return;
-
-        if (*Redbook_XACompleteTimer > 0) {
-            *Redbook_XACompleteTimer--;
-            return;
-        }
-
-        if (!*InFrontEnd) {
-
-            if (*XALEVEL > 0) {
-                if (Redbook_XAPlayingAmbient())
-                {
-                    Redbook_XANextTrack(1);
-                    return;
-                }
-
-                if (*XALEVEL != 0)
-                {
-                    if (PCMOVIE_XADone()) {
-                        Redbook_XANextTrack(1);
-                        return;
-                    }
-                }
-            }
-
-            if (!Redbook_XAPlayingAmbient()) {
-                Redbook_XANextTrack(1);
-                return;
-            }
-        }
-        else
-        {
-            if (PCMOVIE_XADone()) {
-                Redbook_XANextTrack(1);
-            }
-        }
-
-    LAB_004a9798:
-
-        return;
-    }
-    */
-
+    Song song;
 
     void Redbook_XABeginFade()
     {
@@ -98,7 +47,7 @@ namespace Redbook
         //limit volume
         if (vol > 255) vol = 255;
 
-        PCMOVIE_SetXAVolume(vol, vol);
+        PCMovie::PCMOVIE_SetXAVolume(vol, vol);
     }
 
     void Redbook_XAInit()
@@ -116,13 +65,130 @@ namespace Redbook
         *Redbook_XACurrentChannel = 0;
     }
 
+    void Redbook_XAPlay(int group, int channel)
+    {
+        PCMovie::PCMOVIE_XAPlay(group, channel);
+
+        *Redbook_XACurrentGroup = group;
+        *Redbook_XACurrentChannel = channel;
+
+        if (*Redbook_XAValid) {
+
+            *Redbook_XAPaused = false;
+            *Redbook_XAFading = false;
+
+            Redbook_XAUpdateVolume();
+
+            *Redbook_XATryAgain = true;
+        }
+    }
+
     void Redbook_XAStop()
     {
-        PCMOVIE_XAStop();
+        printf("DECOMP Redbook_XAStop()\n");
+
+        PCMovie::PCMOVIE_XAStop();
         *Redbook_XACheckSectorOnVSync = 0;
         *Redbook_XACompleteTimer = 30;
         *Redbook_XAModeSet = 0;
         Redbook_XAPause(true);
+    }
+
+    void Redbook_XANextTrack(int inc)
+    {
+        printf("DECOMP Redbook_XANextTrack()\n");
+
+        if (options.totalTracks <= 0)
+        {
+            *XALEVEL = 0;
+        }
+
+        if (*XALEVEL > 0)
+        {
+            if (!options.PlayRandom)
+            {
+                playingTrack = playingTrack + inc;
+                if (playingTrack >= options.totalTracks) playingTrack = 0;
+                if (playingTrack < 0) playingTrack = options.totalTracks - 1;
+            }
+            else
+            {
+                int newTrack;
+                do newTrack = rand() % options.totalTracks;
+                while (newTrack == playingTrack);
+
+                playingTrack = newTrack;
+            }
+
+            int newXA = playingTrack + 16;
+
+            //GetTrackInfo(playingTrack);
+
+            GetSong(playingTrack + 1);
+
+            playingName = song.artist + " - " + song.title;
+            playingFile = song.filename;
+
+            //printf("Now playing: %s\n", playingName);
+
+            if (options.ShowTitle && options.ShowHUD)
+            {
+                printf("looking for %s...\n", &playingFile[0]);
+
+                if (FileIO::Exists("music\\", &playingFile[0]))
+                {
+                    //printf("exists: %i", exists);
+
+                    Mess_DeleteAll();
+                    DrawMessage(&playingName[0]);
+                }
+            }
+
+            Redbook_XAPlay(newXA / 8, newXA % 8);
+        }
+        else
+        {
+            //if (totalTracks <= 0) shouldPlayAmbience = true;
+
+            //fout1 << "now wtf " << *XALEVEL << " " << totalTracks << endl;
+
+            if (options.PlayAmbience)
+            {
+                int ambience = *GLevel > 10 ? 10 : *GLevel;
+
+                //if (!dword_5674E0)
+                Redbook_XAPlay(ambience / 8, ambience % 8);
+                PCMovie::PCMOVIE_SetXAVolume(*SFXLEVEL * 20, *SFXLEVEL * 20);
+            }
+        }
+    }
+
+    void Redbook_XAPause(bool state)
+    {
+        if (*Redbook_XAPaused != state) {
+            PCMovie::PCMOVIE_Pause(state);
+            *Redbook_XAPaused = state;
+        }
+    }
+
+    void Redbook_XAUpdate()
+    {
+        // sir spams a lot
+        //printf("DECOMP Redbook_XAUpdate()\n");
+
+        if (*Redbook_XAFading)
+            Redbook_XAUpdateVolume();
+
+        if (!*Redbook_XAValid || *Redbook_XAPaused) return;
+
+        if (*Redbook_XACompleteTimer > 0) {
+            (*Redbook_XACompleteTimer)--;
+            return;
+        }
+
+        if (PCMovie::PCMOVIE_XADone()) {
+            Redbook_XANextTrack(1);
+        }
     }
 
     bool Redbook_XAPlayingAmbient()
@@ -162,114 +228,59 @@ namespace Redbook
     }
 
 
-
-    //int totalTracks = 0;
-    extern int playingTrack = -1;
-
-    string playingName;
-    string playingFile;
-
-    Song song;
-
-    void Redbook_XANextTrack(int inc)
-    {
-        if (options.totalTracks <= 0)
-        {
-            *XALEVEL = 0;
-        }
-
-        if (*XALEVEL > 0)
-        {
-            if (!options.PlayRandom)
-            {
-                playingTrack = playingTrack + inc;
-                if (playingTrack >= options.totalTracks) playingTrack = 0;
-                if (playingTrack < 0) playingTrack = options.totalTracks - 1;
-            }
-            else
-            {
-                int newTrack;
-                do newTrack = rand() % options.totalTracks;
-                while (newTrack == playingTrack);
-
-                playingTrack = newTrack;
-            }
-
-            int newXA = playingTrack + 16;
-
-            //GetTrackInfo(playingTrack);
-
-            GetSong(playingTrack + 1);
-
-            playingName = song.artist + " - " + song.title;
-            playingFile = song.filename;
-
-            //printf("Now playing: %s\n", playingName);
-
-            if (options.ShowTitle && options.ShowHUD)
-            {
-                printf("looking for %s...", &playingFile[0]);
-
-                if (FileIO::Exists("music\\", &playingFile[0]))
-                {
-                    //printf("exists: %i", exists);
-
-                    Mess_DeleteAll();
-                    DrawMessage(&playingName[0]);
-                }
-            }
-
-            Redbook::Redbook_XAPlay(newXA / 8, newXA % 8);
-        }
-        else
-        {
-            //if (totalTracks <= 0) shouldPlayAmbience = true;
-
-            //fout1 << "now wtf " << *XALEVEL << " " << totalTracks << endl;
-
-            if (options.PlayAmbience)
-            {
-                int ambience = *GLevel > 10 ? 10 : *GLevel;
-
-                //if (!dword_5674E0)
-                Redbook::Redbook_XAPlay(ambience / 8, ambience % 8);
-                PCMOVIE_SetXAVolume(*SFXLEVEL * 20, *SFXLEVEL * 20);
-            }
-        }
-    }
-
-
-
-
-
     // === hook stuff ===
 
     Hook::Reroute hookList[] = {
 
-        { 0x451F79, Redbook_XARestore },
+        { 0x427130, Redbook_XABeginFade }, //credits
+        { 0x466BA7, Redbook_XABeginFade },  //game_over
 
-        { 0x44F41F, Redbook_XARemember },
-        { 0x4A94D5, Redbook_XARemember },
-
-        
         { 0x451CDE, Redbook_XAUpdateVolume },   //front_update
         { 0x451F6F, Redbook_XAUpdateVolume },   //front_update
         { 0x484A0C, Redbook_XAUpdateVolume },   //???
         { 0x4A9525, Redbook_XAUpdateVolume },   //redbook xa play
         { 0x4A9739, Redbook_XAUpdateVolume },   //xaupdate?
-        
-        { 0x427130, Redbook_XABeginFade }, //credits
-        { 0x466BA7, Redbook_XABeginFade },  //game_over
 
+        // Redbook_XAInit only called from Init_AtStart
 
-        { 0x451DCF,	Redbook_XANextTrack },//front_update
+        { 0x004a98cc, Redbook_XAStop },
+        { 0x0048482a, Redbook_XAStop },
+        { 0x0046a3c1, Redbook_XAStop },
+        { 0x0045849e, Redbook_XAStop },
+        { 0x0045199c, Redbook_XAStop },
+        { 0x004270e2, Redbook_XAStop },
+        { 0x004265ee, Redbook_XAStop },
+
+        { 0x451DCF,	Redbook_XANextTrack }, //front_update
         { 0x451EC6,	Redbook_XANextTrack }, //front_update
-        { 0x451F29, Redbook_XANextTrack },
-        { 0x46A3CA,	Redbook_XANextTrack },//playaway
-        { 0x48474F,	Redbook_XANextTrack },//??
-        { 0x4A978F,	Redbook_XANextTrack }, //XAUpdate
-        { 0x4A97A3, Redbook_XANextTrack },
+        { 0x451F29, Redbook_XANextTrack }, //front_update
+        { 0x46A3CA,	Redbook_XANextTrack }, //playaway
+        { 0x48474F,	Redbook_XANextTrack }, //somewhere in options menu, volume screen probably 
+        //{ 0x4A978F, Redbook_XANextTrack }, //XAUpdate
+        //{ 0x4A97A3, Redbook_XANextTrack }, //XAUpdate
 
+        { 0x004ab2b7,	Redbook_XAPause	 },
+        { 0x004ab2a7,	Redbook_XAPause	 },
+        { 0x004a957d,	Redbook_XAPause	 },
+        { 0x004848da,	Redbook_XAPause	 },
+        { 0x0048489c,	Redbook_XAPause	 },
+        { 0x00451f52,	Redbook_XAPause	 },
+        { 0x00451f03,	Redbook_XAPause	 },
+
+        { 0x00426b2c, Redbook_XAUpdate },
+        { 0x0046a115, Redbook_XAUpdate },
+        { 0x00484a11, Redbook_XAUpdate },
+
+        // Redbook_XAPlayingAmbient only called from XAUpdate
+
+        { 0x44F41F, Redbook_XARemember },
+        { 0x4A94D5, Redbook_XARemember },
+
+        { 0x451F79, Redbook_XARestore }, // front_update
+
+        { 0x0044dc0f, Redbook_XACurrentTrack },
+        { 0x0044dbfe, Redbook_XACurrentTrack },
+        
 
         //=========================
         { NULL, NULL }
