@@ -7,9 +7,14 @@ This tutorial briefly covers existing binary code hooking in C++. Keep in mind, 
 
 ## Variable usage
 This is as simple as casting hex address to pointer type. We declare someValue of pointer to int type and save original address value as this pointer value. Then the pointer points to the original variable.
+
 ```int* someValue = (int*)0x12345678;```
 
 From now on you can use *someValue to read/write the value along with the original code.
+
+There is also a more "plusplus-ish" approach, considered to be more verbose of the intent, but essentially it does the same thing:
+
+```int* someValue = reinterpret_cast<int*>(0x12345678);```
 
 ## Function hooking
 In short, knowing the address of the function in the executable file, we can declare a function pointer and use it like we would use a normal library function. 
