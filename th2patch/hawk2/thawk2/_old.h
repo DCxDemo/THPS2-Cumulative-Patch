@@ -103,33 +103,6 @@ typedef LONGLONG(*systemclock_t)();
 static const systemclock_t systemclock = (systemclock_t)0x004ffbc1;
 
 
-
-//PCMOVIE stuff
-
-typedef char(__cdecl* PCMOVIE_StartMusic_t)(char* a1);
-static const PCMOVIE_StartMusic_t PCMOVIE_StartMusic = (PCMOVIE_StartMusic_t)0x4E4430;
-
-typedef int(__cdecl* PCMOVIE_SetXAVolume_t)(int a1, int a2);
-static const PCMOVIE_SetXAVolume_t PCMOVIE_SetXAVolume = (PCMOVIE_SetXAVolume_t)0x4E44A0;
-
-typedef bool(__cdecl* PCMOVIE_Pause_t)(bool a1);
-static const PCMOVIE_Pause_t PCMOVIE_Pause = (PCMOVIE_Pause_t)0x4E4040;
-
-typedef char(__cdecl* PCMOVIE_XAStop_t)();
-static const PCMOVIE_XAStop_t PCMOVIE_XAStop = (PCMOVIE_XAStop_t)0x4E4540;
-
-typedef bool(__cdecl* PCMOVIE_XADone_t)();
-static const PCMOVIE_XADone_t PCMOVIE_XADone = (PCMOVIE_XADone_t)0x4e45b0;
-
-typedef bool(__cdecl* PCMOVIE_XAPlay_t)(int group, int channel);
-static const PCMOVIE_XAPlay_t PCMOVIE_XAPlay = (PCMOVIE_XAPlay_t)0x4e44e0;
-
-typedef bool(__cdecl* PCMOVIE_PlayMovieFile_t)(int group, int channel);
-static const PCMOVIE_PlayMovieFile_t PCMOVIE_PlayMovieFile = (PCMOVIE_PlayMovieFile_t)0x004e3090;
-
-
-
-
 //these are in CBruce.h. !!remove!!
 
 /// CBruce: snaps to rail and begins a grind trick

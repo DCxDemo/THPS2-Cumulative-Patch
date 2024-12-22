@@ -95,32 +95,7 @@ void GetTotalTracks()
 */
 
 
-void PCMOVIE_XAPlay2(int group, int channel)
-{
-	int curTrack = channel + group * 8;
 
-	//ambience track?
-	if (curTrack < 15)
-	{
-		char buf[256];
-		sprintf(buf, "%s%02i%s", "ltix", curTrack, ".dat");
-		PCMOVIE_StartMusic(buf);
-	}
-	else
-	{
-		PCMOVIE_StartMusic(&Redbook::playingFile[0u]);
-	}
-}
-
-
-void Redirect_PCMOVIE_XAPlay()
-{
-	int offs[] = {
-		0x4A93EE //xa_play
-	};
-
-	Proxify(offs, sizeof(offs) / 4, PCMOVIE_XAPlay2);
-}
 
 #pragma endregion 
 
@@ -447,7 +422,8 @@ void GenPsxPadData_Hook()
 		{
 			XInput_Press(PadButton::R3);
 
-			if (!*InFrontEnd && !*GamePaused)
+			// we're in gameplay and music is not disabled
+			if (!*InFrontEnd && !*GamePaused && *XALEVEL > 0)
 				if (!(Player1->GetOldState().Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_THUMB))
 					Redbook::Redbook_XANextTrack(1);
 		}
@@ -1370,7 +1346,7 @@ void Patch()
 
 	if (options.SkipIntro)
 	{
-		CPatch::SetChar((int)PCMOVIE_PlayMovieFile, 0xC3);
+		CPatch::SetChar((int)PCMovie::PCMOVIE_PlayMovieFile, 0xC3);
 		//CPatch::Nop(0x46A732, 5); //nops IntroMovies func
 	}
 
@@ -1549,12 +1525,6 @@ void Patch()
 
 	*ScreenWidth = options.ResX;
 	*ScreenHeight = options.ResY;
-
-
-
-	
-	//hooks related to soundtrack, revisit
-	Redirect_PCMOVIE_XAPlay();
 
 
 	//TO DO split this into separate hooking funcs for each namespace and move to Hook::SetHooks

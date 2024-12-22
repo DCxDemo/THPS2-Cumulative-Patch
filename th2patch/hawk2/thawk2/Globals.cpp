@@ -55,7 +55,7 @@ int* XALEVEL = (int*)0x528CA8;
 
 int* Redbook_XAFadeScale = (int*)0x53458C;
 
-int* gMusicPlaying = (int*)0x5674E0;
+
 int* Redbook_XAFading = (int*)0x5684F8;
 int* Redbook_XACurrentChannel = (int*)0x5684E8;
 int* Redbook_XACurrentGroup = (int*)0x5684EC;

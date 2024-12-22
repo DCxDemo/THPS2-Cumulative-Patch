@@ -98,6 +98,7 @@
     <ClInclude Include="thawk2\gte.h" />
     <ClInclude Include="thawk2\Init.h" />
     <ClInclude Include="thawk2\pal.h" />
+    <ClInclude Include="thawk2\PCMovie.h" />
     <ClInclude Include="thawk2\Rail.h" />
     <ClInclude Include="thawk2\Render.h" />
     <ClInclude Include="thawk2\SkaterProfile.h" />
@@ -183,6 +184,7 @@
     </ClCompile>
     <ClCompile Include="thawk2\pal.cpp" />
     <ClCompile Include="thawk2\PCInput.cpp" />
+    <ClCompile Include="thawk2\PCMovie.cpp" />
     <ClCompile Include="thawk2\Physics.cpp" />
     <ClCompile Include="thawk2\PKR.cpp" />
     <ClCompile Include="thawk2\Rail.cpp" />

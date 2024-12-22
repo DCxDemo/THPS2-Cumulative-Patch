@@ -53,7 +53,6 @@ extern int* SFXLEVEL;
 extern int* XALEVEL;
 
 extern int* Redbook_XAFadeScale;
-extern int* gMusicPlaying;
 extern int* Redbook_XAFading;
 
 extern int* Redbook_XACurrentChannel;
