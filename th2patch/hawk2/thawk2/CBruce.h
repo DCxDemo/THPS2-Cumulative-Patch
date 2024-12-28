@@ -39,9 +39,12 @@ public:
 	int CBruce::RailBalance();
 	int CBruce::PhysicsState();
 	int CBruce::TotalScore();
+	char* CBruce::CBruce_GetTrickName();
 	int CBruce::GetValue(int addr);
 	void CBruce::SetValue(int addr, int newValue);
 	char CBruce::GetValueChar(char addr);
+	int CBruce::Terrain();
+
 };
 
 CVector* CBruce_GetPosition(void* pSkater);

@@ -92,7 +92,7 @@ void GameOptions::Save()
 	ini->WriteInt("VIDEO", "DisableNewTex", DisableNewTex);
 	ini->WriteInt("VIDEO", "ResX", ResX);
 	ini->WriteInt("VIDEO", "ResY", ResY);
-	ini->WriteBool("VIDEO", "DynamicLighting", DynamicLighting);
+	ini->WriteInt("VIDEO", "DynamicLighting", DynamicLighting);
 
 	//input section
 	ini->WriteInt("INPUT", "XInput", XInput);

@@ -13,6 +13,7 @@
 #include "thawk2/gte.h"
 #include "thawk2/Init.h"
 #include "thawk2/IO/FileIO.h"
+#include "thawk2/IO/PCIO.h"
 #include "thawk2/Mem.h"
 #include "thawk2/Mess.h"
 #include "thawk2/Pal.h"

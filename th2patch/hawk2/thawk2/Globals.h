@@ -74,6 +74,7 @@ extern int* Redbook_PausedSongPos;
 
 extern int* Cheat_LevelSelect;
 extern int* Cheat_Light;
+extern int* Cheat_FlipScreen;
 
 
 extern int* Trig_OffsetList;

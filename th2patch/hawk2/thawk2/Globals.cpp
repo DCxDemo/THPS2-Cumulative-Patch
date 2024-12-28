@@ -77,6 +77,7 @@ int* Redbook_PausedSongPos = (int*)0x55e350;
 
 int* Cheat_LevelSelect = (int*)0x567544;
 int* Cheat_Light = (int*)0x5674c8;
+int* Cheat_FlipScreen = (int*)0x005674ec;
 
 
 

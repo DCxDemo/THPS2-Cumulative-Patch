@@ -63,14 +63,14 @@ void PrintDebugStuff()
 
 			);
 
+		
 			//pSkater->SetValue(0x28, 10);
 
-			delete pSkater;
-
-			
 			
 
 			DebugMessage(debugText, 10, 10);
+
+			delete pSkater;
 		}
 
 
@@ -93,7 +93,9 @@ void Panel_BalanceRail(
 		Length = Length * 16 / 9;
 		Width = Width * 4 / 3;
 
-		int markerX = (Balance * Length) / Max + x;
+		// we have to account for level flip cheat state for horizontal balance bar !!!
+		int markerX = (Balance * Length * (*Cheat_FlipScreen ? -1 : 1)) / Max + x;
+
 		Panel_Line(markerX, y, markerX, y + Width, MarkerColor);
 		Panel_DrawBalanceBarLR(x, y, Length, Width, LineColor);
 		Panel_DrawBalanceBarLR(x + 1, y + 1, Length, Width, LineColor >> 3 & 0x1f1f1f);

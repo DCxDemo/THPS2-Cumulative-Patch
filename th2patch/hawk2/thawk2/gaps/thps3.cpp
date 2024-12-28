@@ -7,7 +7,7 @@ Career::SGapTrick gapListThps3[] = {
 		catAir,
 	{ 0x13,	0,	1000,	250,	"[Flyin High!]" },
 	{ 0x13,	0,	1001,	250,	"[carwash]" },
-	{ 0x13,	0,	1002,	500,	"[Wrath of God!]" },
+	{ 0x13,	2,	1002,	500,	"[Wrath of God!]" },
 	{ 0x13,	0,	1003,	1000,	"[G Rated]" },
 	{ 0x13,	0,	1004,	100,	"[Grass Jump]" },
 	{ 0x13,	0,	1005,	200,	"[Satisfying]" },
@@ -20,7 +20,7 @@ Career::SGapTrick gapListThps3[] = {
 	{ 0x19,	0,	1040,	250,	"[Arise!]" },
 	{ 0x19,	0,	1041,	250,	"[Large]" },
 	{ 0x19,	0,	1042,	250,	"[Be Humble]" },
-	{ 0x19,	0,	1043,	250,	"[Elevator Grind!!]" },
+	{ 0x19,	1,	1043,	250,	"[Elevator Grind!!]" },
 	{ 0x19,	0,	1044,	250,	"[Dubba Jump]" },
 	{ 0x19,	0,	1045,	250,	"[Epic Jump]" },
 	{ 0x19,	0,	1046,	250,	"[Nice Start]" },
@@ -191,7 +191,7 @@ Career::SGapTrick gapListThps3[] = {
 
 	//foundry - 52 gaps
 	catAir,
-	{ 0x13,	0,	2500,	250,	"[Over the Halfpipe]" },
+	{ 0x13,	2,	2500,	250,	"[Over the Halfpipe]" },
 	{ 0x13,	0,	2501,	500,	"[Perfect Gap]" },
 	{ 0x13,	0,	2502,	100,	"[Second Story Air]" },
 	{ 0x13,	0,	2503,	100,	"[Channel Surfin]" },
@@ -210,7 +210,7 @@ Career::SGapTrick gapListThps3[] = {
 	{ 0x13,	0,	2519,	500,	"[Getting Higher]" },
 	
 	catGrind,
-	{ 0x19,	0,	2538,	250,	"[Knock The Bucket]" },
+	{ 0x19,	1,	2538,	250,	"[Knock The Bucket]" },
 	{ 0x19,	0,	2539,	250,	"[Pipe-Hoppin' Grinder]" },
 	{ 0x19,	0,	2540,	250,	"[Grind the Gap]" },
 	{ 0x19,	0,	2541,	250,	"[Along the Handrail]" },

@@ -11,10 +11,11 @@ CVector* CBruce_GetVelocity(void* pSkater)
 	return (CVector*)((int)pSkater + 0x4C);
 }
 
-
 #define CBRUCE_TOTALSCORE 0x16C
 
 #define CBRUCE_PENDINGSCORE 0x2A8
+
+#define CBRUCE_TRICKNAME 0x29C4
 
 #define CBRUCE_RAILBALANCE 0x2EF0
 //0x2ef4
@@ -30,6 +31,7 @@ CVector* CBruce_GetVelocity(void* pSkater)
 #define CBRUCE_LASTGAPTRICK 0x3024
 #define CBRUCE_LASTGOALTRICK 0x3028
 
+#define CBRUCE_TERRAIN 0x30B0
 #define CBRUCE_PHYSICSSTATE 0x30B8
 
 
@@ -77,6 +79,11 @@ int CBruce::PhysicsState()
 	return *(int*)((int)pSkater + CBRUCE_PHYSICSSTATE);
 }
 
+int CBruce::Terrain()
+{
+	return *(int*)((int)pSkater + CBRUCE_TERRAIN);
+}
+
 int* CBruce_GetManualBalanceOld(void* pSkater)
 {
 	return (int*)((int)pSkater + 0x2F18);
@@ -86,6 +93,11 @@ int* CBruce_GetManualBalanceOld(void* pSkater)
 int* CBruce_GetTestValueInt(void* pSkater, int offset)
 {
 	return (int*)((int)pSkater + offset);
+}
+
+char* CBruce::CBruce_GetTrickName()
+{
+	return (char*)((int)pSkater + CBRUCE_TRICKNAME);
 }
 
 

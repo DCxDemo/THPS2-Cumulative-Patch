@@ -21,6 +21,7 @@
 #include "thawk2/Utils.h"
 #include "patch/hook.h"
 #include "ddraw.h"
+#include "thawk2/types.h"
 
 
 
@@ -528,8 +529,29 @@ void D3D_BeginScene_Hook(uint param_1, uint backColor)
 }
 
 
-
 CMenu* menu;
+
+/*
+char* terrainNames[16] = {
+
+"T_CONCRETE",
+"T_TILE",
+"T_WOOD",
+"T_DIRT",
+"T_ASPHALT",
+"T_GRASS ",
+"T_WATER ",
+"T_CHAINLINK ",
+"T_BRICK ",
+"T_METALPOLE",
+"T_GENERIC1 ",
+"T_GENERIC2 ",
+"T_METAL ",
+"T_ROCK",
+"T_GRAVEL",
+"T_SIDEWALK"
+};
+*/
 
 // whenever HUD is displayed on the screen
 void Panel_Display_Hook()
@@ -1168,7 +1190,7 @@ void* LoadFile(char* filename, bool heap)
 }
 
 
-/*
+
 void PatchCareerGoals()
 {
 	if (options.CurrentGame == "THPS3")
@@ -1177,58 +1199,142 @@ void PatchCareerGoals()
 
 		level->trgfile = "aafoun_t";
 		level->shortname = "foun";
-		level->subname = "Foundry";
-		level->gapFirst = 0;
-		level->gapLast = 25000;
+		level->subname = "Woodland Hills";
+		sprintf(level->name, "Foundry");
+		level->gapFirst = 2500;
+		level->gapLast = 2600;
 
 		SGoal* goal = GetGoal(0, 0);
 		goal->goalText = "High Score - 10,000";
 		goal->intParam = 10000;
 		goal->goalType = EGoalType::Score;
 
-		goal = GetGoal(0, 1);
+		goal++;
 		goal->goalText = "Pro Score - 25,000";
 		goal->intParam = 25000;
 		goal->goalType = EGoalType::Score;
 
-		goal = GetGoal(0, 2);
+		goal++;
 		goal->goalText = "Sick Score - 75,000";
 		goal->intParam = 75000;
 		goal->goalType = EGoalType::Score;
 
-		goal = GetGoal(0, 3);
+		goal++;
 		goal->goalText = "Collect S-K-A-T-E";
 		goal->goalType = EGoalType::Skate;
 
-		goal = GetGoal(0, 4);
+		goal++;
 		goal->goalText = "Valves Unjammed";
-		goal->goalType = EGoalType::Pickups;
-		goal->intParam = 5;
-
-		goal = GetGoal(0, 5);
-		goal->goalText = "Activate Press";
 		goal->goalType = EGoalType::Destroy;
+		goal->intParam = 5;
+		goal->stringParam = "VALVES";
 
-		goal = GetGoal(0, 6);
-		goal->goalText = "Method over the halfpipe";
+		goal++;
+		goal->goalText = "BROKEN Activate Press"; // TH3 trigger goal
+		goal->goalType = EGoalType::Pickups;
+
+		goal++;
+		goal->goalText = "Indy over the halfpipe";
 		goal->goalType = EGoalType::Trick;
-		goal->stringParam = "METHOD";
+		goal->stringParam = "INDY";
 
-		goal = GetGoal(0, 7);
+		goal++;
 		goal->goalText = "Grind the control booth";
 		goal->goalType = EGoalType::Gaps;
 		goal->intParam = 1;
 
-		goal = GetGoal(0, 8);
+		goal++;
 		goal->goalText = "Find the secret tape";
 		goal->goalType = EGoalType::Hidden;
 
-		goal = GetGoal(0, 9);
+		goal++;
 		goal->goalText = "100% goals, stats and decks";
 		goal->goalType = EGoalType::Clear;
+
+
+
+		level++;
+
+		level->trgfile = "aala_t";
+		level->shortname = "LA";
+		sprintf(level->name, "Los Angeles");
+		level->subname = "California";
+		level->gapFirst = 1000;
+		level->gapLast = 1100;
+
+
+
+
+		goal = GetGoal(1, 0);
+
+		goal->goalText = "High Score - 13,000";
+		goal->intParam = 15000;
+		goal->goalType = EGoalType::Score;
+
+		goal++;
+		goal->goalText = "Pro Score - 40,000";
+		goal->intParam = 40000;
+		goal->goalType = EGoalType::Score;
+
+		goal++;
+		goal->goalText = "Sick Score - 100,000";
+		goal->intParam = 100000;
+		goal->goalType = EGoalType::Score;
+
+		goal++;
+		goal->goalText = "Collect S-K-A-T-E";
+		goal->goalType = EGoalType::Skate;
+
+		goal++;
+		goal->goalText = "Transformers Shutdown";
+		goal->goalType = EGoalType::Destroy;
+		goal->intParam = 5;
+		goal->stringParam = "TRANSFOMERS";
+
+		goal++;
+		goal->goalText = "BROKEN Grind the Electric rail"; // TH3 trigger goal
+		goal->goalType = EGoalType::Pickups;
+
+		goal++;
+		goal->goalText = "Elevator Grind";
+		goal->goalType = EGoalType::Gaps;
+		goal->intParam = 1;
+
+		goal++;
+		goal->goalText = "Kickflip over elevator lobby";
+		goal->goalType = EGoalType::Trick;
+		goal->stringParam = "KICKFLIP";
+
+		goal++;
+		goal->goalText = "Find the secret tape";
+		goal->goalType = EGoalType::Hidden;
+
+		goal++;
+		goal->goalText = "100% goals, stats and decks";
+		goal->goalType = EGoalType::Clear;
+
+
+		level++;
+
+		level->trgfile = "aario_t";
+		level->shortname = "rio";
+		sprintf(level->name, "Rio de Janeiro");
+		level->subname = "Brazil";
+		level->gapFirst = 1000;
+		level->gapLast = 1100;
+
+		level++;
+
+		level->trgfile = "aaair_t";
+		level->shortname = "air";
+		sprintf(level->name, "Airport");
+		level->subname = "Hawaii?";
+		level->gapFirst = 1000;
+		level->gapLast = 1100;
+
 	}
 }
-*/
+
 
 void PatchThps3Gaps()
 {
@@ -1394,7 +1500,7 @@ void Patch()
 	memcpy(level->Goals, waregoals, sizeof(SGoal) * 10);
 	*/
 
-	//PatchCareerGoals();
+	PatchCareerGoals();
 
 	/*
 	SGoal* goal = GetGoal(0, 4);
@@ -1483,7 +1589,8 @@ void Patch()
 	//CPatch::SetInt(0x468DE4, rand());
 
 
-	
+	// fixed properly
+	/*
 	if (options.DisableNewTex)
 	{
 		//change newbmp pointers null
@@ -1493,7 +1600,7 @@ void Patch()
 		CPatch::SetInt(0x4d6051, 0);
 		CPatch::SetInt(0x4d607b, 0);
 	}
-
+	*/
 
 	//this patches resolution, probably not needed anymore
 	//CPatch::SetInt(0x0046A891, 2);
@@ -1592,9 +1699,53 @@ ColorBGRA applyLighting(ColorBGRA* vert, ColorBGRA* light)
 	return *vert;
 }
 
+char** ShortLevName = (char**)0x0069d198;
+
+// essentially it's a PCOpen wrapper that checks 3 additional paths
+// if we've got name, check NEWBMP folder
+// if we've got checksum, check NEWTEX folder
+// additionally checks level short name subfolder (newtex\han for hangar etc)
+int openExternalTexture2(uint Checksum, char* Name)
+{
+	printf("openExternalTexture!\n");
+
+	if (options.DisableNewTex) return NS_NULL;
+
+	char local[64];
+
+	if (Name != NULL)
+	{
+		sprintf(local, ".\\newbmp\\%s", Name);
+
+		//original game accounts for leading slashes in the name
+	} 
+	else if (Checksum != NULL)
+	{
+		// there is some additional comparison routine here in the original game
+
+		sprintf(local, ".\\newtex\\%08x.bmp", Checksum);
+
+		int file = PCopen(&local[0], 0);
+		if (file != NS_NULL) return file;
+
+		sprintf(local, ".\\newtex\\%s\\%08x.bmp", ShortLevName, Checksum);
+	}
+	else
+	{
+		printf("now what?\n");
+		return NS_NULL;
+	}
+
+	return PCopen(&local[0], 0);
+}
 
 // list of all hooks
 Hook::Reroute hookList[] = {
+
+	{  0x004d5f10,openExternalTexture2 },
+	{  0x004d65da,openExternalTexture2 },
+	{  0x004d65f0,openExternalTexture2 },
+	{  0x004d6c19,openExternalTexture2 },
 	//{ 0x458564, SFX_SpoolOutLevelSFX },
 	//{ 0x452570, SFX_SpoolInLevelSFX },
 

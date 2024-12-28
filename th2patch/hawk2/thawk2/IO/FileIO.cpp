@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "FileIO.h"
 #include "PCIO.h"
+#include "..\..\thawk2\_old.h"
 #include "..\..\thawk2\mem.h"
 #include "..\types.h"
 #include "..\..\patch\hook.h"
@@ -14,6 +15,7 @@ namespace FileIO {
         printf("address of %s = 0x%08x\n", name, ptr);
     }
 
+    char* filePattern = (char*)0x0055e1f0;
 
 
     int* SectorsPerFrame = (int*)0x0052884c;
@@ -99,7 +101,7 @@ namespace FileIO {
             FileIO_AddSubDirToFileName(fileName);
         }
 
-        printf("checking path: %s\n", FileName);
+        printf("checking path: %s ", FileName);
 
         uint file = PCopen(FileName, 0);
 
@@ -166,6 +168,37 @@ namespace FileIO {
         return FileIO_OpenLoad(filename, heap);
     }
 
+
+    // the logic is to check whether file exists in mods folder
+    // if not, resort to data folder
+    int FileIO_Open_wrap(char* filename)
+    {
+        // set mods path
+        sprintf(filePattern, "mods\\????????.???\0");
+
+        if (FileIO_Exists(filename))
+        {
+            printf("Found %s in MODS folder!\n", filename);
+
+            return FileIO_Open(filename);
+        }
+
+        // set mods path
+        sprintf(filePattern, "data\\????????.???\0");
+
+        if (FileIO_Exists(filename))
+        {
+            return FileIO_Open(filename);
+        }
+
+        printf(" *** File %s not found in data folders!!! ***\n", filename);
+        printf_log(" *** File %s not found in data folders!!! ***\n", filename);
+
+        // file doesnt exist
+        return NS_NULL;
+    }
+
+
     /// <summary>
     /// Loads file to memory.
     /// </summary>
@@ -182,7 +215,7 @@ namespace FileIO {
             return NULL;
         }
 
-        int size = FileIO_Open(filename);
+        int size = FileIO_Open_wrap(filename);
 
         // check file size, can remove this on PC to allow larger files
         //if (size < 0 || size > MAX_FILESIZE) {
@@ -214,8 +247,6 @@ namespace FileIO {
 
         return pFile;
     }
-
-
 
 
     // === hook stuff ===
@@ -282,6 +313,25 @@ namespace FileIO {
         { 0x004c2444,	FileIO_Sync },
 
         { 0x004d8f99,   FileIO_Exists },
+
+        { 0x004c2428, FileIO_Open_wrap },
+        { 0x004b2f28, FileIO_Open_wrap },
+        { 0x004b1404, FileIO_Open_wrap },
+        { 0x004ad8c7, FileIO_Open_wrap },
+        { 0x004a6a4e, FileIO_Open_wrap },
+        { 0x00479078, FileIO_Open_wrap },
+        { 0x00478d38, FileIO_Open_wrap },
+        { 0x00467480, FileIO_Open_wrap },
+        { 0x0045b9f7, FileIO_Open_wrap },
+        { 0x00456a59, FileIO_Open_wrap },
+        { 0x0044ad49, FileIO_Open_wrap },
+        { 0x00448db7, FileIO_Open_wrap },
+        { 0x00447fa8, FileIO_Open_wrap },
+        { 0x00446b16, FileIO_Open_wrap },
+        { 0x00433139, FileIO_Open_wrap },
+        { 0x00433009, FileIO_Open_wrap },
+        { 0x00432e5a, FileIO_Open_wrap },
+        { 0x004268f2, FileIO_Open_wrap },
 
         //=========================
         { NULL, NULL }

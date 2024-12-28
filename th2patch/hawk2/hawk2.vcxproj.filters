@@ -60,7 +60,7 @@
     <ClInclude Include="THawk2\Career.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="THawk2\Redbook.h">
+    <ClInclude Include="thawk2\Redbook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="thawk2\Sfx.h">

@@ -264,3 +264,10 @@ static const UpdateTrickTables_t UpdateTrickTables = (UpdateTrickTables_t)0x004b
 
 typedef void(*RespackMain_t)(int param_1, int param_2);
 static const RespackMain_t RespackMain = (RespackMain_t)0x004e8480;
+
+
+typedef int(*openExternalTexture_t)(int Checksum, char* Name);
+static const openExternalTexture_t openExternalTexture = (openExternalTexture_t)0x004d5fe0;
+
+typedef void(*printf_log_t)(const char* format, ...);
+static const printf_log_t printf_log = (printf_log_t)0x004cca60;

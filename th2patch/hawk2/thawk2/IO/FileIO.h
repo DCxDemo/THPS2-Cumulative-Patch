@@ -14,7 +14,7 @@ namespace FileIO {
     //typedef void	(*FileIO_SetSectorsPerFrame_t)(int sectorsPerFrame);
     typedef void	(*FileIO_Init_t)();
     typedef int		(*FileIO_Open_t)(char* filename);
-    typedef void*   (*FileIO_Load_t)(void* ptr);
+    typedef void     (*FileIO_Load_t)(void* ptr);
     // typedef bool	(*FileIO_Exists_t)(char* filename);
     typedef void	(*FileIO_Continue_t)();
     // typedef void	(*FileIO_Sync_t)();
