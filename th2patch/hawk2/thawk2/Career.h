@@ -40,6 +40,23 @@ namespace Career {
 		Last = 13
 	};
 
+	// it swaps airport and suburbia due to hardcoded slot 4 night sky for new york, makes suburbia weird
+	// also swaps back canada and los angeles as in next gen versions, due to LA crash in slot 2
+	enum class ELevelThps3
+	{
+		Foundry = 0,
+		Canada = 1,
+		Rio = 2,
+		Airport = 3,
+		Suburbia = 4,
+		SkaterIsland = 5,
+		LosAngeles = 6,
+		Tokyo = 7,
+		DownhillBrazil = 8,
+		First = 0,
+		Last = 13
+	};
+
 	enum class ECheat : int {
 		McSqueeb = 0,
 		Spiderman = 1,
@@ -337,5 +354,5 @@ namespace Career {
 	void Career_SetAllGaps(bool value);
 	void Career_PrintGoals();
 	void* Career_GetCurrentCharacterProgress();
-
+	SGoal* GetGoal(int level, int goal);
 }

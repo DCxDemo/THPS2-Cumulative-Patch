@@ -5,18 +5,6 @@
 
 namespace Hook
 {
-	void ProcessList(Reroute* pList)
-	{
-		while (pList->pMem != NULL)
-		{
-			CPatch::RedirectCall(pList->pMem, pList->pFunc);
-
-			printf("DECOMP DEBUG: patched %i at %i\n", (unsigned int)pList->pFunc, pList->pMem);
-
-			pList++;
-		}
-	}
-
 	// The idea behind this is to collect all hooks within the namespace it belongs to.
 	// just define pHookList in the namespace and add to the array.
 	// the sethooks is called in main patching func.
@@ -36,5 +24,17 @@ namespace Hook
 	{
 		for (int i = 0; i < sizeof(pHookLists) / 4; i++)
 			ProcessList(pHookLists[i]);
+	}
+
+	void ProcessList(Reroute* pList)
+	{
+		while (pList->pMem != NULL)
+		{
+			CPatch::RedirectCall(pList->pMem, pList->pFunc);
+
+			printf("DECOMP DEBUG: patched %i at %i\n", (unsigned int)pList->pFunc, pList->pMem);
+
+			pList++;
+		}
 	}
 }

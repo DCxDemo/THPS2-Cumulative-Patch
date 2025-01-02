@@ -2,8 +2,10 @@
 
 // includes all required decomp headers
 
+
 #include "thawk2/_old.h"
 #include "thawk2/Career.h"
+#include "thawk2/career/custom_goals.h"
 #include "thawk2/CBruce.h"
 #include "thawk2/CClass.h"
 #include "thawk2/CMenu.h"
@@ -29,3 +31,4 @@
 #include "thawk2/Spool.h"
 #include "thawk2/Utils.h"
 #include "thawk2/WinMain.h"
+

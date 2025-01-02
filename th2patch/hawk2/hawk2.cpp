@@ -9,6 +9,8 @@
 
 //LPDIRECTDRAW lpDD = *((LPDIRECTDRAW*)0x29D6FF8);
 
+
+
 bool initialized = false;
 
 HINSTANCE origModule;
@@ -112,6 +114,8 @@ bool InitPatches()
 
 		freopen("CONOUT$", "w", stdout);
 		freopen("CONOUT$", "w", stderr);
+
+
 	}
 	#endif
 

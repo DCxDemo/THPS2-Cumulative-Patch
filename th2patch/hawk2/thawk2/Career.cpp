@@ -970,7 +970,13 @@ namespace Career {
         }
     }
 
+    SGoal* GetGoal(int level, int goal)
+    {
+        SLevel* pLevel = &Levels[level];
+        SGoal* pGoal = &pLevel->Goals[goal];
 
+        return pGoal;
+    }
 
 
 

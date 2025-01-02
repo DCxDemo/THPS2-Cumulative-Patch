@@ -1,12 +1,9 @@
 #include "stdafx.h"
 #include "FileIO.h"
-#include "PCIO.h"
 #include "..\..\thawk2\_old.h"
 #include "..\..\thawk2\mem.h"
 #include "..\types.h"
-#include "..\..\patch\hook.h"
-
-
+#include "PCIO.h"
 
 namespace FileIO {
 

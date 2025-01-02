@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#pragma once
 
 typedef void	(*Pad_InitAtStart_t)();
 typedef void	(*Pad_ClearAllOne_t)(int param_1);

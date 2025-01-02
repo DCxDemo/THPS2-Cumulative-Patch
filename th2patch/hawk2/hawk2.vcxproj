@@ -43,16 +43,17 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)</OutDir>
-    <IntDir>$(SolutionDir)\temp</IntDir>
+    <IntDir>$(SolutionDir)\temp\</IntDir>
     <TargetName>dinput</TargetName>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <TargetName>dinput</TargetName>
-    <IntDir>$(SolutionDir)\temp</IntDir>
+    <IntDir>$(SolutionDir)\temp\</IntDir>
     <OutDir>$(SolutionDir)</OutDir>
     <AllProjectBMIsArePublic>true</AllProjectBMIsArePublic>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -72,12 +73,15 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_WINDOWS;_USRDLL;HAWK2_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
+      <LanguageStandard>Default</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -86,6 +90,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <ModuleDefinitionFile>hawk2.def</ModuleDefinitionFile>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22000.0\um\x86\ddraw.lib"</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -94,17 +99,19 @@
     <ClInclude Include="cpatch.h" />
     <ClInclude Include="patch\hook.h" />
     <ClInclude Include="patch\_patch.h" />
+    <ClInclude Include="thawk2\career\custom_goals.h" />
     <ClInclude Include="thawk2\CMenu.h" />
     <ClInclude Include="thawk2\gte.h" />
     <ClInclude Include="thawk2\Init.h" />
     <ClInclude Include="thawk2\pal.h" />
     <ClInclude Include="thawk2\PCMovie.h" />
+    <ClInclude Include="thawk2\powerup.h" />
     <ClInclude Include="thawk2\Rail.h" />
     <ClInclude Include="thawk2\Render.h" />
     <ClInclude Include="thawk2\SkaterProfile.h" />
     <ClInclude Include="thawk2\thawk2.h" />
     <ClInclude Include="lib\INI\IniWriter.h" />
-    <ClInclude Include="THawk2\Career.h" />
+    <ClInclude Include="thawk2\Career.h" />
     <ClInclude Include="thawk2\CBruce.h" />
     <ClInclude Include="thawk2\CClass.h" />
     <ClInclude Include="thawk2\Crowd.h" />
@@ -112,9 +119,9 @@
     <ClInclude Include="thawk2\gaps\gaps.h" />
     <ClInclude Include="thawk2\Globals.h" />
     <ClInclude Include="thawk2\IO\PCIO.h" />
-    <ClInclude Include="THawk2\LoadingScreen.h" />
+    <ClInclude Include="thawk2\LoadingScreen.h" />
     <ClInclude Include="thawk2\m3d.h" />
-    <ClInclude Include="THawk2\Mess.h" />
+    <ClInclude Include="thawk2\Mess.h" />
     <ClInclude Include="mydebug.h" />
     <ClInclude Include="thawk2\PCInput.h" />
     <ClInclude Include="thawk2\Physics.h" />
@@ -130,22 +137,26 @@
     <ClInclude Include="thawk2\types.h" />
     <ClInclude Include="thawk2\Utils.h" />
     <ClInclude Include="thawk2\WinMain.h" />
-    <ClInclude Include="THawk2\_old.h" />
+    <ClInclude Include="thawk2\_old.h" />
     <ClInclude Include="hawk2_utils.h" />
     <ClInclude Include="lib\INI\IniReader.h" />
     <ClInclude Include="GameOptions.h" />
     <ClInclude Include="patchStuff.h" />
     <ClInclude Include="lib\SQLite\sqlite3.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="thawk2\IO\fileio.h" />
+    <ClInclude Include="thawk2\Mem.h" />
+    <ClInclude Include="thawk2\Pad.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Checksum.cpp" />
     <ClCompile Include="color.cpp" />
     <ClCompile Include="patch\hook.cpp" />
+    <ClCompile Include="thawk2\career\custom_goals.cpp" />
     <ClCompile Include="thawk2\Flash.cpp" />
     <ClCompile Include="thawk2\gte.cpp" />
     <ClCompile Include="thawk2\Init.cpp" />
-    <ClCompile Include="thawk2\IO\FileIO.cpp" />
+    <ClCompile Include="thawk2\IO\fileio.cpp" />
     <ClCompile Include="thawk2\Mem.cpp" />
     <ClCompile Include="thawk2\CBruce.cpp" />
     <ClCompile Include="thawk2\CMenu.cpp" />
@@ -158,13 +169,10 @@
     <ClCompile Include="thawk2\Pad.cpp" />
     <ClCompile Include="thawk2\Career.cpp" />
     <ClCompile Include="thawk2\CClass.cpp" />
-    <ClCompile Include="thawk2\IO\FileIO.h" />
     <ClCompile Include="lib\INI\IniWriter.cpp" />
     <ClCompile Include="thawk2\Globals.cpp" />
-    <ClInclude Include="THawk2\Mem.h" />
     <ClCompile Include="mydebug.cpp" />
     <ClCompile Include="thawk2\Mess.cpp" />
-    <ClCompile Include="THawk2\Pad.h" />
     <ClCompile Include="lib\XInput\CXBOXController.cpp" />
     <ClCompile Include="hawk2.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
@@ -187,6 +195,7 @@
     <ClCompile Include="thawk2\PCMovie.cpp" />
     <ClCompile Include="thawk2\Physics.cpp" />
     <ClCompile Include="thawk2\PKR.cpp" />
+    <ClCompile Include="thawk2\powerup.cpp" />
     <ClCompile Include="thawk2\Rail.cpp" />
     <ClCompile Include="thawk2\Redbook.cpp" />
     <ClCompile Include="thawk2\Render.cpp" />
@@ -201,7 +210,7 @@
     <None Include="lib\readme.md" />
     <None Include="lib\sqlite\readme.md" />
     <None Include="lib\SQLite\sqlite3.exp" />
-    <None Include="THawk2\readme.md" />
+    <None Include="thawk2\readme.md" />
     <None Include="info\classes.md" />
   </ItemGroup>
   <ItemGroup>
@@ -210,7 +219,7 @@
   <ItemGroup>
     <Text Include="lib\ini\readme.md" />
     <Text Include="lib\xinput\readme.md" />
-    <Text Include="info\THawk2_source_names.txt" />
+    <Text Include="info\thawk2_source_names.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

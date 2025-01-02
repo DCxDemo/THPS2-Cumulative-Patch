@@ -32,11 +32,13 @@ int* ProcessingTime = (int*)0x0055e8b4;
 bool* GenerateLevel = (bool*)0x55e124;
 
 
-int* ScreenWidth = (int*)0x29D6FE4;
-int* ScreenHeight = (int*)0x29D6FE8;
+int* ScreenWidth = (int*)0x029D6FE4;
+int* ScreenHeight = (int*)0x029D6FE8;
 
+// in WINMAIN_SwitchResolution
 int* hardcodedWidth = (int*)0x4f3f30;
 int* hardcodedHeight = (int*)0x4f3f37;
+
 
 int* prevTicks = (int*)0x29d4fbc;
 int* Vblanks = (int*)0x56af7c;

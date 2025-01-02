@@ -10,7 +10,7 @@ Career::SGapTrick gapListThps1[] = {
 	{ 0x13,	0,	2,		1000,	"[PHAT GAP]" },
 
 	//warehouse
-	{ 0x13,	1,	1001,	200,	"[TRANSFER]" },
+	{ 0x13,	2,	1001,	200,	"[TRANSFER]" },
 	{ 0x13,	0,	1005,	600,	"[TAXI GAP]" },
 	{ 0x13,	0,	1006,	100,	"[KICKER GAP]" },
 	{ 0x13,	0,	1007,	300,	"[OVER THE PIPE]" },
@@ -128,7 +128,7 @@ Career::SGapTrick gapListThps1[] = {
 
 
 
-	{ 0x11,	1,	11000,	250,	"[CHANNEL GAP]" },
+	{ 0x11,	2,	11000,	250,	"[CHANNEL GAP]" },
 	{ 0x11,	0,	11001,	200,	"[KICKER 2 LEDGE]" },
 	{ 0x11,	0,	11002,	1000,	"[GAP]" },
 
@@ -150,7 +150,7 @@ Career::SGapTrick gapListThps1[] = {
 	/* GRIND GAPS */
 
 	//warehouse
-	{ 0x19,	2,	21000,	200,	"[BIG RAIL]" },
+	{ 0x19, 2,	21000,	200,	"[BIG RAIL]" },
 	{ 0x19,	0,	21001,	300,	"[DECK 2 RAIL]" },
 	{ 0x19,	0,	21002,	500,	"[TAXI 2 LEDGE]" },
 	{ 0x19,	0,	21003,	1000,	"[TAXI 2 RAIL]" },

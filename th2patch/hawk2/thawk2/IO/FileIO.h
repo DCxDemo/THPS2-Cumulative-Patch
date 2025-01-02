@@ -1,4 +1,5 @@
-#include "stdafx.h"
+#pragma once
+
 #include "..\PKR.h"
 #include "..\..\patch\hook.h"
 

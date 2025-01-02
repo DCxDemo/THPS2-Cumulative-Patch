@@ -1,13 +1,16 @@
 #include "stdafx.h"
-//system includes
+
+// system includes
 #include <iostream>
 #include <fstream>
+#include <ddraw.h>
 #include "string.h"
 
-//lib includes
+// lib includes
 #include "lib/sqlite/sqlite3.h"
 #include "lib/xinput/CXBOXController.h"
 
+// decomp include
 #include "thawk2/thawk2.h"
 
 //patch includes
@@ -20,14 +23,13 @@
 #include "checksum.h"
 #include "thawk2/Utils.h"
 #include "patch/hook.h"
-#include "ddraw.h"
 #include "thawk2/types.h"
 
+using namespace std;
 
 
 //the old bigass all-in-one file, that should be cut into pizzas. this is my plastic fork!
 
-using namespace std;
 
 GameOptions options;
 
@@ -43,6 +45,14 @@ void Proxify(int offs[], int count, void* func)
 	for (int i = 0; i < count; i++)
 		CPatch::RedirectCall(offs[i], func);
 }
+
+
+typedef struct SWheelMenuEntry
+{
+	int Angle;
+	int Screen;
+	int Unknown;
+} SWheelMenuEntry;
 
 
 #pragma region patched redbook stuff, move to redbook.cpp
@@ -99,7 +109,6 @@ void GetTotalTracks()
 
 
 #pragma endregion 
-
 
 
 
@@ -1171,13 +1180,7 @@ int CountSongs()
 #pragma region main patch stuff 
 
 
-SGoal* GetGoal(int level, int goal)
-{
-	SLevel* pLevel = &Levels[level];
-	SGoal* pGoal = &pLevel->Goals[goal];
 
-	return pGoal;
-}
 
 Pkr2* pkr;
 
@@ -1187,152 +1190,6 @@ void* LoadFile(char* filename, bool heap)
 	//check later why unresolved
 	return NULL;
 	//return FileIO_OpenLoad_Pkr(filename, heap, pkr);
-}
-
-
-
-void PatchCareerGoals()
-{
-	if (options.CurrentGame == "THPS3")
-	{
-		SLevel* level = (SLevel*)((int)Levels + sizeof(SLevel) * 0);
-
-		level->trgfile = "aafoun_t";
-		level->shortname = "foun";
-		level->subname = "Woodland Hills";
-		sprintf(level->name, "Foundry");
-		level->gapFirst = 2500;
-		level->gapLast = 2600;
-
-		SGoal* goal = GetGoal(0, 0);
-		goal->goalText = "High Score - 10,000";
-		goal->intParam = 10000;
-		goal->goalType = EGoalType::Score;
-
-		goal++;
-		goal->goalText = "Pro Score - 25,000";
-		goal->intParam = 25000;
-		goal->goalType = EGoalType::Score;
-
-		goal++;
-		goal->goalText = "Sick Score - 75,000";
-		goal->intParam = 75000;
-		goal->goalType = EGoalType::Score;
-
-		goal++;
-		goal->goalText = "Collect S-K-A-T-E";
-		goal->goalType = EGoalType::Skate;
-
-		goal++;
-		goal->goalText = "Valves Unjammed";
-		goal->goalType = EGoalType::Destroy;
-		goal->intParam = 5;
-		goal->stringParam = "VALVES";
-
-		goal++;
-		goal->goalText = "BROKEN Activate Press"; // TH3 trigger goal
-		goal->goalType = EGoalType::Pickups;
-
-		goal++;
-		goal->goalText = "Indy over the halfpipe";
-		goal->goalType = EGoalType::Trick;
-		goal->stringParam = "INDY";
-
-		goal++;
-		goal->goalText = "Grind the control booth";
-		goal->goalType = EGoalType::Gaps;
-		goal->intParam = 1;
-
-		goal++;
-		goal->goalText = "Find the secret tape";
-		goal->goalType = EGoalType::Hidden;
-
-		goal++;
-		goal->goalText = "100% goals, stats and decks";
-		goal->goalType = EGoalType::Clear;
-
-
-
-		level++;
-
-		level->trgfile = "aala_t";
-		level->shortname = "LA";
-		sprintf(level->name, "Los Angeles");
-		level->subname = "California";
-		level->gapFirst = 1000;
-		level->gapLast = 1100;
-
-
-
-
-		goal = GetGoal(1, 0);
-
-		goal->goalText = "High Score - 13,000";
-		goal->intParam = 15000;
-		goal->goalType = EGoalType::Score;
-
-		goal++;
-		goal->goalText = "Pro Score - 40,000";
-		goal->intParam = 40000;
-		goal->goalType = EGoalType::Score;
-
-		goal++;
-		goal->goalText = "Sick Score - 100,000";
-		goal->intParam = 100000;
-		goal->goalType = EGoalType::Score;
-
-		goal++;
-		goal->goalText = "Collect S-K-A-T-E";
-		goal->goalType = EGoalType::Skate;
-
-		goal++;
-		goal->goalText = "Transformers Shutdown";
-		goal->goalType = EGoalType::Destroy;
-		goal->intParam = 5;
-		goal->stringParam = "TRANSFOMERS";
-
-		goal++;
-		goal->goalText = "BROKEN Grind the Electric rail"; // TH3 trigger goal
-		goal->goalType = EGoalType::Pickups;
-
-		goal++;
-		goal->goalText = "Elevator Grind";
-		goal->goalType = EGoalType::Gaps;
-		goal->intParam = 1;
-
-		goal++;
-		goal->goalText = "Kickflip over elevator lobby";
-		goal->goalType = EGoalType::Trick;
-		goal->stringParam = "KICKFLIP";
-
-		goal++;
-		goal->goalText = "Find the secret tape";
-		goal->goalType = EGoalType::Hidden;
-
-		goal++;
-		goal->goalText = "100% goals, stats and decks";
-		goal->goalType = EGoalType::Clear;
-
-
-		level++;
-
-		level->trgfile = "aario_t";
-		level->shortname = "rio";
-		sprintf(level->name, "Rio de Janeiro");
-		level->subname = "Brazil";
-		level->gapFirst = 1000;
-		level->gapLast = 1100;
-
-		level++;
-
-		level->trgfile = "aaair_t";
-		level->shortname = "air";
-		sprintf(level->name, "Airport");
-		level->subname = "Hawaii?";
-		level->gapFirst = 1000;
-		level->gapLast = 1100;
-
-	}
 }
 
 
@@ -1393,6 +1250,7 @@ void PatchThps4Gaps()
 //main patches func, sets all hooks and changes vars needed
 void Patch()
 {
+
 	/*
 	//pkr extraction example
 	pkr = new Pkr2();
@@ -1419,7 +1277,7 @@ void Patch()
 
 	// this is set as callback, so should put as int
 	//CPatch::SetInt(0x004f4ef4 + 3, (int)WINMAIN_WndProc);
-	
+
 
 	//doesnt seem to work, maybe gets overwritten by loading routines.
 	//Career_ClearGameWithEveryone();
@@ -1436,6 +1294,13 @@ void Patch()
 		//set instant return from thiscall MaybeManual 
 		CPatch::SetInt((int)Physics::MaybeManual, 0x000008c2);
 	}
+
+
+
+	// nop draw wheel?
+	//CPatch::SetInt((int)0x004578b0, 0x000008c2);
+
+
 
 	//disable skater rendering
 	//CPatch::Nop(0x00467dfa, 5);
@@ -1470,83 +1335,15 @@ void Patch()
 	if (options.CurrentGame != "THPS2")
 	{
 		ParseLevels(); //changes levels
+		CustomGoals::PatchCareerGoals(Levels);
 	}
-
-	/*
-	SLevel* level = Levels + 0;
-
-	level->trgfile = "skware_t";
-	level->shortname = "ware";
-	sprintf(level->name, "%s", "Warehouse");
-	level->subname = "Woodland Hills";
-	level->gapFirst = 11000;
-	level->gapLast = 11002;
-
-	SGoal waregoals[10] = {
-		{ EGoalType::Score,		10000, "", 100, "Rookie score - 10,000", 0 },
-		{ EGoalType::Score,		25000, "", 200, "Pro score - 25,000", 0 },
-		{ EGoalType::Score,		75000, "", 500, "SICK score - 75,000", 0 },
-
-		{ EGoalType::Skate,		0, "", 500, "Collect S-K-A-T-E", 0 },
-		{ EGoalType::Destroy,	5, "boxes", 500, "Smash 5 boxes", 0 },
-		{ EGoalType::Gaps,		1, "", 500, "Find a transfer", 0 },
-		{ EGoalType::Pickups,	0, "", 500, "Collect pickups", 0 },
-		{ EGoalType::Trick,		0, "50-50", 500, "Do a trick - 50-50", 0 },
-
-		{ EGoalType::Hidden,	0, "", 500, "Find a hidden tape", 0 },
-		{ EGoalType::Clear,		0, "", 500, "100% goals and cash", 0 }
-	};
-	
-	memcpy(level->Goals, waregoals, sizeof(SGoal) * 10);
-	*/
-
-	PatchCareerGoals();
-
-	/*
-	SGoal* goal = GetGoal(0, 4);
-	goal->goalText = "Smash the boxes";
-	goal->stringParam = "boxes";
-
-	goal = GetGoal(0, 6);
-	goal->goalText = "50-50 the Big Rail";
-	goal->stringParam = "50-50";
-
-	goal = GetGoal(0, 7);
-	goal->goalText = "Hit 3 transfers";
-	goal->stringParam = "transfers";
-	*/
-
-	/*
-	level = (SLevel*)((int)Levels + sizeof(SLevel) * 1);
-
-	level->trgfile = "skschl_t";
-	level->shortname = "schl";
-	level->subname = "School Miami";
-	level->gapStart = 0;
-	level->gapEnd = 25000;
-
-	goal = GetGoal(1, 4);
-	goal->goalText = "Grind 5 picnic tables";
-	goal->stringParam = "picnic tables";
-
-	goal = GetGoal(1, 6);
-	goal->intParam = 1;
-	goal->goalText = "Nosegrind the handicap";
-	goal->stringParam = "NOSEGRIND";
-
-	goal = GetGoal(1, 7);
-	goal->intParam = 2;
-	goal->goalText = "Hit 2 playground transfers";
-	goal->stringParam = "TRANSFERS";
-	*/
-
 
 
 
 	Player1 = new CXBOXController(1);
 
 	//CPatch::SetChar(0x498707, 0x92);
-	
+
 	//https://sherief.fyi/post/tony-hawks-pro-cleanup/
 	//https://learn.microsoft.com/en-us/windows/win32/winmsg/window-styles
 	//removes title bar on win10
@@ -1555,6 +1352,8 @@ void Patch()
 	//enlarges available Fog range in VIDMENU_Load
 	CPatch::SetChar(0x4CC4A4, 10);
 	CPatch::SetInt(0x4CC49C, 750);
+
+
 
 	//removes "shutting down thps2" delay
 	//CPatch::SetInt(0x4F5145, 0);
@@ -1605,24 +1404,17 @@ void Patch()
 	//this patches resolution, probably not needed anymore
 	//CPatch::SetInt(0x0046A891, 2);
 
-	
-	
+
+	// hardcoded in InitDirectDraw7
 	int* hW2 = (int*)0x4f5496;
 	int* hH2 = (int*)0x4f54a0;
 
 	CPatch::SetInt((int)hW2, options.ResX);
 	CPatch::SetInt((int)hH2, options.ResY);
-	
-	//CalcAnimLeanFrame, disables turning anim if noped
-	//CPatch::Nop(0x004915db, 5);
 
-
-
-	//??
+	// these are supposedly for software renderer
 	//CPatch::SetInt((int)0x524bb0, options.ResX);
 	//CPatch::SetInt((int)0x524bb4, options.ResY);
-
-
 
 	CPatch::SetInt((int)hardcodedWidth, options.ResX);
 	CPatch::SetInt((int)hardcodedHeight, options.ResY);
@@ -1632,6 +1424,10 @@ void Patch()
 
 	*ScreenWidth = options.ResX;
 	*ScreenHeight = options.ResY;
+
+
+	//CalcAnimLeanFrame, disables turning anim if noped
+	//CPatch::Nop(0x004915db, 5);
 
 
 	//TO DO split this into separate hooking funcs for each namespace and move to Hook::SetHooks
@@ -1741,7 +1537,7 @@ int openExternalTexture2(uint Checksum, char* Name)
 
 // list of all hooks
 Hook::Reroute hookList[] = {
-
+	
 	{  0x004d5f10,openExternalTexture2 },
 	{  0x004d65da,openExternalTexture2 },
 	{  0x004d65f0,openExternalTexture2 },
@@ -1760,7 +1556,7 @@ Hook::Reroute hookList[] = {
 	{  0x00460338,RenderModelNonRotated },
 	{  0x00460386,RenderModelNonRotated },
 	{  0x00461043,RenderBackgroundModelNonRotated },
-
+	
 
 
 

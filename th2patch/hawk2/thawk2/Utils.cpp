@@ -152,6 +152,57 @@ void Utils_KillEverythingInBox(SVector3i* min, SVector3i* max)
 }
 
 
+/* 
+// requires CBody to be decompiled first
+int Utils_KillObjectsInBox(CVector3* min, CVector3* max, CBody* pList, char useDie)
+{
+    if (pList == NULL)  return 0;
+
+    int numKilled = 0;
+    CBody* pCurr = pList;
+    CBody* pNext = NULL;
+
+    do {
+        // remember next item
+        pNext = pCurr->nextItem;
+
+        // check whether it's dead
+        if (!pCurr->IsDead()) {
+
+            int x = pCurr->pos.X;
+            int y = pCurr->pos.Y;
+            int z = pCurr->pos.Z;
+
+            // if in bounding box between min and max
+            if (
+                    min->X <= x && x <= max->X && 
+                    min->Y <= y && y <= max->Y &&
+                    min->Z <= z && z <= max->Z
+                )
+            {
+                // if should just get dead status
+                if (useDie) {
+                    pCurr->Die();
+                } else {
+                    // else remove physically
+                    delete pCurr;
+                }
+
+                // count
+                numKilled++;
+            }
+        }
+
+        pCurr = pNext;
+
+    } while (pNext != NULL);
+
+    return numKilled;
+}
+*/
+
+
+
 
 //this is called in front_update for level unlocked message. used to calculate text zoom
 int Utils_Pulse(int time, int period, int amplitude)

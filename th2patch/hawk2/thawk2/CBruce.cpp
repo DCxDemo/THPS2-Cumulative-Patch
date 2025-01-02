@@ -115,3 +115,23 @@ char* CBruce::CBruce_GetTrickName()
 0030	dword - 0?
 
 */
+
+/*
+// maybe a bit too optimistic
+void CBruce::AddTrickItem(CItem* pItem)
+{
+	if (pItem == NULL)
+		printf("Adding NULL pItem to trick item list!");
+
+	int count = this->mTrickItems;
+
+	if (count > 40) count = 40;
+
+	for (int i = 0; i < count; i++)
+		if (mTrickItem[i] == pItem)
+			return;
+
+	mTrickItem[i] = pItem;
+	mTrickItems++;
+}
+*/
