@@ -1,0 +1,6 @@
+delete from Soundtrack;
+.mode csv
+.import sql_music_list.csv Soundtrack
+VACUUM;
+PRAGMA integrity_check;
+select * from SoundTrack;
