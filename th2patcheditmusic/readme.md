@@ -4,7 +4,7 @@ Backup music.db before editing.
 
 1. If ```sqlite3.exe``` is not present in the folder, download official ```sqlite3.exe``` command line utility from https://www.sqlite.org/ and copy to this folder.
 2. Open ```sql_music_list.csv``` in notepad or any other text editor, by default it contains original THPS2PC soundtrack entries.
-3. Add a few lines in following format <game>,<track_number>,<artist>,<title>,<file>
+3. Add a few lines in following format <_game>,<_track_number>,<_artist>,<_title>,<_file>
 4. Save changes and launch ```sql_music_import.bat``` (it will execute SQL queries to import the data)
 5. It should create ```music.db``` file and output the new soundtrack table contents in a cmd window.
 6. Copy ```music.db``` file to ```patch``` folder.
