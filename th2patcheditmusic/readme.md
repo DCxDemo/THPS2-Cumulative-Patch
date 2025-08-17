@@ -1,4 +1,4 @@
-# Music editor for THPS2 patch
+# Playlist editor for THPS2 patch
 This folder contains everything needed to edit soundtrack in music.db.
 Backup music.db before editing.
 
