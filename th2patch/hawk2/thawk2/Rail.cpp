@@ -28,10 +28,10 @@ namespace Rail {
         short value = *(short*)offset[nodeIndex];
 
         // read node type (1st short)
-        Trig::ENodeType nodeType = (Trig::ENodeType)value;
+        ENodeType nodeType = (ENodeType)value;
 
         // if it's rail
-        if (nodeType == Trig::ENodeType::RailDef || nodeType == Trig::ENodeType::RailPoint)
+        if (nodeType == ENodeType::RailDef || nodeType == ENodeType::RailPoint)
         {
             // get flags
             short railFlags = Rail_Flags(nodeIndex);

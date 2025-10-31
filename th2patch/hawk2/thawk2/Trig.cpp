@@ -1,14 +1,36 @@
 #include "stdafx.h"
 #include "Trig.h"
 #include "Globals.h"
+#include "mem.h"
+#include "Utils.h"
 
 namespace Trig {
 
 	bool* numTrackSpoolingBuffers = (bool*)0x0055cbf4;
 	ushort* unkVal = (ushort*)0x00544574;
 
-	void Trig_InitialParseTRGFile() {
 
+	int* NumCheatRestarts = (int*)0x0056ae14;
+	int* NumHorseRestarts = (int*)0x0056ae68;
+	void* TrigFile = (void*)0x0056ae6c;
+
+
+	void Trig_DeleteTrigFile() {
+		printf("DECOMP: Trig_DeleteTrigFile()\n");
+
+		// doesnt crash, but no idea if works properly
+
+		if (TrigFile != NULL) {
+			Mem_Delete(TrigFile);
+			TrigFile = NULL;
+		}
+
+		*NumCheatRestarts = 0;
+		*NumHorseRestarts = 0;
+	}
+
+
+	void Trig_InitialParseTRGFile() {
 		printf("DECOMP: Trig_InitialParseTRGFile()\n");
 
 		*numTrackSpoolingBuffers = 0;
@@ -137,6 +159,67 @@ namespace Trig {
 		*/
 
 
+	short* RestartNode = (short*)0x0544574;
+
+	/*
+	void Trig_SetRestart(char* name) {
+
+		printf("DECOMP: Trig_SetRestart(%s)\n", name);
+
+		*RestartNode = -1;
+
+		int nodeIndex = 0;
+
+		if (NumNodes > 0) {
+			for (int i = 0; i < *NumNodes; i++) {
+
+				int* offset = (int*)*Trig_OffsetList;
+				short value = *(short*)offset[i];
+
+				//if ((short)*Trig_OffsetList[nodeIndex] == 8) {
+				if ((ENodeType)value == ENodeType::Restart)
+				{
+					// ...
+					piVar2 = Trig_GetPosition(&local_c, nodeIndex);
+
+					// if restart name matches
+					if (Utils_CompareStrings((char*)((int)piVar2 + 6), name, -1) != 0) {
+						*RestartNode = nodeIndex;
+						return;
+					}
+
+				}
+			}
+		}
+
+		printf("restart %s no found!", name);
+	}
+	*/
+
+
+
+	/*
+	
+	// should be easy
+		SCommandPoint * GetCommandPoint__Fi(uint Node)
+
+		{
+		  SCommandPoint *cp;
+  
+		  if (((Node != 0xffff) && ((short)*Trig_OffsetList[Node] == 6)) &&
+			 (cp = _CommandPoints, _CommandPoints != NULL)) {
+			do {
+			  if (*(ushort *)&cp->field_0xa_Node == Node) {
+				return cp;
+			  }
+			  cp = cp->field_0x14_prevOb;
+			} while (cp != NULL);
+		  }
+		  return NULL;
+		}
+
+	*/
+
 
 
     // === hook stuff ===
@@ -144,6 +227,9 @@ namespace Trig {
     Hook::Reroute hookList[] = {
 
         { 0x004527d5,   Trig_InitialParseTRGFile },
+
+		{ 0x00458550,   Trig_DeleteTrigFile },
+		{ 0x0043befb,   Trig_DeleteTrigFile },
 
         //=========================
         { NULL, NULL }

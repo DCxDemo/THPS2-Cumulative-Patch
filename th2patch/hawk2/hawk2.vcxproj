@@ -104,6 +104,7 @@
     <ClInclude Include="thawk2\decomp.h" />
     <ClInclude Include="thawk2\gte.h" />
     <ClInclude Include="thawk2\Init.h" />
+    <ClInclude Include="thawk2\IO\Wad.h" />
     <ClInclude Include="thawk2\pal.h" />
     <ClInclude Include="thawk2\PCMovie.h" />
     <ClInclude Include="thawk2\powerup.h" />
@@ -163,6 +164,7 @@
     <ClCompile Include="thawk2\Init.cpp" />
     <ClCompile Include="thawk2\IO\fileio.cpp" />
     <ClCompile Include="thawk2\IO\PCIO.cpp" />
+    <ClCompile Include="thawk2\IO\Wad.cpp" />
     <ClCompile Include="thawk2\Mem.cpp" />
     <ClCompile Include="thawk2\CBruce.cpp" />
     <ClCompile Include="thawk2\CMenu.cpp" />

@@ -186,6 +186,9 @@
     <ClInclude Include="thawk2\Trig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="thawk2\IO\Wad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -333,6 +336,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="thawk2\Trig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thawk2\IO\Wad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

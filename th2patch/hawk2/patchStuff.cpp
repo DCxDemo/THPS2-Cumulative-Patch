@@ -24,6 +24,7 @@
 #include "thawk2/Utils.h"
 #include "patch/hook.h"
 #include "thawk2/types.h"
+#include "thawk2/IO/Wad.h"
 //#include "thawk2/qb/qb.h"
 
 using namespace std;
@@ -1596,6 +1597,15 @@ void PatchThps4Gaps()
 //main patches func, sets all hooks and changes vars needed
 void Patch()
 {
+	/*
+	// wad extraction example
+	Wad::Load("thps.hed", "thps.wad");
+
+	Wad::DumpFile(Wad::FindFile("aaskil.psx"), "aaskil.psx");
+	Wad::DumpFile(Wad::FindFile("aaskil_2.psx"), "aaskil_2.psx");
+	Wad::DumpFile(Wad::FindFile("aaskil_t.trg"), "aaskil_t.trg");
+	*/
+
 	//QB::LoadScript("mods\\scripts\\goals.qb");
 	//int value = QB::GetInt(QB::crc32ns("goaltype_gaps"));
 
