@@ -101,11 +101,14 @@
     <ClInclude Include="patch\_patch.h" />
     <ClInclude Include="thawk2\career\custom_goals.h" />
     <ClInclude Include="thawk2\CMenu.h" />
+    <ClInclude Include="thawk2\decomp.h" />
     <ClInclude Include="thawk2\gte.h" />
     <ClInclude Include="thawk2\Init.h" />
     <ClInclude Include="thawk2\pal.h" />
     <ClInclude Include="thawk2\PCMovie.h" />
     <ClInclude Include="thawk2\powerup.h" />
+    <ClInclude Include="thawk2\qb\LinkedList.h" />
+    <ClInclude Include="thawk2\qb\qb.h" />
     <ClInclude Include="thawk2\Rail.h" />
     <ClInclude Include="thawk2\Render.h" />
     <ClInclude Include="thawk2\SkaterProfile.h" />
@@ -134,6 +137,7 @@
     <ClInclude Include="thawk2\SkatMgr.h" />
     <ClInclude Include="thawk2\Soundlib.h" />
     <ClInclude Include="thawk2\Spool.h" />
+    <ClInclude Include="thawk2\Trig.h" />
     <ClInclude Include="thawk2\types.h" />
     <ClInclude Include="thawk2\Utils.h" />
     <ClInclude Include="thawk2\WinMain.h" />
@@ -153,10 +157,12 @@
     <ClCompile Include="color.cpp" />
     <ClCompile Include="patch\hook.cpp" />
     <ClCompile Include="thawk2\career\custom_goals.cpp" />
+    <ClCompile Include="thawk2\decomp.cpp" />
     <ClCompile Include="thawk2\Flash.cpp" />
     <ClCompile Include="thawk2\gte.cpp" />
     <ClCompile Include="thawk2\Init.cpp" />
     <ClCompile Include="thawk2\IO\fileio.cpp" />
+    <ClCompile Include="thawk2\IO\PCIO.cpp" />
     <ClCompile Include="thawk2\Mem.cpp" />
     <ClCompile Include="thawk2\CBruce.cpp" />
     <ClCompile Include="thawk2\CMenu.cpp" />
@@ -196,11 +202,14 @@
     <ClCompile Include="thawk2\Physics.cpp" />
     <ClCompile Include="thawk2\PKR.cpp" />
     <ClCompile Include="thawk2\powerup.cpp" />
+    <ClCompile Include="thawk2\qb\LinkedList.cpp" />
+    <ClCompile Include="thawk2\qb\qb.cpp" />
     <ClCompile Include="thawk2\Rail.cpp" />
     <ClCompile Include="thawk2\Redbook.cpp" />
     <ClCompile Include="thawk2\Render.cpp" />
     <ClCompile Include="thawk2\Shatter.cpp" />
     <ClCompile Include="thawk2\Spool.cpp" />
+    <ClCompile Include="thawk2\Trig.cpp" />
     <ClCompile Include="thawk2\Utils.cpp" />
     <ClCompile Include="thawk2\WinMain.cpp" />
   </ItemGroup>

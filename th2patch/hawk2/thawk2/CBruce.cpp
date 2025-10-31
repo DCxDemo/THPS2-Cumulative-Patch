@@ -17,6 +17,8 @@ CVector* CBruce_GetVelocity(void* pSkater)
 
 #define CBRUCE_TRICKNAME 0x29C4
 
+#define CBRUCE_INMANUAL 0x2DD4
+
 #define CBRUCE_RAILBALANCE 0x2EF0
 //0x2ef4
 //0x2ef8
@@ -67,6 +69,11 @@ int CBruce::TotalScore()
 int CBruce::ManualBalance()
 {
 	return *(int*)((int)pSkater + CBRUCE_MANUALBALANCE);
+}
+
+int CBruce::InManual()
+{
+	return *(int*)((int)pSkater + CBRUCE_INMANUAL);
 }
 
 int CBruce::RailBalance()

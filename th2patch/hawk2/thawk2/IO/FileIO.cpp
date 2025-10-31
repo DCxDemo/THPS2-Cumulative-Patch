@@ -100,7 +100,7 @@ namespace FileIO {
 
         printf("checking path: %s ", FileName);
 
-        uint file = PCopen(FileName, 0);
+        uint file = PCIO::PCopen(FileName, 0);
 
         printf(" = %i\n", file);
 
@@ -109,7 +109,7 @@ namespace FileIO {
         }
         else
         {
-            PCclose(file);
+            PCIO::PCclose(file);
             return true;
         }
     }

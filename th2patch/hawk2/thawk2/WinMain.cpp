@@ -4,6 +4,22 @@
 
 
 HWND hWnd = (HWND)0x029d4fc4;
+char* pConfigFileName = (char*)0x029d4fc8;
+
+void WINMAIN_SaveSetting(LPCSTR section, LPCSTR key, LPCSTR value) {
+    WritePrivateProfileStringA(section, key, value, pConfigFileName);
+    WritePrivateProfileStringA(NULL, NULL, NULL, pConfigFileName); // ??
+}
+
+void WINMAIN_LoadSetting(LPCSTR section, LPCSTR key, LPCSTR value, LPSTR lpReturnedString) {
+    GetPrivateProfileStringA(section, key, value, lpReturnedString, 256, pConfigFileName);
+}
+
+void WINMAIN_ScreenDimensions(int* width, int* height)
+{
+    *width = *ScreenWidth;
+    *height = *ScreenHeight;
+}
 
 tagMSG msg;
 
@@ -28,20 +44,6 @@ uint WinYield()
     }
 
     return msg.wParam;
-}
-
-void WINMAIN_ScreenDimensions(int* width, int* height)
-{
-    *width = *ScreenWidth;
-    *height = *ScreenHeight;
-}
-
-
-char* lpFileName = (char*)0x29d4fc8;
-
-void WINMAIN_LoadSetting(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR lpDefault, LPSTR lpReturnedString)
-{
-    GetPrivateProfileStringA(lpAppName, lpKeyName, lpDefault, lpReturnedString, 256, lpFileName);
 }
 
 

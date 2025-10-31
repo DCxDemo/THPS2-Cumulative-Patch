@@ -62,6 +62,30 @@ typedef struct SLevel
     int killers;
 } SLevel;
 
+// defines screen viewport (rectangle to draw stuff)
+typedef struct SViewport {
+    short w;
+    short h;
+    short x;
+    short y;
+    short clipNear;
+    short clipFar;
+    short zoom;
+    short fogDist;
+    short unk1; // these 2 values are used
+    short unk2;
+    short unk3; // and these 2 are unused
+    short unk4;
+} SViewport;
+
+typedef struct SWheelMenuEntry
+{
+    int Angle;
+    int Screen;
+    int Unknown;
+} SWheelMenuEntry;
+
+
 void Patch();
 void PatchSkaters();
 void SetHooks();

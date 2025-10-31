@@ -20,7 +20,7 @@ typedef void(*Utils_StartFade_t)();
 typedef void(*Utils_StopFade_t)();
 //typedef void(*Utils_VblankProcessing_t)();
 typedef void(*MyVSync_t)();
-typedef void(*Pause_t)();
+typedef void(*Pause_t)(int frames);
 typedef void(*Utils_InitialRand_t)();
 typedef void(*Rnd_t)();
 typedef void(*Utils_RotateY_t)();

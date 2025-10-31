@@ -140,7 +140,7 @@ namespace Redbook
                 {
                     //printf("exists: %i", exists);
 
-                    Mess_DeleteAll();
+                    Mess::Mess_DeleteAll();
                     DrawMessage(&playingName[0]);
                 }
             }

@@ -1,43 +1,27 @@
 #include "stdafx.h"
 #include "thawk2.h"
-#include "types.h"
-#include "Flash.h"
-
-
-//demo viewport, final is different
-struct SViewport {
-	int xR;
-	int yB;
-	int xL;
-	int yT;
-	int Hither;
-	int Yon;
-	int TanHalf;
-};
-
-typedef struct SViewport SViewport;
 
 
 uint* Camera_RandA = (uint*)0x0055c418;
 uint* Camera_RandB = (uint*)0x0055c41c;
 uint* Camera_RandSeed = (uint*)0x0055c608;
 
+#define RANDOM_A 0x12b9b0a1
+#define RANDOM_B 0xaa2fb3f
 #define RANDOM_SEED 0x9f6ad
 
 void Camera_InitialRand(uint seed)
 {
-	*Camera_RandA = 0x12b9b0a1;
-	*Camera_RandB = 0xaa2fb3f;
+	*Camera_RandA = RANDOM_A;
+	*Camera_RandB = RANDOM_B;
 	*Camera_RandSeed = seed;
 }
 
 
 int* PCMemBuffer = (int*)0x0055ec78;
 
-#define RAM_SIZE 32 * 1024 * 1024 //original is 6 * 1000 * 1024 for whatever reason
+#define RAM_SIZE 64 * 1024 * 1024 //original is 6 * 1000 * 1024 for whatever reason
 
-//SViewport, missing for now
-int* pCurrentViewport = (int*)0x00560698;
 
 /// <summary>
 /// Initialize various stuff, including memory space and game systems.
@@ -46,28 +30,28 @@ void Init_AtStart()
 {
 	printf("decomp Init_AtStart called...");
 
-	//something like this?
+	// something like this?
 
-	//allocate buffer
+	// allocate buffer
 	*PCMemBuffer = (int)malloc(RAM_SIZE);
 
 	if (!*PCMemBuffer) throw;
 
-	//clear memory
+	// clear memory
 	memset((void*)(*PCMemBuffer), 0, RAM_SIZE);
 
 	//_ResetCallback();
 
-	//init memory card stuff
+	// init memory card stuff
 	MMU_Init();
 
-	//set default viewport
-	*pCurrentViewport = 0x00530da8; //&_ApocalypseViewport;
+	// set default viewport
+	*pCurrentViewport = DefaultViewport;
 
-	//initialize mem stuff
+	// initialize mem stuff
 	Init_ResetMemory(0x10); //heap0size? sup?
 
-	//initialize pad system
+	// initialize pad system
 	Pad_InitAtStart();
 
 
@@ -130,22 +114,18 @@ void Init_Restart()
 	printf("decomp Init_Restart called\n");
 
 	Init_Cleanup(HARD_CLEANUP);
-
 	Db_Reset();
-
 	Spool_Init();
-
-	*TitleTimeout = 0x14;
-
+	*TitleTimeout = 20;
 	Flash::Flash_Reset();
 
 	//unused in the port
 	//Pack_Init();
-	
+
 	//unused in the port
 	//SFX_InitAtStart();
 
-	Pal_Init(0x100, 0x50);
+	Pal_Init(256, 80);
 }
 
 
@@ -172,7 +152,7 @@ void Init_KillAll()
 	Bit_DeleteAll();
 	*/
 	
-	Mess_DeleteAll();
+	Mess::Mess_DeleteAll();
 }
 
 
@@ -230,7 +210,7 @@ void Init_ForGame()
 {
 	printf("decomp Init_ForGame\n");
 
-	*pCurrentViewport = 0x00530da8; //&_ApocalypseViewport;
+	*pCurrentViewport = DefaultViewport;
 
 	Front_Init();
 
@@ -238,3 +218,31 @@ void Init_ForGame()
 
 	CamPt_Init();
 }
+
+/*
+
+void MainLoop_End() {
+
+	// basically this func should progress delta time
+	// it does frame progression checks and calls pause
+
+	if (Vblanks == *GStartTime) {
+		Pause(1);
+	}
+
+	// poly buffer overflow check was here
+
+	// need this?
+	 Db_Render();
+
+	if (Vblanks == GStartTime + 1) {
+		// guess it's an old one? it just returns
+		Pause(1);
+	}
+
+	GStartTime = Vblanks;
+
+	PollHost();
+}
+
+*/

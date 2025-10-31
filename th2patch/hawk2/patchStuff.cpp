@@ -24,6 +24,7 @@
 #include "thawk2/Utils.h"
 #include "patch/hook.h"
 #include "thawk2/types.h"
+//#include "thawk2/qb/qb.h"
 
 using namespace std;
 
@@ -45,14 +46,6 @@ void Proxify(int offs[], int count, void* func)
 	for (int i = 0; i < count; i++)
 		CPatch::RedirectCall(offs[i], func);
 }
-
-
-typedef struct SWheelMenuEntry
-{
-	int Angle;
-	int Screen;
-	int Unknown;
-} SWheelMenuEntry;
 
 
 #pragma region patched redbook stuff, move to redbook.cpp
@@ -259,6 +252,7 @@ void VIDMENU_Load_Hook()
     VIDMENU_Load();
 	options.Load();
 }
+
 
 
 //move to globals?
@@ -562,37 +556,9 @@ char* terrainNames[16] = {
 };
 */
 
-// whenever HUD is displayed on the screen
-void Panel_Display_Hook()
-{
-	if (options.ShowHUD)
-	{
-		Panel_Display();
 
-		if (options.RailBalanceBar)
-		{
-			CBruce skater = new CBruce(GSkater);
 
-			if ((EPhysicsState)skater.PhysicsState() == EPhysicsState::PHYSICS_ON_RAIL)
-			{
-				Panel_BalanceRail(skater.RailBalance(), 0x1000,
-					30, 6,
-					512 / 2, 240 / 3,
-					COLOR_RED, COLOR_GREEN,	//BGR color
-					true);
-			}
-		}
-	}
 
-	PrintDebugStuff();
-
-	if (menu != NULL)
-		delete menu;
-
-	menu = new CMenu((SMenu*)0x0055e8a0);
-	//menu->DebugPrint();
-	
-}
 
 // shadow rendering
 void RenderSuperItemShadow_Hook(void* superItem) //CSuper
@@ -709,7 +675,367 @@ LRESULT ProxyWinProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
 	//return WindowProc(hWnd, Msg, wParam, lParam);
 }
 
+
+
+
+
+
+#define LINE_COLOR 0xff
+#define MARKER_COLOR 0xff00
+
+#define SINGLEPLAYER 0
+#define MULTIPLAYER_HORIZONTAL 1
+#define MULTIPLAYER_VERTICAL 2
+#define MULTIPLAYER_CORNER 3
+#define MULTIPLAYER_CORNER_BIG 4
+
+#define TOP_BIT 0x80000000
+
+
+inline void SetCameraValues(short dist, short pitch, short yOffset) {
+
+	// wonder if original code uses this for both p1 and p2 cameras
+	*camDist = dist;
+	*camPitch = pitch;
+	*camYOffset = yOffset;
+}
+
+
+// fills rectangle with black
+inline void BlackOut(int x, int y, int w, int h) {
+	Draw_Rect(x, y, w + x, y, w + x, h + y, x, h + y, 0x40000000);
+}
+
+
+
+inline void DisplayViewPort_Singleplayer() {
+
+	if (!*GameFrozen) {
+		if (!*closeCam) {
+			SetCameraValues(290, 150, -108);
+		}
+		else {
+			SetCameraValues(386, 30, -160);
+		}
+	}
+
+	Display_Viewport(DefaultViewport, 0); //gNetGame
+}
+
+inline void DisplayViewport_SplitscreenHorizontal() {
+
+	if (!*GameFrozen) {
+		SetCameraValues(286, 118, -140);
+	}
+
+	BlackOut(options.ResX / 2 + -2, 0, 4, options.ResY);
+
+	Display_Viewport(LeftViewport, 0);
+	Display_Viewport(RightViewport, 1);
+}
+
+inline void DisplayViewport_SplitscreenVertical() {
+
+	if (!*GameFrozen) {
+		SetCameraValues(450, 60, -120);
+	}
+
+	BlackOut(0, options.ResY / 2 + -2, options.ResX, 4);
+
+	Display_Viewport(TopViewport, 0);
+	Display_Viewport(BottomViewport, 1);
+}
+
+inline void DisplayViewport_SplitscreenCorner() {
+
+	if (!*GameFrozen) {
+		SetCameraValues(642, 32, -172);
+	}
+
+	BlackOut(options.ResX / 2, 0, options.ResX / 2, options.ResY / 2);
+	BlackOut(0, options.ResY / 2, options.ResX / 2, options.ResY / 2);
+
+	Display_Viewport(TopLeftViewport, 0);
+	Display_Viewport(BottomRightViewport, 1);
+}
+
+inline void DisplayViewport_SplitscreenCornerBig() {
+
+	if (!*GameFrozen) {
+		SetCameraValues(610, 0, -200);
+	}
+
+	BlackOut(options.ResX / 2 + 0x30, 0, options.ResX / 2 - 0x30, options.ResY / 2 - 0x20);
+	BlackOut(0, options.ResY / 2 + 0x20, options.ResX / 2 - 0x30, options.ResY / 2 - 0x20);
+
+	Display_Viewport(TopLeftBigViewport, 0);
+	Display_Viewport(BottomRightBigViewport, 1);
+}
+
+inline void DoWibblyTextures() {
+
+	// preprocess wibbly textures for Taxi and Bull models
+	// are there wibbly textures though? maybe smoke or smth?
+
+	void* pTaxi = (void*)Spool_FindRegion("c_taxi");
+
+	if ((uint)pTaxi != NS_NULL) {
+		M3d_PreprocessWibblyTextures(pTaxi);
+	}
+
+	void* pBull = (void*)Spool_FindRegion("c_bull");
+
+	if ((uint)pBull != NS_NULL) {
+		M3d_PreprocessWibblyTextures(pBull);
+	}
+}
+
+
+void Panel_Display_Patch()
+{
+	CBruce skater = new CBruce(GSkater);
+
+	if (options.ShowHUD)
+	{
+		Panel_Display();
+
+		if (skater.InManual() > 0)
+		{
+			Panel_BalanceRail(skater.ManualBalance(), 0x1000,
+				30, 6,
+				(int)(512 / 2.7), 240 / 2,
+				COLOR_RED, COLOR_GREEN,	//BGR color
+				false); // vertical
+		}
+
+		if (options.RailBalanceBar)
+		{
+			if ((EPhysicsState)skater.PhysicsState() == EPhysicsState::PHYSICS_ON_RAIL)
+			{
+				Panel_BalanceRail(skater.RailBalance(), 0x1000,
+					30, 6,
+					512 / 2, 240 / 3,
+					COLOR_RED, COLOR_GREEN,	//BGR color
+					true); // horizontal
+			}
+		}
+	}
+
+	PrintDebugStuff();
+
+	/*
+	if (menu != NULL)
+		delete menu;
+
+	menu = new CMenu((SMenu*)0x0055e8a0);
+	//menu->DebugPrint();
+	*/
+}
+
+
+
+
+
+
+bool* CloseCamToggle = (bool*)0x00530e84;
+
+
+void Display() {
+
+	// draw the info rectangle, if autotest restart exists
+	// most likely it was removed, probably can wipe it out
+	/*
+	if (*pAutoTestRestartName != NULL) {
+		Mess::Mess_SetRGB(0xff,0,0,0);
+		Mess::Mess_SetScale(0x100);
+		Mess::Mess_SetTextJustify(Mess::eTextJustify::Left);
+		Mess::Mess_DrawText(0x100, 0x3c, *pAutoTestRestartName);
+	}
+	*/
+
+	/*
+	// ??? force black sky? probably unnecessary. maybe put toggle sky cheat here?
+	if (_Cheat_30 != 0) {
+		_M3d_FadeColour = TOP_BIT;
+		_Db_SkyColor = 0;
+		Db_UpdateSky();
+	}
+	*/
+
+	// huh, changes fog distance based on zoom?
+	//DefaultViewport->fogDist = (short)CCamera::GetZoom(_CameraList);
+
+	if (!*GameFrozen) {
+
+		// updates cameras
+		Ob_AI(CameraList);
+
+		// here it handles camera change on select
+		if (!(Player1->GetState().Gamepad.wButtons & XINPUT_GAMEPAD_BACK))
+		{
+			*CloseCamToggle = true;
+		}
+		else
+		{
+			if (*CloseCamToggle)
+			{
+				*closeCam ^= 1;
+				*CloseCamToggle ^= 1;
+			}
+		}
+	}
+
+	// probably toggles closecam if allowed to? (select)
+	// depending on closecam value, it assigns different camera values
+	/*
+	if (((_GameFrozen != 0) && (_Cheat_ScreenShots == 0)) ||
+		(.Ob_AI__FPP5CBody(&_CameraList), _Cheat_ScreenShots == 0)) {
+		if (pad1._240_1_ == '\0') {
+			DAT_00530e84 = 1;
+		}
+		else if ((DAT_00530e84 != 0) && (((DAT_00530e84 = 0, _GNumberOfPlayers != 2 || (_GGame == Horse)) || (_GGame == Contest)
+						 ))) {
+			_CloseCam = _CloseCam ^ 1;
+		}
+
+		if (DAT_00567eb4._1_1_ != '\0') {
+			DAT_00567eb4._1_1_ = '\0';
+		}
+	}
+	*/
+
+	// is this like PC only hack? seems it always resets it to single player 
+	// PC version doesnt really use any other modes, as there is no splitscreen modes at all
+	// the rest of it seems to be working fine though, if set manually
+	*ViewportMode = SINGLEPLAYER;
+
+	MENUPC_DrawMouseCursor();
+
+
+	DoWibblyTextures();
+
+
+	// draw viewport based on selected mode
+	switch (*ViewportMode) {
+
+		case SINGLEPLAYER:
+			DisplayViewPort_Singleplayer();
+			break;
+
+		case MULTIPLAYER_HORIZONTAL:
+			DisplayViewport_SplitscreenHorizontal();
+			break;
+
+		case MULTIPLAYER_VERTICAL:
+			DisplayViewport_SplitscreenVertical();
+			break;
+
+		case MULTIPLAYER_CORNER:
+			DisplayViewport_SplitscreenCorner();
+			break;
+
+		case MULTIPLAYER_CORNER_BIG:
+			DisplayViewport_SplitscreenCornerBig();
+			break;
+
+		default:
+			printf("Unknown viewport mode in Display()!");
+			break;
+	}
+
+
+	// draw HUD
+	if (!*Cheat_Light && options.ShowHUD) {
+
+		// okay what
+		// i call it here and then once again in the patched call
+		// remove any and it crashes...
+		Panel_Display();
+
+		// additional patch drawing
+		Panel_Display_Patch();
+	}
+
+	Pad::Pad_Restore();
+	Front_Update();
+	Pad::Pad_Remap();
+
+	// draw mouse cursor
+	if (*GamePaused) {
+		// display frontend menus
+		Front_Display();
+	}
+
+	// display message queue
+	Mess::Mess_Display();
+
+
+	// draw manual balance bar
+	// should add horizonal here as well
+	// if single player
+	/*
+	if (GSkater2 == NULL) {
+		// if skater 1 in manual
+		if ((GSkater->mManual != 0) && (*(int *)&GSkater->set_by_opcode_0x59! != 0)) {
+			Panel_BalanceUD(GSkater->manualBalance, 4000, 30, 200, 0x78, LINE_COLOR, MARKER_COLOR);
+		}
+	}
+	// if splitscreen
+	else {
+
+		// if skater 1 in manual
+		if ((GSkater->mManual != 0) && (*(int *)&GSkater->set_by_opcode_0x59! != 0)) {
+			Panel_BalanceUD(GSkater->manualBalance, 4000, 0x19, 0x50, 0x78, LINE_COLOR, MARKER_COLOR);
+		}
+
+		// if skater 2 in manual, skip
+		if ((GSkater2->mManual != 0) && (*(int *)&GSkater2->set_by_opcode_0x59! != 0)) {
+			Panel_BalanceUD(GSkater2->manualBalance, 4000, 25, 336, 0x78, LINE_COLOR, MARKER_COLOR);
+		}
+	}
+	*/
+
+
+	/*
+	if ((*GamePaused == 0) || (*Status == 0x2a)) {
+		*Mick_Darkness = 0;
+	}
+	else {
+		Mick_Darken();
+	}
+	*/
+
+	// render flash (xrays, thunder - white, blood - red, etc)
+	// not working properly on pc as well?
+	Flash::Flash_Display();
+
+	// calculate poly buffer size, not really needed i guess? maybe for memory handling
+	//__PolyBufferBytesUsed = (_pPoly & 0x7fffffff) - (*(uint *)(pDoubleBuffer + 0xb0) & 0x7fffffff);
+}
+
+
+
+
+
 #pragma endregion
+
+
+/*
+void System_Logic() {
+	Pad_Restore();
+	Pad_Update();
+	Pad_Remap();
+
+	if (*_GClear1) {
+		Pad_ClearAllOne(0);
+	}
+
+	if (*_GClear2) {
+		Pad_ClearAllOne(1);
+	}
+}
+*/
+
 
 
 #pragma region [patch skaters]
@@ -762,112 +1088,143 @@ SBoardInfo LilPerBoards[] = {
 };
 */
 
+// changes skater costume models. slot 1 to 4
+void PatchSkater(SkaterProfile* p, int slot, char* hi, char* lo)
+{
+	// im lazy to fix all calls...
+	slot--;
+
+	if (slot < 0)
+		throw new exception("slot < 0");
+
+	if (slot > 3)
+		throw new exception("slot << 0> 3");
+
+	p->Outfits[slot].hi = hi;
+	p->Outfits[slot].lo = lo;
+
+	/*
+	char buf[256];
+
+	if (hi != NULL)
+	{
+		printf("looking for %s\n", hi);
+
+		sprintf(buf, "%s.%s", hi, "psx");
+
+		if (!FileIO::Exists("data\\", buf))
+		{
+			p->Outfits[slot].hi = NULL;
+			p->Outfits[slot].lo = NULL;
+			return;
+		}
+	}
+
+	if (lo != NULL)
+	{
+		printf("looking for %s\n", lo);
+
+		sprintf(buf, "%s.%s", lo, "psx");
+
+		if (!FileIO::Exists("data\\", buf))
+			p->Outfits[slot].lo = NULL;
+	}
+	*/
+}
+
 void PatchSkaters()
 {
 	SkaterProfile* p = &profiles[0];
 
-	p->styleC_hi = "hawk3";
-	p->styleC_lo = "hawk3b";
-	p->styleD_hi = "hawk4";
-	p->styleD_lo = "hawk4b";
+	PatchSkater(p, 3, "hawk3", "hawk3b");
+	PatchSkater(p, 4, "hawk4", "hawk4b");
+
+	printf("hello\n");
 
 	p++;
-	p->styleC_hi = "burnq4";
-	p->styleC_lo = "burnq4b";
+	PatchSkater(p, 3, "burnq4", "burnq4b");
 	//burnquist wasnt in thps3, so no style D model
 
 	p++;
-	p->styleC_hi = "ca3";
-	p->styleC_lo = "ca3b";
-	p->styleD_hi = "ca4";
-	p->styleD_lo = "ca4b";
+
+	PatchSkater(p, 3, "ca3", "ca3b");
+	PatchSkater(p, 4, "ca4", "ca4b");
 
 	p++;
-	p->styleC_hi = "campb3";
-	p->styleC_lo = "campb3b";
-	p->styleD_hi = "campb4";
-	p->styleD_lo = "campb4b";
+
+	PatchSkater(p, 3, "campb3", "campb3b");
+	PatchSkater(p, 4, "campb4", "campb4b");
 
 	p++;
-	p->styleC_hi = "glif3";
-	p->styleC_lo = "glif3b";
-	p->styleD_hi = "glif4";
-	p->styleD_lo = "glif4b";
+
+	PatchSkater(p, 3, "glif3", "glif3b");
+	PatchSkater(p, 4, "glif4", "glif4b");
 
 	p++;
-	p->styleC_hi = "koston3";
-	p->styleC_lo = "koston3b";
-	p->styleD_hi = "koston4";
-	p->styleD_lo = "koston4b";
+
+	PatchSkater(p, 3, "koston3", "koston3b");
+	PatchSkater(p, 4, "koston4", "koston4b");
 
 	p++;
-	p->styleC_hi = "lasek3";
-	p->styleC_lo = "lasek3b";
-	p->styleD_hi = "lasek4";
-	p->styleD_lo = "lasek4b";
+
+	PatchSkater(p, 3, "lasek3", "lasek3b");
+	PatchSkater(p, 4, "lasek4", "lasek4b");
 
 	p++;
-	p->styleC_hi = "mullen3";
-	p->styleC_lo = "mullen3b";
-	p->styleD_hi = "mullen4";
-	p->styleD_lo = "mullen4b";
+
+	PatchSkater(p, 3, "mullen3", "mullen3b");
+	PatchSkater(p, 4, "mullen4", "mullen4b");
 
 	p++;
-	p->styleC_hi = "muska3";
-	p->styleC_lo = "muska3b";
-	p->styleD_hi = "muska4";
-	p->styleD_lo = "muska4b";
+
+	PatchSkater(p, 3, "muska3", "muska3b");
+	PatchSkater(p, 4, "muska4", "muska4b");
 
 	p++;
-	p->styleC_hi = "rynld3";
-	p->styleC_lo = "rynld3b";
-	p->styleD_hi = "rynld4";
-	p->styleD_lo = "rynld4b";
+
+	PatchSkater(p, 3, "rynld3", "rynld3b");
+	PatchSkater(p, 4, "rynld4", "rynld4b");
 
 	p++;
-	p->styleC_hi = "rowley3";
-	p->styleC_lo = "rowley3b";
-	p->styleD_hi = "rowley4";
-	p->styleD_lo = "rowley4b";
+
+	PatchSkater(p, 3, "rowley3", "rowley3b");
+	PatchSkater(p, 4, "rowley4", "rowley4b");
 
 	p++;
-	p->styleC_hi = "steam3";
-	p->styleC_lo = "steam3b";
-	p->styleD_hi = "steam4";
-	p->styleD_lo = "steam4b";
+
+	PatchSkater(p, 3, "steam3", "steam3b");
+	PatchSkater(p, 4, "steam4", "steam4b");
 
 	p++;
-	p->styleC_hi = "thomas3";
-	p->styleC_lo = "thomas3b";
-	p->styleD_hi = "thomas4";
-	p->styleD_lo = "thomas4b";
 
+	PatchSkater(p, 3, "thomas3", "thomas3b");
+	PatchSkater(p, 4, "thomas4", "thomas4b");
 
-	//now patch secret skater depending on the selected option
-
-	p = &profiles[SKATER_SECRET1];
-
-	//since we can't have a switch case by string in C, lets just calculate string checksum, used a lot in later games.
-	uint hash = checksum(&options.DickSwap[0]);
-
-	printf("%s = 0x%08x\n", &options.DickSwap[0], hash);
 
 
 	if (options.DickSwap != "none")
 	{
+		//now patch secret skater depending on the selected option
+
+		p = &profiles[SKATER_SECRET1];
+
+
+		//since we can't have a switch case by string in C, lets just calculate string checksum, used a lot in later games.
+		uint hash = checksum(&options.DickSwap[0]);
+
+		printf("%s = 0x%08x\n", &options.DickSwap[0], hash);
+
+
 		switch (hash)
 		{
-			//"bam", margera + fry cook
+			// "bam", margera + fry cook
 			case 0x680b1a5b: {
-				sprintf(p->FullName, "%s", "Bam Margera");
+				sprintf(p->FullName, "Bam Margera");
 				p->pShortName = "Bam";
 
-				p->styleA_hi = "ba3";
-				p->styleA_lo = "ba3b";
-				p->styleB_hi = "ba4";
-				p->styleB_lo = "ba4b";
-				p->styleC_hi = "fry";
-				p->styleC_lo = "fryb";
+				PatchSkater(p, 1, "ba3", "ba3b");
+				PatchSkater(p, 2, "ba4", "ba4b");
+				PatchSkater(p, 3, "fry", "fryb");
 
 				p->pFaceName = "s2fbam.bmp";
 
@@ -876,77 +1233,65 @@ void PatchSkaters()
 				break;
 			}
 
-			//"wolve", wolverine from th3
+			// "wolve", wolverine from th3
 			case 0xe4f32b33: {
-				sprintf(p->FullName, "%s", "Wolverine");
+				sprintf(p->FullName, "Wolverine");
 				p->pShortName = "wolve";
 
-				p->styleA_hi = "wolve";
-				p->styleA_lo = NULL;
-				p->styleB_hi = NULL;	//since we dont have style B for it, should patch with nulls
-				p->styleB_lo = NULL;
+				PatchSkater(p, 1, "wolve", "wolve");
+				PatchSkater(p, 2, NULL, NULL);
 
 				break;
 			}
 
 			//"lilper", Little Person from th4
 			case 0xadf13666: {
-				sprintf(p->FullName, "%s", "Little Person");
+				sprintf(p->FullName, "Little Person");
 				p->pShortName = "lilper";
 
-				p->styleA_hi = "lilper";
-				p->styleA_lo = NULL;
-				p->styleB_hi = NULL;	//since we dont have style B for it, should patch with nulls
-				p->styleB_lo = NULL;
+				PatchSkater(p, 1, "lilper", "lilper");
+				PatchSkater(p, 2, NULL, NULL);
 
 				//memcpy(&p->boards, LilPerBoards, sizeof(LilPerBoards));
 
 				break;
 			}
 
-			//kor1, fin k l band style B
+			//kor1, fin k l band style A
 			case 0xfd91275c: {
-				sprintf(p->FullName, "%s", "Fin K. L.");
+				sprintf(p->FullName, "Fin K. L.");
 				p->pShortName = "finkl";
+				p->flags |= 1; // sets female sfx bank
 
-				p->styleA_hi = "white";
-				p->styleA_lo = NULL;
-				p->styleB_hi = "red";
-				p->styleB_lo = NULL;
-				p->styleC_hi = "blue";
-				p->styleC_lo = NULL;
-				p->styleD_hi = "black";
-				p->styleD_lo = NULL;
+				PatchSkater(p, 1, "white", "white");
+				PatchSkater(p, 2, "red", "red");
+				PatchSkater(p, 3, "blue", "blue");
+				PatchSkater(p, 4, "black", "black");
 
 				break;
 			}
 
 			//kor2, fin k l band style B
 			case 0x4ff07f11: {
-				sprintf(p->FullName, "%s", "Fin K. L.");
+				sprintf(p->FullName, "Fin K. L.");
 				p->pShortName = "finkl";
+				p->flags |= 1; // sets female sfx bank
 
-				p->styleA_hi = "white2";
-				p->styleA_lo = NULL;
-				p->styleB_hi = "red2";
-				p->styleB_lo = NULL;
-				p->styleC_hi = "blue2";
-				p->styleC_lo = NULL;
-				p->styleD_hi = "black2";
-				p->styleD_lo = NULL;
+				PatchSkater(p, 1, "white2", "white2");
+				PatchSkater(p, 2, "red2", "red2");
+				PatchSkater(p, 3, "blue2", "blue2");
+				PatchSkater(p, 4, "black2", "black2");
 
 				break;
 			}
 
-			//mcsqueeb, since tony already has 4 styles, bring this back in
+			// mcsqueeb, since tony already has 4 styles, bring this back in
 			case 0x92af0067: {
-				sprintf(p->FullName, "%s", "McSqueeb");
+				sprintf(p->FullName, "McSqueeb");
 				p->pShortName = "mcsqueeb";
 
-				p->styleA_hi = "secret4";
-				p->styleA_lo = "secret4b";
-				p->styleB_hi = NULL;	//since we dont have style B for it, should patch with nulls
-				p->styleB_lo = NULL;
+				PatchSkater(p, 1, "secret4", "secret4b");
+				PatchSkater(p, 2, NULL, NULL);
 
 				break;
 			}
@@ -957,8 +1302,8 @@ void PatchSkaters()
 	}
 	else
 	{
-		p->styleC_hi = "dick3";
-		p->styleC_lo = "dick3b";
+		PatchSkater(p, 3, "dick3", "dick3b");
+		// there was no dick in thps4
 	}
 }
 
@@ -1247,16 +1592,20 @@ void PatchThps4Gaps()
 	CopyGaps(pGapListThps4, pGaps);
 }
 
+
 //main patches func, sets all hooks and changes vars needed
 void Patch()
 {
+	//QB::LoadScript("mods\\scripts\\goals.qb");
+	//int value = QB::GetInt(QB::crc32ns("goaltype_gaps"));
 
 	/*
 	//pkr extraction example
 	pkr = new Pkr2();
 
-	if (pkr->Load(".\\all9.pkr") == PkrError::Success)
+	if (pkr->Load(".\\all.pkr") == PkrError::Success)
 	{
+		pkr->ExportAll(".\\data_winmobile");
 		printf("PKR LOAD OK\n");
 	}
 	else
@@ -1277,6 +1626,8 @@ void Patch()
 
 	// this is set as callback, so should put as int
 	//CPatch::SetInt(0x004f4ef4 + 3, (int)WINMAIN_WndProc);
+	// 
+
 
 
 	//doesnt seem to work, maybe gets overwritten by loading routines.
@@ -1294,7 +1645,6 @@ void Patch()
 		//set instant return from thiscall MaybeManual 
 		CPatch::SetInt((int)Physics::MaybeManual, 0x000008c2);
 	}
-
 
 
 	// nop draw wheel?
@@ -1356,11 +1706,10 @@ void Patch()
 
 
 	//removes "shutting down thps2" delay
-	//CPatch::SetInt(0x4F5145, 0);
 	CPatch::Nop(0x4f5149, 6);
 
-	//editor limit test
-	CPatch::SetInt(0x4371f1, 0);
+	
+	
 
 	//supposed to remove polylimit error
 	int* polyLimit = (int*)0x4301EF;
@@ -1521,7 +1870,7 @@ int openExternalTexture2(uint Checksum, char* Name)
 
 		sprintf(local, ".\\newtex\\%08x.bmp", Checksum);
 
-		int file = PCopen(&local[0], 0);
+		int file = PCIO::PCopen(&local[0], 0);
 		if (file != NS_NULL) return file;
 
 		sprintf(local, ".\\newtex\\%s\\%08x.bmp", ShortLevName, Checksum);
@@ -1532,12 +1881,16 @@ int openExternalTexture2(uint Checksum, char* Name)
 		return NS_NULL;
 	}
 
-	return PCopen(&local[0], 0);
+	return PCIO::PCopen(&local[0], 0);
 }
+
+
+
+
 
 // list of all hooks
 Hook::Reroute hookList[] = {
-	
+
 	{  0x004d5f10,openExternalTexture2 },
 	{  0x004d65da,openExternalTexture2 },
 	{  0x004d65f0,openExternalTexture2 },
@@ -1556,7 +1909,7 @@ Hook::Reroute hookList[] = {
 	{  0x00460338,RenderModelNonRotated },
 	{  0x00460386,RenderModelNonRotated },
 	{  0x00461043,RenderBackgroundModelNonRotated },
-	
+
 
 
 
@@ -1582,7 +1935,7 @@ Hook::Reroute hookList[] = {
 
 
 	{ 0x00454590, Init_Restart },	//launchthedamngame
-	//{ 0x0046a71b, Init_Restart },	//th2main
+    { 0x0046a71b, Init_Restart },	//th2main
 	{ 0x0046a8dc, Init_Restart },	//kickit
 	{ 0x0046ae11, Init_Restart },   //kickit
 
@@ -1670,9 +2023,7 @@ Hook::Reroute hookList[] = {
 
 	//{ 0x48d4a5, Panel_Bail_Hook },	//in CBruce::Trick_Bail
 
-	{ 0x468823, Panel_Display_Hook }, // in Display
-
-
+	{ 0x46a085, Display },
 
 
 

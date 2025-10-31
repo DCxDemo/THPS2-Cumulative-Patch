@@ -15,17 +15,17 @@ void PlaySpecialSound()
 //this should be moved to mess.h
 struct SMessageProgArray
 {
-	SMessageProg m1;
-	SMessageProg m2;
-	SMessageProg m3;
-	SMessageProg m4;
-	SMessageProg m5;
+	Mess::SMessageProg m1;
+	Mess::SMessageProg m2;
+	Mess::SMessageProg m3;
+	Mess::SMessageProg m4;
+	Mess::SMessageProg m5;
 };
 
-SMessage mess;
+Mess::SMessage mess;
 SMessageProgArray ms;
 
-void SetupMessage(SMessageProg &message, int d, int ss, int es, ColorRGB sc, ColorRGB ec)
+void SetupMessage(Mess::SMessageProg &message, int d, int ss, int es, ColorRGB sc, ColorRGB ec)
 {
 	message.Duration = d;
 	message.StartScale = ss;

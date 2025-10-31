@@ -3,14 +3,9 @@
 #include "globals.h"
 #include "Mem.h"
 #include "types.h"
+#include "trig.h"
 
 namespace Rail {
-
-    // this should be whereever trigger file handling is located
-    enum class ETriggerNodeType : int {
-        RailPoint = 0x0A,
-        RailNode = 0x0B,
-    };
 
     // switches rail on by index
     void Rail_SwitchOn(ushort nodeIndex)
@@ -33,10 +28,10 @@ namespace Rail {
         short value = *(short*)offset[nodeIndex];
 
         // read node type (1st short)
-        ETriggerNodeType nodeType = (ETriggerNodeType)value;
+        Trig::ENodeType nodeType = (Trig::ENodeType)value;
 
         // if it's rail
-        if (nodeType == ETriggerNodeType::RailNode || nodeType == ETriggerNodeType::RailPoint)
+        if (nodeType == Trig::ENodeType::RailDef || nodeType == Trig::ENodeType::RailPoint)
         {
             // get flags
             short railFlags = Rail_Flags(nodeIndex);

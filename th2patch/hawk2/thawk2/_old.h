@@ -59,11 +59,6 @@ static const VectorNormal_t VectorNormal = (VectorNormal_t)0x4E5650;
 
 //WINMAIN stuff
 
-typedef int(*WINMAIN_SaveSetting_t)(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR lpString);
-static const WINMAIN_SaveSetting_t WINMAIN_SaveSetting = (WINMAIN_SaveSetting_t)0x4F3D80;
-
-typedef int(*WINMAIN_LoadSetting_t)(LPCSTR lpAppName, LPCSTR lpKeyName, LPCSTR lpDefault, LPSTR lpReturnedString);
-static const WINMAIN_LoadSetting_t WINMAIN_LoadSetting = (WINMAIN_LoadSetting_t)0x4F3D50;
 
 typedef void(*WINMAIN_SwitchResolution_t)(int mode);
 static const WINMAIN_SwitchResolution_t WINMAIN_SwitchResolution = (WINMAIN_SwitchResolution_t)0x4F3F10;
@@ -73,6 +68,16 @@ static const WinMain2_t WinMain2 = (WinMain2_t)0x4F4EC0;
 
 typedef LRESULT(__stdcall* WindowProc_t)(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 static const WindowProc_t WindowProc = (WindowProc_t)0x4F4BA0;
+
+
+
+typedef int(*PKR_PreLoad_t)(char* pName);
+static const PKR_PreLoad_t PKR_PreLoad = (PKR_PreLoad_t)0x004e6950;
+
+typedef void(*PKR_UnLoad_t)(char* pName);
+static const PKR_UnLoad_t PKR_UnLoad = (PKR_UnLoad_t)0x004e6d50;
+
+
 
 //typedef void(*WinYield_t)();
 //use this to avoid freezing
@@ -140,8 +145,7 @@ typedef void(*Game_Display_t)();
 //main game render func, called once per frame
 static const Game_Display_t Game_Display = (Game_Display_t)0x46a080;
 
-
-typedef void(*Panel_Line_t)(short param_1, short param_2, short param_3, short param_4, int param_5);
+typedef void(*Panel_Line_t)(short x0, short y0, short x1, short y1, int color);
 //simply draws a line on the screen.
 static const Panel_Line_t Panel_Line = (Panel_Line_t)0x00488410;
 
@@ -151,7 +155,7 @@ static const Panel_Line_t Panel_Line = (Panel_Line_t)0x00488410;
 
 
 
-typedef int(*Panel_Display_t)();
+typedef void(*Panel_Display_t)();
 //draws user interface
 static const Panel_Display_t Panel_Display = (Panel_Display_t)0x48a980;
 
@@ -271,3 +275,21 @@ static const openExternalTexture_t openExternalTexture = (openExternalTexture_t)
 
 typedef void(*printf_log_t)(const char* format, ...);
 static const printf_log_t printf_log = (printf_log_t)0x004cca60;
+
+
+typedef void(*Display_Viewport_t)(void* viewport, int playerIndex);
+static const Display_Viewport_t Display_Viewport = (Display_Viewport_t)0x00467c20;
+
+typedef void(*Draw_Rect_t)(short x1, short y1, short x2, short y2, short x3, short y3, short x4, short y4, unsigned int color);
+static const Draw_Rect_t Draw_Rect = (Draw_Rect_t)0x00467c20;
+
+typedef void(*MENUPC_DrawMouseCursor_t)();
+static const MENUPC_DrawMouseCursor_t MENUPC_DrawMouseCursor = (MENUPC_DrawMouseCursor_t)0x004d9060;
+
+
+typedef void(*M3d_PreprocessWibblyTextures_t)(void*);
+static const M3d_PreprocessWibblyTextures_t M3d_PreprocessWibblyTextures = (M3d_PreprocessWibblyTextures_t)0x00461c80;
+
+
+typedef void(*Ob_AI_t)(void* pList);
+static const Ob_AI_t Ob_AI = (Ob_AI_t)0x0047e8e0;

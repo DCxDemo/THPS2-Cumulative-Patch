@@ -35,6 +35,7 @@ class CBruce
 public:
 	CBruce::CBruce(void*);
 	void* pSkater;
+	int CBruce::InManual();
 	int CBruce::ManualBalance();
 	int CBruce::RailBalance();
 	int CBruce::PhysicsState();

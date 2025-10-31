@@ -78,6 +78,7 @@ extern int* Cheat_FlipScreen;
 
 
 extern int* Trig_OffsetList;
+extern short** ppTrig_OffsetList;
 extern int* NumNodes;
 
 extern int* TotalRailNodes;
@@ -86,3 +87,23 @@ extern void* RailNodeLookup;
 
 extern bool* AutoKickSetting;
 extern bool* AutoKickState;
+
+extern int* camDist;
+extern int* camPitch;
+extern int* camYOffset;
+
+extern SViewport** pCurrentViewport;
+
+extern SViewport* DefaultViewport;
+extern SViewport* LeftViewport;
+extern SViewport* RightViewport;
+extern SViewport* TopViewport;
+extern SViewport* BottomViewport;
+extern SViewport* TopLeftViewport;
+extern SViewport* BottomRightViewport;
+extern SViewport* TopLeftBigViewport;
+extern SViewport* BottomRightBigViewport;
+
+extern bool* closeCam;
+
+extern void* CameraList;

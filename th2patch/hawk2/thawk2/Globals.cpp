@@ -84,6 +84,7 @@ int* Cheat_FlipScreen = (int*)0x005674ec;
 
 
 int* Trig_OffsetList = (int*)0x0056ae70;
+short** ppTrig_OffsetList = (short**)0x0056ae70;
 int* NumNodes = (int*)0x0056ae74;
 
 int* TotalRailNodes = (int*)0x005684bc;
@@ -92,3 +93,29 @@ void* RailNodeLookup = (void*)0x005684b8;
 
 bool* AutoKickSetting = (bool*)0x00567038;
 bool* AutoKickState = (bool*)0x0055c88c;
+
+
+int* camDist = (int*)0x00521a30;
+int* camPitch = (int*)0x00521a34;
+int* camYOffset = (int*)0x00521a38;
+
+
+//this is ptr to ptr, be careful
+SViewport** pCurrentViewport = (SViewport**)0x00560698;
+
+
+SViewport* DefaultViewport = (SViewport*)0x00530da8;
+SViewport* LeftViewport = DefaultViewport+1;
+SViewport* RightViewport = DefaultViewport+2;
+SViewport* TopViewport = DefaultViewport+3;
+SViewport* BottomViewport = DefaultViewport+4;
+SViewport* TopLeftViewport = DefaultViewport+5;
+SViewport* BottomRightViewport = DefaultViewport+6;
+SViewport* TopLeftBigViewport = DefaultViewport + 7;
+SViewport* BottomRightBigViewport = DefaultViewport + 8;
+
+
+bool* closeCam = (bool*)0x005674c0;
+
+
+void* CameraList = (void*)0x0055c698;

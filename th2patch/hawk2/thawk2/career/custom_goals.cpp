@@ -190,7 +190,7 @@ namespace CustomGoals
 		{ EGoalType::Skate,		0,		NULL,		1000, "Collect S-K-A-T-E", 0 },
 		{ EGoalType::Destroy,	5,		"boxes",	1000, "Smash the boxes", 0 },
 		{ EGoalType::Pickups,	0,		NULL,		1000, "--- non-working slot ---", 0 },
-		{ EGoalType::Trick,		0,		"50-50",	1000, "50-50 the Big Rail Gap", 0},
+		{ EGoalType::Trick,		1,		"NOSEGRIND",	1000, "50-50 the Big Rail Gap", 0},
 		{ EGoalType::Gaps,		1,		NULL,		1000, "Ollie a Channel gap", 0 },
 
 		{ EGoalType::Hidden,	0,		NULL,		1000, "Find the secret tape", 0 },
@@ -201,6 +201,9 @@ namespace CustomGoals
 	void PatchThps1Goals(void* pLevels)
 	{
 		SLevel* pLevel = (SLevel*)pLevels;
+
+		pLevel->gapFirst = 0;
+		pLevel->gapLast = 0;
 
 		memcpy(pLevel->Goals, WarehouseGoals, sizeof(SGoal) * 10); pLevel++;
 
@@ -250,13 +253,9 @@ namespace CustomGoals
 	void PatchCareerGoals(void* pLevels)
 	{
 		if (options.CurrentGame == "THPS1")
-		{
 			return PatchThps1Goals(pLevels);
-		}
 
 		if (options.CurrentGame == "THPS3")
-		{
 			return PatchThps3Goals(pLevels);
-		}
 	}
 }

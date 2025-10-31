@@ -16,18 +16,21 @@ namespace Hook
 		FileIO::pHookList,
 		Flash::pHookList,
 		Physics::pHookList,
-		Redbook::pHookList
+		Redbook::pHookList,
+		PCIO::pHookList,
+		Decomp::pHookList,
+		Trig::pHookList
 		//Pal::pHookList
 	};
 
-	void SetHooks()
-	{
+	void SetHooks() {
+
 		for (int i = 0; i < sizeof(pHookLists) / 4; i++)
 			ProcessList(pHookLists[i]);
 	}
 
-	void ProcessList(Reroute* pList)
-	{
+	void ProcessList(Reroute* pList) {
+
 		while (pList->pMem != NULL)
 		{
 			CPatch::RedirectCall(pList->pMem, pList->pFunc);

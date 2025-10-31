@@ -174,6 +174,18 @@
     <ClInclude Include="thawk2\Pad.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="thawk2\qb\qb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thawk2\qb\LinkedList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thawk2\decomp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="thawk2\Trig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -306,6 +318,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="thawk2\powerup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thawk2\IO\PCIO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thawk2\qb\qb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thawk2\qb\LinkedList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thawk2\decomp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="thawk2\Trig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

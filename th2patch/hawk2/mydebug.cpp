@@ -6,10 +6,10 @@ char debugText[256];
 
 void DebugMessage(char* text, int x, int y)
 {
-	Mess_SetScale(95);
-	Mess_SetRGB(255, 255, 32, false);
-	Mess_SetTextJustify(eTextJustify::Left);
-	Mess_DrawText(x, y, text, 0);
+	Mess::Mess_SetScale(95);
+	Mess::Mess_SetRGB(255, 255, 32, false);
+	Mess::Mess_SetTextJustify(Mess::eTextJustify::Left);
+	Mess::Mess_DrawText(x, y, text);
 }
 
 #define BUFFER_WIDTH 512
@@ -56,13 +56,18 @@ void PrintDebugStuff()
 			
 			CBruce* pSkater = new CBruce(GSkater);
 
+			sprintf(debugText, "bruce test: %i",
+				pSkater->InManual()
+			);
+
+			/*
 			sprintf(debugText, "bruce test: %i %i %i" ,
 				pSkater->GetValue(0x12c),
 				pSkater->GetValue(0x130),
 				pSkater->GetValue(0x134)
 
 			);
-
+			*/
 		
 			//pSkater->SetValue(0x28, 10);
 
@@ -80,6 +85,14 @@ void PrintDebugStuff()
 
 		//Panel_LineX(-1.0, -1.0, 1.0, 1.0, 255, 0, 0);
 		//Panel_LineX(1.0, -1.0, -1.0, 1.0, 255, 0, 0);
+
+		/*
+		if (menu != NULL)
+			delete menu;
+
+		menu = new CMenu((SMenu*)0x0055e8a0);
+		//menu->DebugPrint();
+		*/
 	}
 }
 

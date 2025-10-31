@@ -10,7 +10,8 @@
 #include "CBruce.h"
 #include "_old.h"
 
-#define MACRO_CHECK_BIT(VALUE, INDEX) (bool)(VALUE & (1 << INDEX))
+// this is wrong somehow?
+#define MACRO_CHECK_BIT(VALUE, INDEX) VALUE & (1 << (INDEX & 0x1F))
 
 namespace Career {
 
@@ -48,7 +49,7 @@ namespace Career {
 
     SCheat* Cheats = (SCheat*)0x00566fd4;
 
-    SMessageProg* Messprog_Goal = (SMessageProg*)0x531d68;
+    Mess::SMessageProg* Messprog_Goal = (Mess::SMessageProg*)0x531d68;
 
 
 
@@ -555,7 +556,7 @@ namespace Career {
 
             printf("%s\r\n", AwardGoalGapMessage);
 
-            Mess_Message(AwardGoalGapMessage, Messprog_Goal, 1, 0, 0);
+            Mess::Mess_Message(AwardGoalGapMessage, Messprog_Goal, 1, 0, 0);
         }
     }
 
@@ -600,7 +601,7 @@ namespace Career {
 
             printf("\t%s\r\n", AwardTrickGapMessage);
 
-            Mess_Message(AwardTrickGapMessage, Messprog_Goal, 1, 0, 0);
+            Mess::Mess_Message(AwardTrickGapMessage, Messprog_Goal, 1, 0, 0);
         }
     }
 
@@ -637,7 +638,7 @@ namespace Career {
 
             printf("%s\r\n", AwardLevelPickupMessage);
 
-            Mess_Message(AwardLevelPickupMessage, Messprog_Goal, 1, 0, 0);
+            Mess::Mess_Message(AwardLevelPickupMessage, Messprog_Goal, 1, 0, 0);
         }
     }
 
@@ -983,13 +984,13 @@ namespace Career {
     // === hook stuff ===
 
     Hook::Reroute hookList[] = {
-
+        
 
         ///all career related hooks
 
         //{ 0x004147bc,	Career_GapActive },  //gapisgoal
         //{ 0x004147ec,	Career_GapActive },  //gapistrick
-        { 0x00414851, Career_GapActive },  //gapgoalnumber
+        { 0x00414851,   Career_GapActive },  //gapgoalnumber
         { 0x00414877,	Career_GapActive },  //gapgoalnumber
         { 0x00414931,	Career_GapActive },  //gaptricknumber
         { 0x00414957,	Career_GapActive },  //gaptricknumber
@@ -1030,6 +1031,10 @@ namespace Career {
 
         { 0x0045c01b, Career_LevelNeeds }, // in GoalScreenElement::setupMessage
         
+
+        // these rely on MACRO_CHECK_BIT and it's wrong
+        // TODO: fix macro
+        /*
         { 0x004141b8, Career_LevelTapes }, // in carrer numlevelgoals
         { 0x00459cbd, Career_LevelTapes	}, // in level rotate
         
@@ -1037,19 +1042,22 @@ namespace Career {
         { 0x00450403, Career_JustGot },
         { 0x004504f3, Career_JustGot },
 
-
+       
+        
         //{ 0x004142b2, Career_Got }, //checkscore
         //{ 0x00414666, Career_Got }, //gotgoaltype
         { 0x00415ee4, Career_Got }, //loadingscreen
         { 0x004503f2, Career_Got }, //front_update
         { 0x00450500, Career_Got }, //front_update
         { 0x0045dffd, Career_Got }, //loadingscreen_endloading
-
+        */
 
         { 0x004159a4, Career_NumLevelsWithMedals },
 
         { 0x004842e5, Career_CountGoldMedals },
         { 0x0048430b, Career_CountGoldMedals },
+        
+
 
         { 0x0047fd40, Career_CountUnlockedCheats }, //anycheatsenabled
         { 0x00450ba4, Career_CountUnlockedCheats }, //front_update
@@ -1058,6 +1066,7 @@ namespace Career {
 
         { 0x000484225, Career_CountMedals },
 
+        
 
         // DECOMPILED ALL CALLS HERE
 
@@ -1070,7 +1079,7 @@ namespace Career {
 
         // 00414a85	Career_GapTrickNumber , Career_GotTrickGap
         // 00414ae5	Career_GapTrickNumber, Career_GiveTrickGap
-
+        
 
         /*
 
