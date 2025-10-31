@@ -640,7 +640,12 @@ void Panel_Bail_Hook()
 
 void ExecuteCommandList_Hook(short *node, int p2, int p3)
 {
-	//turn teleport into killing zone
+	// end level command, used in mall and jam to finish the level
+	// TODO: should execute main restart instead
+	if (*node == 158)
+		return;
+
+	// turn teleport into killing zone, used in thps4 alcatraz and london
 	if (*node == 300)
 		*node = 152;
 
@@ -1600,8 +1605,8 @@ void Patch()
 	/*
 	// wad extraction example
 	Wad::Load("thps.hed", "thps.wad");
-
-	Wad::DumpFile(Wad::FindFile("aaskil.psx"), "aaskil.psx");
+	HedFile* file = Wad::FindFile("aaskil.psx");
+	Wad::DumpFile(file, "somewhere\aaskil.psx");
 	Wad::DumpFile(Wad::FindFile("aaskil_2.psx"), "aaskil_2.psx");
 	Wad::DumpFile(Wad::FindFile("aaskil_t.trg"), "aaskil_t.trg");
 	*/

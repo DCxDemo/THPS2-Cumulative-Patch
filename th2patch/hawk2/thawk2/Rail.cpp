@@ -21,6 +21,7 @@ namespace Rail {
         Rail_Active(nodeIndex, false);
     }
 
+    // TODO: causes issues in mall and downtown.
     // checks whether passed nodeIndex is rail
     bool Rail_IsRailNode(ushort nodeIndex)
     {
@@ -46,8 +47,6 @@ namespace Rail {
 
         // not a valid rail node
         return false;
-
-        
     }
 
     // returns number of links
@@ -270,27 +269,30 @@ namespace Rail {
         
         //doesnt work, what a surprise
         //{ 0x004a7faf, SetupLookup },
-
+        
+        /*
         { 0x004a7fd3, Rail_IsRailNode }, // Rail_CreateRails
         { 0x004a7dc1, Rail_IsRailNode }, // SetupLookup
         { 0x004a7bd4, Rail_IsRailNode }, // Rail_PrevNode
         { 0x004a7b33, Rail_IsRailNode }, // Rail_NextNode
         { 0x0043bccc, Rail_IsRailNode }, // LoadRails
+        */
 
         { 0x0043bce3, Rail_NumLinks	}, // LoadRails
         { 0x004a7b05, Rail_NumLinks	}, // Rail_NextNode
+
 
         { 0x004a7e7d, GetIndexOfNode }, // SetupLookup
 
         { 0x0049202c, Rail_Type }, // DoOnRailPhysics
         { 0x004921df, Rail_Type }, // DoOnRailPhysics
         { 0x004a8e5d, Rail_Type }, // Rail_Update
-
+        
         { 0x004c2c2f, Rail_SwitchOn }, // Trig_SendPulseToNode
         { 0x004c4e07, Rail_KillRail }, // SendKillFromNode
 
         { 0x004a8d95, Rail_PrevNode }, // Rail_Update
-
+        
         { NULL, NULL }
     };
 
