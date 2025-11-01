@@ -6,7 +6,7 @@ namespace Decomp {
 	// writes a single value to destination stream
 	unsigned char* Decompress_AllSame(unsigned char* pSource, short* pDest, int StepSize, int StreamLength) {
 
-		printf("Decompress_AllSame called!\n");
+		//printf("Decompress_AllSame called!\n");
 
 		// read value to fill with
 		short value = pSource[1] | pSource[2] << 8;
@@ -23,7 +23,7 @@ namespace Decomp {
 	// writes zeroes to destination stream
 	unsigned char* Decompress_AllZero(unsigned char* pSource, short* pDest, int StepSize, int StreamLength) {
 
-		printf("Decompress_AllZero called!\n");
+		//printf("Decompress_AllZero called!\n");
 
 		while (StreamLength > 0) {
 			*pDest = 0;
@@ -35,7 +35,7 @@ namespace Decomp {
 	}
 
 	unsigned char* Decompress_Trivial(unsigned char* pSource, short* pDest, int StepSize, int StreamLength) {
-		printf("Decompress_Trivial called!\n");
+		//printf("Decompress_Trivial called!\n");
 
 		unsigned char headerByte = pSource[0];
 		unsigned char* pData = pSource + 1;
@@ -106,7 +106,7 @@ namespace Decomp {
 
 	unsigned char* Decompress_PackDelta(unsigned char* pSource, short* pDest, int StepSize, int StreamLength) {
 
-		printf("Decompress_PackDelta called!\n");
+		//printf("Decompress_PackDelta called!\n");
 
 		unsigned char headerByte = pSource[0];
 		unsigned char* pData = pSource + 1;
@@ -191,7 +191,7 @@ namespace Decomp {
 
 		Compression opcode = (Compression)(*pSource & 0xF);
 
-		printf("DecompressStream type = %i\n", opcode);
+		//printf("DecompressStream type = %i\n", opcode);
 
 		switch (opcode) {
 

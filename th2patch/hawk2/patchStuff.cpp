@@ -643,7 +643,10 @@ void ExecuteCommandList_Hook(short *node, int p2, int p3)
 	// end level command, used in mall and jam to finish the level
 	// TODO: should execute main restart instead
 	if (*node == 158)
+	{
+		Trig::Trig_ExecuteRestart();
 		return;
+	}
 
 	// turn teleport into killing zone, used in thps4 alcatraz and london
 	if (*node == 300)
@@ -805,24 +808,27 @@ void Panel_Display_Patch()
 	{
 		Panel_Display();
 
-		if (skater.InManual() > 0)
+		if (!*GamePaused)
 		{
-			Panel_BalanceRail(skater.ManualBalance(), 0x1000,
-				30, 6,
-				(int)(512 / 2.7), 240 / 2,
-				COLOR_RED, COLOR_GREEN,	//BGR color
-				false); // vertical
-		}
-
-		if (options.RailBalanceBar)
-		{
-			if ((EPhysicsState)skater.PhysicsState() == EPhysicsState::PHYSICS_ON_RAIL)
+			if (skater.InManual() > 0)
 			{
-				Panel_BalanceRail(skater.RailBalance(), 0x1000,
+				Panel_BalanceRail(skater.ManualBalance(), 0x1000,
 					30, 6,
-					512 / 2, 240 / 3,
+					(int)(512 / 2.7), 240 / 2,
 					COLOR_RED, COLOR_GREEN,	//BGR color
-					true); // horizontal
+					false); // vertical
+			}
+
+			if (options.RailBalanceBar)
+			{
+				if ((EPhysicsState)skater.PhysicsState() == EPhysicsState::PHYSICS_ON_RAIL)
+				{
+					Panel_BalanceRail(skater.RailBalance(), 0x1000,
+						30, 6,
+						512 / 2, 240 / 3,
+						COLOR_RED, COLOR_GREEN,	//BGR color
+						true); // horizontal
+				}
 			}
 		}
 	}
@@ -1602,9 +1608,11 @@ void PatchThps4Gaps()
 //main patches func, sets all hooks and changes vars needed
 void Patch()
 {
-	/*
+	
 	// wad extraction example
-	Wad::Load("thps.hed", "thps.wad");
+	//Wad::Load("cd.hed", "cd.wad");
+
+	/*
 	HedFile* file = Wad::FindFile("aaskil.psx");
 	Wad::DumpFile(file, "somewhere\aaskil.psx");
 	Wad::DumpFile(Wad::FindFile("aaskil_2.psx"), "aaskil_2.psx");

@@ -31,10 +31,6 @@ namespace Rail {
 
 	//move to trig
 
-	typedef short* (*Trig_GetLinksPointer_t)(int nodeIndex);
-	static const Trig_GetLinksPointer_t Trig_GetLinksPointer = (Trig_GetLinksPointer_t)0x004c57b0;
-
-
 
 	typedef short(*Rail_Flags_t)(ushort nodeIndex);
 	//typedef uint(*Rail_Type_t)(ushort nodeIndex);

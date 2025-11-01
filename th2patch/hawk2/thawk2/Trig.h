@@ -36,14 +36,16 @@ namespace Trig
 	// Trig_TriggerCommandPoint
 	// Trig_SetRestart
 	// CBruce::FudgeAngles??????
-	// Trig_ExecuteRestart
+
+	typedef void(*Trig_ExecuteRestart_t)();
+
 	// typedef void(*Trig_DeleteTrigFile_t)();
 	typedef void(*Trig_LoadTRG_t)(char* trgName);
 	// some unused loading func, create empty?
 	// GetFlag
 	// SkipFlags
 	// Trig_CreateObject - big one
-	// Trig_SendPulseToNode
+	typedef void(*Trig_SendPulseToNode_t)(ushort pNode);
 	// GetCommandPoint
 	// Trig_SendPulse
 	// SendSignalToNode
@@ -63,9 +65,12 @@ namespace Trig
 	//typedef void(*Trig_InitialParseTRGFile_t)();
 	// Trig_ParseTRGFile
 	// CreateCommandPoint
-	// Trig_GetLinksPointer
+	typedef short* (*Trig_GetLinksPointer_t)(int nodeIndex);
 
 
+	static const Trig_ExecuteRestart_t Trig_ExecuteRestart = (Trig_ExecuteRestart_t)0x004c2090;
+
+	static const Trig_SendPulseToNode_t Trig_SendPulseToNode = (Trig_SendPulseToNode_t)0x004c2b10;
 	// static const Trig_DeleteTrigFile_t Trig_DeleteTrigFile = (Trig_DeleteTrigFile_t)0x004c2360;
 	void Trig_DeleteTrigFile();
 	static const Trig_LoadTRG_t Trig_LoadTRG = (Trig_LoadTRG_t)0x004c2390;
@@ -75,4 +80,6 @@ namespace Trig
 	// static const Trig_InitialParseTRGFile_t Trig_InitialParseTRGFile = (Trig_InitialParseTRGFile_t)0x004c52b0;
 	void Trig_InitialParseTRGFile();
 
+
+	static const Trig_GetLinksPointer_t Trig_GetLinksPointer = (Trig_GetLinksPointer_t)0x004c57b0;
 }

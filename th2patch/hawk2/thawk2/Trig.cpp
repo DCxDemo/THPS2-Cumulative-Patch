@@ -15,6 +15,18 @@ namespace Trig {
 	void* TrigFile = (void*)0x0056ae6c;
 
 
+	// send pulse to all links
+	void Trig_SendPulse(ushort* pNode) {
+		printf("DECOMP: Trig_SendPulse()\n");
+
+		// start by reading num links
+		for (int i = (uint)*pNode; i > 0; i--) {
+			pNode++;
+			Trig_SendPulseToNode(*pNode);
+		}
+	}
+
+
 	void Trig_DeleteTrigFile() {
 		printf("DECOMP: Trig_DeleteTrigFile()\n");
 
@@ -230,6 +242,17 @@ namespace Trig {
 
 		{ 0x00458550,   Trig_DeleteTrigFile },
 		{ 0x0043befb,   Trig_DeleteTrigFile },
+
+		{ 0x004c4d53,	Trig_SendPulse },
+		{ 0x004c40c8,	Trig_SendPulse },
+		{ 0x004c409b,	Trig_SendPulse },
+		{ 0x004c3979,	Trig_SendPulse },
+		{ 0x004a62fc,	Trig_SendPulse },
+		{ 0x0049b5cc,	Trig_SendPulse },
+		{ 0x0049b550,	Trig_SendPulse },
+		{ 0x0048e70b,	Trig_SendPulse },
+		{ 0x00402449,	Trig_SendPulse },
+		{ 0x00401400,	Trig_SendPulse },
 
         //=========================
         { NULL, NULL }

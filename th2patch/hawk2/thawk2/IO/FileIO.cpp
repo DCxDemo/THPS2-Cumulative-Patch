@@ -4,6 +4,7 @@
 #include "..\..\thawk2\mem.h"
 #include "..\types.h"
 #include "PCIO.h"
+#include "Wad.h"
 
 namespace FileIO {
 
@@ -180,7 +181,7 @@ namespace FileIO {
             return FileIO_Open(filename);
         }
 
-        // set mods path
+        // set data path
         sprintf(filePattern, "data\\????????.???\0");
 
         if (FileIO_Exists(filename))

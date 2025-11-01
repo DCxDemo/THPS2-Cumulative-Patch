@@ -49,10 +49,11 @@ namespace Rail {
         return false;
     }
 
+
     // returns number of links
     short Rail_NumLinks(ushort nodeIndex)
     {
-        return *Trig_GetLinksPointer(nodeIndex);
+        return *Trig::Trig_GetLinksPointer(nodeIndex);
     }
     
     // returns next rail node index
