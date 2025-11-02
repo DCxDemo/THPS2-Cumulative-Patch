@@ -412,7 +412,7 @@ namespace Career {
         return Career_GapBits[*GLevel * 3 + hiVal] & (1 << loVal);
     }
 
-    char bufx[256];
+    char bufx[MAX_BUFFER_SIZE];
 
     // awards a new gap
     void Career_GiveGap(SGapTrick* pGapTrick)
@@ -433,7 +433,7 @@ namespace Career {
             printf("!!!New gap awarded!!! %s\n", pGapTrick->Name);
             //print mess message here, maybe sound too
 
-            sprintf(bufx, "new gap found %s", pGapTrick->Name);
+            sprintf_s(bufx, MAX_BUFFER_SIZE, "new gap found %s", pGapTrick->Name);
             DrawMessage(bufx);
             SFX_PlayX(0, 0x2000, 0);
 
@@ -546,8 +546,9 @@ namespace Career {
         else
         {
             //print "X out of X items" message
-            sprintf(
+            sprintf_s(
                 AwardGoalGapMessage,    //text buffer
+                MAX_BUFFER_SIZE,
                 "%d of %d %s",          //message
                 numGoalGaps,             //got gaps
                 *Career_GoalGaps,       //out of gaps
@@ -592,8 +593,9 @@ namespace Career {
             //trick goal usually is just 1 trick, so...
 
             //print "X out of X items" message
-            sprintf(
+            sprintf_s(
                 AwardTrickGapMessage,       //text buffer
+                MAX_BUFFER_SIZE,
                 "%d of %d Trick Gaps",      //message
                 Career_NumGoalGapsGot(),    //got gaps
                 *Career_GoalGaps            //out of gaps
@@ -628,8 +630,9 @@ namespace Career {
         }
         else
         {
-            sprintf(
+            sprintf_s(
                 AwardLevelPickupMessage,    //text buffer
+                MAX_BUFFER_SIZE,
                 "%d of %d %s",              //message
                 *Career_LevelPickupsGot,    //got items
                 *Career_LevelPickups,       //out of items

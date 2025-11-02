@@ -116,8 +116,8 @@ namespace FileIO {
     }
 
     bool Exists(char* path, char* filename) {
-        char buf[256];
-        sprintf(buf, ".\\%s%s", path, filename);
+        char buf[MAX_BUFFER_SIZE];
+        sprintf_s(buf, MAX_BUFFER_SIZE, ".\\%s%s", path, filename);
 
         char* pChar = &buf[0];
 

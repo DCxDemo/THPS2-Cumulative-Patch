@@ -59,7 +59,7 @@ public:
 	{
 		Patch((void *)address, &value, 4);
 	}
-	inline static int SetBytes(int address, uint8_t *data, size_t size)
+	inline static void SetBytes(int address, uint8_t *data, size_t size)
 	{
 		Patch((void *)address, &data, size);
 	}

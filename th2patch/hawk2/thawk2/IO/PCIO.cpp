@@ -19,6 +19,7 @@ namespace PCIO {
     #define FILE_FREE 0
     #define FILE_PKR 1
     #define FILE_DISK 2
+    #define FILE_ALT 3
 
     #define SEEK_SET 0
     #define SEEK_CUR 1
@@ -35,8 +36,14 @@ namespace PCIO {
     char* workingDir = (char*)0x006a3e0c;
     char* PKR_Name = (char*)0x006a3f0c;
 
+    char* defaultPkr = "all.pkr";
 
     void PCinit() {
+        PCinitPkr(defaultPkr);
+    }
+
+    void PCinitPkr(char* filename)
+    {
         log("PCinit()");
 
         // clear arrays
@@ -55,9 +62,9 @@ namespace PCIO {
         WINMAIN_InstallSetup();
 
         // im pretty sure it bakes fullpath at PKR_Name
-        sprintf(PKR_Name, "%s\\%s", workingDir, "all.pkr");
+        sprintf(PKR_Name, "%s\\%s", workingDir, filename);
 
-        printf("all.pkr at: %s\n", PKR_Name);
+        printf("%s at: %s\n", filename, PKR_Name);
 
         PKR_PreLoad(PKR_Name);
     }
@@ -99,7 +106,7 @@ namespace PCIO {
     int getFreeFileIndex() {
         log("getFreeFileIndex()");
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < FILE_SLOTS; i++)
             if (FileTypes[i] == FILE_FREE)
                 return i;
 
@@ -193,8 +200,8 @@ namespace PCIO {
         int i = getFreeFileIndex();
         if (i < 0) return NS_NULL;
 
-        char buf[256];
-        sprintf(buf, "%s\\%s", workingDir, pName);
+        char buf[MAX_BUFFER_SIZE];
+        sprintf_s(buf, MAX_BUFFER_SIZE, "%s\\%s", workingDir, pName);
 
         Files[i] = ffopen(buf, "wb"); // it uses some var for mode here, but why would it
 

@@ -2,11 +2,14 @@
 #ifndef __STDAFX_H
 #define __STDAFX_H
 
+
 	#define WIN32_LEAN_AND_MEAN		
 	#define DEBUG_FUNCTIONS
 
 	#include <windows.h>
 	#include <string>
+
+	#define MAX_BUFFER_SIZE 256
 
 	void __trace(const char* format, ...);
 

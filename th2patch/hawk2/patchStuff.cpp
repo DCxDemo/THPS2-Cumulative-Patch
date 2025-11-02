@@ -1231,7 +1231,7 @@ void PatchSkaters()
 		{
 			// "bam", margera + fry cook
 			case 0x680b1a5b: {
-				sprintf(p->FullName, "Bam Margera");
+				sprintf_s(p->FullName, sizeof(p->FullName), "Bam Margera");
 				p->pShortName = "Bam";
 
 				PatchSkater(p, 1, "ba3", "ba3b");
@@ -1247,7 +1247,7 @@ void PatchSkaters()
 
 			// "wolve", wolverine from th3
 			case 0xe4f32b33: {
-				sprintf(p->FullName, "Wolverine");
+				sprintf_s(p->FullName, sizeof(p->FullName), "Wolverine");
 				p->pShortName = "wolve";
 
 				PatchSkater(p, 1, "wolve", "wolve");
@@ -1258,7 +1258,7 @@ void PatchSkaters()
 
 			//"lilper", Little Person from th4
 			case 0xadf13666: {
-				sprintf(p->FullName, "Little Person");
+				sprintf_s(p->FullName, sizeof(p->FullName), "Little Person");
 				p->pShortName = "lilper";
 
 				PatchSkater(p, 1, "lilper", "lilper");
@@ -1271,7 +1271,7 @@ void PatchSkaters()
 
 			//kor1, fin k l band style A
 			case 0xfd91275c: {
-				sprintf(p->FullName, "Fin K. L.");
+				sprintf_s(p->FullName, sizeof(p->FullName), "Fin K. L.");
 				p->pShortName = "finkl";
 				p->flags |= 1; // sets female sfx bank
 
@@ -1285,7 +1285,7 @@ void PatchSkaters()
 
 			//kor2, fin k l band style B
 			case 0x4ff07f11: {
-				sprintf(p->FullName, "Fin K. L.");
+				sprintf_s(p->FullName, sizeof(p->FullName), "Fin K. L.");
 				p->pShortName = "finkl";
 				p->flags |= 1; // sets female sfx bank
 
@@ -1299,7 +1299,7 @@ void PatchSkaters()
 
 			// mcsqueeb, since tony already has 4 styles, bring this back in
 			case 0x92af0067: {
-				sprintf(p->FullName, "McSqueeb");
+				sprintf_s(p->FullName, sizeof(p->FullName), "McSqueeb");
 				p->pShortName = "mcsqueeb";
 
 				PatchSkater(p, 1, "secret4", "secret4b");
@@ -1673,6 +1673,9 @@ void Patch()
 	// nop draw wheel?
 	//CPatch::SetInt((int)0x004578b0, 0x000008c2);
 
+	// remove video_sfx_play call for 
+	//if (options.CurrentGame == "THPS3")
+	//	CPatch::Nop(0x4aafba, 29);
 
 
 	//disable skater rendering
@@ -1879,11 +1882,11 @@ int openExternalTexture2(uint Checksum, char* Name)
 
 	if (options.DisableNewTex) return NS_NULL;
 
-	char local[64];
+	char local[MAX_BUFFER_SIZE];
 
 	if (Name != NULL)
 	{
-		sprintf(local, ".\\newbmp\\%s", Name);
+		sprintf_s(local, MAX_BUFFER_SIZE, ".\\newbmp\\%s", Name);
 
 		//original game accounts for leading slashes in the name
 	} 
@@ -1891,12 +1894,12 @@ int openExternalTexture2(uint Checksum, char* Name)
 	{
 		// there is some additional comparison routine here in the original game
 
-		sprintf(local, ".\\newtex\\%08x.bmp", Checksum);
+		sprintf_s(local, MAX_BUFFER_SIZE, ".\\newtex\\%08x.bmp", Checksum);
 
 		int file = PCIO::PCopen(&local[0], 0);
 		if (file != NS_NULL) return file;
 
-		sprintf(local, ".\\newtex\\%s\\%08x.bmp", ShortLevName, Checksum);
+		sprintf_s(local, MAX_BUFFER_SIZE, ".\\newtex\\%s\\%08x.bmp", ShortLevName, Checksum);
 	}
 	else
 	{
@@ -1908,6 +1911,20 @@ int openExternalTexture2(uint Checksum, char* Name)
 }
 
 
+
+void SFX_PlayX_hook(int index, int p1, int p2)
+{
+	//printf("SFX_PlayX = %i %i %i\n", index, p1, p2);
+
+	// a crude patch for th3 crashes (canada, airport)
+	// just dont play sounds above 400
+	if (index > 400) {
+		printf("sound index too high\n");
+		return;
+	}
+
+	SFX_PlayX(index, p1, p2);
+}
 
 
 
@@ -2273,6 +2290,365 @@ Hook::Reroute hookList[] = {
 { 0x00415cd0, LoadFile },
 { 0x00415c87, LoadFile }
 */
+
+
+{ 0x004020ce, SFX_PlayX_hook },
+{ 0x00403568, SFX_PlayX_hook },
+{ 0x004132d8, SFX_PlayX_hook },
+{ 0x004132e5, SFX_PlayX_hook },
+{ 0x004132ff, SFX_PlayX_hook },
+{ 0x004134b3, SFX_PlayX_hook },
+{ 0x004134f7, SFX_PlayX_hook },
+{ 0x0041359f, SFX_PlayX_hook },
+{ 0x0041366e, SFX_PlayX_hook },
+{ 0x0041367b, SFX_PlayX_hook },
+{ 0x0041369e, SFX_PlayX_hook },
+{ 0x00413895, SFX_PlayX_hook },
+{ 0x00414449, SFX_PlayX_hook },
+{ 0x00417e6a, SFX_PlayX_hook },
+{ 0x00417e8b, SFX_PlayX_hook },
+{ 0x00417f55, SFX_PlayX_hook },
+{ 0x0041a314, SFX_PlayX_hook },
+{ 0x0041a322, SFX_PlayX_hook },
+{ 0x0041a88b, SFX_PlayX_hook },
+{ 0x0041aaf9, SFX_PlayX_hook },
+{ 0x0041ab07, SFX_PlayX_hook },
+{ 0x0041ac2a, SFX_PlayX_hook },
+{ 0x0041ac37, SFX_PlayX_hook },
+{ 0x0041b0b2, SFX_PlayX_hook },
+{ 0x0041b65b, SFX_PlayX_hook },
+{ 0x0041b764, SFX_PlayX_hook },
+{ 0x0041b8c9, SFX_PlayX_hook },
+{ 0x0041bb29, SFX_PlayX_hook },
+{ 0x0041ceaa, SFX_PlayX_hook },
+{ 0x0041d10e, SFX_PlayX_hook },
+{ 0x0041d38d, SFX_PlayX_hook },
+{ 0x0041d500, SFX_PlayX_hook },
+{ 0x0041d546, SFX_PlayX_hook },
+{ 0x0041d65e, SFX_PlayX_hook },
+{ 0x0041d676, SFX_PlayX_hook },
+{ 0x0041d711, SFX_PlayX_hook },
+{ 0x0041d741, SFX_PlayX_hook },
+{ 0x004262fe, SFX_PlayX_hook },
+{ 0x00426363, SFX_PlayX_hook },
+{ 0x0042639f, SFX_PlayX_hook },
+{ 0x00429537, SFX_PlayX_hook },
+{ 0x0042962a, SFX_PlayX_hook },
+{ 0x00429712, SFX_PlayX_hook },
+{ 0x004298b2, SFX_PlayX_hook },
+{ 0x0042a9b4, SFX_PlayX_hook },
+{ 0x0042a9e1, SFX_PlayX_hook },
+{ 0x0042aa48, SFX_PlayX_hook },
+{ 0x0042ab32, SFX_PlayX_hook },
+{ 0x0042c961, SFX_PlayX_hook },
+{ 0x0042c9ab, SFX_PlayX_hook },
+{ 0x0042ca17, SFX_PlayX_hook },
+{ 0x0042ca52, SFX_PlayX_hook },
+{ 0x0042e9cf, SFX_PlayX_hook },
+{ 0x0042ea63, SFX_PlayX_hook },
+{ 0x0042eb13, SFX_PlayX_hook },
+{ 0x0042eb28, SFX_PlayX_hook },
+{ 0x0042eb5e, SFX_PlayX_hook },
+{ 0x0042eb9b, SFX_PlayX_hook },
+{ 0x0042ec29, SFX_PlayX_hook },
+{ 0x0042ed00, SFX_PlayX_hook },
+{ 0x0042ed37, SFX_PlayX_hook },
+{ 0x0042ee5e, SFX_PlayX_hook },
+{ 0x0042f2ff, SFX_PlayX_hook },
+{ 0x0042f58a, SFX_PlayX_hook },
+{ 0x0042f606, SFX_PlayX_hook },
+{ 0x0042f610, SFX_PlayX_hook },
+{ 0x0042f625, SFX_PlayX_hook },
+{ 0x0042f644, SFX_PlayX_hook },
+{ 0x0042f6a9, SFX_PlayX_hook },
+{ 0x0042f6c4, SFX_PlayX_hook },
+{ 0x0042f741, SFX_PlayX_hook },
+{ 0x0042f799, SFX_PlayX_hook },
+{ 0x0042f7b6, SFX_PlayX_hook },
+{ 0x00434092, SFX_PlayX_hook },
+{ 0x004341c7, SFX_PlayX_hook },
+{ 0x0043420c, SFX_PlayX_hook },
+{ 0x00434251, SFX_PlayX_hook },
+{ 0x00434296, SFX_PlayX_hook },
+{ 0x004345ce, SFX_PlayX_hook },
+{ 0x00434665, SFX_PlayX_hook },
+{ 0x00435c16, SFX_PlayX_hook },
+{ 0x00435c96, SFX_PlayX_hook },
+{ 0x00435dad, SFX_PlayX_hook },
+{ 0x00435e4c, SFX_PlayX_hook },
+{ 0x00435e91, SFX_PlayX_hook },
+{ 0x00435ed5, SFX_PlayX_hook },
+{ 0x00437352, SFX_PlayX_hook },
+{ 0x004450ed, SFX_PlayX_hook },
+{ 0x0044512a, SFX_PlayX_hook },
+{ 0x00445395, SFX_PlayX_hook },
+{ 0x004453de, SFX_PlayX_hook },
+{ 0x0044546d, SFX_PlayX_hook },
+{ 0x00445535, SFX_PlayX_hook },
+{ 0x0044740e, SFX_PlayX_hook },
+{ 0x0044742c, SFX_PlayX_hook },
+{ 0x00448746, SFX_PlayX_hook },
+{ 0x00448795, SFX_PlayX_hook },
+{ 0x0044bca4, SFX_PlayX_hook },
+{ 0x0044bd18, SFX_PlayX_hook },
+{ 0x0044e06b, SFX_PlayX_hook },
+{ 0x0044e45b, SFX_PlayX_hook },
+{ 0x0044e6de, SFX_PlayX_hook },
+{ 0x0044ed83, SFX_PlayX_hook },
+{ 0x0044f3b5, SFX_PlayX_hook },
+{ 0x0044f473, SFX_PlayX_hook },
+{ 0x0044f5e6, SFX_PlayX_hook },
+{ 0x0044f61e, SFX_PlayX_hook },
+{ 0x0044f680, SFX_PlayX_hook },
+{ 0x0044f69e, SFX_PlayX_hook },
+{ 0x0044f6b8, SFX_PlayX_hook },
+{ 0x0044f734, SFX_PlayX_hook },
+{ 0x0044f766, SFX_PlayX_hook },
+{ 0x0044f780, SFX_PlayX_hook },
+{ 0x0044f7d6, SFX_PlayX_hook },
+{ 0x0044f7e8, SFX_PlayX_hook },
+{ 0x0044f85c, SFX_PlayX_hook },
+{ 0x0044f90a, SFX_PlayX_hook },
+{ 0x0044fc4e, SFX_PlayX_hook },
+{ 0x0044fd87, SFX_PlayX_hook },
+{ 0x0044fdd8, SFX_PlayX_hook },
+{ 0x0044fed9, SFX_PlayX_hook },
+{ 0x0044ff55, SFX_PlayX_hook },
+{ 0x00450023, SFX_PlayX_hook },
+{ 0x0045007d, SFX_PlayX_hook },
+{ 0x004501a7, SFX_PlayX_hook },
+{ 0x00450385, SFX_PlayX_hook },
+{ 0x004503af, SFX_PlayX_hook },
+{ 0x00450429, SFX_PlayX_hook },
+{ 0x00450650, SFX_PlayX_hook },
+{ 0x004506df, SFX_PlayX_hook },
+{ 0x004509d5, SFX_PlayX_hook },
+{ 0x00450be2, SFX_PlayX_hook },
+{ 0x00450e09, SFX_PlayX_hook },
+{ 0x0045104c, SFX_PlayX_hook },
+{ 0x004511ed, SFX_PlayX_hook },
+{ 0x00451250, SFX_PlayX_hook },
+{ 0x004512be, SFX_PlayX_hook },
+{ 0x00451314, SFX_PlayX_hook },
+{ 0x00451372, SFX_PlayX_hook },
+{ 0x004513bf, SFX_PlayX_hook },
+{ 0x004513fd, SFX_PlayX_hook },
+{ 0x004514fb, SFX_PlayX_hook },
+{ 0x0045163f, SFX_PlayX_hook },
+{ 0x0045174c, SFX_PlayX_hook },
+{ 0x0045187f, SFX_PlayX_hook },
+{ 0x004518e2, SFX_PlayX_hook },
+{ 0x00451ad3, SFX_PlayX_hook },
+{ 0x00451b1b, SFX_PlayX_hook },
+{ 0x00451b5f, SFX_PlayX_hook },
+{ 0x00451c13, SFX_PlayX_hook },
+{ 0x00451d68, SFX_PlayX_hook },
+{ 0x00451e5d, SFX_PlayX_hook },
+{ 0x00451f3f, SFX_PlayX_hook },
+{ 0x00452acc, SFX_PlayX_hook },
+{ 0x004546bb, SFX_PlayX_hook },
+{ 0x00455498, SFX_PlayX_hook },
+{ 0x004554ce, SFX_PlayX_hook },
+{ 0x0045553f, SFX_PlayX_hook },
+{ 0x00455589, SFX_PlayX_hook },
+{ 0x004596d5, SFX_PlayX_hook },
+{ 0x00459910, SFX_PlayX_hook },
+{ 0x00459948, SFX_PlayX_hook },
+{ 0x00459a06, SFX_PlayX_hook },
+{ 0x00459a2d, SFX_PlayX_hook },
+{ 0x00459a5c, SFX_PlayX_hook },
+{ 0x00459aab, SFX_PlayX_hook },
+{ 0x0045af56, SFX_PlayX_hook },
+{ 0x0045afbe, SFX_PlayX_hook },
+{ 0x0045e253, SFX_PlayX_hook },
+{ 0x0045e28b, SFX_PlayX_hook },
+{ 0x0046afe7, SFX_PlayX_hook },
+{ 0x0046b7c3, SFX_PlayX_hook },
+{ 0x0046b7e8, SFX_PlayX_hook },
+{ 0x0046ba57, SFX_PlayX_hook },
+{ 0x0046bad4, SFX_PlayX_hook },
+{ 0x0046c27b, SFX_PlayX_hook },
+{ 0x0046e06e, SFX_PlayX_hook },
+{ 0x0046e1a4, SFX_PlayX_hook },
+{ 0x0046e1c1, SFX_PlayX_hook },
+{ 0x00470791, SFX_PlayX_hook },
+{ 0x004707d2, SFX_PlayX_hook },
+{ 0x004707e8, SFX_PlayX_hook },
+{ 0x00472c78, SFX_PlayX_hook },
+{ 0x00472d28, SFX_PlayX_hook },
+{ 0x00472d44, SFX_PlayX_hook },
+{ 0x00472e57, SFX_PlayX_hook },
+{ 0x004732f0, SFX_PlayX_hook },
+{ 0x00473359, SFX_PlayX_hook },
+{ 0x004733ca, SFX_PlayX_hook },
+{ 0x00476f6b, SFX_PlayX_hook },
+{ 0x00476fc0, SFX_PlayX_hook },
+{ 0x00477015, SFX_PlayX_hook },
+{ 0x00477083, SFX_PlayX_hook },
+{ 0x004770fb, SFX_PlayX_hook },
+{ 0x00477391, SFX_PlayX_hook },
+{ 0x00477506, SFX_PlayX_hook },
+{ 0x00477564, SFX_PlayX_hook },
+{ 0x00477578, SFX_PlayX_hook },
+{ 0x004775c3, SFX_PlayX_hook },
+{ 0x00477d92, SFX_PlayX_hook },
+{ 0x00479dbf, SFX_PlayX_hook },
+{ 0x00479df6, SFX_PlayX_hook },
+{ 0x00479e1c, SFX_PlayX_hook },
+{ 0x0047bec5, SFX_PlayX_hook },
+{ 0x0047bf13, SFX_PlayX_hook },
+{ 0x0047c097, SFX_PlayX_hook },
+{ 0x0047c0d7, SFX_PlayX_hook },
+{ 0x0047c186, SFX_PlayX_hook },
+{ 0x0047c1bd, SFX_PlayX_hook },
+{ 0x0047cb20, SFX_PlayX_hook },
+{ 0x0048044f, SFX_PlayX_hook },
+{ 0x0048088a, SFX_PlayX_hook },
+{ 0x004808c1, SFX_PlayX_hook },
+{ 0x0048091f, SFX_PlayX_hook },
+{ 0x00480943, SFX_PlayX_hook },
+{ 0x00480c92, SFX_PlayX_hook },
+{ 0x00480cc9, SFX_PlayX_hook },
+{ 0x00480cf7, SFX_PlayX_hook },
+{ 0x00480df7, SFX_PlayX_hook },
+{ 0x00480e2e, SFX_PlayX_hook },
+{ 0x00480e5c, SFX_PlayX_hook },
+{ 0x00481047, SFX_PlayX_hook },
+{ 0x004810f7, SFX_PlayX_hook },
+{ 0x00481305, SFX_PlayX_hook },
+{ 0x00481338, SFX_PlayX_hook },
+{ 0x00481376, SFX_PlayX_hook },
+{ 0x00482a35, SFX_PlayX_hook },
+{ 0x004838b5, SFX_PlayX_hook },
+{ 0x004840c3, SFX_PlayX_hook },
+{ 0x00484146, SFX_PlayX_hook },
+{ 0x004841e3, SFX_PlayX_hook },
+{ 0x0048496f, SFX_PlayX_hook },
+{ 0x00484a53, SFX_PlayX_hook },
+{ 0x00484af2, SFX_PlayX_hook },
+{ 0x00484b21, SFX_PlayX_hook },
+{ 0x00484b51, SFX_PlayX_hook },
+{ 0x004857f6, SFX_PlayX_hook },
+{ 0x00485bc5, SFX_PlayX_hook },
+{ 0x00485c94, SFX_PlayX_hook },
+{ 0x00485cc8, SFX_PlayX_hook },
+{ 0x00486771, SFX_PlayX_hook },
+{ 0x004867b0, SFX_PlayX_hook },
+{ 0x00486abf, SFX_PlayX_hook },
+{ 0x00486b01, SFX_PlayX_hook },
+{ 0x00486b15, SFX_PlayX_hook },
+{ 0x00489ff5, SFX_PlayX_hook },
+{ 0x0048d25d, SFX_PlayX_hook },
+{ 0x0048d278, SFX_PlayX_hook },
+{ 0x0048e6ff, SFX_PlayX_hook },
+{ 0x0048e78a, SFX_PlayX_hook },
+{ 0x0048ec0b, SFX_PlayX_hook },
+{ 0x0048ec2d, SFX_PlayX_hook },
+{ 0x0048ec4f, SFX_PlayX_hook },
+{ 0x0048ec6e, SFX_PlayX_hook },
+{ 0x0048ec7d, SFX_PlayX_hook },
+{ 0x004919a9, SFX_PlayX_hook },
+{ 0x004919c5, SFX_PlayX_hook },
+{ 0x004919d0, SFX_PlayX_hook },
+{ 0x004919ef, SFX_PlayX_hook },
+{ 0x00491a09, SFX_PlayX_hook },
+{ 0x00493bc1, SFX_PlayX_hook },
+{ 0x00496581, SFX_PlayX_hook },
+{ 0x0049689a, SFX_PlayX_hook },
+{ 0x00497ab5, SFX_PlayX_hook },
+{ 0x00497ac0, SFX_PlayX_hook },
+{ 0x00497aed, SFX_PlayX_hook },
+{ 0x00497b02, SFX_PlayX_hook },
+{ 0x00497b17, SFX_PlayX_hook },
+{ 0x00497b29, SFX_PlayX_hook },
+{ 0x0049871d, SFX_PlayX_hook },
+{ 0x00498c33, SFX_PlayX_hook },
+{ 0x0049a287, SFX_PlayX_hook },
+{ 0x0049a301, SFX_PlayX_hook },
+{ 0x0049a316, SFX_PlayX_hook },
+{ 0x0049a33c, SFX_PlayX_hook },
+{ 0x0049a354, SFX_PlayX_hook },
+{ 0x0049a37d, SFX_PlayX_hook },
+{ 0x0049a395, SFX_PlayX_hook },
+{ 0x0049a3be, SFX_PlayX_hook },
+{ 0x0049a3d3, SFX_PlayX_hook },
+{ 0x0049a4ea, SFX_PlayX_hook },
+{ 0x0049a512, SFX_PlayX_hook },
+{ 0x0049a542, SFX_PlayX_hook },
+{ 0x0049a55e, SFX_PlayX_hook },
+{ 0x0049a589, SFX_PlayX_hook },
+{ 0x0049a5b1, SFX_PlayX_hook },
+{ 0x0049a5cd, SFX_PlayX_hook },
+{ 0x0049a5f5, SFX_PlayX_hook },
+{ 0x0049a611, SFX_PlayX_hook },
+{ 0x0049a636, SFX_PlayX_hook },
+{ 0x0049a64f, SFX_PlayX_hook },
+{ 0x0049a674, SFX_PlayX_hook },
+{ 0x0049a757, SFX_PlayX_hook },
+{ 0x0049b41f, SFX_PlayX_hook },
+{ 0x0049b560, SFX_PlayX_hook },
+{ 0x0049b5b4, SFX_PlayX_hook },
+{ 0x0049bb3a, SFX_PlayX_hook },
+{ 0x0049bbc7, SFX_PlayX_hook },
+{ 0x0049be09, SFX_PlayX_hook },
+{ 0x0049ce82, SFX_PlayX_hook },
+{ 0x0049cf2b, SFX_PlayX_hook },
+{ 0x0049cf49, SFX_PlayX_hook },
+{ 0x0049d44c, SFX_PlayX_hook },
+{ 0x0049e731, SFX_PlayX_hook },
+{ 0x004a0b3b, SFX_PlayX_hook },
+{ 0x004a0b85, SFX_PlayX_hook },
+{ 0x004a0bf7, SFX_PlayX_hook },
+{ 0x004a0c6a, SFX_PlayX_hook },
+{ 0x004a0c8f, SFX_PlayX_hook },
+{ 0x004a0e81, SFX_PlayX_hook },
+{ 0x004a3761, SFX_PlayX_hook },
+{ 0x004a37e0, SFX_PlayX_hook },
+{ 0x004a4f66, SFX_PlayX_hook },
+{ 0x004a4f8e, SFX_PlayX_hook },
+{ 0x004a606d, SFX_PlayX_hook },
+{ 0x004a60b2, SFX_PlayX_hook },
+{ 0x004a60d8, SFX_PlayX_hook },
+{ 0x004a60ff, SFX_PlayX_hook },
+{ 0x004a6129, SFX_PlayX_hook },
+{ 0x004a6193, SFX_PlayX_hook },
+{ 0x004acf22, SFX_PlayX_hook },
+{ 0x004b3b50, SFX_PlayX_hook },
+{ 0x004b3c86, SFX_PlayX_hook },
+{ 0x004b3df2, SFX_PlayX_hook },
+{ 0x004baca1, SFX_PlayX_hook },
+{ 0x004bad32, SFX_PlayX_hook },
+{ 0x004bad8b, SFX_PlayX_hook },
+{ 0x004bc283, SFX_PlayX_hook },
+{ 0x004bc2a5, SFX_PlayX_hook },
+{ 0x004bc2d0, SFX_PlayX_hook },
+{ 0x004bc30c, SFX_PlayX_hook },
+{ 0x004c0165, SFX_PlayX_hook },
+{ 0x004c01d8, SFX_PlayX_hook },
+{ 0x004c0293, SFX_PlayX_hook },
+{ 0x004c02e8, SFX_PlayX_hook },
+{ 0x004c04cb, SFX_PlayX_hook },
+{ 0x004c0543, SFX_PlayX_hook },
+{ 0x004c055f, SFX_PlayX_hook },
+{ 0x004c0593, SFX_PlayX_hook },
+{ 0x004c069f, SFX_PlayX_hook },
+{ 0x004c0765, SFX_PlayX_hook },
+{ 0x004c0817, SFX_PlayX_hook },
+{ 0x004c0902, SFX_PlayX_hook },
+{ 0x004c0a6d, SFX_PlayX_hook },
+{ 0x004c0ab1, SFX_PlayX_hook },
+{ 0x004c0d18, SFX_PlayX_hook },
+{ 0x004c0ddd, SFX_PlayX_hook },
+{ 0x004c0eac, SFX_PlayX_hook },
+{ 0x004c0f30, SFX_PlayX_hook },
+{ 0x004c3966, SFX_PlayX_hook },
+{ 0x004c3aa2, SFX_PlayX_hook },
+{ 0x004c3ba7, SFX_PlayX_hook },
+{ 0x004c3be3, SFX_PlayX_hook },
+{ 0x004ca436, SFX_PlayX_hook },
+{ 0x004cc206, SFX_PlayX_hook },
+{ 0x004cc230, SFX_PlayX_hook },
+
 
 	//list terminator, do not remove
 	{ NULL, NULL }

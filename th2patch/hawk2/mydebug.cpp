@@ -2,7 +2,7 @@
 #include "mydebug.h"
 
 
-char debugText[256];
+char debugText[MAX_BUFFER_SIZE];
 
 void DebugMessage(char* text, int x, int y)
 {

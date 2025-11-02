@@ -51,6 +51,9 @@ namespace PCIO {
     // static const PCclose_t PCclose = (PCclose_t)0x004e4d90;
     int PCclose(int fd);
 
+    // arbitrary PCinit
+    void PCinitPkr(char* filename);
+
 
     // guess it was different somehow cause doesnt crash if hook originals?
 
