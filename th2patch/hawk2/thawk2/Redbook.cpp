@@ -31,7 +31,7 @@ namespace Redbook
 
         if (*XALEVEL >= 256)
         {
-            printf("Bad volume: %i", *XALEVEL);
+            printf_s("Bad volume: %i", *XALEVEL);
             return;
         }
 
@@ -86,7 +86,7 @@ namespace Redbook
 
     void Redbook_XAStop()
     {
-        printf("DECOMP Redbook_XAStop()\n");
+        printf_s("DECOMP Redbook_XAStop()\n");
 
         PCMovie::PCMOVIE_XAStop();
         *Redbook_XACheckSectorOnVSync = 0;
@@ -97,7 +97,7 @@ namespace Redbook
 
     void Redbook_XANextTrack(int inc)
     {
-        printf("DECOMP Redbook_XANextTrack()\n");
+        printf_s("DECOMP Redbook_XANextTrack()\n");
 
         if (options.totalTracks <= 0)
         {
@@ -134,7 +134,7 @@ namespace Redbook
 
             if (options.ShowTitle && options.ShowHUD)
             {
-                printf("looking for %s...\n", &playingFile[0]);
+                printf_s("looking for %s...\n", &playingFile[0]);
 
                 if (FileIO::Exists("music\\", &playingFile[0]))
                 {

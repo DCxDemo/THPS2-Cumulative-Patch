@@ -227,7 +227,7 @@ char buf[256];
 void PrintGap(SGapTrick* pGap)
 {
 	sprintf(buf, "%i: %s [%i]\n", pGap->Value, pGap->Name, pGap->Score);
-	printf(buf);
+	printf_s(buf);
 }
 
 void CopyGaps(SGapTrick* src, SGapTrick* dst)

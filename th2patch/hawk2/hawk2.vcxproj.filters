@@ -102,9 +102,6 @@
     <ClInclude Include="thawk2\Crowd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="thawk2\m3d.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="thawk2\PKR.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -144,7 +141,7 @@
     <ClInclude Include="thawk2\Init.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="thawk2\Render.h">
+    <ClInclude Include="thawk2\M3d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="thawk2\gte.h">
@@ -293,7 +290,7 @@
     <ClCompile Include="thawk2\IO\fileio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="thawk2\Render.cpp">
+    <ClCompile Include="thawk2\M3d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="thawk2\gte.cpp">

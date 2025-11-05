@@ -22,7 +22,7 @@ namespace Physics {
     /// <returns></returns>
     unsigned int EnsureGTricksLoaded() {
 
-        printf("DECOMP: EnsureGTricksLoaded()\n");
+        printf_s("DECOMP: EnsureGTricksLoaded()\n");
 
         if (!*GTricks) {
 
@@ -48,7 +48,7 @@ namespace Physics {
 
     void UnloadGTricks() {
 
-        printf("DECOMP: UnloadGTricks()\n");
+        printf_s("DECOMP: UnloadGTricks()\n");
 
         if (*GTricks) {
             Mem_Delete(*GTricks);
@@ -60,7 +60,7 @@ namespace Physics {
 
     void ExtraAnims_AddSkatersAnims() {
 
-        printf("DECOMP: ExtraAnims_AddSkatersAnims()\n");
+        printf_s("DECOMP: ExtraAnims_AddSkatersAnims()\n");
 
         bool gTricksLoaded = EnsureGTricksLoaded();
 

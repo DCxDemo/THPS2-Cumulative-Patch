@@ -10,14 +10,14 @@ namespace Rail {
     // switches rail on by index
     void Rail_SwitchOn(ushort nodeIndex)
     {
-        printf("rail created\n");
+        printf_s("rail created\n");
         Rail_Active(nodeIndex, true);
     }
 
     // switches rail off by index
     void Rail_KillRail(ushort nodeIndex)
     {
-        printf("rail killed\n");
+        printf_s("rail killed\n");
         Rail_Active(nodeIndex, false);
     }
 
@@ -95,7 +95,7 @@ namespace Rail {
         // check node index (maybe refactor this to a separate func and add to other rail funcs as well)
         if (nodeIndex > *NumNodes)
         {
-            printf("Wrong node index");
+            printf_s("Wrong node index");
         }
 
         // if we have more than one node on the list (which is always true in the final game anyways...)
@@ -110,7 +110,7 @@ namespace Rail {
                     // if next node equals the target node
                     if (Rail_NextNode(i) == nodeIndex)
                     {
-                        printf("Rail_PrevNode(): found node %i\n", i);
+                        printf_s("Rail_PrevNode(): found node %i\n", i);
 
                         // we have found the previous node
                         return i;
@@ -119,7 +119,7 @@ namespace Rail {
             }
         }
 
-        printf("Rail_PrevNode(): not found\n");
+        printf_s("Rail_PrevNode(): not found\n");
 
         return 0;
     }
@@ -153,7 +153,7 @@ namespace Rail {
                 // if lookup nodeIndex matches
                 if (lookup[i].nodeIndex == nodeIndex) {
 
-                    printf("GetIndexOfNode(): index of %i is %i", nodeIndex, i);
+                    printf_s("GetIndexOfNode(): index of %i is %i", nodeIndex, i);
 
                     // we have found it, return index
                     return i;
@@ -190,7 +190,7 @@ namespace Rail {
 
         RailLookupEntry* rails = (RailLookupEntry*)RailNodeLookup;
 
-        printf("allocated railnodelookup\n");
+        printf_s("allocated railnodelookup\n");
 
         // i guess 1st index is reserved for "no link found" situation, hence initialize it
         uint numRails = 1;
@@ -205,7 +205,7 @@ namespace Rail {
                 if (Rail_IsRailNode(i))
                 {
                     if (numRails > 2000)
-                        printf("Out of space in rail node lookup table!");
+                        printf_s("Out of space in rail node lookup table!");
 
                     // remember the rail index
                     rails[numRails].nodeIndex = i;
@@ -214,16 +214,16 @@ namespace Rail {
                     // we got another rail
                     numRails++;
 
-                    printf("found rail!\n");
+                    printf_s("found rail!\n");
                 }
                 else
                 {
-                    printf("not a rail\n");
+                    printf_s("not a rail\n");
                 }
             }
         }
 
-        printf("pass 1 done\n");
+        printf_s("pass 1 done\n");
 
 
         *TotalRailNodes = numRails;
@@ -237,28 +237,28 @@ namespace Rail {
             // loop over rail lookup table entries 
             for (uint i = 1; i < numRails; i++)
             {
-                printf("index: %i\n", i);
+                printf_s("index: %i\n", i);
 
                 // get next node of the rail
                 uint nextNode = Rail_NextNode(rails[i].nodeIndex);
 
-                printf("nextnode: %i\n", nextNode);
+                printf_s("nextnode: %i\n", nextNode);
 
                 // find index of the nex node in the lookup table
                 uint lookupIndex = GetIndexOfNode(nextNode);
 
-                printf("lookupIndex: %i\n", lookupIndex);
+                printf_s("lookupIndex: %i\n", lookupIndex);
 
                 // if it's not 0, save to table
                 if (lookupIndex != 0)
                 {
                     rails[lookupIndex].prevIndex = i;
-                    printf("found lookup match!\n");
+                    printf_s("found lookup match!\n");
                 }
             }
         }
 
-        printf("pass 2 done\n");
+        printf_s("pass 2 done\n");
     }
 
 

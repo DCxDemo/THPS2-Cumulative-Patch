@@ -9,8 +9,8 @@
 namespace FileIO {
 
     void PrintHex(char* name, void* ptr ) {
-        printf("%s  --- ", ptr);
-        printf("address of %s = 0x%08x\n", name, ptr);
+        printf_s("%s  --- ", ptr);
+        printf_s("address of %s = 0x%08x\n", name, ptr);
     }
 
     char* filePattern = (char*)0x0055e1f0;
@@ -35,7 +35,7 @@ namespace FileIO {
     /// </summary>
     /// <returns></returns>
     char* FileIO_GetSubDir() {
-        printf("DECOMP FileIO_GetSubDir -> %s\n", FileSubDirName);
+        printf_s("DECOMP FileIO_GetSubDir -> %s\n", FileSubDirName);
 
         return FileSubDirName;
     }
@@ -45,7 +45,7 @@ namespace FileIO {
     /// </summary>
     /// <param name="path"></param>
     char* FileIO_SetSubDir(char* subDir) {
-        printf("DECOMP FileIO_SetSubDir -> %s\n", subDir);
+        printf_s("DECOMP FileIO_SetSubDir -> %s\n", subDir);
 
         return strcpy(FileSubDirName, subDir);
     }
@@ -89,9 +89,9 @@ namespace FileIO {
     /// </summary>
     /// <param name="fileName"></param>
     /// <returns></returns>
-    bool FileIO_Exists(char* fileName) {
+    int FileIO_Exists(char* fileName) {
 
-        printf("DECOMP FileIO_Exists()\n");
+        printf_s("DECOMP FileIO_Exists()\n");
 
         FileIO_AddDirToFileName(fileName);
 
@@ -99,19 +99,19 @@ namespace FileIO {
             FileIO_AddSubDirToFileName(fileName);
         }
 
-        printf("checking path: %s ", FileName);
+        printf_s("checking path: %s ", FileName);
 
         uint file = PCIO::PCopen(FileName, 0);
 
-        printf(" = %i\n", file);
+        printf_s(" = %i\n", file);
 
         if (file == -1) {
-            return false;
+            return 0;
         }
         else
         {
             PCIO::PCclose(file);
-            return true;
+            return 1;
         }
     }
 
@@ -131,13 +131,13 @@ namespace FileIO {
     
         if (file != NULL)
         {
-            printf("file exists! %s", buf);
+            printf_s("file exists! %s", buf);
             fclose(file);
             return true;
         }
         else 
         {
-            printf("file doesnt exist! %s", buf);
+            printf_s("file doesnt exist! %s", buf);
             return false;
         }
     }
@@ -156,13 +156,13 @@ namespace FileIO {
             {
                 if (strcmp(filename, pkr->Files[i].Name) == 0)
                 {
-                    printf("%s found in PKR!!!\n", filename);
+                    printf_s("%s found in PKR!!!\n", filename);
                     return pkr->Files[i].pData;
                 }
             }
         }
 
-        printf("%s not found in PKR, pass to the original func!!!\n", filename);
+        printf_s("%s not found in PKR, pass to the original func!!!\n", filename);
         return FileIO_OpenLoad(filename, heap);
     }
 
@@ -172,24 +172,24 @@ namespace FileIO {
     int FileIO_Open_wrap(char* filename)
     {
         // set mods path
-        sprintf(filePattern, "mods\\????????.???\0");
+        sprintf_s(filePattern, 56, "mods\\????????.???\0");
 
         if (FileIO_Exists(filename))
         {
-            printf("Found %s in MODS folder!\n", filename);
+            printf_s("Found %s in MODS folder!\n", filename);
 
             return FileIO_Open(filename);
         }
 
         // set data path
-        sprintf(filePattern, "data\\????????.???\0");
+        sprintf_s(filePattern, 56, "data\\????????.???\0");
 
         if (FileIO_Exists(filename))
         {
             return FileIO_Open(filename);
         }
 
-        printf(" *** File %s not found in data folders!!! ***\n", filename);
+        printf_s(" *** File %s not found in data folders!!! ***\n", filename);
         printf_log(" *** File %s not found in data folders!!! ***\n", filename);
 
         // file doesnt exist
@@ -205,11 +205,11 @@ namespace FileIO {
     /// <returns></returns>
     void* FileIO_OpenLoad(char* filename, int Heap) {
 
-        printf("DECOMP FileIO_OpenLoad(%s)\n", filename);
+        printf_s("DECOMP FileIO_OpenLoad(%s)\n", filename);
 
         // check file name, early null fallback
         if (filename == NULL) {
-            printf("NULL name passed to FileIO_OpenLoad");
+            printf_s("NULL name passed to FileIO_OpenLoad");
             return NULL;
         }
 
@@ -217,13 +217,13 @@ namespace FileIO {
 
         // check file size, can remove this on PC to allow larger files
         //if (size < 0 || size > MAX_FILESIZE) {
-        //    printf("Bad size returned from FileIO_Open");
+        //    printf_s("Bad size returned from FileIO_Open");
         //    return NULL;
         //}
 
         // check heap type
         if (Heap != 0 && Heap != 1) {
-            printf("Unknown heap type");
+            printf_s("Unknown heap type");
             return NULL;
         }
 
@@ -232,7 +232,7 @@ namespace FileIO {
 
         // check allocation status
         if (pFile == NULL) {
-            printf("Unable to allocate memory in FileIO_OpenLoad");
+            printf_s("Unable to allocate memory in FileIO_OpenLoad");
             return NULL;
         }
 

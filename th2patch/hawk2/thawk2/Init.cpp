@@ -28,7 +28,7 @@ int* PCMemBuffer = (int*)0x0055ec78;
 /// </summary>
 void Init_AtStart()
 {
-	printf("decomp Init_AtStart called...");
+	printf_s("decomp Init_AtStart called...");
 
 	// something like this?
 
@@ -99,7 +99,7 @@ void Init_AtStart()
 
 	Front_ClearGVideoRestartData();
 
-	printf("done\n");
+	printf_s("done\n");
 }
 
 
@@ -111,7 +111,7 @@ int* TitleTimeout = (int*)0x00528cac;
 
 void Init_Restart()
 {
-	printf("decomp Init_Restart called\n");
+	printf_s("decomp Init_Restart called\n");
 
 	Init_Cleanup(HARD_CLEANUP);
 	Db_Reset();
@@ -138,7 +138,7 @@ void Init_KillAll()
 
 	// do this for every list
 	//if (MechList != 0)
-	//	printf("Leftover protected members of MechList\n");
+	//	printf_s("Leftover protected members of MechList\n");
 
 	DeleteList(CameraList);
 	DeleteList(BaddyList);
@@ -158,7 +158,7 @@ void Init_KillAll()
 
 void TH2Main()
 {
-	printf("th2 main here!\n");
+	printf_s("th2 main here!\n");
 
 	//psyq call
 	//_SetDispMask(0);
@@ -208,7 +208,7 @@ void CamPt_Init()
 
 void Init_ForGame()
 {
-	printf("decomp Init_ForGame\n");
+	printf_s("decomp Init_ForGame\n");
 
 	*pCurrentViewport = DefaultViewport;
 

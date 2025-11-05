@@ -17,7 +17,7 @@ void GameOptions::Load()
 
 	CIniReader* ini = new CIniReader(iniPath);
 
-	printf("Loading settings from %s\r\n", iniPath);
+	printf_s("Loading settings from %s\r\n", iniPath);
 
 	//patch section
 	CurrentGame = ini->ReadString("PATCH", "Game", "THPS2");
@@ -65,14 +65,14 @@ void GameOptions::Load()
 
 	Save();
 
-	printf("Settings loaded.\r\n");
+	printf_s("Settings loaded.\r\n");
 }
 
 void GameOptions::Save()
 {
 	CIniWriter* ini = new CIniWriter(iniPath);
 
-	printf("Saving settings to %s\r\n", iniPath);
+	printf_s("Saving settings to %s\r\n", iniPath);
 
 	//patch section
 	ini->WriteString("PATCH", "Game", &CurrentGame[0]);
@@ -110,5 +110,5 @@ void GameOptions::Save()
 
 	delete ini;
 
-	printf("Settings saved.\r\n");
+	printf_s("Settings saved.\r\n");
 }

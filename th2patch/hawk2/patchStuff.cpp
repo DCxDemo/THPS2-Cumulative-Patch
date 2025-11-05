@@ -497,7 +497,7 @@ void Front_Update_Hook()
 
 		
 
-		printf("status: %s\n", statusNames[*GStatus]);
+		printf_s("status: %s\n", statusNames[*GStatus]);
 
 		old_status = *GStatus;
 	}
@@ -517,7 +517,7 @@ void D3D_BeginScene_Hook(uint param_1, uint backColor)
 
 	if (*Vblanks < *D3DBEGINSCENE_lastVBlank + waitframes) {
 		do {
-			//Sleep(0);
+			Sleep(0);
 		} while (*Vblanks < *D3DBEGINSCENE_lastVBlank + waitframes);
 	}
 	
@@ -789,13 +789,13 @@ inline void DoWibblyTextures() {
 	void* pTaxi = (void*)Spool_FindRegion("c_taxi");
 
 	if ((uint)pTaxi != NS_NULL) {
-		M3d_PreprocessWibblyTextures(pTaxi);
+		M3d::M3d_PreprocessWibblyTextures(pTaxi);
 	}
 
 	void* pBull = (void*)Spool_FindRegion("c_bull");
 
 	if ((uint)pBull != NS_NULL) {
-		M3d_PreprocessWibblyTextures(pBull);
+		M3d::M3d_PreprocessWibblyTextures(pBull);
 	}
 }
 
@@ -951,7 +951,7 @@ void Display() {
 			break;
 
 		default:
-			printf("Unknown viewport mode in Display()!");
+			printf_s("Unknown viewport mode in Display()!");
 			break;
 	}
 
@@ -1106,42 +1106,13 @@ void PatchSkater(SkaterProfile* p, int slot, char* hi, char* lo)
 	// im lazy to fix all calls...
 	slot--;
 
-	if (slot < 0)
-		throw new exception("slot < 0");
-
-	if (slot > 3)
-		throw new exception("slot << 0> 3");
+	if (slot < 0) throw new exception("slot < 0");
+	if (slot > 3) throw new exception("slot > 3");
 
 	p->Outfits[slot].hi = hi;
 	p->Outfits[slot].lo = lo;
 
-	/*
-	char buf[256];
-
-	if (hi != NULL)
-	{
-		printf("looking for %s\n", hi);
-
-		sprintf(buf, "%s.%s", hi, "psx");
-
-		if (!FileIO::Exists("data\\", buf))
-		{
-			p->Outfits[slot].hi = NULL;
-			p->Outfits[slot].lo = NULL;
-			return;
-		}
-	}
-
-	if (lo != NULL)
-	{
-		printf("looking for %s\n", lo);
-
-		sprintf(buf, "%s.%s", lo, "psx");
-
-		if (!FileIO::Exists("data\\", buf))
-			p->Outfits[slot].lo = NULL;
-	}
-	*/
+	// now i should put fileIO exists here, but it crashes?
 }
 
 void PatchSkaters()
@@ -1151,7 +1122,7 @@ void PatchSkaters()
 	PatchSkater(p, 3, "hawk3", "hawk3b");
 	PatchSkater(p, 4, "hawk4", "hawk4b");
 
-	printf("hello\n");
+	printf_s("hello\n");
 
 	p++;
 	PatchSkater(p, 3, "burnq4", "burnq4b");
@@ -1224,7 +1195,7 @@ void PatchSkaters()
 		//since we can't have a switch case by string in C, lets just calculate string checksum, used a lot in later games.
 		uint hash = checksum(&options.DickSwap[0]);
 
-		printf("%s = 0x%08x\n", &options.DickSwap[0], hash);
+		printf_s("%s = 0x%08x\n", &options.DickSwap[0], hash);
 
 
 		switch (hash)
@@ -1232,7 +1203,7 @@ void PatchSkaters()
 			// "bam", margera + fry cook
 			case 0x680b1a5b: {
 				sprintf_s(p->FullName, sizeof(p->FullName), "Bam Margera");
-				p->pShortName = "Bam";
+				p->pShortName = "bam";
 
 				PatchSkater(p, 1, "ba3", "ba3b");
 				PatchSkater(p, 2, "ba4", "ba4b");
@@ -1309,7 +1280,7 @@ void PatchSkaters()
 			}
 
 			default:
-				printf("Unknown secret skater swap! %s", &options.DickSwap[0]);
+				printf_s("Unknown secret skater swap! %s", &options.DickSwap[0]);
 		}
 	}
 	else
@@ -1348,18 +1319,18 @@ void ParseLevels()
     sqlite3_stmt* stmt;
 	
     if(sqlite3_open(".\\patch\\thps.db", &db) != SQLITE_OK) {
-		printf("ERROR: can't open database: %s\n", sqlite3_errmsg(db));
+		printf_s("ERROR: can't open database: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
 		return;
     }
 
 	string query = "select * \nfrom LevelProfile \nwhere game = lower('" + options.CurrentGame + "') \norder by slot limit 15\n";
 
-	printf("Query:\n%s\n", &query[0]);
+	printf_s("Query:\n%s\n", &query[0]);
 
 	// compile sql statement to binary
     if(sqlite3_prepare_v2(db, query.c_str(), -1, &stmt, NULL) != SQLITE_OK) {
-		printf("ERROR: while compiling sql: %s\n", sqlite3_errmsg(db));
+		printf_s("ERROR: while compiling sql: %s\n", sqlite3_errmsg(db));
 		sqlite3_close(db);
 		sqlite3_finalize(stmt);
 		return;
@@ -1388,7 +1359,7 @@ void ParseLevels()
 		//levPtr[cnt].isCompetition = 1;
 		//levPtr[cnt].isCompetition2 = 1;
 
-		printf("Level %i is %s %s\n", cnt, Levels[cnt].name, &Levels[cnt].subname[0]);
+		printf_s("Level %i is %s %s\n", cnt, Levels[cnt].name, &Levels[cnt].subname[0]);
 
 		//fout1 << (char*)sqlite3_column_text(stmt, 4) << "|" << levPtr[cnt].subname << endl;
 		cnt++;
@@ -1396,8 +1367,8 @@ void ParseLevels()
 
     if (ret_code != SQLITE_DONE) {
         //this error handling could be done better, but it works
-        printf("ERROR: while performing sql: %s\n", sqlite3_errmsg(db));
-        printf("ret_code = %d\n", ret_code);
+        printf_s("ERROR: while performing sql: %s\n", sqlite3_errmsg(db));
+        printf_s("ret_code = %d\n", ret_code);
     }
 	
 	sqlite3_close(db);	
@@ -1418,7 +1389,7 @@ void GetSong(int num)
 {
 	if (db == NULL)
 		if(sqlite3_open_v2("patch/music.db", &db, SQLITE_OPEN_READONLY, NULL) != SQLITE_OK) {
-			printf("ERROR: can't open database: %s\n", sqlite3_errmsg(db));
+			printf_s("ERROR: can't open database: %s\n", sqlite3_errmsg(db));
 			sqlite3_close(db);
 			return;
 		}
@@ -1433,7 +1404,7 @@ void GetSong(int num)
 	sqlite3_exec(db, "BEGIN TRANSACTION", 0, 0, 0);
 
 	if (sqlite3_prepare_v2(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-		printf("ERROR: while compiling sql: %s\n", sqlite3_errmsg(db));
+		printf_s("ERROR: while compiling sql: %s\n", sqlite3_errmsg(db));
 		sqlite3_close(db);
 		sqlite3_finalize(stmt);
 		return;
@@ -1474,8 +1445,8 @@ void GetSong(int num)
 
     if(ret != SQLITE_DONE) {
         //this error handling could be done better, but it works
-        printf("ERROR: while performing sql: %s\n", sqlite3_errmsg(db));
-        printf("ret_code = %d\n", ret);
+        printf_s("ERROR: while performing sql: %s\n", sqlite3_errmsg(db));
+        printf_s("ret_code = %d\n", ret);
     }
 	
 	//printf("Random song: %s - %s - %s\n", &song.artist[0], &song.title[0], &song.filename[0]);
@@ -1489,7 +1460,7 @@ int CountSongs()
     sqlite3_stmt* stmt;
 	
     if(sqlite3_open("patch/music.db", &db) != SQLITE_OK) {
-		printf("ERROR: can't open database: %s\n", sqlite3_errmsg(db));
+		printf_s("ERROR: can't open database: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
 		return 0;
     }
@@ -1499,10 +1470,10 @@ int CountSongs()
 		"select count(*) from soundtrack where lower(game) like lower('%s')", 
 		options.SeparateTracks ? options.CurrentGame.c_str() : "%");
 
-	printf("%s\n", query);
+	printf_s("%s\n", query);
 
     if(sqlite3_prepare_v2(db, query, -1, &stmt, NULL) != SQLITE_OK) {
-		printf("ERROR: while compiling sql: %s\n", sqlite3_errmsg(db));
+		printf_s("ERROR: while compiling sql: %s\n", sqlite3_errmsg(db));
 		sqlite3_close(db);
 		sqlite3_finalize(stmt);
 		return 0;
@@ -1521,13 +1492,13 @@ int CountSongs()
 	}
     if(ret != SQLITE_DONE) {
         //this error handling could be done better, but it works
-        printf("ERROR: while performing sql: %s\n", sqlite3_errmsg(db));
-        printf("ret_code = %d\n", ret);
+        printf_s("ERROR: while performing sql: %s\n", sqlite3_errmsg(db));
+        printf_s("ret_code = %d\n", ret);
     }
 	
 	sqlite3_close(db);
 
-	printf("count songs : %i", nums);
+	printf_s("count songs : %i", nums);
 
 	return nums;
 }
@@ -1629,11 +1600,11 @@ void Patch()
 	if (pkr->Load(".\\all.pkr") == PkrError::Success)
 	{
 		pkr->ExportAll(".\\data_winmobile");
-		printf("PKR LOAD OK\n");
+		printf_s("PKR LOAD OK\n");
 	}
 	else
 	{
-		printf("Failed to load PKR...\n");
+		printf_s("Failed to load PKR...\n");
 		delete pkr;
 	}
 	*/
@@ -1806,6 +1777,7 @@ void Patch()
 
 
 	//TO DO split this into separate hooking funcs for each namespace and move to Hook::SetHooks
+
 	SetHooks();
 	Hook::SetHooks();
 
@@ -1878,7 +1850,7 @@ char** ShortLevName = (char**)0x0069d198;
 // additionally checks level short name subfolder (newtex\han for hangar etc)
 int openExternalTexture2(uint Checksum, char* Name)
 {
-	printf("openExternalTexture!\n");
+	printf_s("openExternalTexture!\n");
 
 	if (options.DisableNewTex) return NS_NULL;
 
@@ -1903,7 +1875,7 @@ int openExternalTexture2(uint Checksum, char* Name)
 	}
 	else
 	{
-		printf("now what?\n");
+		printf_s("now what?\n");
 		return NS_NULL;
 	}
 
@@ -1919,7 +1891,7 @@ void SFX_PlayX_hook(int index, int p1, int p2)
 	// a crude patch for th3 crashes (canada, airport)
 	// just dont play sounds above 400
 	if (index > 400) {
-		printf("sound index too high\n");
+		printf_s("sound index too high\n");
 		return;
 	}
 
@@ -1937,19 +1909,6 @@ Hook::Reroute hookList[] = {
 	{  0x004d6c19,openExternalTexture2 },
 	//{ 0x458564, SFX_SpoolOutLevelSFX },
 	//{ 0x452570, SFX_SpoolInLevelSFX },
-
-	{  0x004603c6,RenderModel },
-	{  0x0046040c,RenderModel },
-	{  0x0046024f,RenderModelFast },
-	{  0x0046029a,RenderModelFast },
-	{  0x0046104b,RenderBackgroundModel },
-	//{  0x004609a6,RenderModelInSuper},
-	//{  0x00461913,RenderModelInSuper},
-	{  0x0046190c,RenderModelInSuperFast },
-	{  0x00460338,RenderModelNonRotated },
-	{  0x00460386,RenderModelNonRotated },
-	{  0x00461043,RenderBackgroundModelNonRotated },
-
 
 
 

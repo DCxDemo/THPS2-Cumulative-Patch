@@ -25,7 +25,7 @@ tagMSG msg;
 
 uint WinYield()
 {
-    printf("WinYield()\r\n");
+    printf_s("WinYield()\r\n");
 
     while (true) {
 
@@ -50,7 +50,7 @@ uint WinYield()
 /*
 void WINMAIN_ShutDown(void)
 {
-    printf("WinMain_Shutdown()\n");
+    printf_s("WinMain_Shutdown()\n");
 
     NETGAME_ShutDown();
     D3DTIMER_Kill();
@@ -136,7 +136,7 @@ LRESULT WINMAIN_WndProc(HWND hWnd, uint Msg, WPARAM wParam, LPARAM lParam)
                         // take a screenshot on F9.
                         //D3D_ScreenShot();
                         MessageBox(NULL, "test", "test", 0);
-                        printf("screenshot!\n");
+                        printf_s("screenshot!\n");
                         return 0;
                 }
         }

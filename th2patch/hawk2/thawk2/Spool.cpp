@@ -76,7 +76,7 @@ int Spool_CountColors(uint hash) {
     void* textureEntry = Spool_FindTextureEntry(hash);
 
     if (textureEntry == NULL) {
-        printf("Board texture not found");
+        printf_s("Board texture not found");
         return 0;
     }
 

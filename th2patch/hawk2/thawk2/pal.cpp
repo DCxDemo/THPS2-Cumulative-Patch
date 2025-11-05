@@ -19,7 +19,7 @@ namespace Pal {
     // creates a new palette entry
     S_Pal* NewPaletteEntry(uint Checksum) {
 
-        printf("DECOMP Pal_CreateNew(): %i\n", Checksum);
+        printf_s("DECOMP Pal_CreateNew(): %i\n", Checksum);
 
         // allocate new palette
         S_Pal* pPal = (S_Pal*)Mem_New(0x18, 0, 1, 0);
@@ -54,7 +54,7 @@ namespace Pal {
     // removes a palette
     void RemovePaletteEntry(S_Pal* pPal)
     {
-        printf("DECOMP Pal_Free()\n");
+        printf_s("DECOMP Pal_Free()\n");
 
         if (pPal->pPrev != NULL)
             pPal->pPrev->pNext = pPal->pNext;
@@ -73,7 +73,7 @@ namespace Pal {
     // iterates over the palette list until checksum is found.
     S_Pal* Pal_FindPaletteEntry(uint Checksum) {
 
-        printf("DECOMP Pal_FindPaletteEntry(): %i\n", Checksum);
+        printf_s("DECOMP Pal_FindPaletteEntry(): %i\n", Checksum);
 
         if (pPaletteList == NULL) return NULL;
 
@@ -101,7 +101,7 @@ namespace Pal {
                 return i;
             }
 
-        printf("Ran out of Pal16 slots!\n");
+        printf_s("Ran out of Pal16 slots!\n");
 
         Pal16Usage[*Pal16Max - 1] = false;
 
@@ -117,7 +117,7 @@ namespace Pal {
                 return i;
             }
 
-        printf("Ran out of Pal256 slots!\n");
+        printf_s("Ran out of Pal256 slots!\n");
 
         Pal16Usage[*Pal256Max - 1] = false;
 

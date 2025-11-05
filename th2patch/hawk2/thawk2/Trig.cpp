@@ -17,7 +17,7 @@ namespace Trig {
 
 	// send pulse to all links
 	void Trig_SendPulse(ushort* pNode) {
-		printf("DECOMP: Trig_SendPulse()\n");
+		printf_s("DECOMP: Trig_SendPulse()\n");
 
 		// start by reading num links
 		for (int i = (uint)*pNode; i > 0; i--) {
@@ -28,7 +28,7 @@ namespace Trig {
 
 
 	void Trig_DeleteTrigFile() {
-		printf("DECOMP: Trig_DeleteTrigFile()\n");
+		printf_s("DECOMP: Trig_DeleteTrigFile()\n");
 
 		// doesnt crash, but no idea if works properly
 
@@ -43,7 +43,7 @@ namespace Trig {
 
 
 	void Trig_InitialParseTRGFile() {
-		printf("DECOMP: Trig_InitialParseTRGFile()\n");
+		printf_s("DECOMP: Trig_InitialParseTRGFile()\n");
 
 		*numTrackSpoolingBuffers = 0;
 		Trig_ScanRestart();
@@ -63,7 +63,7 @@ namespace Trig {
 				// if node is autoexec2
 				if ((ENodeType)value == ENodeType::AutoExec2) {
 
-					printf("node %i is autoexec2!\n", i);
+					printf_s("node %i is autoexec2!\n", i);
 
 					// execute command list
 					return ExecuteCommandList((void*)(((int)offset[i]) + 2), i, 1);
@@ -82,7 +82,7 @@ namespace Trig {
 				// if node is autoexec
 				if ((ENodeType)value == ENodeType::AutoExec) {
 
-					printf("node %i is autoexec!\n", i);
+					printf_s("node %i is autoexec!\n", i);
 
 					// execute command list
 					return ExecuteCommandList( (void*)(((int)offset[i]) + 2), i, 1);
@@ -91,7 +91,7 @@ namespace Trig {
 		}
 
 		// and if not a single return hit, we have no autoexec in the file!
-		printf("autoexec not found!!!");
+		printf_s("autoexec not found!!!");
 	}
 
 	/*
@@ -133,17 +133,17 @@ namespace Trig {
 		FileIO_Sync();
 
 		if (_TrigFile[0] != 0x4752545f) {
-			printf(s_ % s.trg_Not_a__TRG_file_005446c8);
+			printf_s(s_ % s.trg_Not_a__TRG_file_005446c8);
 			return;
 		}
 
 		if (_TrigFile[1] & 0xFFFF != 2) {
-			printf(s_Wrong_trigger_file_version._ % s.t_005446a4);
+			printf_s(s_Wrong_trigger_file_version._ % s.t_005446a4);
 			return;
 		}
 
 		if (_TrigFile[1] & 0xFFFF0000 != 0) {
-			printf(s_Not_a_Skate_trigger_file, _ % s.trg_00544680);
+			printf_s(s_Not_a_Skate_trigger_file, _ % s.trg_00544680);
 			return;
 		}
 
@@ -176,7 +176,7 @@ namespace Trig {
 	/*
 	void Trig_SetRestart(char* name) {
 
-		printf("DECOMP: Trig_SetRestart(%s)\n", name);
+		printf_s("DECOMP: Trig_SetRestart(%s)\n", name);
 
 		*RestartNode = -1;
 
@@ -204,7 +204,7 @@ namespace Trig {
 			}
 		}
 
-		printf("restart %s no found!", name);
+		printf_s("restart %s no found!", name);
 	}
 	*/
 

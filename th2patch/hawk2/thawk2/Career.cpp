@@ -61,7 +61,7 @@ namespace Career {
 
         if (goalIndex < 0 || goalIndex > 9)
         {
-            printf("Invalid goal index! %i\n", goalIndex);
+            printf_s("Invalid goal index! %i\n", goalIndex);
             return false;
         }
 
@@ -80,7 +80,7 @@ namespace Career {
 
         if (goalIndex < 0 || goalIndex > 9)
         {
-            printf("Invalid goal index! %i\n", goalIndex);
+            printf_s("Invalid goal index! %i\n", goalIndex);
             return false;
         }
 
@@ -91,12 +91,12 @@ namespace Career {
     // Called in main menu, wrapped in NumLevelGoals func
     int Career_LevelTapes(void* pCharProg, int levelIndex)
     {
-        printf("DECOMP Career_LevelTapes()... ");
+        printf_s("DECOMP Career_LevelTapes()... ");
 
         // null check the charprogress
         if (pCharProg == NULL)
         {
-            printf("No character progress!\n");
+            printf_s("No character progress!\n");
             return 0;
         }
 
@@ -116,7 +116,7 @@ namespace Career {
             }
         }
 
-        printf("%i tapes\n", tapes);
+        printf_s("%i tapes\n", tapes);
 
         return tapes;
     }
@@ -150,7 +150,7 @@ namespace Career {
                         //award the goal
                         Career_GiveGoal(goalIndex);
 
-                        printf("Career_CheckScore(): got %s - %i\r\n", pGoal->goalText, pGoal->intParam);
+                        printf_s("Career_CheckScore(): got %s - %i\r\n", pGoal->goalText, pGoal->intParam);
                     }
                 }
             }
@@ -174,7 +174,7 @@ namespace Career {
         {
             if (pGoal->goalType == goalType)
             {
-                printf("got goal index: %i", goalIndex);
+                printf_s("got goal index: %i", goalIndex);
                 return goalIndex;
             }
 
@@ -191,11 +191,11 @@ namespace Career {
 
         if (goalIndex == NS_NULL)
         {
-            printf("no goal of type %i in this level", goalType);
+            printf_s("no goal of type %i in this level", goalType);
             return;
         }
 
-        printf("give goal type: %i\r\n", goalType);
+        printf_s("give goal type: %i\r\n", goalType);
 
         Career_GiveGoal(goalIndex);
     }
@@ -203,12 +203,12 @@ namespace Career {
     // checks the 100% level and cash goal
     void Career_CheckClear(void)
     {
-        printf("decomp Career_CheckClear called...\n");
+        printf_s("decomp Career_CheckClear called...\n");
 
         //if picked up all money in the level (or more?)
         if (Career_CountMoney() >= *Career_MoneyPickups) {
 
-            printf("\tgot all money\n");
+            printf_s("\tgot all money\n");
 
             //if it's a competition level
             if (Levels[*GLevel].isCompetition) {
@@ -218,7 +218,7 @@ namespace Career {
                 //set career progress money flag?
                 *(ushort*)((char*)charProg + 0xC + *GLevel * 2) |= 0x8000;
 
-                printf("\t! ! ! in a comp, money flag set ! ! !\n");
+                printf_s("\t! ! ! in a comp, money flag set ! ! !\n");
             }
             else //if not a comp
             {
@@ -231,7 +231,7 @@ namespace Career {
                         //award 100%
                         Career_GiveGoalType(EGoalType::Clear);
 
-                        printf("\t! ! ! not in a comp, awarded 100%% goal ! ! !\n");
+                        printf_s("\t! ! ! not in a comp, awarded 100%% goal ! ! !\n");
                     }
                 }
             }
@@ -260,7 +260,7 @@ namespace Career {
     // checks if gap is a goal gap (collect N gaps like roll call rails)
     bool Career_GapIsGoal(SGapTrick* pGap)
     {
-        printf("decomp Career_GapIsGoal called...\n");
+        printf_s("decomp Career_GapIsGoal called...\n");
 
         return pGap->Type == (short)EGapFlag::GoalGap ? Career_GapActive(pGap) : false;
     }
@@ -268,7 +268,7 @@ namespace Career {
     // checks if gap is a trick gap (hit 1 gap like nosegrind over the pipe)
     bool Career_GapIsTrick(SGapTrick* pGap)
     {
-        printf("decomp Career_GapIsTrick called...\n");
+        printf_s("decomp Career_GapIsTrick called...\n");
 
         return pGap->Type == (short)EGapFlag::TrickGap ? Career_GapActive(pGap) : false;
     }
@@ -288,7 +288,7 @@ namespace Career {
                 //if match, get gap index
                 if (cursor == pGap)
                 {
-                    printf("Gap found: %s %i\r\n", pGap->Name, gapIndex);
+                    printf_s("Gap found: %s %i\r\n", pGap->Name, gapIndex);
                     return gapIndex;
                 }
 
@@ -298,7 +298,7 @@ namespace Career {
             cursor++;
         }
 
-        printf("!!! GapTrick not found: %s\r\n", pGap->Name);
+        printf_s("!!! GapTrick not found: %s\r\n", pGap->Name);
 
         return 0;
     }
@@ -306,7 +306,7 @@ namespace Career {
     // finds trick gap index in a gap table
     int Career_GapTrickNumber(SGapTrick* pGap)
     {
-        printf("decomp Career_GapTrickNumber called...\n");
+        printf_s("decomp Career_GapTrickNumber called...\n");
 
         SGapTrick* cursor = pGaps;
         int gapIndex = 0;
@@ -320,7 +320,7 @@ namespace Career {
                 //if match, get gap index
                 if (cursor == pGap)
                 {
-                    printf("\tGap found: %s %i\n", pGap->Name, gapIndex);
+                    printf_s("\tGap found: %s %i\n", pGap->Name, gapIndex);
                     return gapIndex;
                 }
 
@@ -330,7 +330,7 @@ namespace Career {
             cursor++;
         }
 
-        printf("\t!!! GapTrick not found: %s\n", pGap->Name);
+        printf_s("\t!!! GapTrick not found: %s\n", pGap->Name);
 
         return 0;
     }
@@ -338,7 +338,7 @@ namespace Career {
     // finds gap index of current level in the gap table
     int Career_GapNumber(SGapTrick* pGap)
     {
-        printf("decomp Career_GapNumber called\n");
+        printf_s("decomp Career_GapNumber called\n");
 
         SGapTrick* cursor = pGaps;
         int gapIndex = 0;
@@ -352,7 +352,7 @@ namespace Career {
                 //if match, get gap index
                 if (cursor == pGap)
                 {
-                    printf("\tGap found: %s %i\n", pGap->Name, gapIndex);
+                    printf_s("\tGap found: %s %i\n", pGap->Name, gapIndex);
                     return gapIndex;
                 }
 
@@ -364,7 +364,7 @@ namespace Career {
             cursor++;
         }
 
-        printf("\t!!! GapTrick not found: %s\n", pGap->Name);
+        printf_s("\t!!! GapTrick not found: %s\n", pGap->Name);
 
         return 0;
     }
@@ -372,7 +372,7 @@ namespace Career {
     // checks goal gap mask
     bool Career_GotGoalGap(SGapTrick* pGap)
     {
-        printf("decomp Career_GotGoalGap called...\n");
+        printf_s("decomp Career_GotGoalGap called...\n");
 
         return (*Career_GapGoalGotMask & (1 << Career_GapGoalNumber(pGap))) > 0;
     }
@@ -380,7 +380,7 @@ namespace Career {
     // checks trick gap mask
     bool Career_GotTrickGap(SGapTrick* pGap)
     {
-        printf("decomp Career_GotTrickGap called...\n");
+        printf_s("decomp Career_GotTrickGap called...\n");
 
         return (*Career_GapTrickGotMask & (1 << Career_GapTrickNumber(pGap))) > 0;
     }
@@ -388,7 +388,7 @@ namespace Career {
     // adds goal gap to mask
     void Career_GiveGoalGap(SGapTrick* pGap)
     {
-        printf("decomp Career_GiveGoalGap called...\n");
+        printf_s("decomp Career_GiveGoalGap called...\n");
 
         *Career_GapGoalGotMask |= 1 << Career_GapGoalNumber(pGap);
     }
@@ -396,7 +396,7 @@ namespace Career {
     // adds trick gap to mask
     void Career_GiveTrickGap(SGapTrick* pGap)
     {
-        printf("decomp Career_GiveTrickGap called...\n");
+        printf_s("decomp Career_GiveTrickGap called...\n");
 
         *Career_GapTrickGotMask |= 1 << Career_GapTrickNumber(pGap);
     }
@@ -430,7 +430,7 @@ namespace Career {
 
         if ((Career_GapBits[*GLevel * 3 + hiVal] & (1 << loVal)) == 0)
         {
-            printf("!!!New gap awarded!!! %s\n", pGapTrick->Name);
+            printf_s("!!!New gap awarded!!! %s\n", pGapTrick->Name);
             //print mess message here, maybe sound too
 
             sprintf_s(bufx, MAX_BUFFER_SIZE, "new gap found %s", pGapTrick->Name);
@@ -458,7 +458,7 @@ namespace Career {
     // calculates the amount of obtained goal gaps
     int Career_NumGoalGapsGot(void)
     {
-        printf("decomp Career_NumGoalGapsGot called...\n");
+        printf_s("decomp Career_NumGoalGapsGot called...\n");
 
         return Career_CountBits(*Career_GapGoalGotMask);
     }
@@ -466,7 +466,7 @@ namespace Career {
     // calculates the amount of obtained trick gaps
     int Career_NumTrickGapsGot(void)
     {
-        printf("decomp Career_NumTrickGapsGot called...\n");
+        printf_s("decomp Career_NumTrickGapsGot called...\n");
 
         return Career_CountBits(*Career_GapTrickGotMask);
     }
@@ -474,7 +474,7 @@ namespace Career {
     // career gap logic 
     void Career_AwardGap(SGapTrick* pGap)
     {
-        printf("decomp Career_AwardGap called...\n");
+        printf_s("decomp Career_AwardGap called...\n");
 
         CBruce* pSkater = new CBruce(GSkater);
 
@@ -519,7 +519,7 @@ namespace Career {
             }
             else
             {
-                printf("\tneither goal nor trick, wtf\n");
+                printf_s("\tneither goal nor trick, wtf\n");
             }
         }
 
@@ -555,7 +555,7 @@ namespace Career {
                 level->Goals[Career_GoalIndex(EGoalType::Gaps)].stringParam    //level specific gap name
             );
 
-            printf("%s\r\n", AwardGoalGapMessage);
+            printf_s("%s\r\n", AwardGoalGapMessage);
 
             Mess::Mess_Message(AwardGoalGapMessage, Messprog_Goal, 1, 0, 0);
         }
@@ -564,7 +564,7 @@ namespace Career {
     // trick gap logic
     void Career_AwardTrickGap(SGapTrick* pGap)
     {
-        printf("decomp Career_AwardTrickGap called...\n");
+        printf_s("decomp Career_AwardTrickGap called...\n");
 
         //oopsie, not a gap trick
         if (!Career_GapIsTrick(pGap)) return;
@@ -585,7 +585,7 @@ namespace Career {
             //award goal
             Career_GiveGoalType(EGoalType::Trick);
 
-            printf("\tawarded %s goal", pGap->Name);
+            printf_s("\tawarded %s goal", pGap->Name);
         }
         else //if not
         {
@@ -601,7 +601,7 @@ namespace Career {
                 *Career_GoalGaps            //out of gaps
             );
 
-            printf("\t%s\r\n", AwardTrickGapMessage);
+            printf_s("\t%s\r\n", AwardTrickGapMessage);
 
             Mess::Mess_Message(AwardTrickGapMessage, Messprog_Goal, 1, 0, 0);
         }
@@ -639,7 +639,7 @@ namespace Career {
                 level->Goals[Career_GoalIndex(EGoalType::Gaps)].stringParam     //level specific item name
             );
 
-            printf("%s\r\n", AwardLevelPickupMessage);
+            printf_s("%s\r\n", AwardLevelPickupMessage);
 
             Mess::Mess_Message(AwardLevelPickupMessage, Messprog_Goal, 1, 0, 0);
         }
@@ -655,7 +655,7 @@ namespace Career {
         for (int* p = Career_GapBits; p < Career_GapBits + 11 * 3; p++)
             numGaps += Career_CountBits(*p);
 
-        printf("counting gaps: got %i gaps!\n", numGaps);
+        printf_s("counting gaps: got %i gaps!\n", numGaps);
 
         return numGaps;
     }
@@ -675,7 +675,7 @@ namespace Career {
     // Count unlocked competition levels (0-3)
     int Career_NumLevelsWithMedals(void* pProg)
     {
-        printf("DECOMP Career_NumLevelsWithMedals()... ");
+        printf_s("DECOMP Career_NumLevelsWithMedals()... ");
 
         int levelsWithMedals = 0;
 
@@ -688,7 +688,7 @@ namespace Career {
             }
         }
 
-        printf("got %i levels\n", levelsWithMedals);
+        printf_s("got %i levels\n", levelsWithMedals);
 
         return levelsWithMedals;
     }
@@ -742,7 +742,7 @@ namespace Career {
     // Retrieve number of gold medals for given skater
     int Career_CountGoldMedals(void* pProg)
     {
-        printf("DECOMP Career_CountGoldMedals()... ");
+        printf_s("DECOMP Career_CountGoldMedals()... ");
 
         int golds = 0;
 
@@ -755,7 +755,7 @@ namespace Career {
             }
         }
 
-        printf("got %i golds\n", golds);
+        printf_s("got %i golds\n", golds);
 
         return golds;
     }
@@ -765,7 +765,7 @@ namespace Career {
     // how exactly is this different from numlevelswithmedals?
     int Career_CountMedals(void* pProg)
     {
-        printf("DECOMP Career_CountMedals()... ");
+        printf_s("DECOMP Career_CountMedals()... ");
 
         return Career_NumLevelsWithMedals(pProg);
     }
@@ -819,7 +819,7 @@ namespace Career {
         //is cheat out of bounds?
         if (cheat < ECheat::First || ECheat::Last < cheat)
         {
-            printf("Invalid cheat: %i", cheat);
+            printf_s("Invalid cheat: %i", cheat);
             return "?";
         }
 
@@ -843,7 +843,7 @@ namespace Career {
     // clears the game, used by the unlock everything cheat
     void Career_ClearGameWithEveryone()
     {
-        printf("DECOMP Career_ClearGameWithEveryone()\n");
+        printf_s("DECOMP Career_ClearGameWithEveryone()\n");
 
         for (int i = 0; i < NUM_SKATERS; i++)
             Career_ClearGame(i);
@@ -861,7 +861,7 @@ namespace Career {
     // used in options menu
     int Career_CountUnlockedCheats()
     {
-        printf("DECOMP Career_CountUnlockedCheats... ");
+        printf_s("DECOMP Career_CountUnlockedCheats... ");
 
         int unlocked = 0;
 
@@ -871,7 +871,7 @@ namespace Career {
                 unlocked++;
         }
 
-        printf("%i cheats\n", unlocked);
+        printf_s("%i cheats\n", unlocked);
 
         return unlocked;
     }
@@ -953,14 +953,14 @@ namespace Career {
 
     void Career_PrintGoals()
     {
-        printf("Goal checklist:\n");
+        printf_s("Goal checklist:\n");
 
         SLevel* level = &Levels[*GLevel];
         SGoal* goal = &(level->Goals[0]);
 
         for (int i = 0; i < NUMGOALS_TH2; i++)
         {
-            printf(
+            printf_s(
                 "%s\t%i\t%i\t%i\t%s\t%i\n",
                 goal->goalText,
                 goal->goalType,

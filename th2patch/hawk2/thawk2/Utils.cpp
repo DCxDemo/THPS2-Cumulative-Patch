@@ -53,7 +53,7 @@ void Utils_GetVecFromMagDir(SVector3i* angles, int magnitude, SVector3s* velocit
 //this func is apparently unused on PC
 void Utils_VblankProcessing()
 {
-    printf("called Utils_VblankProcessing() !!!\n");
+    printf_s("called Utils_VblankProcessing() !!!\n");
 
     if (*Loading)
         (*LoadingTime)++;
@@ -73,7 +73,7 @@ void Utils_VblankProcessing()
 void Utils_LimitRange(int* value, int min, int max)
 {
     //particularly used for fatten
-    printf("decomp Utils_LimitRange... v=%i min=%i max=%i\n", *value, min, max);
+    printf_s("decomp Utils_LimitRange... v=%i min=%i max=%i\n", *value, min, max);
 
     if (*value < min) *value = min;
     if (*value > max) *value = max;
@@ -141,7 +141,7 @@ void Utils_KillEverythingInBox(SVector3i* min, SVector3i* max)
 {
     //find this func
 
-    printf("decomp Utils_KillEverythingInBox!\n");
+    printf_s("decomp Utils_KillEverythingInBox!\n");
 
     Utils_KillObjectsInBox(min, max, BaddyList, true);
     Utils_KillObjectsInBox(min, max, EnvironmentalObjectList, true);

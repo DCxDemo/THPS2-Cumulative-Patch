@@ -36,7 +36,7 @@ namespace FileIO {
     static const FileIO_Load_t					FileIO_Load = (FileIO_Load_t)0x004491d0;
     // unused close func here 00449390
     // static const FileIO_Exists_t				FileIO_Exists = (FileIO_Exists_t)0x00449400;
-    bool FileIO_Exists(char* filename);
+    int FileIO_Exists(char* filename);
     static const FileIO_Continue_t				FileIO_Continue = (FileIO_Continue_t)0x00449450;
     //static const FileIO_Sync_t					FileIO_Sync = (FileIO_Sync_t)0x00449600;
     void FileIO_Sync();
@@ -52,6 +52,8 @@ namespace FileIO {
     //static const tryOpenFile_t tryOpenFile = (tryOpenFile_t)0x004f3900;
     bool Exists(char* path, char* filename);
 
+
+    int FileIO_Open_wrap(char* name);
 }
 
 //void* FileIO_OpenLoad_Pkr(char* filename, bool heap, Pkr2* pkr);

@@ -17,7 +17,7 @@ int CMenu::FindEntry(char* pText)
 			if (Utils_CompareStrings(pText, *pEntry, 0xffffffff) != 0)
 				return i;
 
-	printf("entry not found!");
+	printf_s("entry not found!");
 	*/
 
 	//so we dont confuse it with the 1st line
@@ -73,5 +73,5 @@ bool CMenu::IsEntryOn(char* pText)
 
 void CMenu::DebugPrint()
 {
-	printf("Menu: items=%i x=%i y=%i\n", menu->numEntries, menu->X, menu->Y);
+	printf_s("Menu: items=%i x=%i y=%i\n", menu->numEntries, menu->X, menu->Y);
 }

@@ -67,7 +67,7 @@ namespace Mess {
 	{
 		if (!pMess) return;
 
-		printf("Mess_DeleteMessage(): %s\r\n", pMess->pText);
+		printf_s("Mess_DeleteMessage(): %s\r\n", pMess->pText);
 
 		if (pMess->pNext)
 			pMess->pNext->pPrevious = pMess->pPrevious;
@@ -85,7 +85,7 @@ namespace Mess {
 	//clears message queue
 	void Mess_DeleteAll()
 	{
-		printf("Mess_DeleteAll()\r\n");
+		printf_s("Mess_DeleteAll()\r\n");
 
 		if (!*pMessages) return;
 
@@ -135,7 +135,7 @@ namespace Mess {
 		pMess->xOffset = xOffset;
 		pMess->yOffset = yOffset;
 
-		printf("Mess_Message: %s\r\n", pText);
+		printf_s("Mess_Message: %s\r\n", pText);
 	}
 
 	//looks for the message in queue and deletes it
@@ -144,7 +144,7 @@ namespace Mess {
 		if (!pMess) return;
 		if (!*pMessages) return;
 
-		printf("Mess_Remove(): %s\r\n", pMess->pText);
+		printf_s("Mess_Remove(): %s\r\n", pMess->pText);
 
 		SMessage* curr = *pMessages;
 		SMessage* next = (*pMessages)->pNext;
@@ -160,12 +160,12 @@ namespace Mess {
 
 	void Mess_SetCurrentFont(void* pFont)
 	{
-		printf("Mess_SetCurrentFont is no longer used.\r\n");
+		printf_s("Mess_SetCurrentFont is no longer used.\r\n");
 	}
 
 	void Mess_SetCurrentFont(char* fontName)
 	{
-		printf("Mess_SetCurrentFont is no longer used.\r\n");
+		printf_s("Mess_SetCurrentFont is no longer used.\r\n");
 	}
 
 	void __fastcall Font_Draw_Wrap(void* _this, void* _edx, int x, int y, char* pMessage, int Angle)
@@ -188,7 +188,7 @@ namespace Mess {
 	//wraps mess_drawtext
 	void Mess_DrawPanelText(int x, int y, char* pMessage)
 	{
-		printf("Mess_DrawText(): %s\r\n", pMessage);
+		printf_s("Mess_DrawText(): %s\r\n", pMessage);
 
 		Mess_DrawText(x, y, pMessage);
 	}
@@ -196,11 +196,11 @@ namespace Mess {
 	//unloads mess font
 	void Mess_UnloadFont()
 	{
-		printf("Mess_UnloadFont()\r\n");
+		printf_s("Mess_UnloadFont()\r\n");
 
 		if (!*GMessFontExists) return;
 
-		printf("unloading: %s\r\n", GMessFontFilename);
+		printf_s("unloading: %s\r\n", GMessFontFilename);
 
 		//FontManager::UnloadFont(GMessFontFilename);
 		*GMessFontExists = false;
@@ -228,7 +228,7 @@ namespace Mess {
 			}
 			else
 			{
-				printf("ever happens? %08x\r\n", pMess->pProg->NextOff);
+				printf_s("ever happens? %08x\r\n", pMess->pProg->NextOff);
 			}
 		}
 	}

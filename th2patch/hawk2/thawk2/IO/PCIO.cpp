@@ -10,7 +10,7 @@ namespace PCIO {
 
     void log(char* log) {
         if (enableLog)
-            printf("<PCIO> %s\n", log);
+            printf_s("<PCIO> %s\n", log);
     }
 
 
@@ -64,7 +64,7 @@ namespace PCIO {
         // im pretty sure it bakes fullpath at PKR_Name
         sprintf(PKR_Name, "%s\\%s", workingDir, filename);
 
-        printf("%s at: %s\n", filename, PKR_Name);
+        printf_s("%s at: %s\n", filename, PKR_Name);
 
         PKR_PreLoad(PKR_Name);
     }
@@ -74,25 +74,25 @@ namespace PCIO {
 
         if (fd == NS_NULL)
         {
-            printf("PCwrite with fd = -1");
+            printf_s("PCwrite with fd = -1");
             return NS_NULL;
         }
 
         switch (FileTypes[fd])
         {
             case FILE_FREE:
-                printf("PCwrite(): attempted to write an empty file!\n");
+                printf_s("PCwrite(): attempted to write an empty file!\n");
                 return NS_NULL;
 
             case FILE_PKR:
-                printf("This should never happen... PKRFILES are reandonly.");
+                printf_s("This should never happen... PKRFILES are reandonly.");
                 return size;
 
             case FILE_DISK:
                 return ffwrite(ptr, 1, size, Files[fd]);
 
             default:
-                printf("PCwrite(): Unknown file type!");
+                printf_s("PCwrite(): Unknown file type!");
                 return NS_NULL;
         }
     }
@@ -121,7 +121,7 @@ namespace PCIO {
         switch(FileTypes[fd]) {
 
             case FILE_FREE:
-                printf("Tried to close an empty file...");
+                printf_s("Tried to close an empty file...");
                 return NS_NULL;
 
             case FILE_PKR:
@@ -148,7 +148,7 @@ namespace PCIO {
             }
 
             default:
-                printf("PCClose: invalid file type! %i\n", fd);
+                printf_s("PCClose: invalid file type! %i\n", fd);
                 return NS_NULL; 
         }
     }
@@ -206,7 +206,7 @@ namespace PCIO {
         Files[i] = ffopen(buf, "wb"); // it uses some var for mode here, but why would it
 
         if (Files[i] == NULL) {
-            printf("PCCreate failed!\n");
+            printf_s("PCCreate failed!\n");
             return NS_NULL;
         }
 

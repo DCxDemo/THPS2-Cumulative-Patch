@@ -66,7 +66,7 @@ namespace QB
 		FILE* file = fopen(&name[0], "rb");
 
 		if (file == NULL) {
-			printf("Failed to load script.\n");
+			printf_s("Failed to load script.\n");
 			return;
 		}
 
@@ -77,7 +77,7 @@ namespace QB
 
 		if (p == NULL) {
 			fclose(file);
-			printf("Failed to allocate space.\n");
+			printf_s("Failed to allocate space.\n");
 			return;
 		}
 
@@ -125,7 +125,7 @@ namespace QB
 
 		if (p == NULL || p->Type != OPCODE_INTEGER)
 		{
-			printf("variable not found!\n");
+			printf_s("variable not found!\n");
 			return 0;
 		}
 
@@ -138,7 +138,7 @@ namespace QB
 
 		if (p == NULL)
 		{
-			printf("variable not found!\n");
+			printf_s("variable not found!\n");
 			return 0.0;
 		}
 
@@ -152,26 +152,26 @@ namespace QB
 			return (float)*(int*)p->pValue;
 		}
 
-		printf("Shouldn't reach this!\n");
+		printf_s("Shouldn't reach this!\n");
 		return 0.0;
 	}
 
 	void AddVariable(unsigned int checksum)
 	{
-		printf("AddVariable %08X\n", checksum);
+		printf_s("AddVariable %08X\n", checksum);
 
 		VariableEntry* var = FindVariable(checksum);
 
 		if (var != NULL)
 		{
-			printf("Already added.\n");
+			printf_s("Already added.\n");
 			return;
 		}
 
 		var = (VariableEntry*)malloc(sizeof(VariableEntry));
 
 		if (var == NULL) {
-			printf("Failed to allocate.\n");
+			printf_s("Failed to allocate.\n");
 			return;
 		}
 
@@ -191,7 +191,7 @@ namespace QB
 
 		numVariablesLoaded++;
 
-		printf("Added variable: %08X\n", checksum);
+		printf_s("Added variable: %08X\n", checksum);
 	}
 
 	char pendingAction = 0;
@@ -204,15 +204,15 @@ namespace QB
 		switch (op)
 		{
 			case OPCODE_TERMINATOR:
-				printf("script ended!\n");
+				printf_s("script ended!\n");
 				break;
 
 			case OPCODE_NEWLINE:
-				printf("newline!\n");
+				printf_s("newline!\n");
 				break;
 
 			case OPCODE_NEWLINE_DEBUG:
-				printf("newline debug!\n");
+				printf_s("newline debug!\n");
 				p += 4;
 				break;
 
@@ -223,7 +223,7 @@ namespace QB
 
 			case OPCODE_ASSIGN:
 				pendingAction = OPCODE_ASSIGN;
-				printf(" < assign value > \n");
+				printf_s(" < assign value > \n");
 				break;
 
 			case OPCODE_INTEGER:
@@ -234,7 +234,7 @@ namespace QB
 				}
 				p += 4;
 
-				printf("int value %i\n", *(int*)Vars->pValue);
+				printf_s("int value %i\n", *(int*)Vars->pValue);
 				break;
 
 			case OPCODE_FLOAT:
@@ -244,11 +244,11 @@ namespace QB
 					pendingAction = 0;
 				}
 				p += 4;
-				printf("float value %f\n", *(float*)Vars->pValue);
+				printf_s("float value %f\n", *(float*)Vars->pValue);
 				break;
 
 			case OPCODE_SYMBOL:
-				printf("skipping symbol\n");
+				printf_s("skipping symbol\n");
 				p += 4;
 				// find null termination
 				while (*p != 0) p++;
@@ -257,7 +257,7 @@ namespace QB
 				break;
 
 			default:
-				printf("Unknown opcode!\n");
+				printf_s("Unknown opcode!\n");
 				return OPCODE_TERMINATOR;
 		}
 

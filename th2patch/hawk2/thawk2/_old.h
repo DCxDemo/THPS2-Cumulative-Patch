@@ -286,10 +286,5 @@ static const Draw_Rect_t Draw_Rect = (Draw_Rect_t)0x00467c20;
 typedef void(*MENUPC_DrawMouseCursor_t)();
 static const MENUPC_DrawMouseCursor_t MENUPC_DrawMouseCursor = (MENUPC_DrawMouseCursor_t)0x004d9060;
 
-
-typedef void(*M3d_PreprocessWibblyTextures_t)(void*);
-static const M3d_PreprocessWibblyTextures_t M3d_PreprocessWibblyTextures = (M3d_PreprocessWibblyTextures_t)0x00461c80;
-
-
 typedef void(*Ob_AI_t)(void* pList);
 static const Ob_AI_t Ob_AI = (Ob_AI_t)0x0047e8e0;

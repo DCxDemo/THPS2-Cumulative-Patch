@@ -19,7 +19,7 @@ namespace Flash {
 
 	void Flash_Reset() {
 
-		printf("DECOMP Flash_Reset()\n");
+		printf_s("DECOMP Flash_Reset()\n");
 
 		*FlashCountdown = 0;
 		*FadeCountdown = 0;
@@ -28,14 +28,14 @@ namespace Flash {
 	}
 
 	bool Flash_FadeFinished() {
-		printf("DECOMP Flash_FadeFinished() = \n");
+		printf_s("DECOMP Flash_FadeFinished() = \n");
 
 		return *FadeCountdown == 0;
 	}
 
 	void Flash_Screen(char r, char g, char b, int time, int importance, int sort) {
 
-		printf("DECOMP Flash_Screen()\n");
+		printf_s("DECOMP Flash_Screen()\n");
 
 		if (*CurrentImportance > importance) return;
 		if (time == 0) return;
@@ -59,7 +59,7 @@ namespace Flash {
 
 	void Flash_Fade(int time, int sort) {
 
-		printf("DECOMP Flash_Fade()\n");
+		printf_s("DECOMP Flash_Fade()\n");
 
 		*Fading = true;
 

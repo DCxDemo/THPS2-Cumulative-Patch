@@ -13,7 +13,7 @@ namespace Wad {
 	{
 		if (Loaded) Unload();
 
-		printf("trying to open HED: %s\n", hed);
+		printf_s("trying to open HED: %s\n", hed);
 
 		FILE* file = fopen(hed, "rb");
 
@@ -29,7 +29,7 @@ namespace Wad {
 			NumFiles = fsize / sizeof(HedFile);
 		}
 
-		printf("trying to open WAD: %s\n", wad);
+		printf_s("trying to open WAD: %s\n", wad);
 
 		file = fopen(wad, "rb");
 
@@ -43,18 +43,18 @@ namespace Wad {
 			fclose(file);
 		}
 
-		printf("patching pointers\n");
+		printf_s("patching pointers\n");
 
 		// patch pointers
 		for (int i = 0; i < NumFiles; i++)
 		{
-			printf("%i + %i\n", (int)WadData, (int)HedData[i].pData);
+			printf_s("%i + %i\n", (int)WadData, (int)HedData[i].pData);
 			HedData[i].pData = (void*)((int)WadData + (int)HedData[i].pData);
 		}
 
 		Loaded = true;
 
-		printf("done!\n");
+		printf_s("done!\n");
 	}
 
 	void Unload()
@@ -71,7 +71,7 @@ namespace Wad {
 
 		Loaded = false;
 
-		printf("WAD unloaded\n");
+		printf_s("WAD unloaded\n");
 	}
 
 	HedFile* FindFile(char* filename)
@@ -84,11 +84,11 @@ namespace Wad {
 
 		for (int i = 0; i < NumFiles; i++)
 			if (HedData[i].Hash == hash) {
-				printf("file %s found in WAD.\n", filename);
+				printf_s("file %s found in WAD.\n", filename);
 				return &HedData[i];
 			}
 
-		printf("file %s not found in WAD.\n", filename);
+		printf_s("file %s not found in WAD.\n", filename);
 		return NULL;
 	}
 

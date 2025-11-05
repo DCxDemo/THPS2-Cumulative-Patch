@@ -7,7 +7,7 @@ namespace PCMovie
 
 	void PCMOVIE_XAPlay(int group, int channel)
 	{
-		printf("DECOMP PCMOVIE_XAPlay()\n");
+		printf_s("DECOMP PCMOVIE_XAPlay()\n");
 
 		int curTrack = channel + group * 8;
 

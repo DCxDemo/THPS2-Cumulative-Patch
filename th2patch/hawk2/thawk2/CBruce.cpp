@@ -128,7 +128,7 @@ char* CBruce::CBruce_GetTrickName()
 void CBruce::AddTrickItem(CItem* pItem)
 {
 	if (pItem == NULL)
-		printf("Adding NULL pItem to trick item list!");
+		printf_s("Adding NULL pItem to trick item list!");
 
 	int count = this->mTrickItems;
 

@@ -36,7 +36,7 @@ void CClass::operator delete(void* p)
 	*TotalCClassUsage -= used - *Used;
 
 	if (*TotalCClassUsage < 0)
-		printf("my bad\r\n");
+		printf_s("my bad\r\n");
 }
 
 /*
@@ -54,7 +54,7 @@ void* __fastcall _new_CMenu_Hook(void* _this, void* _edx, int param_2, int param
 
 void CreateTestMenu()
 {
-	printf("CreateTestMenu\n");
+	printf_s("CreateTestMenu\n");
 
 	testMenu = _new_CClass(0x180);
 	if (testMenu != NULL)

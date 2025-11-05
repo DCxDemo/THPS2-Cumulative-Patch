@@ -20,7 +20,7 @@ PkrError Pkr2::Load(char* filename)
 	if (data)
 		free(data);
 
-	printf("trying to open\n");
+	printf_s("trying to open\n");
 
 	FILE* file = fopen(filename, "rb");
 
@@ -81,11 +81,11 @@ void Pkr2::ExportAll(char* path)
 
 			curFile++;
 
-			printf(".");
+			printf_s(".");
 		}
 	}
 
-	printf("PKR export done!\n");
+	printf_s("PKR export done!\n");
 }
 
 /// <summary>
@@ -95,19 +95,19 @@ void Pkr2::DebugPrint()
 {
 	char buf[256];
 
-	printf("PKR Folders:\n");
+	printf_s("PKR Folders:\n");
 
 	for (int i = 0; i < Header->numFolders; i++)
 	{
 		sprintf(buf, "Folder: %s NumFiles: %i\n", Folders[i].Name, Folders[i].NumFiles);
-		printf(buf);
+		printf_s(buf);
 	}
 
-	printf("PKR Files:\n");
+	printf_s("PKR Files:\n");
 
 	for (int i = 0; i < Header->numFiles; i++)
 	{
 		sprintf(buf, "Folder: %s Size: %i\n", Files[i].Name, Files[i].Size);
-		printf(buf);
+		printf_s(buf);
 	}
 }

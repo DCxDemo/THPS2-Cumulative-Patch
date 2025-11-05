@@ -53,11 +53,11 @@ public:
     {
         // check if maybe flag is set already
         if (mCBodyFlags & 0xffffff01)
-            printf("Suspended flag illegally set.");
+            printf_s("Suspended flag illegally set.");
 
         // null check the list we're going to remove it from
         if (list == NULL)
-            printf("woops (list is null in CBody::Suspend)");
+            printf_s("woops (list is null in CBody::Suspend)");
 
         // delete stuff?
         //DeleteStuff();

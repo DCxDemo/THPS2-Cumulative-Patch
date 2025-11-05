@@ -19,7 +19,8 @@ namespace Hook
 		Redbook::pHookList,
 		PCIO::pHookList,
 		Decomp::pHookList,
-		Trig::pHookList
+		Trig::pHookList,
+		M3d::pHookList
 		//Pal::pHookList
 	};
 
@@ -35,7 +36,7 @@ namespace Hook
 		{
 			CPatch::RedirectCall(pList->pMem, pList->pFunc);
 
-			printf("DECOMP DEBUG: patched %i at %i\n", (unsigned int)pList->pFunc, pList->pMem);
+			printf_s("DECOMP DEBUG: patched %i at %i\n", (unsigned int)pList->pFunc, pList->pMem);
 
 			pList++;
 		}

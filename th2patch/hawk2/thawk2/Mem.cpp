@@ -10,17 +10,17 @@
 /// <param name="_Size">Buffer length</param>
 void Mem_CopyBytes(void* _Dst, void* _Src, int _Size)
 {
-    printf("copying from %i to %i, %i bytes... ", _Src, _Dst, _Size);
+    printf_s("copying from %i to %i, %i bytes... ", _Src, _Dst, _Size);
 
     if (_Size > 0)
         memcpy(_Dst, _Src, _Size);
 
-    printf("done!\n");
+    printf_s("done!\n");
 }
 
 void Mem_Delete(void* pData)
 {
-    printf("mem_delete! %i", pData);
+    printf_s("mem_delete! %i", pData);
 
     Mem_DeleteX(
         (void*) (((int*)pData)+1 )
