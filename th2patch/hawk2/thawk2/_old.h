@@ -40,19 +40,17 @@ typedef char (*StartBinkMovie_t)(const char *a1, int a2, int a3);
 static const StartBinkMovie_t StartBinkMovie = (StartBinkMovie_t)0x4E3760;
 
 
+
 typedef void (*Front_Update_t)();
 static const Front_Update_t Front_Update = (Front_Update_t)0x0044ea50;
 
+typedef void(*Front_Display_t)();
+static const Front_Display_t Front_Display = (Front_Display_t)0x44CA00;
 	
 
 
 typedef int (__thiscall *WheelElementList_t)(void* a1, int a2, int a3, int a4, int a5);
 static const WheelElementList_t WheelElementList = (WheelElementList_t)0x46B800;
-
-
-
-typedef void(*Front_Display_t)();
-static const Front_Display_t Front_Display = (Front_Display_t)0x44CA00;
 
 typedef int(*VectorNormal_t)(void* pVector);
 static const VectorNormal_t VectorNormal = (VectorNormal_t)0x4E5650;
@@ -100,9 +98,6 @@ static const ExecuteCommandList_t ExecuteCommandList = (ExecuteCommandList_t)0x4
 
 typedef int (__thiscall *Vibrate2_t)(int a1, int a2, int a3, int a4);
 static const Vibrate2_t Vibrate2 = (Vibrate2_t)0x48D8B0;
-
-typedef void (*RenderSuperItemShadow_t)(void* superItem);
-static const RenderSuperItemShadow_t RenderSuperItemShadow = (RenderSuperItemShadow_t)0x00460480;
 
 typedef LONGLONG(*systemclock_t)();
 static const systemclock_t systemclock = (systemclock_t)0x004ffbc1;

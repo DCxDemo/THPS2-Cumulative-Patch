@@ -12,7 +12,7 @@ namespace M3d {
 	typedef void(*M3d_RenderSetupCamera_t)();
 	typedef void(*M3d_RenderCleanup_t)();
 	typedef void(*M3d_Render_t)();
-	typedef void(*RenderSuperItemShadow_t)();
+	typedef void(*RenderSuperItemShadow_t)(void* pModel);
 	typedef void(*M3d_RenderSuperQuick_t)();
 	// typedef void(*FUN_0x00460c20_t)(); // empty func
 	typedef void(*M3d_RenderBackground_t)();
@@ -20,7 +20,7 @@ namespace M3d {
 	// typedef void(*RenderModel_t)(void* pModel);
 	// typedef void(*RenderModelFast_t)(void* pModel);
 	// typedef void(*RenderBackgroundModel_t)(void* pModel);
-	typedef void(*RenderModelInSuper_t)(void* pModel);
+	typedef void(*RenderModelInSuper_t)(void* pModel, uint flags);
 	typedef void(*RenderModelInSuperFast_t)(void* pModel, uint flags);
 	typedef void(*RenderModelNonRotated_t)(void* pModel);
 	typedef void(*RenderBackgroundModelNonRotated_t)(void* pModel);
@@ -60,4 +60,5 @@ namespace M3d {
 
 
 	void RenderModel_Hook(void* pModel);
+	void RenderSuperItemShadow_Hook(void* pModel);
 }

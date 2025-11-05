@@ -561,12 +561,6 @@ char* terrainNames[16] = {
 
 
 
-// shadow rendering
-void RenderSuperItemShadow_Hook(void* superItem) //CSuper
-{
-	if (options.DrawShadow)
-		RenderSuperItemShadow(superItem);
-}
 
 // 
 void _fastcall CBruce_StartGrind_Hook(void* _this, void* _edx, int param)
@@ -1834,9 +1828,9 @@ ColorBGRA applyLighting(ColorBGRA* vert, ColorBGRA* light)
 {
 	if (options.DynamicLighting)
 	{
-		vert->R *= light->R / 255.0;
-		vert->G *= light->G / 255.0;
-		vert->B *= light->B / 255.0;
+		vert->R *= light->R / 255.0f;
+		vert->G *= light->G / 255.0f;
+		vert->B *= light->B / 255.0f;
 	}
 
 	return *vert;
@@ -1886,9 +1880,9 @@ int openExternalTexture2(uint Checksum, char* Name)
 
 void SFX_PlayX_hook(int index, int p1, int p2)
 {
-	//printf("SFX_PlayX = %i %i %i\n", index, p1, p2);
+	// printf("SFX_PlayX = %i %i %i\n", index, p1, p2);
 
-	// a crude patch for th3 crashes (canada, airport)
+	// a crude patch for th3 crashes (canada, airport, rio)
 	// just dont play sounds above 400
 	if (index > 400) {
 		printf_s("sound index too high\n");
@@ -2000,8 +1994,6 @@ Hook::Reroute hookList[] = {
 
 	{ 0x430466, M3dInit_SetResolution }, //in Db_Init
 	{ 0x4645b8, M3dInit_SetResolution }, //in M3dInit_InitAtStart
-
-	{ 0x460bf7, RenderSuperItemShadow_Hook },
 
 	/*
 	{ 0x41580c, Career_GetPointCost_Hook },

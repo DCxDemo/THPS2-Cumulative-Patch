@@ -64,11 +64,17 @@ namespace M3d
         RenderModel(pModel);
     }
 
+    // shadow rendering
+    void RenderSuperItemShadow_Hook(void* pModel)
+    {
+        if (options.DrawShadow)
+            RenderSuperItemShadow(pModel);
+    }
+
     void RenderModel_Dummy(void* pModel)
     {
         // removed it
     }
-
 
 
     // === hook stuff ===
@@ -101,6 +107,10 @@ namespace M3d
 
         // draws sky
         {  0x00461043, RenderBackgroundModelNonRotated },
+
+        // shadow too?
+        { 0x00460bf7, RenderSuperItemShadow_Hook },
+
 
         //=========================
         { NULL, NULL }
