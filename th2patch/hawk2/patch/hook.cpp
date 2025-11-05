@@ -20,7 +20,8 @@ namespace Hook
 		PCIO::pHookList,
 		Decomp::pHookList,
 		Trig::pHookList,
-		M3d::pHookList
+		M3d::pHookList,
+		Init::pHookList
 		//Pal::pHookList
 	};
 

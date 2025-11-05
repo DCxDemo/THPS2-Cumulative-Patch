@@ -1656,11 +1656,14 @@ void Patch()
 		CPatch::SetChar(0x46afb4 + 2, 1);
 	}
 
+	/*
+	// outdated, handled in TH2Main
 	if (options.SkipIntro)
 	{
 		CPatch::SetChar((int)PCMovie::PCMOVIE_PlayMovieFile, 0xC3);
 		//CPatch::Nop(0x46A732, 5); //nops IntroMovies func
 	}
+	*/
 
 	if (options.AddSkins)
 	{
@@ -1919,21 +1922,6 @@ Hook::Reroute hookList[] = {
 	//in Display
 	{ 0x46882d, Front_Update_Hook },
 
-
-	//in WinMain
-	{ 0x004f511c, TH2Main },
-
-	//in th2main
-	//{ 0x0046a712, Init_AtStart },
-
-
-	{ 0x00454590, Init_Restart },	//launchthedamngame
-    { 0x0046a71b, Init_Restart },	//th2main
-	{ 0x0046a8dc, Init_Restart },	//kickit
-	{ 0x0046ae11, Init_Restart },   //kickit
-
-
-	{ 0x0046a8e1, Init_ForGame }, //kickit
 
 	//lights up polygons
 

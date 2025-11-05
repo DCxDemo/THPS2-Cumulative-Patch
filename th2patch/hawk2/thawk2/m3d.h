@@ -6,7 +6,6 @@ namespace M3d {
 
 	extern Hook::Reroute* pHookList;
 
-
 	// maybe 2 additional in the beginning
 	typedef void(*M3d_RenderSetup_t)();
 	typedef void(*M3d_RenderSetupCamera_t)();
