@@ -117,6 +117,7 @@
     <ClInclude Include="thawk2\CMenu.h" />
     <ClInclude Include="thawk2\Career.h" />
     <ClInclude Include="thawk2\Crowd.h" />
+    <ClInclude Include="thawk2\db.h" />
     <ClInclude Include="thawk2\Flash.h" />
     <ClInclude Include="thawk2\Globals.h" />
     <ClInclude Include="thawk2\IO\PCIO.h" />
@@ -160,6 +161,7 @@
     <ClCompile Include="color.cpp" />
     <ClCompile Include="patch\hook.cpp" />
     <ClCompile Include="thawk2\career\custom_goals.cpp" />
+    <ClCompile Include="thawk2\db.cpp" />
     <ClCompile Include="thawk2\decomp.cpp" />
     <ClCompile Include="thawk2\Flash.cpp" />
     <ClCompile Include="thawk2\gte.cpp" />

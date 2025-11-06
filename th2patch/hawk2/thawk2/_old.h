@@ -205,8 +205,6 @@ typedef void (*Front_ClearGVideoRestartData_t)();
 //just reset replay related values
 static const Front_ClearGVideoRestartData_t Front_ClearGVideoRestartData = (Front_ClearGVideoRestartData_t)0x004a9cd0;
 
-typedef void (*Db_Init_t)(int param_1, int param_2, char param_3, int param_4);
-static const Db_Init_t Db_Init = (Db_Init_t)0x00430290;
 
 typedef void (*IntroMovies_t)();
 static const IntroMovies_t IntroMovies = (IntroMovies_t)0x0046a490;
@@ -220,11 +218,6 @@ static const FrontEnd2_Main_t FrontEnd2_Main = (FrontEnd2_Main_t)0x00452f60;
 typedef void (*Init_AtEnd_t)();
 static const Init_AtEnd_t Init_AtEnd = (Init_AtEnd_t)0x004587b0;
 
-typedef void (*Init_Cleanup_t)(int cleanupType);
-static const Init_Cleanup_t Init_Cleanup = (Init_Cleanup_t)0x00458470;
-
-typedef void (*Db_Reset_t)();
-static const Db_Reset_t Db_Reset = (Db_Reset_t)0x00430180;
 
 typedef void (*Spool_Init_t)();
 static const Spool_Init_t Spool_Init = (Spool_Init_t)0x004af3a0;

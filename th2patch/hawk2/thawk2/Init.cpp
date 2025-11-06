@@ -116,7 +116,7 @@ namespace Init
 		printf_s("decomp Init_Restart called\n");
 
 		Init_Cleanup(HARD_CLEANUP);
-		Db_Reset();
+		Db::Db_Reset();
 		Spool_Init();
 		*TitleTimeout = 20;
 		Flash::Flash_Reset();
@@ -174,7 +174,7 @@ namespace Init
 
 		Init_Restart();  //the params were passed to init_resetmemory inside, but it was removed in the port i guess - ( 0, 0x10);
 
-		Db_Init(0, 0, 1, 0);
+		Db::Db_Init(0, 0, 1, 0);
 
 		//does nothing in release
 		//Mem_SuperDebugUsage();

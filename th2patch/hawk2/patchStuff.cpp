@@ -800,9 +800,7 @@ void Panel_Display_Patch()
 
 	if (options.ShowHUD)
 	{
-		Panel_Display();
-
-		if (!*GamePaused)
+		if (!*GamePaused && !Video_Playing())
 		{
 			if (skater.InManual() > 0)
 			{
@@ -965,12 +963,7 @@ void Display() {
 	Pad::Pad_Restore();
 	Front_Update();
 	Pad::Pad_Remap();
-
-	// draw mouse cursor
-	if (*GamePaused) {
-		// display frontend menus
-		Front_Display();
-	}
+	Front_Display();
 
 	// display message queue
 	Mess::Mess_Display();
@@ -1975,6 +1968,7 @@ Hook::Reroute hookList[] = {
 	//{ 0x46DFEC, Land_Sound },
 	//{ 0x497DC8, Land_Sound },
 
+	// this actually has to be patched, to prevent original from triggering
 	{ 0x453903,	WINMAIN_SwitchResolution_Hook },
 	{ 0x45391B, WINMAIN_SwitchResolution_Hook },
 	{ 0x46A8E7, WINMAIN_SwitchResolution_Hook },

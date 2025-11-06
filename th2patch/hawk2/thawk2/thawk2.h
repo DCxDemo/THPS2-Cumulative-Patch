@@ -9,6 +9,7 @@
 #include "thawk2/CBruce.h"
 #include "thawk2/CClass.h"
 #include "thawk2/CMenu.h"
+#include "thawk2/Db.h"
 #include "thawk2/Decomp.h"
 #include "thawk2/Flash.h"
 #include "thawk2/gaps/gaps.h"
