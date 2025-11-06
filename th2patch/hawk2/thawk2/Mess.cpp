@@ -78,7 +78,7 @@ namespace Mess {
 		if (pMess == *pMessages)
 			*pMessages = pMess->pNext;
 
-		Mem_Delete(pMess);
+		NsMem::Mem_Delete(pMess);
 	}
 
 
@@ -93,7 +93,7 @@ namespace Mess {
 		SMessage* next = (*pMessages)->pNext;
 
 		while (true) {
-			Mem_Delete(curr);
+			NsMem::Mem_Delete(curr);
 
 			if (next == NULL) break;
 
@@ -108,7 +108,7 @@ namespace Mess {
 	//pushes new message to the queue
 	SMessage* CreateMessage()
 	{
-		SMessage* pMess = (SMessage*)Mem_New(sizeof(SMessage), false, true, NULL);
+		SMessage* pMess = (SMessage*)NsMem::Mem_New(sizeof(SMessage), false, true, NULL);
 
 		pMess->pPrevious = NULL;
 		pMess->pNext = *pMessages;

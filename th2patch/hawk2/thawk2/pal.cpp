@@ -22,7 +22,7 @@ namespace Pal {
         printf_s("DECOMP Pal_CreateNew(): %i\n", Checksum);
 
         // allocate new palette
-        S_Pal* pPal = (S_Pal*)Mem_New(0x18, 0, 1, 0);
+        S_Pal* pPal = (S_Pal*)NsMem::Mem_New(0x18, 0, 1, 0);
 
         // increase palette memory usage counter
         *TotalPaletteUsage += 0x1c; //why not 0x18?
@@ -65,7 +65,7 @@ namespace Pal {
         if (pPal == pPaletteList)
             pPaletteList = pPal->pPrev;
 
-        Mem_Delete(pPal);
+        NsMem::Mem_Delete(pPal);
 
         *TotalPaletteUsage -= 0x1c;
     }

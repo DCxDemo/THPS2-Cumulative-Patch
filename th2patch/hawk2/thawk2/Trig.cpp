@@ -33,7 +33,7 @@ namespace Trig {
 		// doesnt crash, but no idea if works properly
 
 		if (TrigFile != NULL) {
-			Mem_Delete(TrigFile);
+			NsMem::Mem_Delete(TrigFile);
 			TrigFile = NULL;
 		}
 

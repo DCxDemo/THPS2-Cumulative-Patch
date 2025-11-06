@@ -61,7 +61,7 @@ namespace FileIO {
 
     void __FileIO_UnloadHed() {
         if (Directory != NULL) {
-            Mem_Delete(Directory);
+            NsMem::Mem_Delete(Directory);
             Directory = NULL;
         }
     }
@@ -228,7 +228,7 @@ namespace FileIO {
         }
 
         // alloc memory
-        void* pFile = Mem_New(size, Heap, 1, 0);
+        void* pFile = NsMem::Mem_New(size, Heap, 1, 0);
 
         // check allocation status
         if (pFile == NULL) {
@@ -241,7 +241,7 @@ namespace FileIO {
 
         // finalize
         FileIO_Sync();
-        Mem_Shrink(pFile, (*FileSize + 3U) & 0xfffffc);
+        NsMem::Mem_Shrink(pFile, (*FileSize + 3U) & 0xfffffc);
 
         return pFile;
     }

@@ -3,6 +3,8 @@
 THawk2 folder contains header files with the original game function pointers found in "smaller exe". It can be called directly from any custom code.
 Partially rewritten code can be found in corresponding cpp files.
 
+Original code is a mix of C and C++ code, currently C files are wrapped into namespaces.
+
 Source file names and function names are authentic Neversoft names coming from the following publicly available sources:
 
 * PC version debug comments
@@ -16,7 +18,7 @@ Source file names and function names are authentic Neversoft names coming from t
 		and then 20-30 lines later
 		ASSERTER(message)
 		```
-	- this code was originally just a single line and can be safely removed altogether, excluding occasions when some extra meaningful logic is performed before the asserter.
+	- this code was originally just a single line and can be safely removed altogether, excluding rare occasions when some extra meaningful logic is performed before the asserter.
 
 * Mac OS X build debug symbols
 	- limited to function names, ghidra doesnt recognize class names

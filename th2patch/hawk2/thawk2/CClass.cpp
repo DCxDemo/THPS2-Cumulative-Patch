@@ -13,7 +13,7 @@ void* CClass::operator new(size_t size)
 	int sizeAligned = (size + 3) & ~3;
 
 	//get pointer to allocated memory
-	void* pAlloc = Mem_New(size, 0, 1, 0);
+	void* pAlloc = NsMem::Mem_New(size, 0, 1, 0);
 
 	//reset allocation
 	memset(pAlloc, 0, sizeAligned);
@@ -30,7 +30,7 @@ void CClass::operator delete(void* p)
 	int used = *Used;
 
 	//delete
-	Mem_Delete(p);
+	NsMem::Mem_Delete(p);
 
 	//decrease usage var
 	*TotalCClassUsage -= used - *Used;

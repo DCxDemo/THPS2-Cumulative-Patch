@@ -186,7 +186,7 @@ namespace Rail {
     void SetupLookup()
     {
         // originally it allocated 2000 fixed, but we won't need more than num nodes anyways
-        RailNodeLookup = Mem_New(*NumNodes * sizeof(RailLookupEntry), 1, 1, 0);
+        RailNodeLookup = NsMem::Mem_New(*NumNodes * sizeof(RailLookupEntry), 1, 1, 0);
 
         RailLookupEntry* rails = (RailLookupEntry*)RailNodeLookup;
 

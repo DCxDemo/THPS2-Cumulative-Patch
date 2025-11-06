@@ -108,12 +108,12 @@ void GetTotalTracks()
 
 void* FontManager_LoadFont(char* filename)
 {
-	void* pData = Mem_New(FileIO::FileIO_Open(filename), 0, 1, 0);
+	void* pData = NsMem::Mem_New(FileIO::FileIO_Open(filename), 0, 1, 0);
 	FileIO::FileIO_Load(pData);
 	FileIO::FileIO_Sync();
 
 	void* pFont = FontManger_LoadFont2(pData, filename);
-	Mem_Delete(pData);
+	NsMem::Mem_Delete(pData);
 
 	return pFont;
 }
@@ -2021,12 +2021,12 @@ Hook::Reroute hookList[] = {
 
 
 	//called from Career_Init, Career_StoreSnapshot and Career_RestoreSnapshot
-	{ 0x00413935, Mem_CopyBytes },
-	{ 0x00413955, Mem_CopyBytes },
-	{ 0x0041397d, Mem_CopyBytes },
-	{ 0x00413996, Mem_CopyBytes },
-	{ 0x00417244, Mem_CopyBytes },
-	{ 0x004172d6, Mem_CopyBytes },
+	{ 0x00413935, NsMem::Mem_CopyBytes },
+	{ 0x00413955, NsMem::Mem_CopyBytes },
+	{ 0x0041397d, NsMem::Mem_CopyBytes },
+	{ 0x00413996, NsMem::Mem_CopyBytes },
+	{ 0x00417244, NsMem::Mem_CopyBytes },
+	{ 0x004172d6, NsMem::Mem_CopyBytes },
 
 
 

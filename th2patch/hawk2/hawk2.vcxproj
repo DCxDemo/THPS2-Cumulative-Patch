@@ -53,7 +53,8 @@
     <IntDir>$(SolutionDir)\temp\</IntDir>
     <OutDir>$(SolutionDir)</OutDir>
     <AllProjectBMIsArePublic>true</AllProjectBMIsArePublic>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);</LibraryPath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86)</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -73,15 +74,17 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <Optimization>Disabled</Optimization>
+      <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_WINDOWS;_USRDLL;HAWK2_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
-      <LanguageStandard>Default</LanguageStandard>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -90,67 +93,67 @@
       <OptimizeReferences>true</OptimizeReferences>
       <ModuleDefinitionFile>hawk2.def</ModuleDefinitionFile>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
-      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22000.0\um\x86\ddraw.lib"</AdditionalDependencies>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);"C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0\um\x86\ddraw.lib"</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Checksum.h" />
+    <ClInclude Include="GameOptions.h" />
     <ClInclude Include="color.h" />
     <ClInclude Include="cpatch.h" />
-    <ClInclude Include="patch\hook.h" />
-    <ClInclude Include="patch\_patch.h" />
-    <ClInclude Include="thawk2\career\custom_goals.h" />
-    <ClInclude Include="thawk2\CMenu.h" />
-    <ClInclude Include="thawk2\decomp.h" />
-    <ClInclude Include="thawk2\gte.h" />
-    <ClInclude Include="thawk2\Init.h" />
-    <ClInclude Include="thawk2\IO\Wad.h" />
-    <ClInclude Include="thawk2\pal.h" />
-    <ClInclude Include="thawk2\PCMovie.h" />
-    <ClInclude Include="thawk2\powerup.h" />
-    <ClInclude Include="thawk2\qb\LinkedList.h" />
-    <ClInclude Include="thawk2\qb\qb.h" />
-    <ClInclude Include="thawk2\Rail.h" />
-    <ClInclude Include="thawk2\M3d.h" />
-    <ClInclude Include="thawk2\SkaterProfile.h" />
-    <ClInclude Include="thawk2\thawk2.h" />
+    <ClInclude Include="hawk2.h" />
+    <ClInclude Include="hawk2_utils.h" />
+    <ClInclude Include="lib\INI\IniReader.h" />
     <ClInclude Include="lib\INI\IniWriter.h" />
-    <ClInclude Include="thawk2\Career.h" />
+    <ClInclude Include="lib\SQLite\sqlite3.h" />
+    <ClInclude Include="lib\XInput\CXBOXController.h" />
+    <ClInclude Include="mydebug.h" />
+    <ClInclude Include="patchStuff.h" />
+    <ClInclude Include="patch\_patch.h" />
+    <ClInclude Include="patch\hook.h" />
+    <ClInclude Include="stdafx.h" />
     <ClInclude Include="thawk2\CBruce.h" />
     <ClInclude Include="thawk2\CClass.h" />
+    <ClInclude Include="thawk2\CMenu.h" />
+    <ClInclude Include="thawk2\Career.h" />
     <ClInclude Include="thawk2\Crowd.h" />
     <ClInclude Include="thawk2\Flash.h" />
-    <ClInclude Include="thawk2\gaps\gaps.h" />
     <ClInclude Include="thawk2\Globals.h" />
     <ClInclude Include="thawk2\IO\PCIO.h" />
+    <ClInclude Include="thawk2\IO\Wad.h" />
+    <ClInclude Include="thawk2\IO\fileio.h" />
+    <ClInclude Include="thawk2\Init.h" />
     <ClInclude Include="thawk2\LoadingScreen.h" />
+    <ClInclude Include="thawk2\M3d.h" />
+    <ClInclude Include="thawk2\Mem.h" />
     <ClInclude Include="thawk2\Mess.h" />
-    <ClInclude Include="mydebug.h" />
     <ClInclude Include="thawk2\PCInput.h" />
-    <ClInclude Include="thawk2\Physics.h" />
+    <ClInclude Include="thawk2\PCMovie.h" />
     <ClInclude Include="thawk2\PKR.h" />
+    <ClInclude Include="thawk2\Pad.h" />
+    <ClInclude Include="thawk2\Physics.h" />
+    <ClInclude Include="thawk2\Rail.h" />
     <ClInclude Include="thawk2\Redbook.h" />
-    <ClInclude Include="lib\XInput\CXBOXController.h" />
-    <ClInclude Include="hawk2.h" />
     <ClInclude Include="thawk2\Sfx.h" />
     <ClInclude Include="thawk2\Shatter.h" />
     <ClInclude Include="thawk2\SkatMgr.h" />
+    <ClInclude Include="thawk2\SkaterProfile.h" />
     <ClInclude Include="thawk2\Soundlib.h" />
     <ClInclude Include="thawk2\Spool.h" />
     <ClInclude Include="thawk2\Trig.h" />
-    <ClInclude Include="thawk2\types.h" />
     <ClInclude Include="thawk2\Utils.h" />
     <ClInclude Include="thawk2\WinMain.h" />
     <ClInclude Include="thawk2\_old.h" />
-    <ClInclude Include="hawk2_utils.h" />
-    <ClInclude Include="lib\INI\IniReader.h" />
-    <ClInclude Include="GameOptions.h" />
-    <ClInclude Include="patchStuff.h" />
-    <ClInclude Include="lib\SQLite\sqlite3.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="thawk2\IO\fileio.h" />
-    <ClInclude Include="thawk2\Mem.h" />
-    <ClInclude Include="thawk2\Pad.h" />
+    <ClInclude Include="thawk2\career\custom_goals.h" />
+    <ClInclude Include="thawk2\decomp.h" />
+    <ClInclude Include="thawk2\gaps\gaps.h" />
+    <ClInclude Include="thawk2\gte.h" />
+    <ClInclude Include="thawk2\pal.h" />
+    <ClInclude Include="thawk2\powerup.h" />
+    <ClInclude Include="thawk2\qb\LinkedList.h" />
+    <ClInclude Include="thawk2\qb\qb.h" />
+    <ClInclude Include="thawk2\thawk2.h" />
+    <ClInclude Include="thawk2\types.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Checksum.cpp" />

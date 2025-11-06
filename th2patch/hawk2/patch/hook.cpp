@@ -10,19 +10,19 @@ namespace Hook
 	// the sethooks is called in main patching func.
 
 	Reroute* pHookLists[] = {
-		gte::pHookList,
 		Career::pHookList,
-		Rail::pHookList,
+		Decomp::pHookList, // short for decmopression, not decompilation
 		FileIO::pHookList,
 		Flash::pHookList,
-		Physics::pHookList,
-		Redbook::pHookList,
-		PCIO::pHookList,
-		Decomp::pHookList,
-		Trig::pHookList,
+		Init::pHookList,
+		gte::pHookList,
 		M3d::pHookList,
-		Init::pHookList
-		//Pal::pHookList
+		Rail::pHookList,
+		Redbook::pHookList,
+		//Pal::pHookList,
+		Physics::pHookList,
+		PCIO::pHookList,
+		Trig::pHookList
 	};
 
 	void SetHooks() {
@@ -37,7 +37,7 @@ namespace Hook
 		{
 			CPatch::RedirectCall(pList->pMem, pList->pFunc);
 
-			printf_s("DECOMP DEBUG: patched %i at %i\n", (unsigned int)pList->pFunc, pList->pMem);
+			printf_s("DECOMP DEBUG: patched %X at %X\n", (unsigned int)pList->pFunc, pList->pMem);
 
 			pList++;
 		}

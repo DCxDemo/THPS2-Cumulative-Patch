@@ -51,7 +51,7 @@ namespace Physics {
         printf_s("DECOMP: UnloadGTricks()\n");
 
         if (*GTricks) {
-            Mem_Delete(*GTricks);
+            NsMem::Mem_Delete(*GTricks);
             *GTricks = NULL;
             *GAllTricks = NULL;
         }
