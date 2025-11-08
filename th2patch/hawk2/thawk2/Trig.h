@@ -25,8 +25,23 @@ enum class ENodeType : short
 
 namespace Trig
 {
-
 	extern Hook::Reroute* pHookList;
+
+	typedef struct TrigFileHeader {
+		char magic[4]; // _TRG
+		ushort version;	// must be 2 
+		ushort project;	// must be 0, 1 in mhpb
+		int numNodes;	// number of nodes
+		int* Nodes; // pointers to nodes
+	} TrigFileHeader;
+
+
+	extern int* NumCheatRestarts;
+	extern int* NumHorseRestarts;
+	extern TrigFileHeader* TrigFile;
+	extern int* OffsetList;
+	extern short** ppOffsetList;
+	extern int* NumNodes;
 
 
 	// Trig_ClearTrigMenu
@@ -73,8 +88,8 @@ namespace Trig
 	static const Trig_SendPulseToNode_t Trig_SendPulseToNode = (Trig_SendPulseToNode_t)0x004c2b10;
 	// static const Trig_DeleteTrigFile_t Trig_DeleteTrigFile = (Trig_DeleteTrigFile_t)0x004c2360;
 	void Trig_DeleteTrigFile();
-	static const Trig_LoadTRG_t Trig_LoadTRG = (Trig_LoadTRG_t)0x004c2390;
-	// void Trig_LoadTRG(char* trgName);
+	 static const Trig_LoadTRG_t Trig_LoadTRG = (Trig_LoadTRG_t)0x004c2390;
+	void Trig_LoadTRG_Hook(char* trgName);
 	static const ExecuteCommandList_t ExecuteCommandList = (ExecuteCommandList_t)0x004c3020;
 	static const Trig_ScanRestart_t Trig_ScanRestart = (Trig_ScanRestart_t)0x004c5100;
 	// static const Trig_InitialParseTRGFile_t Trig_InitialParseTRGFile = (Trig_InitialParseTRGFile_t)0x004c52b0;

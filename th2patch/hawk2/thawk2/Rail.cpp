@@ -7,25 +7,55 @@
 
 namespace Rail {
 
+    int* RailList = (int*)0x005684c0;
+
+
+
+    void Rail_Active(uint nodeIndex, char active)
+    {
+        printf_s("DECOMP: Rail_Active(%i, %i)\n", nodeIndex, active);
+
+        if (RailList == NULL) return;
+
+        CRail* pRail = (CRail*)*RailList;
+
+        do {
+            uint thisNode = pRail->railIndex;
+            do {
+                if (thisNode == nodeIndex) {
+                    pRail->active = active;
+                    return;
+                }
+                thisNode = Rail_NextNode(thisNode) & 0xffff;
+            } while ((thisNode != 0) && (thisNode != pRail->railIndex));
+            pRail = pRail->pNext;
+        } while (pRail != NULL);
+
+        printf_s("rail not found...\n");
+    }
+
     // switches rail on by index
     void Rail_SwitchOn(ushort nodeIndex)
     {
-        printf_s("rail created\n");
         Rail_Active(nodeIndex, true);
+
+        printf_s("rail %i created\n", nodeIndex);
     }
+
 
     // switches rail off by index
     void Rail_KillRail(ushort nodeIndex)
     {
-        printf_s("rail killed\n");
         Rail_Active(nodeIndex, false);
+
+        printf_s("rail %i killed\n", nodeIndex);
     }
 
     // TODO: causes issues in mall and downtown.
     // checks whether passed nodeIndex is rail
     bool Rail_IsRailNode(ushort nodeIndex)
     {
-        int* offset = (int*)*Trig_OffsetList;
+        int* offset = (int*)*Trig::OffsetList;
         short value = *(short*)offset[nodeIndex];
 
         // read node type (1st short)
@@ -59,6 +89,8 @@ namespace Rail {
     // returns next rail node index
     int Rail_NextNode(ushort nodeIndex)
     {
+        //printf_s("DECOMP: Rail_NextNode(%i)\n", nodeIndex);
+
         // get number of links
         int numLinks = Rail_NumLinks(nodeIndex);
 
@@ -86,6 +118,8 @@ namespace Rail {
             }
         }
 
+        // printf_s("Rail_NextNode found %i\n", result);
+
         return result;
     }
     
@@ -93,16 +127,16 @@ namespace Rail {
     int Rail_PrevNode(ushort nodeIndex)
     {
         // check node index (maybe refactor this to a separate func and add to other rail funcs as well)
-        if (nodeIndex > *NumNodes)
+        if (nodeIndex > *Trig::NumNodes)
         {
             printf_s("Wrong node index");
         }
 
         // if we have more than one node on the list (which is always true in the final game anyways...)
-        if (*NumNodes > 1) {
+        if (*Trig::NumNodes > 1) {
 
             // starting from node number 1
-            for (int i = 1; i < *NumNodes; i++)
+            for (int i = 1; i < *Trig::NumNodes; i++)
             {
                 // if node is rail
                 if (Rail_IsRailNode(i))
@@ -186,7 +220,7 @@ namespace Rail {
     void SetupLookup()
     {
         // originally it allocated 2000 fixed, but we won't need more than num nodes anyways
-        RailNodeLookup = NsMem::Mem_New(*NumNodes * sizeof(RailLookupEntry), 1, 1, 0);
+        RailNodeLookup = NsMem::Mem_New(*Trig::NumNodes * sizeof(RailLookupEntry), 1, 1, 0);
 
         RailLookupEntry* rails = (RailLookupEntry*)RailNodeLookup;
 
@@ -196,10 +230,10 @@ namespace Rail {
         uint numRails = 1;
 
         // if we have any nodes, first pass
-        if (*NumNodes > 0)
+        if (*Trig::NumNodes > 0)
         {
             // loop over all the nodes
-            for (int i = 0; i < *NumNodes; i++)
+            for (int i = 0; i < *Trig::NumNodes; i++)
             {
                 // if the node is rail
                 if (Rail_IsRailNode(i))
@@ -290,9 +324,14 @@ namespace Rail {
         { 0x004a8e5d, Rail_Type }, // Rail_Update
         
         { 0x004c2c2f, Rail_SwitchOn }, // Trig_SendPulseToNode
+
         { 0x004c4e07, Rail_KillRail }, // SendKillFromNode
 
         { 0x004a8d95, Rail_PrevNode }, // Rail_Update
+
+        { 0x004a7d07, Rail_Active },
+        { 0x004a7cf7, Rail_Active },
+
         
         { NULL, NULL }
     };

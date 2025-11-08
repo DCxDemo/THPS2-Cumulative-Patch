@@ -77,10 +77,6 @@ extern int* Cheat_Light;
 extern int* Cheat_FlipScreen;
 
 
-extern int* Trig_OffsetList;
-extern short** ppTrig_OffsetList;
-extern int* NumNodes;
-
 extern int* TotalRailNodes;
 extern void* RailNodeLookup;
 

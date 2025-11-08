@@ -16,15 +16,16 @@ namespace Rail {
 		int Z;
 	} Vector3i;
 
+	// Crail is a doubly linked list
 	typedef struct CRail {
 		void* vTable;
 		char active;
 		char flags;
-		short nodeFlags;
+		ushort railIndex;
 		Vector3i position;
 		Vector3i angle;
-		CRail* pNext;
 		CRail* pPrev;
+		CRail* pNext;
 	} CRail;
 
 	extern Hook::Reroute* pHookList;
@@ -41,7 +42,7 @@ namespace Rail {
 	//typedef uint(*Rail_NextNode_t)(ushort nodeIndex);
 	//typedef int(*Rail_PrevNode_t)(ushort nodeIndex);
 	typedef void(*Rail_PrevNodeQuick_t)();
-	typedef void(*Rail_Active_t)(ushort nodeIndex, bool active);
+	//typedef void(*Rail_Active_t)(ushort nodeIndex, bool active);
 	//typedef void(*Rail_KillRail_t)(ushort nodeIndex);
 	//typedef void(*Rail_SwitchOn_t)(ushort nodeIndex);
 	//typedef uint(*GetIndexOfNode_t)(ushort nodeIndex);
@@ -61,9 +62,11 @@ namespace Rail {
 	static const Rail_GetLink_t Rail_GetLink = (Rail_GetLink_t)0x004a7970;
 	//static const Rail_NumLinks_t Rail_NumLinks = (Rail_NumLinks_t)0x004a7aa0;
 	//static const Rail_NextNode_t Rail_NextNode = (Rail_NextNode_t)0x004a7b00;
+	int Rail_NextNode(ushort nodeIndex);
 	//static const Rail_PrevNode_t Rail_PrevNode = (Rail_PrevNode_t)0x004a7b70;
 	static const Rail_PrevNodeQuick_t Rail_PrevNodeQuick = (Rail_PrevNodeQuick_t)0x004a7c10;
-	static const Rail_Active_t Rail_Active = (Rail_Active_t)0x004a7ca0;
+	//static const Rail_Active_t Rail_Active = (Rail_Active_t)0x004a7ca0;
+	void Rail_Active(uint nodeIndex, char active);
 	//static const Rail_KillRail_t Rail_KillRail = (Rail_KillRail_t)0x004a7cf0;
 	//static const Rail_SwitchOn_t Rail_SwitchOn = (Rail_SwitchOn_t)0x004a7d00;
 	//static const GetIndexOfNode_t GetIndexOfNode = (GetIndexOfNode_t)0x004a7d10;

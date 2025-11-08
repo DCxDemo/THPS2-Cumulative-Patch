@@ -83,9 +83,7 @@ int* Cheat_FlipScreen = (int*)0x005674ec;
 
 
 
-int* Trig_OffsetList = (int*)0x0056ae70;
-short** ppTrig_OffsetList = (short**)0x0056ae70;
-int* NumNodes = (int*)0x0056ae74;
+
 
 int* TotalRailNodes = (int*)0x005684bc;
 void* RailNodeLookup = (void*)0x005684b8;

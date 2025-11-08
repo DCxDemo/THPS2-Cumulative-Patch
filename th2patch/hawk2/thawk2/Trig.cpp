@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "mem.h"
 #include "Utils.h"
+#include "IO\fileio.h"
 
 namespace Trig {
 
@@ -12,7 +13,12 @@ namespace Trig {
 
 	int* NumCheatRestarts = (int*)0x0056ae14;
 	int* NumHorseRestarts = (int*)0x0056ae68;
-	void* TrigFile = (void*)0x0056ae6c;
+
+	TrigFileHeader* TrigFile = (TrigFileHeader*)0x0056ae6c;
+	int* OffsetList = (int*)0x0056ae70;
+	short** ppOffsetList = (short**)0x0056ae70;
+	int* NumNodes = (int*)0x0056ae74;
+
 
 
 	// send pulse to all links
@@ -57,7 +63,7 @@ namespace Trig {
 			// check every node
 			for (int i = 0; i < *NumNodes; i++) {
 
-				int* offset = (int*)*Trig_OffsetList;
+				int* offset = (int*)*OffsetList;
 				short value = *(short*)offset[i];
 
 				// if node is autoexec2
@@ -76,7 +82,7 @@ namespace Trig {
 			// check every node
 			for (int i = 0; i < *NumNodes; i++) {
 
-				int* offset = (int*)*Trig_OffsetList;
+				int* offset = (int*)*OffsetList;
 				short value = *(short*)offset[i];
 
 				// if node is autoexec
@@ -94,81 +100,85 @@ namespace Trig {
 		printf_s("autoexec not found!!!");
 	}
 
-	/*
-	void Trig_LoadTRG(char* trgName)
+	void Trig_LoadTRG_Hook(char* trgName)
 	{
-		// copy trg extension to string?
-		cVar4 = *trgName;
-		puVar8 = &".trg;
-			pcVar3 = local_20;
-		cVar1 = DAT_005446e0;
+		Trig_LoadTRG(trgName);
 
-		if (cVar4 != '\0') {
-			do {
-				*pcVar3 = cVar4;
-				cVar4 = pcVar3[(int)(trgName + (1 - (int)local_20))];
-				pcVar3 = pcVar3 + 1;
-			} while (cVar4 != '\0');
-		}
+		printf_s("trig now %i\n", TrigFile);
+		printf_s("trig_offset now %i\n", OffsetList);
 
-		while (cVar1 != '\0') {
-			*pcVar3 = cVar1;
-			pcVar10 = puVar8 + 1;
-			pcVar3 = pcVar3 + 1;
-			puVar8 = puVar8 + 1;
-			cVar1 = *pcVar10;
-		}
+		Sleep(1000);
 
-		*pcVar3 = '\0';
+		// it essentially looks just like "add extension", but check
+		printf_s("DECOMP: Trig_LoadTRG(%s)\n", trgName);
+
+		char buf[MAX_BUFFER_SIZE];
+
+		sprintf_s(buf, "%s.trg\0", trgName);
 
 		// open trig file
-		size = FileIO_Open(local_20);
+		int size = FileIO::FileIO_Open(&buf[0]);
 
 		// allocate memory for trig file
-		_TrigFile = (int*)Mem_New(size, 0, 1, 0);
+		TrigFile = (TrigFileHeader*)NsMem::Mem_New(size, 0, 1, 0);
 
 		// load trig file
-		FileIO_Load(_TrigFile);
+		FileIO::FileIO_Load((void*)TrigFile);
 
-		FileIO_Sync();
+		// sync
+		FileIO::FileIO_Sync();
 
-		if (_TrigFile[0] != 0x4752545f) {
-			printf_s(s_ % s.trg_Not_a__TRG_file_005446c8);
+
+		// validate the header data
+		if (!Utils_CompareStrings(TrigFile->magic, "_TRG", 4)) {
+			printf_s("Not a TRG file.");
 			return;
 		}
 
-		if (_TrigFile[1] & 0xFFFF != 2) {
-			printf_s(s_Wrong_trigger_file_version._ % s.t_005446a4);
+		if (TrigFile->version != TRG_FILE_VERSION) {
+			printf_s("Wrong trigger file version.");
 			return;
 		}
 
-		if (_TrigFile[1] & 0xFFFF0000 != 0) {
-			printf_s(s_Not_a_Skate_trigger_file, _ % s.trg_00544680);
+		if (TrigFile->project != TRG_PROJ_VERSION) {
+			printf("Not a Skate trigger file.");
 			return;
 		}
 
-		*NumNodes = (uint) * (ushort*)(piVar2 + 2);
-		ppiVar9 = (int**)(piVar2 + 3);
-		Trig_OffsetList = ppiVar9;
+		// convert local file pointers to absolute pointers
+		if (TrigFile->numNodes > 0) {
+			for (int i = 0; i < TrigFile->numNodes; i++) {
 
-		if (*NumNodes > 0) {
-			for (int i = 0; i < *NumNodes; i++) {
-				*ppiVar9 = (int*)((int)*ppiVar9 + (int)_TrigFile);
-				ppiVar9 = ppiVar9 + 1;
-				iVar7 = iVar7 + 1;
+				//printf_s("node: before %i", TrigFile->Nodes[i]);
+
+				TrigFile->Nodes[i] += (int)TrigFile;
+
+			//	printf_s(" after %i\n", TrigFile->Nodes[i]);
 			}
 		}
 
+		*OffsetList = (int)((int)TrigFile + 12);
+
+		NsMem::Mem_Shrink(TrigFile, size);
+
 		/*
-		// if last node is terminator, can omit the hassle maybe we have enough ram now
-		if ((short)*Trig_OffsetList[NumNodes - 1] == 0xff) {
+		// if last node is terminator, can omit the hassle maybe? we have enough ram now
+		// it calls mem shrink and writes end somewhere, not ever used after
+		if ((short)*OffsetList[NumNodes - 1] == 0xff) {
 			// shrink it?
-			uVar5 = (int)Trig_OffsetList[NumNodes - 1] + (5 - (int)_TrigFile) & 0xfffffffc;
+			uVar5 = (int)OffsetList[NumNodes - 1] + (5 - (int)_TrigFile) & 0xfffffffc;
 			Mem_Shrink(_TrigFile,uVar5);
 			_DAT_0056a910 = uVar5;
 		}
-			}
 		*/
+
+		printf_s("done loading\n");
+
+		printf_s("trig now %i\n", TrigFile);
+		printf_s("trig_offset now %i\n", OffsetList);
+
+		Sleep(1000);
+	}
 
 
 	short* RestartNode = (short*)0x0544574;
@@ -185,10 +195,10 @@ namespace Trig {
 		if (NumNodes > 0) {
 			for (int i = 0; i < *NumNodes; i++) {
 
-				int* offset = (int*)*Trig_OffsetList;
+				int* offset = (int*)*OffsetList;
 				short value = *(short*)offset[i];
 
-				//if ((short)*Trig_OffsetList[nodeIndex] == 8) {
+				//if ((short)*OffsetList[nodeIndex] == 8) {
 				if ((ENodeType)value == ENodeType::Restart)
 				{
 					// ...
@@ -218,7 +228,7 @@ namespace Trig {
 		{
 		  SCommandPoint *cp;
   
-		  if (((Node != 0xffff) && ((short)*Trig_OffsetList[Node] == 6)) &&
+		  if (((Node != 0xffff) && ((short)*OffsetList[Node] == 6)) &&
 			 (cp = _CommandPoints, _CommandPoints != NULL)) {
 			do {
 			  if (*(ushort *)&cp->field_0xa_Node == Node) {
@@ -253,6 +263,11 @@ namespace Trig {
 		{ 0x0048e70b,	Trig_SendPulse },
 		{ 0x00402449,	Trig_SendPulse },
 		{ 0x00401400,	Trig_SendPulse },
+
+		// { 0x004527cd, Trig_LoadTRG_Hook },
+		// { 0x0043bcad, Trig_LoadTRG_Hook },
+
+
 
         //=========================
         { NULL, NULL }

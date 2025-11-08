@@ -13,9 +13,6 @@ namespace PCIO {
             printf_s("<PCIO> %s\n", log);
     }
 
-
-    #define NS_NULL 0xFFFFFFFF
-
     #define FILE_FREE 0
     #define FILE_PKR 1
     #define FILE_DISK 2
