@@ -140,23 +140,11 @@ typedef void(*Game_Display_t)();
 //main game render func, called once per frame
 static const Game_Display_t Game_Display = (Game_Display_t)0x46a080;
 
-typedef void(*Panel_Line_t)(short x0, short y0, short x1, short y1, int color);
-//simply draws a line on the screen.
-static const Panel_Line_t Panel_Line = (Panel_Line_t)0x00488410;
 
 //typedef void(*Utils_SetVisibilityInBox_t)(void*, void*, char, char);
 //takes bbox, objects list and state bool, loops through all objects and toggles visibility for those 
 //static const Utils_SetVisibilityInBox_t Utils_SetVisibilityInBox = (Utils_SetVisibilityInBox_t)0x004c7530;
 
-
-
-typedef void(*Panel_Display_t)();
-//draws user interface
-static const Panel_Display_t Panel_Display = (Panel_Display_t)0x48a980;
-
-typedef void(*Panel_Bail_t)();
-//called once, triggers when player bails
-static const Panel_Bail_t Panel_Bail = (Panel_Bail_t)0x0048b0a0;
 
 
 typedef void(*Backgrnd_On_t)(short param);

@@ -28,6 +28,12 @@ namespace Rail {
 		CRail* pNext;
 	} CRail;
 
+	typedef struct RailLookupEntry {
+		int nodeIndex;
+		int prevIndex;
+	} RailLookupEntry;
+
+
 	extern Hook::Reroute* pHookList;
 
 	//move to trig

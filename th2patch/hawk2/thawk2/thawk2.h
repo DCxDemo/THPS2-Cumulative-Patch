@@ -22,6 +22,7 @@
 #include "thawk2/Mess.h"
 #include "thawk2/Pal.h"
 #include "thawk2/Pad.h"
+#include "thawk2/Panel.h"
 #include "thawk2/PCInput.h"
 #include "thawk2/PCMovie.h"
 #include "thawk2/Physics.h"

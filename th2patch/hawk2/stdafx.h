@@ -16,7 +16,8 @@
 #define TRG_FILE_VERSION 2
 #define TRG_PROJ_VERSION 0
 
-
+#define BUFFER_WIDTH 512
+#define BUFFER_HEIGHT 240
 
 	void __trace(const char* format, ...);
 

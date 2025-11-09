@@ -129,6 +129,7 @@
     <ClInclude Include="thawk2\M3d.h" />
     <ClInclude Include="thawk2\Mem.h" />
     <ClInclude Include="thawk2\Mess.h" />
+    <ClInclude Include="thawk2\Panel.h" />
     <ClInclude Include="thawk2\PCInput.h" />
     <ClInclude Include="thawk2\PCMovie.h" />
     <ClInclude Include="thawk2\PKR.h" />
@@ -204,6 +205,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="thawk2\pal.cpp" />
+    <ClCompile Include="thawk2\Panel.cpp" />
     <ClCompile Include="thawk2\PCInput.cpp" />
     <ClCompile Include="thawk2\PCMovie.cpp" />
     <ClCompile Include="thawk2\Physics.cpp" />

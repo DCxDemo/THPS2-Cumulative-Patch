@@ -495,8 +495,6 @@ void Front_Update_Hook()
 	{
 		//char* t = (char*)*(int*)(statusNames + *GStatus * 4);
 
-		
-
 		printf_s("status: %s\n", statusNames[*GStatus]);
 
 		old_status = *GStatus;
@@ -515,12 +513,13 @@ void D3D_BeginScene_Hook(uint param_1, uint backColor)
 {
 	int waitframes = options.UnlockFPS ? 1 : 2;
 
+	/*
 	if (*Vblanks < *D3DBEGINSCENE_lastVBlank + waitframes) {
 		do {
-			Sleep(0);
+			// Sleep(0);
 		} while (*Vblanks < *D3DBEGINSCENE_lastVBlank + waitframes);
 	}
-	
+	*/
 	*D3DBEGINSCENE_lastVBlank = *Vblanks;
 
 	uint color = 0xff7080a0;
@@ -628,7 +627,7 @@ void Panel_Bail_Hook()
 {
 	//gotta add continuous vibration queue to xinput
 	//playsshatter = 30;
-	Panel_Bail();
+	Panel::Panel_Bail();
 }
 
 
@@ -804,7 +803,7 @@ void Panel_Display_Patch()
 		{
 			if (skater.InManual() > 0)
 			{
-				Panel_BalanceRail(skater.ManualBalance(), 0x1000,
+				Panel::Panel_BalanceRail(skater.ManualBalance(), 0x1000,
 					30, 6,
 					(int)(512 / 2.7), 240 / 2,
 					COLOR_RED, COLOR_GREEN,	//BGR color
@@ -815,7 +814,7 @@ void Panel_Display_Patch()
 			{
 				if ((EPhysicsState)skater.PhysicsState() == EPhysicsState::PHYSICS_ON_RAIL)
 				{
-					Panel_BalanceRail(skater.RailBalance(), 0x1000,
+					Panel::Panel_BalanceRail(skater.RailBalance(), 0x1000,
 						30, 6,
 						512 / 2, 240 / 3,
 						COLOR_RED, COLOR_GREEN,	//BGR color
@@ -843,7 +842,7 @@ void Panel_Display_Patch()
 
 bool* CloseCamToggle = (bool*)0x00530e84;
 
-
+// main.cpp
 void Display() {
 
 	// draw the info rectangle, if autotest restart exists
@@ -954,7 +953,7 @@ void Display() {
 		// okay what
 		// i call it here and then once again in the patched call
 		// remove any and it crashes...
-		Panel_Display();
+		Panel::Panel_Display();
 
 		// additional patch drawing
 		Panel_Display_Patch();
@@ -1034,7 +1033,6 @@ void System_Logic() {
 	}
 }
 */
-
 
 
 #pragma region [patch skaters]
@@ -1279,8 +1277,7 @@ void PatchSkaters()
 
 #pragma endregion
 
-
-#pragma region patch levels
+#pragma region [patch levels]
 
 int numLevels = 15;
 
@@ -1363,9 +1360,9 @@ void ParseLevels()
 
 #pragma endregion
 
-#pragma region patch music
+#pragma region [patch music]
 
-char query[256];
+char query[MAX_BUFFER_SIZE];
 
 sqlite3* db;
 sqlite3_stmt* stmt;
@@ -1491,6 +1488,7 @@ int CountSongs()
 }
 
 #pragma endregion
+
 
 #pragma region main patch stuff 
 
@@ -1724,19 +1722,6 @@ void Patch()
 	//CPatch::SetInt(0x468DE4, rand());
 
 
-	// fixed properly
-	/*
-	if (options.DisableNewTex)
-	{
-		//change newbmp pointers null
-		CPatch::SetInt(0x4d60b5, 0);
-
-		//change newtex pointers null
-		CPatch::SetInt(0x4d6051, 0);
-		CPatch::SetInt(0x4d607b, 0);
-	}
-	*/
-
 	//this patches resolution, probably not needed anymore
 	//CPatch::SetInt(0x0046A891, 2);
 
@@ -1749,8 +1734,8 @@ void Patch()
 	CPatch::SetInt((int)hH2, options.ResY);
 
 	// these are supposedly for software renderer
-	//CPatch::SetInt((int)0x524bb0, options.ResX);
-	//CPatch::SetInt((int)0x524bb4, options.ResY);
+	CPatch::SetInt((int)0x524bb0, options.ResX);
+	CPatch::SetInt((int)0x524bb4, options.ResY);
 
 	CPatch::SetInt((int)hardcodedWidth, options.ResX);
 	CPatch::SetInt((int)hardcodedHeight, options.ResY);

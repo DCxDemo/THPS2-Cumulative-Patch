@@ -165,10 +165,6 @@ namespace Rail {
     }
 
 
-    typedef struct RailLookupEntry {
-        int nodeIndex;
-        int prevIndex;
-    } RailLookupEntry;
 
     // finds node index in the lookup array
     uint GetIndexOfNode(ushort nodeIndex)
@@ -238,7 +234,7 @@ namespace Rail {
                 // if the node is rail
                 if (Rail_IsRailNode(i))
                 {
-                    if (numRails > 2000)
+                    if (numRails > *Trig::NumNodes)
                         printf_s("Out of space in rail node lookup table!");
 
                     // remember the rail index
