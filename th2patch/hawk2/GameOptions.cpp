@@ -6,9 +6,14 @@
 #include "GameOptions.h"
 #include "patchStuff.h"
 
+char* SectionPatch = "PATCH";
+char* SectionVideo = "VIDEO";
+char* SectionInput = "INPUT";
+char* SectionMusic = "MUSIC";
+
 GameOptions::GameOptions()
 {
-	iniPath = "./th2_opt.cfg";
+	iniPath = "./TH2_OPT.CFG";
 }
 
 void GameOptions::Load()
@@ -20,46 +25,48 @@ void GameOptions::Load()
 	printf_s("Loading settings from %s\r\n", iniPath);
 
 	//patch section
-	CurrentGame = ini->ReadString("PATCH", "Game", "THPS2");
-	DickSwap = ini->ReadString("PATCH", "DickSwap", "");
-	SkipIntro = ini->ReadBool("PATCH", "SkipIntro", false);
-	SeparateSaves = ini->ReadBool("PATCH", "SeparateSaves", true);
-	AddSkins = ini->ReadBool("PATCH", "MoreSkins", false);
+	CurrentGame = ini->ReadString(SectionPatch, "Game", "THPS2");
+	DickSwap = ini->ReadString(SectionPatch, "DickSwap", "");
+	SkipIntro = ini->ReadBool(SectionPatch, "SkipIntro", false);
+	SeparateSaves = ini->ReadBool(SectionPatch, "SeparateSaves", true);
+	AddSkins = ini->ReadBool(SectionPatch, "MoreSkins", false);
 
-	FreeStats = ini->ReadBool("PATCH", "FreeStats", false);
-	DisableVisToggle = ini->ReadBool("PATCH", "DisableVisToggle", false);
-	DisableSky = ini->ReadBool("PATCH", "DisableSky", false);
-	RailBalanceBar = ini->ReadBool("PATCH", "RailBalanceBar", true);
-	FontScale = ini->ReadFloat("PATCH", "FontScale", 1.0f);
+	FreeStats = ini->ReadBool(SectionPatch, "FreeStats", false);
+	DisableVisToggle = ini->ReadBool(SectionPatch, "DisableVisToggle", false);
+	DisableSky = ini->ReadBool(SectionPatch, "DisableSky", false);
+	RailBalanceBar = ini->ReadBool(SectionPatch, "RailBalanceBar", true);
+	FontScale = ini->ReadFloat(SectionPatch, "FontScale", 1.0f);
+	SimulateLoading = ini->ReadInt(SectionPatch, "SimulateLoading", 0);
 
 	//video section
-	ShowHUD = ini->ReadBool("VIDEO", "ShowHUD", true);
-	DrawShadow = ini->ReadBool("VIDEO", "DrawShadow", true);
-	Force32bpp = ini->ReadBool("VIDEO", "Force32bpp", true);
-	UnlockFPS = ini->ReadBool("VIDEO", "UnlockFps", true);
-	DisableNewTex = ini->ReadBool("VIDEO", "DisableNewTex", false);
-	ResX = ini->ReadInt("VIDEO", "ResX", DEFAULT_WIDTH);
-	ResY = ini->ReadInt("VIDEO", "ResY", DEFAULT_HEIGHT);
-	DynamicLighting = ini->ReadBool("VIDEO", "DynamicLighting", true);
+	ShowHUD = ini->ReadBool(SectionVideo, "ShowHUD", true);
+	DrawShadow = ini->ReadBool(SectionVideo, "DrawShadow", true);
+	Force32bpp = ini->ReadBool(SectionVideo, "Force32bpp", true);
+	UnlockFPS = ini->ReadBool(SectionVideo, "UnlockFps", true);
+	DisableNewTex = ini->ReadBool(SectionVideo, "DisableNewTex", false);
+	ResX = ini->ReadInt(SectionVideo, "ResX", DEFAULT_WIDTH);
+	ResY = ini->ReadInt(SectionVideo, "ResY", DEFAULT_HEIGHT);
+	DynamicLighting = ini->ReadBool(SectionVideo, "DynamicLighting", true);
+	TextureFiltering = ini->ReadBool(SectionVideo, "TextureFiltering", true);
 
-	bool overrideFov = ini->ReadBool("VIDEO", "OverrideFov", false);
-	FovScale = overrideFov ? ini->ReadFloat("VIDEO", "FovScale", 1.0) : 1.0;
+	bool overrideFov = ini->ReadBool(SectionVideo, "OverrideFov", false);
+	FovScale = overrideFov ? ini->ReadFloat(SectionVideo, "FovScale", 1.0) : 1.0;
 
 	//input section
-	XInput = ini->ReadBool("INPUT", "XInput", true);
-	StickDeadzone = ini->ReadInt("INPUT", "StickDeadzone", DEFAULT_DEADZONE);
-	Vibration = ini->ReadBool("INPUT", "Vibration", true);
-	BigDrop = ini->ReadBool("INPUT", "BigDrop", true);
-	Manuals = ini->ReadBool("Input", "Manuals", true);
-	AutoKick = ini->ReadBool("INPUT", "AutoKick", true);
-	FastQuit = ini->ReadBool("INPUT", "FastQuit", true);
+	XInput = ini->ReadBool(SectionInput, "XInput", true);
+	StickDeadzone = ini->ReadInt(SectionInput, "StickDeadzone", DEFAULT_DEADZONE);
+	Vibration = ini->ReadBool(SectionInput, "Vibration", true);
+	BigDrop = ini->ReadBool(SectionInput, "BigDrop", true);
+	Manuals = ini->ReadBool(SectionInput, "Manuals", true);
+	AutoKick = ini->ReadBool(SectionInput, "AutoKick", true);
+	FastQuit = ini->ReadBool(SectionInput, "FastQuit", true);
 
 	//music section
-	PlayRandom = ini->ReadBool("MUSIC", "Random", true);
-	Fade = ini->ReadBool("MUSIC", "Fade", true);
-	ShowTitle = ini->ReadBool("MUSIC", "ShowTitle", true);
-	PlayAmbience = ini->ReadBool("MUSIC", "PlayAmbience", true);
-	SeparateTracks = ini->ReadBool("MUSIC", "SeparateTracks", true);
+	PlayRandom = ini->ReadBool(SectionMusic, "Random", true);
+	Fade = ini->ReadBool(SectionMusic, "Fade", true);
+	ShowTitle = ini->ReadBool(SectionMusic, "ShowTitle", true);
+	PlayAmbience = ini->ReadBool(SectionMusic, "PlayAmbience", true);
+	SeparateTracks = ini->ReadBool(SectionMusic, "SeparateTracks", true);
 
 	delete ini;
 
@@ -75,38 +82,40 @@ void GameOptions::Save()
 	printf_s("Saving settings to %s\r\n", iniPath);
 
 	//patch section
-	ini->WriteString("PATCH", "Game", &CurrentGame[0]);
-	ini->WriteInt("PATCH", "SeparateSaves", SeparateSaves);
-	ini->WriteInt("PATCH", "SkipIntro", SkipIntro);
-	ini->WriteInt("PATCH", "MoreSkins", AddSkins);
-	ini->WriteString("PATCH", "DickSwap", &DickSwap[0]);
-	ini->WriteInt("PATCH", "FreeStats", FreeStats);
-	ini->WriteInt("PATCH", "DisableVisToggle", DisableVisToggle);
-	ini->WriteInt("PATCH", "DisableSky", DisableSky);
+	ini->WriteString(SectionPatch, "Game", &CurrentGame[0]);
+	ini->WriteInt(SectionPatch, "SeparateSaves", SeparateSaves);
+	ini->WriteInt(SectionPatch, "SkipIntro", SkipIntro);
+	ini->WriteInt(SectionPatch, "MoreSkins", AddSkins);
+	ini->WriteString(SectionPatch, "DickSwap", &DickSwap[0]);
+	ini->WriteInt(SectionPatch, "FreeStats", FreeStats);
+	ini->WriteInt(SectionPatch, "DisableVisToggle", DisableVisToggle);
+	ini->WriteInt(SectionPatch, "DisableSky", DisableSky);
+	ini->WriteInt(SectionPatch, "SimulateLoading", SimulateLoading);
 
 	//video section
-	ini->WriteInt("VIDEO", "ShowHUD", ShowHUD);
-	ini->WriteInt("VIDEO", "DrawShadow", DrawShadow);
-	ini->WriteInt("VIDEO", "Force32bpp", Force32bpp);
-	ini->WriteInt("VIDEO", "UnlockFps", UnlockFPS);
-	ini->WriteInt("VIDEO", "DisableNewTex", DisableNewTex);
-	ini->WriteInt("VIDEO", "ResX", ResX);
-	ini->WriteInt("VIDEO", "ResY", ResY);
-	ini->WriteInt("VIDEO", "DynamicLighting", DynamicLighting);
+	ini->WriteInt(SectionVideo, "ShowHUD", ShowHUD);
+	ini->WriteInt(SectionVideo, "DrawShadow", DrawShadow);
+	ini->WriteInt(SectionVideo, "Force32bpp", Force32bpp);
+	ini->WriteInt(SectionVideo, "UnlockFps", UnlockFPS);
+	ini->WriteInt(SectionVideo, "DisableNewTex", DisableNewTex);
+	ini->WriteInt(SectionVideo, "ResX", ResX);
+	ini->WriteInt(SectionVideo, "ResY", ResY);
+	ini->WriteInt(SectionVideo, "DynamicLighting", DynamicLighting);
+	ini->WriteInt(SectionVideo, "TextureFiltering", TextureFiltering);
 
 	//input section
-	ini->WriteInt("INPUT", "XInput", XInput);
-	ini->WriteInt("INPUT", "StickDeadzone", StickDeadzone);
-	ini->WriteInt("INPUT", "Vibration", Vibration);
-	ini->WriteInt("INPUT", "BigDrop", BigDrop);
-	ini->WriteInt("INPUT", "Manuals", Manuals);
+	ini->WriteInt(SectionInput, "XInput", XInput);
+	ini->WriteInt(SectionInput, "StickDeadzone", StickDeadzone);
+	ini->WriteInt(SectionInput, "Vibration", Vibration);
+	ini->WriteInt(SectionInput, "BigDrop", BigDrop);
+	ini->WriteInt(SectionInput, "Manuals", Manuals);
 
 	//music section
-	ini->WriteInt("MUSIC", "Random", PlayRandom);
-	ini->WriteInt("MUSIC", "Fade", Fade);
-	ini->WriteInt("MUSIC", "ShowTitle", ShowTitle);
-	ini->WriteInt("MUSIC", "PlayAmbience", PlayAmbience);
-	ini->WriteInt("MUSIC", "SeparateTracks", SeparateTracks);
+	ini->WriteInt(SectionMusic, "Random", PlayRandom);
+	ini->WriteInt(SectionMusic, "Fade", Fade);
+	ini->WriteInt(SectionMusic, "ShowTitle", ShowTitle);
+	ini->WriteInt(SectionMusic, "PlayAmbience", PlayAmbience);
+	ini->WriteInt(SectionMusic, "SeparateTracks", SeparateTracks);
 
 	delete ini;
 

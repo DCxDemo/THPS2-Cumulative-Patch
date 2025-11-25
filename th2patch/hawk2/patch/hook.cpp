@@ -22,7 +22,8 @@ namespace Hook
 		//Pal::pHookList,
 		Physics::pHookList,
 		PCIO::pHookList,
-		Trig::pHookList
+		Trig::pHookList,
+		Db::pHookList
 	};
 
 	void SetHooks() {

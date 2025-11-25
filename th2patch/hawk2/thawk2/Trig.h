@@ -81,6 +81,7 @@ namespace Trig
 	// Trig_ParseTRGFile
 	// CreateCommandPoint
 	typedef short* (*Trig_GetLinksPointer_t)(int nodeIndex);
+	typedef short* (*Trig_GetPosition_t)(void* pos, int nodeIndex);
 
 
 	static const Trig_ExecuteRestart_t Trig_ExecuteRestart = (Trig_ExecuteRestart_t)0x004c2090;
@@ -97,4 +98,5 @@ namespace Trig
 
 
 	static const Trig_GetLinksPointer_t Trig_GetLinksPointer = (Trig_GetLinksPointer_t)0x004c57b0;
+	static const Trig_GetPosition_t Trig_GetPosition = (Trig_GetPosition_t)0x004c58b0;
 }

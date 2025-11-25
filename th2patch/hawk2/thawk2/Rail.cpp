@@ -10,10 +10,39 @@ namespace Rail {
     int* RailList = (int*)0x005684c0;
 
 
+    ushort Rail_Flags(uint node) {
+        // printf_s("DECOMP: Rail_Flags(%i) = ", pIndex);
+        node &= 0xFFFF;
+        ushort* p = Rail_FlagsPointer(node);
 
-    void Rail_Active(uint nodeIndex, char active)
+        if (p == NULL) return 0;
+
+        return *p;
+    }
+
+    ushort* Rail_FlagsPointer(uint node) {
+        // printf_s("DECOMP: Rail_Flags(%i) = ", pIndex);
+
+        Vector3i pos;
+
+        ushort* p = (ushort*)Trig::Trig_GetPosition(&pos, node & 0xffff);
+
+        //if ( (*GLevel >= 10) && (*GLevel != 13)) {
+
+        if (options.CurrentGame == "THPS1") {
+            p += 3; // this is hack for apocalypse angles in thps1 levels?
+        }
+
+        if (*p == 0xffff) return NULL;
+
+        return p;
+    }
+
+
+    void Rail_Active(uint node, char active)
     {
-        printf_s("DECOMP: Rail_Active(%i, %i)\n", nodeIndex, active);
+        node &= 0xFFFF;
+        printf_s("DECOMP: Rail_Active(%i, %i)\n", node, active);
 
         if (RailList == NULL) return;
 
@@ -22,7 +51,7 @@ namespace Rail {
         do {
             uint thisNode = pRail->railIndex;
             do {
-                if (thisNode == nodeIndex) {
+                if (thisNode == node) {
                     pRail->active = active;
                     return;
                 }
@@ -35,28 +64,32 @@ namespace Rail {
     }
 
     // switches rail on by index
-    void Rail_SwitchOn(ushort nodeIndex)
+    void Rail_SwitchOn(uint node)
     {
-        Rail_Active(nodeIndex, true);
+        node &= 0xFFFF;
 
-        printf_s("rail %i created\n", nodeIndex);
+        Rail_Active(node, true);
+
+        printf_s("rail %i created\n", node);
     }
-
 
     // switches rail off by index
-    void Rail_KillRail(ushort nodeIndex)
+    void Rail_KillRail(uint node)
     {
-        Rail_Active(nodeIndex, false);
+        node &= 0xFFFF;
 
-        printf_s("rail %i killed\n", nodeIndex);
+        Rail_Active(node, false);
+
+        printf_s("rail %i killed\n", node);
     }
 
-    // TODO: causes issues in mall and downtown.
-    // checks whether passed nodeIndex is rail
-    bool Rail_IsRailNode(ushort nodeIndex)
+    // checks whether node is rail
+    uint Rail_IsRailNode(uint node)
     {
+        node &= 0xFFFF;
+
         int* offset = (int*)*Trig::OffsetList;
-        short value = *(short*)offset[nodeIndex];
+        short value = *(short*)offset[node];
 
         // read node type (1st short)
         ENodeType nodeType = (ENodeType)value;
@@ -65,7 +98,7 @@ namespace Rail {
         if (nodeType == ENodeType::RailDef || nodeType == ENodeType::RailPoint)
         {
             // get flags
-            short railFlags = Rail_Flags(nodeIndex);
+            short railFlags = Rail_Flags(node);
 
             // check flags
             if (((railFlags >> 4 & 3) == 0) || (((railFlags >> 4 & 3) & *GNumberOfPlayers) != 0))
@@ -81,18 +114,20 @@ namespace Rail {
 
 
     // returns number of links
-    short Rail_NumLinks(ushort nodeIndex)
+    short Rail_NumLinks(uint node)
     {
-        return *Trig::Trig_GetLinksPointer(nodeIndex);
+        node &= 0xFFFF;
+        return *Trig::Trig_GetLinksPointer(node);
     }
-    
+
     // returns next rail node index
-    int Rail_NextNode(ushort nodeIndex)
+    int Rail_NextNode(uint node)
     {
+        node &= 0xFFFF;
         //printf_s("DECOMP: Rail_NextNode(%i)\n", nodeIndex);
 
         // get number of links
-        int numLinks = Rail_NumLinks(nodeIndex);
+        int numLinks = Rail_NumLinks(node);
 
         // return zero early
         if (numLinks == 0) return 0;
@@ -104,7 +139,7 @@ namespace Rail {
         for (int i = 0; i < numLinks; i++)
         {
             // get link
-            linkIndex = Rail_GetLink(nodeIndex, i);
+            linkIndex = Rail_GetLink(node, i);
 
             // if link is rail
             if (Rail_IsRailNode(linkIndex))
@@ -124,10 +159,12 @@ namespace Rail {
     }
     
     // returns previous rail node index
-    int Rail_PrevNode(ushort nodeIndex)
+    int Rail_PrevNode(uint node)
     {
+        node &= 0xFFFF;
+
         // check node index (maybe refactor this to a separate func and add to other rail funcs as well)
-        if (nodeIndex > *Trig::NumNodes)
+        if (node > *Trig::NumNodes)
         {
             printf_s("Wrong node index");
         }
@@ -142,7 +179,7 @@ namespace Rail {
                 if (Rail_IsRailNode(i))
                 {
                     // if next node equals the target node
-                    if (Rail_NextNode(i) == nodeIndex)
+                    if (Rail_NextNode(i) == node)
                     {
                         printf_s("Rail_PrevNode(): found node %i\n", i);
 
@@ -159,17 +196,21 @@ namespace Rail {
     }
 
     // return rail type
-    uint Rail_Type(ushort nodeIndex)
+    uint Rail_Type(uint node)
     {
-        return Rail_Flags(nodeIndex) & 0xf;
+        node &= 0xFFFF;
+
+        return Rail_Flags(node) & 0xf;
     }
 
 
 
     // finds node index in the lookup array
-    uint GetIndexOfNode(ushort nodeIndex)
+    uint GetIndexOfNode(uint node)
     {
-        if (nodeIndex == 0) {
+        node &= 0xFFFF;
+
+        if (node == 0) {
             return 0;
         }
 
@@ -181,9 +222,9 @@ namespace Rail {
             for (int i = 1; i < *TotalRailNodes; i++)
             {
                 // if lookup nodeIndex matches
-                if (lookup[i].nodeIndex == nodeIndex) {
+                if (lookup[i].nodeIndex == node) {
 
-                    printf_s("GetIndexOfNode(): index of %i is %i", nodeIndex, i);
+                    printf_s("GetIndexOfNode(): index of %i is %i", node, i);
 
                     // we have found it, return index
                     return i;
@@ -301,14 +342,14 @@ namespace Rail {
         //doesnt work, what a surprise
         //{ 0x004a7faf, SetupLookup },
         
-        /*
+        
         { 0x004a7fd3, Rail_IsRailNode }, // Rail_CreateRails
         { 0x004a7dc1, Rail_IsRailNode }, // SetupLookup
         { 0x004a7bd4, Rail_IsRailNode }, // Rail_PrevNode
         { 0x004a7b33, Rail_IsRailNode }, // Rail_NextNode
         { 0x0043bccc, Rail_IsRailNode }, // LoadRails
-        */
-
+        
+        
         { 0x0043bce3, Rail_NumLinks	}, // LoadRails
         { 0x004a7b05, Rail_NumLinks	}, // Rail_NextNode
 
@@ -328,6 +369,18 @@ namespace Rail {
         { 0x004a7d07, Rail_Active },
         { 0x004a7cf7, Rail_Active },
 
+        
+        { 0x004a82d5,	Rail_Flags },
+        { 0x004a82c6,	Rail_Flags },
+        { 0x004a80b6,	Rail_Flags },
+        { 0x004a801d,	Rail_Flags },
+        { 0x004a7b40,	Rail_Flags },
+        { 0x004a7944,	Rail_Flags },
+        { 0x004a78b5,	Rail_Flags },
+        
+
+        { 0x004a87bf,   Rail_FlagsPointer }, // CRail
+        
         
         { NULL, NULL }
     };

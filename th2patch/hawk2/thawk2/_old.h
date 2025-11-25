@@ -57,6 +57,8 @@ static const VectorNormal_t VectorNormal = (VectorNormal_t)0x4E5650;
 
 //WINMAIN stuff
 
+typedef int(*D3DTimer_IsActive_t)();
+static const D3DTimer_IsActive_t D3DTIMER_IsActive = (D3DTimer_IsActive_t)0x004d7cf0;
 
 typedef void(*WINMAIN_SwitchResolution_t)(int mode);
 static const WINMAIN_SwitchResolution_t WINMAIN_SwitchResolution = (WINMAIN_SwitchResolution_t)0x4F3F10;

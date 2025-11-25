@@ -37,6 +37,7 @@ namespace th2patchlauncher
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.patchTab = new System.Windows.Forms.TabPage();
+            this.autokickBox = new System.Windows.Forms.CheckBox();
             this.railBarBox = new System.Windows.Forms.CheckBox();
             this.skyBox = new System.Windows.Forms.CheckBox();
             this.manualsBox = new System.Windows.Forms.CheckBox();
@@ -80,7 +81,7 @@ namespace th2patchlauncher
             this.quitButton = new System.Windows.Forms.Button();
             this.launchButton = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.autokickBox = new System.Windows.Forms.CheckBox();
+            this.filterBox = new System.Windows.Forms.CheckBox();
             this.aboutTab.SuspendLayout();
             this.patchTab.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -130,6 +131,7 @@ namespace th2patchlauncher
             // 
             // patchTab
             // 
+            this.patchTab.Controls.Add(this.filterBox);
             this.patchTab.Controls.Add(this.autokickBox);
             this.patchTab.Controls.Add(this.railBarBox);
             this.patchTab.Controls.Add(this.skyBox);
@@ -143,6 +145,13 @@ namespace th2patchlauncher
             resources.ApplyResources(this.patchTab, "patchTab");
             this.patchTab.Name = "patchTab";
             this.patchTab.UseVisualStyleBackColor = true;
+            // 
+            // autokickBox
+            // 
+            resources.ApplyResources(this.autokickBox, "autokickBox");
+            this.autokickBox.Name = "autokickBox";
+            this.autokickBox.UseVisualStyleBackColor = true;
+            this.autokickBox.CheckedChanged += new System.EventHandler(this.autokickBox_CheckedChanged);
             // 
             // railBarBox
             // 
@@ -492,12 +501,12 @@ namespace th2patchlauncher
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
             // 
-            // autokickBox
+            // filterBox
             // 
-            resources.ApplyResources(this.autokickBox, "autokickBox");
-            this.autokickBox.Name = "autokickBox";
-            this.autokickBox.UseVisualStyleBackColor = true;
-            this.autokickBox.CheckedChanged += new System.EventHandler(this.autokickBox_CheckedChanged);
+            resources.ApplyResources(this.filterBox, "filterBox");
+            this.filterBox.Name = "filterBox";
+            this.filterBox.UseVisualStyleBackColor = true;
+            this.filterBox.CheckedChanged += new System.EventHandler(this.filterBox_CheckedChanged);
             // 
             // LauncherForm
             // 
@@ -582,6 +591,7 @@ namespace th2patchlauncher
         private Label fogLabel;
         private Label fogScaleLabel;
         private CheckBox autokickBox;
+        private CheckBox filterBox;
     }
 }
 

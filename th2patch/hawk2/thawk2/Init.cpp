@@ -22,7 +22,7 @@ namespace Init
 
 	int* PCMemBuffer = (int*)0x0055ec78;
 
-#define RAM_SIZE 64 * 1024 * 1024 //original is 6 * 1000 * 1024 for whatever reason
+#define RAM_SIZE 256 * 1024 * 1024 //original is 6 * 1000 * 1024 for whatever reason
 
 
 	/// <summary>
@@ -185,6 +185,9 @@ namespace Init
 		//show title screen
 		LogoScreen();
 
+		if (options.SimulateLoading > 0)
+			Sleep(options.SimulateLoading * 1000);
+
 		//and load into the main menu
 		FrontEnd2_Main();
 
@@ -222,7 +225,6 @@ namespace Init
 	}
 
 	/*
-
 	void MainLoop_End() {
 
 		// basically this func should progress delta time
@@ -246,9 +248,7 @@ namespace Init
 
 		PollHost();
 	}
-
 	*/
-
 
 
 	// === hook stuff ===

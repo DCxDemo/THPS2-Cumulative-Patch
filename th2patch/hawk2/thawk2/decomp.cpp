@@ -143,7 +143,7 @@ namespace Decomp {
 
 		for (int i = 0; i < _streamLen; i++) {
 
-			deltaValue = ((pData[2] | pData[1] << 8 | pData[0] << 16) << bitsTaken + 8) >> shift;
+			deltaValue = ((pData[2] | (pData[1] << 8) | (pData[0] << 16)) << bitsTaken + 8) >> shift;
 
 			baseValue = deltaValue + srcValue;
 
@@ -165,7 +165,7 @@ namespace Decomp {
 
 		if (lenDiff > 0) {
 
-			deltaValue = ((pData[2] | pData[1] << 8 | pData[0] << 16) << bitsTaken + 8) >> shift;
+			deltaValue = ((pData[2] | (pData[1] << 8) | (pData[0] << 16)) << bitsTaken + 8) >> shift;
 
 			bitsTaken += bitsToTake;
 			pData += bitsTaken >> 3;

@@ -23,6 +23,8 @@ public:
 	bool DisableSky = false;
 	bool RailBalanceBar = true;
 
+	int SimulateLoading = 0;
+
 	//video
 	bool ShowHUD = true;
 	bool DrawShadow = true;
@@ -35,6 +37,7 @@ public:
 	float FontScale = 1.0;
 	float FovScale = 1.0;
 	bool DynamicLighting = true;
+	bool TextureFiltering = true;
 
 	//input
 	bool XInput = true;

@@ -49,61 +49,6 @@ void Proxify(int offs[], int count, void* func)
 }
 
 
-#pragma region patched redbook stuff, move to redbook.cpp
-
-/*
-void GetTrackInfo(int x)
-{	
-		ifstream plist(playlistPath);
-		string a = "default";
-		string b = a; 
-
-		if (plist)
-		{
-			if (totalTracks > 0)
-			for (int i = -1; i < x; i++)
-			{
-				if ( getline(plist, a) && getline(plist, b))
-				{
-					playingName = a;
-					playingFile = b;
-				}
-			}
-		}
-}
-
-void GetTotalTracks()
-{	
-	//fout1 << &playlistPath[0u] << endl;
-	FILE* file = fopen(&playlistPath[0u], "r");
-
-	if (file)
-	{
-		fclose(file);
-
-		ifstream plist(playlistPath);
-		string a;
-		int count = -1;
-
-		do count++;
-		while(getline(plist, a) && getline(plist, a));
-			
-		totalTracks = count;
-	}
-	else
-	{
-		totalTracks = 0;
-	}
-
-	//fout1 << totalTracks << endl;
-}
-*/
-
-
-
-
-#pragma endregion 
-
 
 
 void* FontManager_LoadFont(char* filename)
@@ -273,7 +218,11 @@ float AutoFOV(float userScale = 1.0f)
 	float zoom = (4.0f * *_Yres) / (3.0f * *_Xres);
 	zoom = zoom + (1.0f - zoom) / 2.0f;
 
-	return zoom * userScale;
+	float result = zoom * userScale;
+
+	printf_s("auto fov scale = %f (requested %f)\n", result, userScale);
+
+	return result;
 }
 
 void M3dInit_SetResolution(int width, int height)
@@ -288,13 +237,49 @@ void M3dInit_SetResolution(int width, int height)
 	//if not, the fov scale from options
 	//if user doesnt select fov override, it will be 1.0 by default, hence no need to bother here
 
-	int aspect = 0x1000 * AutoFOV(*InFrontEnd ? 1.0 : options.FovScale);
+	float x = AutoFOV(*InFrontEnd ? 1.0f : options.FovScale);
+	int aspect = 0x1000 * x;
 
-	//printf("aspect: %i\n", aspect);
+	printf_s("%i\n", aspect);
+
+	// Sleep(2000);
 
 	*_PixelAspectX = aspect;
 	*_PixelAspectY = aspect;
 }
+
+
+int* ticksThen = (int*)0x029d4fbc;
+
+// TODO: use QueryPerformanceCounter();
+void SimVblank() {
+
+	if (D3DTIMER_IsActive()) {
+
+		int ticksNow = clock();
+
+		if (*ticksThen == 0)
+			*ticksThen = ticksNow;
+
+		int blanksPassed = ((ticksNow - *ticksThen) * 60) / 1000;
+
+		*ticksThen = ticksNow;
+
+		if (blanksPassed > 0) {
+			// render ticks
+			*Vblanks += blanksPassed;
+
+			if (!GamePaused && !GameFrozen) {
+				// exectution ticks
+				*Xblanks += blanksPassed;
+			}
+		}
+
+		//printf_s("DECOMP: SimVblank() = %i\n", blanksPassed);
+	}
+}
+
+
 
 
 //can probably just nop it?
@@ -394,8 +379,8 @@ void GenPsxPadData_Hook()
 		int x = state.Gamepad.sThumbLX;
 		int y = state.Gamepad.sThumbLY;
 
-		int magnitude = sqrt(x * x + y * y);
-		int stickAngle = atan2(x, y) * 180.f / 3.1415f;
+		int magnitude = (int)sqrt(x * x + y * y);
+		int stickAngle = (int)(atan2(x, y) * 180.f / 3.1415f);
 
 		if (magnitude > options.StickDeadzone)
 		{
@@ -461,7 +446,9 @@ void PCINPUT_ActuatorOn_Hook(int index, int time, int motor, int value)
 	if (value == 1)
 		value = 128;
 
-	Player1->Vibrate(motor == 0 ? value / 255.0 * 65535.0 : 0, motor == 1 ? value / 255.0 * 65535.0 : 0, options.Vibration);
+	int scale = (int)(value / 255.0 * 65535.0);
+
+	Player1->Vibrate(motor == 0 ? scale : 0, motor == 1 ? scale : 0, options.Vibration);
 }
 
 
@@ -511,6 +498,8 @@ int* gShellMode = (int*)0x006a35b4;
 // on the beginning of every frame
 void D3D_BeginScene_Hook(uint param_1, uint backColor)
 {
+	// printf_s("D3D_BeginScene\n");
+
 	int waitframes = options.UnlockFPS ? 1 : 2;
 
 	/*
@@ -520,6 +509,7 @@ void D3D_BeginScene_Hook(uint param_1, uint backColor)
 		} while (*Vblanks < *D3DBEGINSCENE_lastVBlank + waitframes);
 	}
 	*/
+
 	*D3DBEGINSCENE_lastVBlank = *Vblanks;
 
 	uint color = 0xff7080a0;
@@ -1338,7 +1328,10 @@ void ParseLevels()
 		
 		Levels[cnt].isCompetition = sqlite3_column_int(stmt, 8);
 		Levels[cnt].isCompetition2 = Levels[cnt].isCompetition;
-		
+
+		// hardcoded allocations
+		Levels[cnt].alloc[0] = 4096 * 10;
+		Levels[cnt].alloc[1] = 4096 * 10;
 
 		//levPtr[cnt].isCompetition = 1;
 		//levPtr[cnt].isCompetition2 = 1;
@@ -1565,6 +1558,7 @@ void PatchThps4Gaps()
 void Patch()
 {
 	
+
 	// wad extraction example
 	//Wad::Load("cd.hed", "cd.wad");
 
@@ -1675,6 +1669,14 @@ void Patch()
 
 
 
+	// modify ddraw texture filtering in D3DPOLY_StartScene
+	CPatch::SetChar(0x004d102b, options.TextureFiltering ? 5 : 0);
+	CPatch::SetChar(0x004d1045, options.TextureFiltering ? 5 : 0);
+
+
+
+
+
 	Player1 = new CXBOXController(1);
 
 	//CPatch::SetChar(0x498707, 0x92);
@@ -1693,14 +1695,25 @@ void Patch()
 	//removes "shutting down thps2" delay
 	CPatch::Nop(0x4f5149, 6);
 
-	
-	
 
+	
 	//supposed to remove polylimit error
 	int* polyLimit = (int*)0x4301EF;
-	int polyLimitVal = *polyLimit;
-	CPatch::SetInt(0x4301EF, polyLimitVal + 0x10000);
 
+	printf_s("polylimit now: %i\n", *polyLimit);
+
+	// freezes on bigger values
+	//CPatch::SetInt((int)polyLimit, *polyLimit+0x11000);
+
+	printf_s("polylimit now: %i\n", *polyLimit);
+	
+	// game shifts the number of players by 12 = 4096 or 8192 in splitscreen
+	//CPatch::SetChar(0x004301d9, 16);
+
+
+
+
+	//Sleep(5000);
 
 	//DirectDrawCreateEx(NULL, (VOID *)&lpDD, 0x29D6FD0, NULL);
 	//lpDD->SetDisplayMode(640, 480, 16);
@@ -1809,9 +1822,9 @@ ColorBGRA applyLighting(ColorBGRA* vert, ColorBGRA* light)
 {
 	if (options.DynamicLighting)
 	{
-		vert->R *= light->R / 255.0f;
-		vert->G *= light->G / 255.0f;
-		vert->B *= light->B / 255.0f;
+		vert->R = (char)((vert->R * light->R) / 255.0f);
+		vert->G = (char)((vert->G * light->G) / 255.0f);
+		vert->B = (char)((vert->B * light->B) / 255.0f);
 	}
 
 	return *vert;
@@ -2567,6 +2580,34 @@ Hook::Reroute hookList[] = {
 { 0x004cc206, SFX_PlayX_hook },
 { 0x004cc230, SFX_PlayX_hook },
 
+/*
+{ 0x00415e78, SimVblank },
+{ 0x0041803c, SimVblank },
+{ 0x0041c34f, SimVblank },
+{ 0x00426524, SimVblank },
+{ 0x004285f7, SimVblank },
+{ 0x0042cbf4, SimVblank },
+{ 0x0042f174, SimVblank },
+{ 0x004333fc, SimVblank },
+{ 0x004446c5, SimVblank },
+{ 0x00449b37, SimVblank },
+{ 0x0044b3a6, SimVblank },
+{ 0x00455f05, SimVblank },
+{ 0x00458979, SimVblank },
+{ 0x0045d43f, SimVblank },
+{ 0x0045df80, SimVblank },
+{ 0x0046a3e0, SimVblank },
+{ 0x0046a690, SimVblank },
+{ 0x0046af1e, SimVblank },
+{ 0x0046c485, SimVblank },
+{ 0x00479ee0, SimVblank },
+{ 0x0047a578, SimVblank },
+{ 0x004818a8, SimVblank },
+{ 0x004a3904, SimVblank },
+{ 0x004b5a81, SimVblank },
+{ 0x004bd572, SimVblank },
+{ 0x004cb2f5, SimVblank },
+*/
 
 	//list terminator, do not remove
 	{ NULL, NULL }

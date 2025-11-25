@@ -3,7 +3,7 @@
 
 namespace Redbook
 {
-    typedef struct {
+    typedef struct Song {
         int slot;
         string artist;
         string title;
@@ -30,7 +30,7 @@ namespace Redbook
     //typedef void(*Redbook_XAUpdateVolume_t)();
     //typedef void(*Redbook_XAInit_t)();
     //some unused func 0x4a93c0 Redbook_XASeek?
-    typedef void(*Redbook_XAPlay_t)(int group, int channel);
+    //typedef void(*Redbook_XAPlay_t)(int group, int channel);
     //typedef void(*Redbook_XAStop_t)();
     //typedef void(*Redbook_XANextTrack_t)(int num); //tracks to skip?
     //typedef void(*Redbook_XAPause_t)(bool state);
@@ -59,8 +59,7 @@ namespace Redbook
     void Redbook_XABeginFade();
     void Redbook_XAUpdateVolume();
     void Redbook_XAInit();
-    void Redbook_XAPlay();
-    //
+    void Redbook_XAPlay(int group, int channel);
     void Redbook_XAStop();
     void Redbook_XANextTrack(int num);
     void Redbook_XAPause(bool state);

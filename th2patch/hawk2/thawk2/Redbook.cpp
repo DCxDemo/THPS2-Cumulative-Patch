@@ -17,11 +17,11 @@ namespace Redbook
 
     void Redbook_XABeginFade()
     {
-        if (options.Fade)
-        {
-            *Redbook_XAFadeScale = 255;
-            *Redbook_XAFading = true;
-        }
+        if (!options.Fade) return;
+
+        *Redbook_XAFadeScale = 255;
+        *Redbook_XAFading = true;
+
     }
 
     void Redbook_XAUpdateVolume()
@@ -281,6 +281,12 @@ namespace Redbook
 
         { 0x0044dc0f, Redbook_XACurrentTrack },
         { 0x0044dbfe, Redbook_XACurrentTrack },
+
+
+        { 0x004270ef, Redbook_XAPlay },
+        { 0x004a9639, Redbook_XAPlay },
+        { 0x004a96e7, Redbook_XAPlay },
+        { 0x004a98d8, Redbook_XAPlay },
         
 
         //=========================

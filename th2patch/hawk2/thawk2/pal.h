@@ -6,7 +6,7 @@ namespace Pal {
 
     extern Hook::Reroute* pHookList;
 
-    typedef struct S_Pal {
+    typedef struct SPalette {
         ushort Clut;
         char slot;
         char flags;
@@ -15,9 +15,9 @@ namespace Pal {
         char RemapIndex;
         uint Checksum;
         void* pD3DPalette;
-        S_Pal* pPrev;
-        S_Pal* pNext;
-    } S_Pal;
+        SPalette* pPrev;
+        SPalette* pNext;
+    } SPalette;
 
 
     typedef void(*Pal_Init_t)();
@@ -42,11 +42,11 @@ namespace Pal {
     static const Pal_Init_t Pal_Init = (Pal_Init_t)0x004879a0;
     static const Pal_Cleanup_t Pal_Cleanup = (Pal_Cleanup_t)0x00487c10;
     // static const NewPaletteEntry_t NewPaletteEntry = (NewPaletteEntry_t)0x00487c50;
-    S_Pal* NewPaletteEntry(uint Checksum);
+    SPalette* NewPaletteEntry(uint Checksum);
     // static const RemovePaletteEntry_t RemovePaletteEntry = (RemovePaletteEntry_t)0x00487ca0;
-    void RemovePaletteEntry(S_Pal* pPal);
+    void RemovePaletteEntry(SPalette* pPal);
     // static const Pal_FindPaletteEntry_t Pal_FindPaletteEntry = (Pal_FindPaletteEntry_t)0x00487cf0;
-    S_Pal* Pal_FindPaletteEntry(uint Checksum);
+    SPalette* Pal_FindPaletteEntry(uint Checksum);
     // static const Pal_RemoveUnusedPalettes_t Pal_RemoveUnusedPalettes = (Pal_RemoveUnusedPalettes_t)0x00487d10;
     void Pal_RemoveUnusedPalettes();
     // static const GetFree16Slot_t GetFree16Slot = (GetFree16Slot_t)0x00487d80;

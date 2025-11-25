@@ -8,7 +8,7 @@
 namespace Pal {
 
     int* TotalPaletteUsage = (int*)0x00568364;
-    S_Pal* pPaletteList = (S_Pal*)0x00567f50;
+    SPalette* pPaletteList = (SPalette*)0x00567f50;
 
     int* Pal16Max = (int*)0x00532dac;
     int* Pal256Max = (int*)0x00532db0;
@@ -17,12 +17,12 @@ namespace Pal {
     bool* Pal256Usage = (bool*)0x00567f54;
 
     // creates a new palette entry
-    S_Pal* NewPaletteEntry(uint Checksum) {
+    SPalette* NewPaletteEntry(uint Checksum) {
 
         printf_s("DECOMP Pal_CreateNew(): %i\n", Checksum);
 
         // allocate new palette
-        S_Pal* pPal = (S_Pal*)NsMem::Mem_New(0x18, 0, 1, 0);
+        SPalette* pPal = (SPalette*)NsMem::Mem_New(0x18, 0, 1, 0);
 
         // increase palette memory usage counter
         *TotalPaletteUsage += 0x1c; //why not 0x18?
@@ -52,7 +52,7 @@ namespace Pal {
     }
 
     // removes a palette
-    void RemovePaletteEntry(S_Pal* pPal)
+    void RemovePaletteEntry(SPalette* pPal)
     {
         printf_s("DECOMP Pal_Free()\n");
 
@@ -71,13 +71,13 @@ namespace Pal {
     }
 
     // iterates over the palette list until checksum is found.
-    S_Pal* Pal_FindPaletteEntry(uint Checksum) {
+    SPalette* Pal_FindPaletteEntry(uint Checksum) {
 
         printf_s("DECOMP Pal_FindPaletteEntry(): %i\n", Checksum);
 
         if (pPaletteList == NULL) return NULL;
 
-        S_Pal* pPal = pPaletteList;
+        SPalette* pPal = pPaletteList;
 
         do {
             // got a match?
@@ -130,8 +130,8 @@ namespace Pal {
     {
         if (pPaletteList == NULL) return;
 
-        S_Pal* pPal = pPaletteList;
-        S_Pal* pPrev = pPal->pPrev;
+        SPalette* pPal = pPaletteList;
+        SPalette* pPrev = pPal->pPrev;
 
         do {
             if (pPal->Usage == 0) {

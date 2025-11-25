@@ -47,13 +47,15 @@ typedef struct SLevel
     int compAward[3];
     char* renderthumb;
     int u2;
+
     int globeX;
     int globeY;
+
     char* thumb;
     int cashToUnlock;
     int medalsToUnlock;
     int isCompetition2; //bool
-    int somedata[4];
+    int alloc[4]; // maybe only 2 allocs here and some extra values? or they planned 4p? unlikely
     int index;
     int somedata2[5];
     int gapFirst;

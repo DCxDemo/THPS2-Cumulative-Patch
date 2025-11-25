@@ -150,6 +150,7 @@ namespace th2patchlauncher
             psxtexBox.Checked = op.GetBool("Video", "DisableNewtex", false);
             drawshadowBox.Checked = op.GetBool("Video", "DrawShadow", true);
             drawhudBox.Checked = op.GetBool("Video", "ShowHUD", true);
+            filterBox.Checked = op.GetBool("Video", "TextureFiltering", true);
 
             op.SetResolution(
                 op.GetInt("Video", "ResX", Options.DefaultResolution.Width),
@@ -157,6 +158,8 @@ namespace th2patchlauncher
             );
 
             op.setResAspectText(resBox, aspectRatioDrop, op.ResolutionString);
+
+
 
             //read fov data
             op.FovScale = op.GetFloat("Video", "FovScale", 1f);
@@ -479,5 +482,9 @@ namespace th2patchlauncher
             op.FovScale = op.FovScale; //lol
         }
 
+        private void filterBox_CheckedChanged(object sender, EventArgs e)
+        {
+            op.SetBool("Video", "TextureFiltering", (sender as CheckBox).Checked);
+        }
     }
 }
