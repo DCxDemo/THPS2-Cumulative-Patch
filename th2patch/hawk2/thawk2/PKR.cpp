@@ -61,19 +61,19 @@ PkrError Pkr2::Load(char* filename)
 /// <param name="path"></param>
 void Pkr2::ExportAll(char* path)
 {
-	char buf[256];
-	char bufpath[256];
+	char buf[MAX_BUFFER_SIZE];
+	char bufpath[MAX_BUFFER_SIZE];
 	FILE* file;
 	int curFile = 0;
 
 	for (unsigned int i = 0; i < Header->numFolders; i++)
 	{
-		sprintf(bufpath, "%s%s", path, Folders[i].Name);
+		sprintf_s(bufpath, sizeof(bufpath), "%s%s", path, Folders[i].Name);
 		_mkdir(bufpath);
 
 		for (unsigned int j = 0; j < Folders[i].NumFiles; j++)
 		{
-			sprintf(buf, "%s%s", bufpath, Files[curFile].Name);
+			sprintf_s(buf, sizeof(buf), "%s%s", bufpath, Files[curFile].Name);
 
 			file = fopen(buf, "wb");
 			fwrite((void*)Files[curFile].pData, 1, Files[curFile].Size, file);
@@ -93,13 +93,13 @@ void Pkr2::ExportAll(char* path)
 /// </summary>
 void Pkr2::DebugPrint()
 {
-	char buf[256];
+	char buf[MAX_BUFFER_SIZE];
 
 	printf_s("PKR Folders:\n");
 
 	for (int i = 0; i < Header->numFolders; i++)
 	{
-		sprintf(buf, "Folder: %s NumFiles: %i\n", Folders[i].Name, Folders[i].NumFiles);
+		sprintf_s(buf, sizeof(buf), "Folder: %s NumFiles: %i\n", Folders[i].Name, Folders[i].NumFiles);
 		printf_s(buf);
 	}
 
@@ -107,7 +107,7 @@ void Pkr2::DebugPrint()
 
 	for (int i = 0; i < Header->numFiles; i++)
 	{
-		sprintf(buf, "Folder: %s Size: %i\n", Files[i].Name, Files[i].Size);
+		sprintf_s(buf, sizeof(buf), "Folder: %s Size: %i\n", Files[i].Name, Files[i].Size);
 		printf_s(buf);
 	}
 }

@@ -107,14 +107,14 @@ namespace Trig {
 		printf_s("trig now %i\n", TrigFile);
 		printf_s("trig_offset now %i\n", OffsetList);
 
-		Sleep(1000);
+		// Sleep(1000);
 
 		// it essentially looks just like "add extension", but check
 		printf_s("DECOMP: Trig_LoadTRG(%s)\n", trgName);
 
 		char buf[MAX_BUFFER_SIZE];
 
-		sprintf_s(buf, "%s.trg\0", trgName);
+		sprintf_s(buf, sizeof(buf), "%s.trg\0", trgName);
 
 		// open trig file
 		int size = FileIO::FileIO_Open(&buf[0]);
@@ -177,7 +177,7 @@ namespace Trig {
 		printf_s("trig now %i\n", TrigFile);
 		printf_s("trig_offset now %i\n", OffsetList);
 
-		Sleep(1000);
+		//Sleep(1000);
 	}
 
 

@@ -249,3 +249,16 @@ uint ScreenScaledCosine(uint deg)
 {
     return Cosine(deg) / (*ScreenHeight / 480.0);
 }
+
+int Utils_CountBits(uint value)
+{
+    int numBits = 0;
+
+    if (value > 0)
+        do {
+            if (value & 1) numBits++;
+            value >>= 1;
+        } while (value > 0);
+
+    return numBits;
+}

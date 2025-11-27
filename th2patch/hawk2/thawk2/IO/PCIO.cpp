@@ -59,6 +59,8 @@ namespace PCIO {
         WINMAIN_InstallSetup();
 
         // im pretty sure it bakes fullpath at PKR_Name
+        // TODO check allowed buffer size here to convert to sprintf_s
+        // as we need the rest of the game to access this string
         sprintf(PKR_Name, "%s\\%s", workingDir, filename);
 
         printf_s("%s at: %s\n", filename, PKR_Name);
@@ -198,7 +200,7 @@ namespace PCIO {
         if (i < 0) return NS_NULL;
 
         char buf[MAX_BUFFER_SIZE];
-        sprintf_s(buf, MAX_BUFFER_SIZE, "%s\\%s", workingDir, pName);
+        sprintf_s(buf, sizeof(buf), "%s\\%s", workingDir, pName);
 
         Files[i] = ffopen(buf, "wb"); // it uses some var for mode here, but why would it
 
@@ -215,8 +217,8 @@ namespace PCIO {
     int PCremove(char* pName) {
         log("PCremove() ");
 
-        char buf[256];
-        sprintf(buf, "%s\\%s", workingDir, pName);
+        char buf[MAX_BUFFER_SIZE];
+        sprintf_s(buf, sizeof(buf), "%s\\%s", workingDir, pName);
 
         return ffremove(buf);
     }

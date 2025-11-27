@@ -87,9 +87,9 @@ void Spool_ClearPSX(char* pName)
 
 void Spool_LoadPSH(char* pName, int param_2, int param_3, int* param_4, int param_5)
 {
-    char buf[256];
+    char buf[MAX_BUFFER_SIZE];
 
-    sprintf(buf, "%s.PSH", pName);
+    sprintf_s(buf, sizeof(buf), "%s.PSH", pName);
     void* block = FileIO::FileIO_OpenLoad(buf, 1);
     Spool_LoadPSHBuffer(block, pName, param_2, param_3, param_4, param_5);
 }

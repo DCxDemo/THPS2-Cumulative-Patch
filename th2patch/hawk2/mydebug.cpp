@@ -18,7 +18,7 @@ void PrintDebugStuff()
 {
 	if (*GamePaused)
 	{
-		sprintf(debugText, "THPS2 Cumulative Patch r7prev");
+		sprintf_s(debugText, sizeof(debugText), "THPS2 Cumulative Patch - %s", "r7prev");
 		DebugMessage(debugText, 10, BUFFER_HEIGHT - 7);
 	}
 	else
@@ -41,7 +41,7 @@ void PrintDebugStuff()
 			
 			CBruce* pSkater = new CBruce(GSkater);
 
-			sprintf(debugText, "bruce test: %i",
+			sprintf_s(debugText, sizeof(debugText), "bruce test: %i",
 				pSkater->InManual()
 			);
 

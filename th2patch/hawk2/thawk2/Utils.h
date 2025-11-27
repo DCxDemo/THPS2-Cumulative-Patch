@@ -120,6 +120,9 @@ uint Cosine(uint deg);
 uint ScreenScaledSine(uint deg);
 uint ScreenScaledCosine(uint deg);
 
+// counts non-zero bits in a value
+// taken from career_countbit, reuse if used anywhere else
+int Utils_CountBits(uint value);
 
 /*
 

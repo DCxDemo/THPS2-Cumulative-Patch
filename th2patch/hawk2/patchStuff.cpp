@@ -1316,7 +1316,7 @@ void ParseLevels()
 
     while((ret_code = sqlite3_step(stmt)) == SQLITE_ROW) {
 
-		sprintf(Levels[cnt].name, (char*)sqlite3_column_text(stmt, 3));
+		sprintf_s(Levels[cnt].name, sizeof(Levels[cnt].name), (char*)sqlite3_column_text(stmt, 3));
 
 		//short name actually used for VAB loading, workaround needed
 		//levPtr[cnt].shortname = (char *)&(new string((char*)sqlite3_column_text(stmt, 1)))[0];
@@ -1371,10 +1371,9 @@ void GetSong(int num)
 			return;
 		}
 
-
 	if (stmt == NULL)
 	{
-		sprintf(query,
+		sprintf_s(query, sizeof(query),
 			"select * from ( SELECT * FROM SoundTrack where lower(game) like lower(@game) order by game, slot limit @num ) order by game desc, slot desc limit 1");
 	}
 
@@ -1442,8 +1441,9 @@ int CountSongs()
 		return 0;
     }
 
-	sprintf(
-		query, 
+	sprintf_s(
+		query,
+		sizeof(query),
 		"select count(*) from soundtrack where lower(game) like lower('%s')", 
 		options.SeparateTracks ? options.CurrentGame.c_str() : "%");
 
@@ -1846,7 +1846,7 @@ int openExternalTexture2(uint Checksum, char* Name)
 
 	if (Name != NULL)
 	{
-		sprintf_s(local, MAX_BUFFER_SIZE, ".\\newbmp\\%s", Name);
+		sprintf_s(local, sizeof(local), ".\\newbmp\\%s", Name);
 
 		//original game accounts for leading slashes in the name
 	} 
@@ -1854,12 +1854,12 @@ int openExternalTexture2(uint Checksum, char* Name)
 	{
 		// there is some additional comparison routine here in the original game
 
-		sprintf_s(local, MAX_BUFFER_SIZE, ".\\newtex\\%08x.bmp", Checksum);
+		sprintf_s(local, sizeof(local), ".\\newtex\\%08x.bmp", Checksum);
 
 		int file = PCIO::PCopen(&local[0], 0);
 		if (file != NS_NULL) return file;
 
-		sprintf_s(local, MAX_BUFFER_SIZE, ".\\newtex\\%s\\%08x.bmp", ShortLevName, Checksum);
+		sprintf_s(local, sizeof(local), ".\\newtex\\%s\\%08x.bmp", ShortLevName, Checksum);
 	}
 	else
 	{

@@ -14,8 +14,8 @@ namespace PCMovie
 		//ambience track?
 		if (curTrack < 15)
 		{
-			char buf[256];
-			sprintf(buf, "%s%02i%s", "ltix", curTrack, ".dat");
+			char buf[MAX_BUFFER_SIZE];
+			sprintf_s(buf, sizeof(buf), "%s%02i%s", "ltix", curTrack, ".dat");
 			PCMovie::PCMOVIE_StartMusic(buf);
 		}
 		else

@@ -222,11 +222,11 @@ Career::SGapTrick gapListThps1[] = {
 SGapTrick * pGapListThps1 = gapListThps1;
 
 
-char buf[256];
+char buf[MAX_BUFFER_SIZE];
 
 void PrintGap(SGapTrick* pGap)
 {
-	sprintf(buf, "%i: %s [%i]\n", pGap->Value, pGap->Name, pGap->Score);
+	sprintf_s(buf, sizeof(buf), "%i: %s [%i]\n", pGap->Value, pGap->Name, pGap->Score);
 	printf_s(buf);
 }
 

@@ -75,20 +75,21 @@ namespace Career {
 		MoonPhysics = 14,
 		DiscoMode = 15,
 		LevelFlip = 16,
+
 		First = 0,
 		Last = 16
 	};
 
 	//original game used defines for this enum
 	enum class EGoalType : int {
-		Score = 0,		//High score, pro score or sick score (insane in demo)
-		Skate = 1,		//Collect SKATE letters
-		Gaps = 2,		//Collect gaps
-		Pickups = 3,	//Collect level pickups
-		Destroy = 4,	//Destroy objects (like barrels)
-		Trick = 5,		//Get a gap with a specific trick
-		Hidden = 6,		//Find the hidden tape
-		Clear = 7,		//Beat the level (100% goals and cash)
+		Score = 0,		// High score, pro score or sick score (insane in demo)
+		Skate = 1,		// Collect SKATE letters
+		Gaps = 2,		// Collect gaps
+		Pickups = 3,	// Collect level pickups
+		Destroy = 4,	// Destroy objects (like barrels)
+		Trick = 5,		// Get a gap with a specific trick
+		Hidden = 6,		// Find the hidden tape
+		Clear = 7,		// Beat the level (100% goals and cash)
 
 		First = 0,
 		Last = 7
@@ -135,6 +136,51 @@ namespace Career {
 	} SGoal;
 
 
+	typedef struct CareerGlobals {
+		// 0055c93c
+		// character states - career flags lower byte
+		uint careerStates1[20];
+		// 0055c98c 4
+		int Career_StartEarnings = 0;
+		// 0055c990 4
+		int Career_GapGoalGotMask = 0;
+		// 0055c994 32
+		char AwardLevelPickupMessage[32];
+		// 0055c9b4 32
+		char AwardTrickGapMessage[32];
+		// 0055c9d4 4
+		int Career_GameClearAtStart = 0;
+		// 0055c9d8 4
+		int Career_StartHighestOpenLevel = 0;
+		// 0055c9dc 4
+		int Career_LevelGoalsGot = 0;
+		// 0055c9e0 4
+		int Career_LevelPickupsGot = 0;
+		// 0055c9e4 80
+		// character states - career flags upper byte
+		uint careerStates2[20];
+		// 0055ca34 4
+		int Career_TotalGaps = 0;
+		// 0055ca38 4
+		int Career_GoalGaps = 0;
+		// 0055ca3c 4
+		int Career_Gaps = 0;
+		// 0055ca40 4
+		int Career_GapTrickGotMask = 0;
+		// 0055ca44 32
+		char AwardGoalGapMessage[32];
+		// 0055ca64 4
+		int Career_TrickGaps = 0;
+		// 0055ca68 4
+		int Career_MoneyPickups = 0;
+		// 0055ca6c 4
+		int UnlockingSkater = 0;
+
+		// end of career globals
+	} CareerGlobals;
+
+
+
 	extern uint* Career_UnlockFlags;
 	extern SGapTrick* pGaps;
 
@@ -177,7 +223,7 @@ namespace Career {
 	//typedef void(*Career_AwardTrickGap_t)(SGapTrick* pGap);
 	typedef short(*Career_MoneyNumber_t)(int param_1);
 	typedef void(*Career_GotMoney_t)(int param_1);
-	typedef void(*Career_GiveMoney_t)(int param_1, int amount);
+	typedef void(*Career_GiveMoney_t)(int nodeId, int amount);
 	//typedef void(*Career_GetLevelPickup_t)();
 	typedef void(*Career_CountThings_t)();
 	//typedef int(*Career_CountGaps_t)();
@@ -355,4 +401,6 @@ namespace Career {
 	void Career_PrintGoals();
 	void* Career_GetCurrentCharacterProgress();
 	SGoal* GetGoal(int level, int goal);
+
 }
+
