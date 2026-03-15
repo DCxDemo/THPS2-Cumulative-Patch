@@ -37,6 +37,7 @@ void GameOptions::Load()
 	RailBalanceBar = ini->ReadBool(SectionPatch, "RailBalanceBar", true);
 	FontScale = ini->ReadFloat(SectionPatch, "FontScale", 1.0f);
 	SimulateLoading = ini->ReadInt(SectionPatch, "SimulateLoading", 0);
+	ShowNewGap = ini->ReadBool(SectionPatch, "ShowNewGap", true);
 
 	//video section
 	ShowHUD = ini->ReadBool(SectionVideo, "ShowHUD", true);
@@ -91,6 +92,7 @@ void GameOptions::Save()
 	ini->WriteInt(SectionPatch, "DisableVisToggle", DisableVisToggle);
 	ini->WriteInt(SectionPatch, "DisableSky", DisableSky);
 	ini->WriteInt(SectionPatch, "SimulateLoading", SimulateLoading);
+	ini->WriteInt(SectionPatch, "ShowNewGap", ShowNewGap);
 
 	//video section
 	ini->WriteInt(SectionVideo, "ShowHUD", ShowHUD);

@@ -11,6 +11,7 @@
 #include "_old.h"
 #include "utils.h"
 
+
 // this is wrong somehow?
 #define MACRO_CHECK_BIT(VALUE, INDEX) VALUE & (1 << (INDEX & 0x1F))
 
@@ -413,15 +414,23 @@ namespace Career {
         int loVal = gapNum & 0x1f;
         int hiVal = gapNum >> 5;
 
+        // if gap flag is not set already
         if ((Career_GapBits[*GLevel * 3 + hiVal] & (1 << loVal)) == 0)
         {
             printf_s("!!!New gap awarded!!! %s\n", pGapTrick->Name);
-            //print mess message here, maybe sound too
 
-            sprintf_s(bufx, sizeof(bufx), "new gap found %s", pGapTrick->Name);
-            DrawMessage(bufx);
+            if (options.ShowNewGap)
+            {
+                // we should add this to some message queue instead, to be cleared later.
+                // multiple gap messages reuse same buffer, hence show same string
+                sprintf_s(bufx, sizeof(bufx), "new gap found %s", pGapTrick->Name);
+                DrawMessage(bufx);
+            }
+
+            // play gap sound
             SFX_PlayX(0, 0x2000, 0);
 
+            // set gap flag
             Career_GapBits[*GLevel * 3 + hiVal] |= (1 << loVal);
         }
     }

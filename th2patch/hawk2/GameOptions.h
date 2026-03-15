@@ -22,7 +22,7 @@ public:
 	bool DisableVisToggle = false;
 	bool DisableSky = false;
 	bool RailBalanceBar = true;
-
+	bool ShowNewGap = true;
 	int SimulateLoading = 0;
 
 	//video

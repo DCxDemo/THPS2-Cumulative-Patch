@@ -2169,12 +2169,12 @@ Hook::Reroute hookList[] = {
 { 0x004555b2, Utils_LimitRange },
 
 
-//sine cosine patch for wheel
-{ 0x457939, ScreenScaledCosine },
-{ 0x457992, ScreenScaledCosine },
-
-{ 0x457947, ScreenScaledSine },
-{ 0x45795D, ScreenScaledSine },
+// thirteenAGs sine cosine patch approach for menu wheel
+// not sure it even works here
+//{ 0x457939, ScreenScaledCosine },
+//{ 0x457992, ScreenScaledCosine },
+//{ 0x457947, ScreenScaledSine },
+//{ 0x45795D, ScreenScaledSine },
 
 { 0x004c74d0, Utils_KillEverythingInBox },
 
